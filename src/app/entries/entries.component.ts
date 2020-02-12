@@ -14,8 +14,10 @@ export class EntriesComponent implements OnInit {
   constructor(private entryService: EntryService) { }
 
   ngOnInit(): void {
-    this.entryService.loadEntries()
-        .subscribe(diaryEntries => this.diaryEntries = diaryEntries);
+    this.entryService.getEntries()
+        .subscribe((diaryEntries: DiaryEntry[]) => {
+          this.diaryEntries = diaryEntries;
+        });
   }
 
   /**
