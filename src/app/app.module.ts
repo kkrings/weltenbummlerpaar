@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+// import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,7 +15,7 @@ import { EntryComponent } from './entry/entry.component';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
+    // HttpClientModule,
     AppRoutingModule
   ],
   providers: [],
