@@ -5,11 +5,13 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EntriesComponent } from './entries/entries.component';
+import { EntryComponent } from './entry/entry.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EntriesComponent
+    EntriesComponent,
+    EntryComponent
   ],
   imports: [
     BrowserModule,

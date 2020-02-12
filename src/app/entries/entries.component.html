@@ -9,7 +9,9 @@
           <p class="card-text"><small class="text-muted">
             Created on {{diaryEntry.createdAt | date}}
           </small></p>
-          <a href="#" class="card-link">Read more</a>
+          <a [routerLink]="['/entries', diaryEntry._id]" class="card-link">
+            Read more
+          </a>
         </div>
       </div>
     </div>
