@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="row row-cols-1 row-cols-sm-2">
+    <div class="col mb-4" *ngFor="let diaryEntry of diaryEntries">
+      <div class="card h-100">
+        <div class="card-body">
+          <h4 class="card-title">{{diaryEntry.title}}</h4>
+          <h6 class="card-subtitle text-muted mb-2">{{diaryEntry.country}}</h6>
+          <p class="card-text">{{brief(diaryEntry)}}</p>
+          <p class="card-text"><small class="text-muted">
+            Created on {{diaryEntry.date | date}}
+          </small></p>
+          <a href="#" class="card-link">Read more</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
