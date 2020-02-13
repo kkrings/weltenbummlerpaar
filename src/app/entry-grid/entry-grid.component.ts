@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DiaryEntry, EntryService } from '../entry.service';
+import { DiaryEntry } from '../shared/entry.model';
+import { EntryService } from '../shared/entry.service';
 
 @Component({
-  selector: 'app-entries',
-  templateUrl: './entries.component.html',
-  styleUrls: ['./entries.component.scss']
+  selector: 'app-entry-grid',
+  templateUrl: './entry-grid.component.html',
+  styleUrls: ['./entry-grid.component.scss']
 })
-export class EntriesComponent implements OnInit {
+export class EntryGridComponent implements OnInit {
 
   diaryEntries: DiaryEntry[];
 

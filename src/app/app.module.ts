@@ -4,14 +4,14 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { EntriesComponent } from './entries/entries.component';
-import { EntryComponent } from './entry/entry.component';
+import { EntryGridComponent } from './entry-grid/entry-grid.component';
+import { EntryDetailComponent } from './entry-detail/entry-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EntriesComponent,
-    EntryComponent
+    EntryGridComponent,
+    EntryDetailComponent
   ],
   imports: [
     BrowserModule,

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { EntriesComponent } from './entries/entries.component';
-import { EntryComponent } from './entry/entry.component';
+import { EntryGridComponent } from './entry-grid/entry-grid.component';
+import { EntryDetailComponent } from './entry-detail/entry-detail.component';
 
 
 const routes: Routes = [
-  {path: '', component: EntriesComponent},
-  {path: 'entries/:entryId', component: EntryComponent}
+  {path: '', component: EntryGridComponent},
+  {path: 'entries/:entryId', component: EntryDetailComponent}
 ];
 
 @NgModule({
