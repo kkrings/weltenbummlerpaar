@@ -16,7 +16,29 @@ export const ENTRIES: DiaryEntry[] = [
     'fames ac ante ipsum primis in faucibus. Integer sit amet venenatis ' +
     'ligula. Sed sed elit dapibus, euismod sem sed, placerat est.',
     country: 'Country name',
-    createdAt: (new Date()).toISOString()
+    images: [
+      {
+        _id: '0',
+        path: 'assets/images/image00.jpg',
+        description: '1st picture\'s  description',
+      },
+      {
+        _id: '1',
+        path: 'assets/images/image01.jpg',
+        description: '2nd picture\'s  description',
+      },
+      {
+        _id: '2',
+        path: 'assets/images/image02.jpg',
+        description: '3rd picture\'s  description',
+      },
+      {
+        _id: '3',
+        path: 'assets/images/image03.jpg',
+        description: '4th picture\'s  description',
+      },
+    ],
+    createdAt: (new Date()).toISOString(),
   },
   {
     _id: '1',
@@ -30,7 +52,8 @@ export const ENTRIES: DiaryEntry[] = [
     'Pellentesque eu finibus dolor. Cras hendrerit turpis neque, id porta ' +
     'lectus eleifend eu. Aliquam dictum lectus et gravida scelerisque.',
     country: 'Country name',
-    createdAt: (new Date()).toISOString()
+    images: [],
+    createdAt: (new Date()).toISOString(),
   },
   {
     _id: '2',
@@ -42,7 +65,8 @@ export const ENTRIES: DiaryEntry[] = [
     'vitae quis nisi. Fusce nisl urna, condimentum et tincidunt venenatis, ' +
     'pulvinar non tellus. Morbi sed tempus odio.',
     country: 'Country name',
-    createdAt: (new Date()).toISOString()
+    images: [],
+    createdAt: (new Date()).toISOString(),
   },
   {
     _id: '3',
@@ -59,6 +83,7 @@ export const ENTRIES: DiaryEntry[] = [
     'scelerisque maximus nibh. Maecenas imperdiet pharetra mauris eget ' +
     'tincidunt.',
     country: 'Country name',
-    createdAt: (new Date()).toISOString()
-  }
+    images: [],
+    createdAt: (new Date()).toISOString(),
+  },
 ];

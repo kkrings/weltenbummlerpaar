@@ -1,3 +1,5 @@
+import { Image } from './image.model';
+
 /**
  * Diary entry model
  */
@@ -6,5 +8,6 @@ export interface DiaryEntry {
   title: string;
   body: string;
   country: string;
+  images: Image[];
   createdAt: string;
 }
