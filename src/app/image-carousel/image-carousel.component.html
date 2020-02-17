@@ -1,6 +1,6 @@
-<ngb-carousel *ngIf="images" [interval]="0">
-  <ng-template *ngFor="let image of images" ngbSlide>
+<carousel *ngIf="images" [interval]="false">
+  <slide *ngFor="let image of images">
     <img src="{{image.path}}" alt="{{image.path}}" class="d-block w-100">
     <p class="carousel-caption">{{image.description}}</p>
-  </ng-template>
-</ngb-carousel>
+  </slide>
+<carousel>

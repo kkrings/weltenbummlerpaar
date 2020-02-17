@@ -14,7 +14,7 @@ export class EntryGridComponent implements OnInit {
 
   constructor(private entryService: EntryService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.entryService.getEntries()
         .subscribe((diaryEntries: DiaryEntry[]) => {
           this.diaryEntries = diaryEntries;

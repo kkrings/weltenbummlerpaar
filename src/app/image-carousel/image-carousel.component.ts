@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { Image } from '../../shared/image.model';
+import { Image } from '../shared/image.model';
 
 @Component({
   selector: 'app-image-carousel',
@@ -13,7 +13,7 @@ export class ImageCarouselComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
 
 }

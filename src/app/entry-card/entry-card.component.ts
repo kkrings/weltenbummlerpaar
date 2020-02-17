@@ -6,11 +6,11 @@ import { DiaryEntry } from '../shared/entry.model';
 import { EntryService } from '../shared/entry.service';
 
 @Component({
-  selector: 'app-entry-detail',
-  templateUrl: './entry-detail.component.html',
-  styleUrls: ['./entry-detail.component.scss']
+  selector: 'app-entry-card',
+  templateUrl: './entry-card.component.html',
+  styleUrls: ['./entry-card.component.scss']
 })
-export class EntryDetailComponent implements OnInit {
+export class EntryCardComponent implements OnInit {
 
   diaryEntry: DiaryEntry;
 

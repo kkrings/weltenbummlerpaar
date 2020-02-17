@@ -1,26 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
-// import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EntryGridComponent } from './entry-grid/entry-grid.component';
-import { EntryDetailComponent } from './entry-detail/entry-detail.component';
-import { ImageCarouselComponent } from './entry-detail/image-carousel/image-carousel.component';
+import { EntryCardComponent } from './entry-card/entry-card.component';
+import { ImageCarouselComponent } from './image-carousel/image-carousel.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EntryGridComponent,
-    EntryDetailComponent,
+    EntryCardComponent,
     ImageCarouselComponent
   ],
   imports: [
     BrowserModule,
-    // HttpClientModule,
     AppRoutingModule,
-    NgbCarouselModule
+    CarouselModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
