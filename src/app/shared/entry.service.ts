@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 // import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 import { DiaryEntry } from './entry.model';
 import { ENTRIES } from './mock-entries';
@@ -18,7 +19,7 @@ export class EntryService {
    * @returns Diary entries
    */
   getEntries(): Observable<DiaryEntry[]> {
-    return of(ENTRIES);
+    return of(ENTRIES).pipe(delay(5000));
   }
 
   /**
@@ -27,6 +28,7 @@ export class EntryService {
    * @returns Diary entry
    */
   getEntry(entryId: string): Observable<DiaryEntry> {
-    return of(ENTRIES.filter(diaryEntry => diaryEntry._id === entryId)[0]);
+    return of(ENTRIES.filter(diaryEntry => diaryEntry._id === entryId)[0])
+        .pipe(delay(5000));
   }
 }

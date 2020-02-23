@@ -1,4 +1,6 @@
-<div class="card border-0">
+<app-spinner [showSpinner]="diaryEntry === undefined"></app-spinner>
+
+<div class="card border-0" *ngIf="diaryEntry !== undefined">
   <app-image-carousel [images]="diaryEntry.images"></app-image-carousel>
   <div class="card-body">
     <h1 class="card-title">{{diaryEntry.title}}</h1>

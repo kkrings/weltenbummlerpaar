@@ -6,15 +6,17 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 import { EntryGridComponent } from './entry-grid/entry-grid.component';
 import { EntryCardComponent } from './entry-card/entry-card.component';
 import { ImageCarouselComponent } from './image-carousel/image-carousel.component';
-import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
+    SpinnerComponent,
     EntryGridComponent,
     EntryCardComponent,
     ImageCarouselComponent
