@@ -1,7 +1,12 @@
-<app-spinner [showSpinner]="diaryEntries === undefined"></app-spinner>
+<div class="jumbotron">
+  <h1 class="display-4">Travel diary</h1>
+  <p class="lead">Welcome to our travel diary.</p>
+</div>
 
 <div class="container">
-  <div class="row row-cols-1 row-cols-sm-2">
+  <h2>Diary entries</h2>
+  <app-spinner [showSpinner]="!diaryEntries"></app-spinner>
+  <div class="row row-cols-1 row-cols-sm-2" *ngIf="diaryEntries">
     <div class="col mt-4" *ngFor="let diaryEntry of diaryEntries">
       <div class="card h-100">
         <div class="card-body">
