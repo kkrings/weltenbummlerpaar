@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Image } from './image.model';
+import { environment } from '../../environments/environment';
 
 
 /**
@@ -20,7 +21,7 @@ export class ImageService {
    *   Image's URL
    */
   static getImageUrl(image: Image): string {
-    return 'assets/images/' + image._id + '.jpg';
+    return environment.baseurl + 'images/' + image._id + '.jpg';
   }
 
   /**
