@@ -12,6 +12,10 @@ import { EntryGridComponent } from './entry-grid/entry-grid.component';
 import { EntryCardComponent } from './entry-card/entry-card.component';
 import { ImageCarouselComponent } from './image-carousel/image-carousel.component';
 
+import { EntryService } from './shared/entry.service';
+import { ImageService } from './shared/image.service';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +23,7 @@ import { ImageCarouselComponent } from './image-carousel/image-carousel.componen
     SpinnerComponent,
     EntryGridComponent,
     EntryCardComponent,
-    ImageCarouselComponent
+    ImageCarouselComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,7 +32,10 @@ import { ImageCarouselComponent } from './image-carousel/image-carousel.componen
     CollapseModule.forRoot(),
     CarouselModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    EntryService,
+    ImageService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
