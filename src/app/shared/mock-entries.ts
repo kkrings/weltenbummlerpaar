@@ -18,27 +18,32 @@ export const ENTRIES: DiaryEntry[] = [
     country: 'Country name',
     images: [
       {
-        _id: '0',
-        path: 'assets/images/image00.jpg',
+        _id: 'image00',
         description: '1st picture\'s  description',
+        createdAt: (new Date()).toISOString(),
+        updatedAt: (new Date()).toISOString(),
       },
       {
-        _id: '1',
-        path: 'assets/images/image01.jpg',
+        _id: 'image01',
         description: '2nd picture\'s  description',
+        createdAt: (new Date()).toISOString(),
+        updatedAt: (new Date()).toISOString(),
       },
       {
-        _id: '2',
-        path: 'assets/images/image02.jpg',
+        _id: 'image02',
         description: '3rd picture\'s  description',
+        createdAt: (new Date()).toISOString(),
+        updatedAt: (new Date()).toISOString(),
       },
       {
-        _id: '3',
-        path: 'assets/images/image03.jpg',
+        _id: 'image03',
         description: '4th picture\'s  description',
+        createdAt: (new Date()).toISOString(),
+        updatedAt: (new Date()).toISOString(),
       },
     ],
     createdAt: (new Date()).toISOString(),
+    updatedAt: (new Date()).toISOString(),
   },
   {
     _id: '1',
@@ -54,6 +59,7 @@ export const ENTRIES: DiaryEntry[] = [
     country: 'Country name',
     images: [],
     createdAt: (new Date()).toISOString(),
+    updatedAt: (new Date()).toISOString(),
   },
   {
     _id: '2',
@@ -67,6 +73,7 @@ export const ENTRIES: DiaryEntry[] = [
     country: 'Country name',
     images: [],
     createdAt: (new Date()).toISOString(),
+    updatedAt: (new Date()).toISOString(),
   },
   {
     _id: '3',
@@ -85,5 +92,6 @@ export const ENTRIES: DiaryEntry[] = [
     country: 'Country name',
     images: [],
     createdAt: (new Date()).toISOString(),
+    updatedAt: (new Date()).toISOString(),
   },
 ];
