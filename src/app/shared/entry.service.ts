@@ -1,36 +1,44 @@
+/**
+ * Diary entry service
+ * @packageDocumentation
+ */
+
 import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { DiaryEntry } from './entry.model';
-import { ENTRIES } from './mock-entries';
+import { environment } from '../../environments/environment';
+
 
 /**
- * Load diary entries from server.
+ * Service for loading diary entries from back-end server
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EntryService {
   /**
    * Construct diary entry service.
+   *
+   * @param http
+   *   Allows to communicate with the back-end server.
    */
-  constructor() { }
-  // constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   /**
-   * Get list of all diary entries
+   * Load list of all diary entries from back-end server.
    *
    * @returns
    *   Diary entries
    */
   getEntries(): Observable<DiaryEntry[]> {
-    return of(ENTRIES).pipe(delay(5000));
+    return this.http
+        .get<DiaryEntry[]>(`${environment.backend}/entries`);
   }
 
   /**
-   * Get diary entry given its ID.
+   * Load diary entry from back-end server given its ID.
    *
    * @param entryId
    *   Diary entry's ID
@@ -39,7 +47,7 @@ export class EntryService {
    *   Diary entry
    */
   getEntry(entryId: string): Observable<DiaryEntry> {
-    return of(ENTRIES.filter(diaryEntry => diaryEntry._id === entryId)[0])
-        .pipe(delay(5000));
+    return this.http
+        .get<DiaryEntry>(`${environment.backend}/entries/${entryId}`);
   }
 }

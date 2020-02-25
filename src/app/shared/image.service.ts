@@ -1,3 +1,8 @@
+/**
+ * Image service
+ * @packageDocumentation
+ */
+
 import { Injectable } from '@angular/core';
 
 import { Image } from './image.model';
@@ -5,10 +10,10 @@ import { environment } from '../../environments/environment';
 
 
 /**
- * Load image objects from server.
+ * Service for loading images from back-end server
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ImageService {
   /**
@@ -21,7 +26,7 @@ export class ImageService {
    *   Image's URL
    */
   static getImageUrl(image: Image): string {
-    return environment.baseurl + 'images/' + image._id + '.jpg';
+    return `${environment.backend}/images/${image._id}.jpg`;
   }
 
   /**
