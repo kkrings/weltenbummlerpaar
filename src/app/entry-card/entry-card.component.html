@@ -3,14 +3,14 @@
 <div class="card border-0" *ngIf="diaryEntry">
   <app-image-carousel [images]="diaryEntry.images"></app-image-carousel>
   <div class="card-body">
-    <h1 class="card-title">{{diaryEntry.title}}</h1>
-    <h3 class="card-subtitle text-muted mb-2">{{diaryEntry.country}}</h3>
+    <h2 class="card-title">{{diaryEntry.title}}</h2>
+    <h4 class="card-subtitle text-muted mb-2">{{diaryEntry.country}}</h4>
     <p class="card-text">{{diaryEntry.body}}</p>
     <p class="card-text"><small class="text-muted">
-      Created on {{diaryEntry.createdAt | date}}.
+      Erstellt am {{diaryEntry.createdAt | date}}.
     </small></p>
     <button type="button" class="btn btn-primary" [routerLink]="'/'">
-      Back
+      Zurück
     </button>
   </div>
 </div>

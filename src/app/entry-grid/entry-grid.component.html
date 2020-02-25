@@ -1,10 +1,10 @@
 <div class="jumbotron">
-  <h1 class="display-4">Travel diary</h1>
-  <p class="lead">Welcome to our travel diary.</p>
+  <h1 class="display-6">Reisetagebuch</h1>
+  <p class="lead">Willkommen in unserem Reisetagebuch.</p>
 </div>
 
 <div class="container">
-  <h2>Diary entries</h2>
+  <h2>Tagebucheinträge</h2>
   <app-spinner [showSpinner]="!diaryEntries"></app-spinner>
   <div class="row row-cols-1 row-cols-sm-2" *ngIf="diaryEntries">
     <div class="col mt-4" *ngFor="let diaryEntry of diaryEntries">
@@ -14,10 +14,10 @@
           <h6 class="card-subtitle text-muted mb-2">{{diaryEntry.country}}</h6>
           <p class="card-text">{{brief(diaryEntry)}}</p>
           <p class="card-text"><small class="text-muted">
-            Created on {{diaryEntry.createdAt | date}}.
+            Erstellt am {{diaryEntry.createdAt | date}}.
           </small></p>
           <a [routerLink]="['/entries', diaryEntry._id]" class="card-link">
-            Read more
+            Erfahre mehr
           </a>
         </div>
       </div>

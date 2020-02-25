@@ -1,6 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+
+import localeDe from '@angular/common/locales/de';
+
 import { HttpClientModule } from '@angular/common/http';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
@@ -15,6 +19,9 @@ import { ImageCarouselComponent } from './image-carousel/image-carousel.componen
 
 import { EntryService } from './shared/entry.service';
 import { ImageService } from './shared/image.service';
+
+
+registerLocaleData(localeDe);
 
 
 @NgModule({
@@ -35,6 +42,7 @@ import { ImageService } from './shared/image.service';
     CarouselModule.forRoot(),
   ],
   providers: [
+    {provide: LOCALE_ID, useValue: 'de' },
     EntryService,
     ImageService,
   ],
