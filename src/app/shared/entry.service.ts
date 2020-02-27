@@ -6,8 +6,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { DiaryEntry } from './entry.model';
+import { AlertService } from './alert.service';
 import { environment } from '../../environments/environment';
 
 
@@ -23,8 +25,12 @@ export class EntryService {
    *
    * @param http
    *   Allows to communicate with the back-end server.
+   * @param alertService
+   *   Handles failed HTTP requests.
    */
-  constructor(private http: HttpClient) { }
+  constructor(
+      private http: HttpClient,
+      private alertService: AlertService) { }
 
   /**
    * Load list of all diary entries from back-end server.
@@ -34,7 +40,8 @@ export class EntryService {
    */
   getEntries(): Observable<DiaryEntry[]> {
     return this.http
-        .get<DiaryEntry[]>(`${environment.backend}/entries`);
+        .get<DiaryEntry[]>(`${environment.backend}/entries`)
+        .pipe(catchError(this.alertService.handleError));
   }
 
   /**
@@ -48,6 +55,7 @@ export class EntryService {
    */
   getEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
-        .get<DiaryEntry>(`${environment.backend}/entries/${entryId}`);
+        .get<DiaryEntry>(`${environment.backend}/entries/${entryId}`)
+        .pipe(catchError(this.alertService.handleError));
   }
 }
