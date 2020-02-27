@@ -26,6 +26,11 @@ export class EntryCardComponent implements OnInit {
   diaryEntry: DiaryEntry;
 
   /**
+   * Alert message that is shown in case of HTTP errors
+   */
+  alertMessage: string;
+
+  /**
    * Construct entry card component.
    *
    * @param route
@@ -45,8 +50,9 @@ export class EntryCardComponent implements OnInit {
         .pipe(switchMap((params: ParamMap) => {
           return this.entryService.getEntry(params.get('entryId') as string);
         }))
-        .subscribe((diaryEntry: DiaryEntry) => {
-          this.diaryEntry = diaryEntry;
-        });
+        .subscribe(
+            (diaryEntry: DiaryEntry) => this.diaryEntry = diaryEntry,
+            (error: string) => this.alertMessage = error
+        );
   }
 }

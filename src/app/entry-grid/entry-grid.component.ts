@@ -24,6 +24,11 @@ export class EntryGridComponent implements OnInit {
   diaryEntries: DiaryEntry[];
 
   /**
+   * Alert message that is shown in case of HTTP errors
+   */
+  alertMessage: string;
+
+  /**
    * Construct entry grid component.
    *
    * @param entryService
@@ -35,10 +40,9 @@ export class EntryGridComponent implements OnInit {
    * Subscribe to loaded list of diary entries when component is initialized.
    */
   ngOnInit() {
-    this.entryService.getEntries()
-        .subscribe((diaryEntries: DiaryEntry[]) => {
-          this.diaryEntries = diaryEntries;
-        });
+    this.entryService.getEntries().subscribe(
+        (diaryEntries: DiaryEntry[]) => this.diaryEntries = diaryEntries,
+        (error: string) => this.alertMessage = error);
   }
 
   /**

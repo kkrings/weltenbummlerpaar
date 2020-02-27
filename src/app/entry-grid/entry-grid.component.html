@@ -5,7 +5,8 @@
 
 <div class="container">
   <h2>Tagebucheinträge</h2>
-  <app-spinner [showSpinner]="!diaryEntries"></app-spinner>
+  <app-spinner [showSpinner]="!(diaryEntries || alertMessage)"></app-spinner>
+  <app-alert [alertMessage]="alertMessage"></app-alert>
   <div class="row row-cols-1 row-cols-sm-2" *ngIf="diaryEntries">
     <div class="col mt-4" *ngFor="let diaryEntry of diaryEntries">
       <div class="card h-100">
