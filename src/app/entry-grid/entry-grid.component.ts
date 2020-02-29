@@ -46,6 +46,27 @@ export class EntryGridComponent implements OnInit {
   }
 
   /**
+   * Specifies if diary entries are available for presentation.
+   *
+   * @returns
+   *   Boolean specifying if list of loaded diary entries is not empty.
+   */
+  hasEntries(): boolean {
+    return this.diaryEntries !== undefined && this.diaryEntries.length > 0;
+  }
+
+  /**
+   * If the list of loaded diary entries is empty, the user is informed that no
+   * diary entries have been added yet.
+   *
+   * @returns
+   *   Boolean specifying if list of loaded diary entries is empty.
+   */
+  noEntries(): boolean {
+    return this.diaryEntries !== undefined && this.diaryEntries.length === 0;
+  }
+
+  /**
    * Brief version of diary entry's body
    *
    * @param diaryEntry
