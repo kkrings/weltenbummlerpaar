@@ -40,7 +40,7 @@ export class EntryService {
    */
   getEntries(): Observable<DiaryEntry[]> {
     return this.http
-        .get<DiaryEntry[]>(`${environment.backend}/entries`)
+        .get<DiaryEntry[]>(`${environment.baseurl}/db/entries`)
         .pipe(catchError(this.alertService.handleError));
   }
 
@@ -55,7 +55,7 @@ export class EntryService {
    */
   getEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
-        .get<DiaryEntry>(`${environment.backend}/entries/${entryId}`)
+        .get<DiaryEntry>(`${environment.baseurl}/db/entries/${entryId}`)
         .pipe(catchError(this.alertService.handleError));
   }
 }

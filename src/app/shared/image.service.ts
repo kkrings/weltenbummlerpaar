@@ -26,7 +26,7 @@ export class ImageService {
    *   Image's URL
    */
   static getImageUrl(image: Image): string {
-    return `${environment.backend}/images/${image._id}.jpg`;
+    return `${environment.baseurl}/images/${image._id}.jpg`;
   }
 
   /**
