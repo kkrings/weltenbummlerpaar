@@ -12,7 +12,9 @@
       <div class="card h-100">
         <div class="card-body">
           <h4 class="card-title">{{diaryEntry.title}}</h4>
-          <h6 class="card-subtitle text-muted mb-2">{{diaryEntry.country}}</h6>
+          <h6 class="card-subtitle text-muted mb-2">
+            {{diaryEntry.locationName}}
+          </h6>
           <p class="card-text">{{brief(diaryEntry)}}</p>
           <p class="card-text"><small class="text-muted">
             Erstellt am {{diaryEntry.createdAt | date}}.

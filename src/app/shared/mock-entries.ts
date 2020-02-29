@@ -1,5 +1,14 @@
+/**
+ * Mock diary entries
+ * @packageDocumentation
+ */
+
 import { DiaryEntry } from './entry.model';
 
+
+/**
+ * List of mock diary entries for testing purposes.
+ */
 export const ENTRIES: DiaryEntry[] = [
   {
     _id: '0',
@@ -15,7 +24,7 @@ export const ENTRIES: DiaryEntry[] = [
     'egestas neque eget neque faucibus vestibulum. Interdum et malesuada ' +
     'fames ac ante ipsum primis in faucibus. Integer sit amet venenatis ' +
     'ligula. Sed sed elit dapibus, euismod sem sed, placerat est.',
-    country: 'Country name',
+    locationName: 'Location',
     images: [
       {
         _id: 'image00',
@@ -42,6 +51,7 @@ export const ENTRIES: DiaryEntry[] = [
         updatedAt: (new Date()).toISOString(),
       },
     ],
+    tags: [],
     createdAt: (new Date()).toISOString(),
     updatedAt: (new Date()).toISOString(),
   },
@@ -56,8 +66,9 @@ export const ENTRIES: DiaryEntry[] = [
     'molestie id ullamcorper pellentesque, feugiat quis sapien. ' +
     'Pellentesque eu finibus dolor. Cras hendrerit turpis neque, id porta ' +
     'lectus eleifend eu. Aliquam dictum lectus et gravida scelerisque.',
-    country: 'Country name',
+    locationName: 'Location',
     images: [],
+    tags: [],
     createdAt: (new Date()).toISOString(),
     updatedAt: (new Date()).toISOString(),
   },
@@ -70,8 +81,9 @@ export const ENTRIES: DiaryEntry[] = [
     'at aliquet augue dictum. Curabitur nec nulla et leo congue laoreet ' +
     'vitae quis nisi. Fusce nisl urna, condimentum et tincidunt venenatis, ' +
     'pulvinar non tellus. Morbi sed tempus odio.',
-    country: 'Country name',
+    locationName: 'Location',
     images: [],
+    tags: [],
     createdAt: (new Date()).toISOString(),
     updatedAt: (new Date()).toISOString(),
   },
@@ -89,8 +101,9 @@ export const ENTRIES: DiaryEntry[] = [
     'enim et pulvinar. Curabitur eros elit, aliquam id lacus quis, ' +
     'scelerisque maximus nibh. Maecenas imperdiet pharetra mauris eget ' +
     'tincidunt.',
-    country: 'Country name',
+    locationName: 'Location',
     images: [],
+    tags: [],
     createdAt: (new Date()).toISOString(),
     updatedAt: (new Date()).toISOString(),
   },

@@ -1,4 +1,10 @@
+/**
+ * Diary entry model
+ * @packageDocumentation
+ */
+
 import { Image } from './image.model';
+
 
 /**
  * Diary entry model
@@ -20,14 +26,20 @@ export interface DiaryEntry {
   body: string;
 
   /**
-   * Country name the diary entry refers to
+   * Location the diary entry refers to, e.g.:
+   * city, state, country
    */
-  country: string;
+  locationName: string;
 
   /**
    * List of image objects
    */
   images: Image[];
+
+  /**
+   * List of search tags
+   */
+  tags: string[];
 
   /**
    * Diary entry's creation date and time
