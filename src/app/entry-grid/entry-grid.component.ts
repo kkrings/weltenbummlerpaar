@@ -10,6 +10,8 @@ import { EntryService } from '../shared/entry.service';
 
 
 /**
+ * Diary entry grid component
+ *
  * Present diary entries' brief versions via Bootstrap cards on a grid.
  */
 @Component({

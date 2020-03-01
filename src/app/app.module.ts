@@ -1,3 +1,8 @@
+/**
+ * Root module
+ * @packageDocumentation
+ */
+
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, LOCALE_ID } from '@angular/core';
@@ -24,9 +29,16 @@ import { ImageService } from './shared/image.service';
 import { AlertService } from './shared/alert.service';
 
 
+// application expects german-speaking users
 registerLocaleData(localeDe);
 
 
+/**
+ * Root module
+ *
+ * Configure declarations (e.g. components), imports, and providers (e.g.
+ * services).
+ */
 @NgModule({
   declarations: [
     AppComponent,

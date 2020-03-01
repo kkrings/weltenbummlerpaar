@@ -9,7 +9,7 @@ import { throwError } from 'rxjs';
 
 
 /**
- * Service for handling errors thrown by the HTTP client.
+ * Service for handling errors thrown by the HTTP client
  */
 @Injectable({
   providedIn: 'root',

@@ -7,6 +7,8 @@ import { Component, OnInit, Input } from '@angular/core';
 
 
 /**
+ * Alert component
+ *
  * Present an alert message to the user in case of a failed HTTP request.
  */
 @Component({
@@ -16,7 +18,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class AlertComponent implements OnInit {
   /**
-   * Alert message
+   * Input alert message
    */
   @Input() alertMessage: string;
 

@@ -12,6 +12,8 @@ import { EntryService } from '../shared/entry.service';
 
 
 /**
+ * Diary entry card component
+ *
  * Present diary entry via a Bootstrap card.
  */
 @Component({
@@ -34,7 +36,7 @@ export class EntryCardComponent implements OnInit {
    * Construct entry card component.
    *
    * @param route
-   *   Diary entry's ID from will be extracted from activated route.
+   *   Diary entry's ID will be extracted from activated route.
    * @param entryService
    *   Diary entry loading service
    */

@@ -1,5 +1,10 @@
 /**
  * Image model
+ * @packageDocumentation
+ */
+
+/**
+ * Image model
  */
 export interface Image {
   /**
