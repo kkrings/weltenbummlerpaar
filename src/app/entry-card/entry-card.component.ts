@@ -54,7 +54,6 @@ export class EntryCardComponent implements OnInit {
         }))
         .subscribe(
             (diaryEntry: DiaryEntry) => this.diaryEntry = diaryEntry,
-            (error: string) => this.alertMessage = error
-        );
+            (error: string) => this.alertMessage = error);
   }
 }

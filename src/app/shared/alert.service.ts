@@ -12,7 +12,7 @@ import { throwError } from 'rxjs';
  * Service for handling errors thrown by the HTTP client
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AlertService {
   /**

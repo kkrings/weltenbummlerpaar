@@ -13,7 +13,7 @@ import { environment } from '../../environments/environment';
  * Service for loading images from back-end server
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ImageService {
   /**

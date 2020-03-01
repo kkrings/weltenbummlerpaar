@@ -17,7 +17,7 @@ import { environment } from '../../environments/environment';
  * Service for loading diary entries from back-end server
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class EntryService {
   /**
