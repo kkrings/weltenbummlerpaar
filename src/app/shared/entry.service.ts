@@ -33,14 +33,15 @@ export class EntryService {
       private alertService: AlertService) { }
 
   /**
-   * Load list of all diary entries from back-end server.
+   * Load list of all diary entries in descending order from back-end server.
    *
    * @returns
    *   Diary entries
    */
   getEntries(): Observable<DiaryEntry[]> {
     return this.http
-        .get<DiaryEntry[]>(`${environment.baseurl}/db/entries`)
+        .get<DiaryEntry[]>(
+            `${environment.baseurl}/db/entries?options[sort][createdAt]=-1`)
         .pipe(catchError(this.alertService.handleError));
   }
 
