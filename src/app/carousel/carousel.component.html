@@ -1,8 +1,10 @@
 <carousel *ngIf="images.length > 0" [interval]="false">
   <slide *ngFor="let image of images">
-    <img src="{{getImageUrl(image)}}"
-         alt="{{image.path}}"
-         class="d-block w-100">
+    <a href="{{getImageUrl(image)}}">
+      <img src="{{getImageUrl(image)}}"
+           alt="{{image.path}}"
+           class="d-block w-100">
+    </a>
     <p class="carousel-caption">{{image.description}}</p>
   </slide>
 <carousel>
