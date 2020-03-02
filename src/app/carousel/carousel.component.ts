@@ -13,11 +13,11 @@ import { ImageService } from '../shared/image.service';
  * Present diary entry's images via a Bootstrap carousel.
  */
 @Component({
-  selector: 'app-image-carousel',
-  templateUrl: './image-carousel.component.html',
-  styleUrls: ['./image-carousel.component.scss']
+  selector: 'app-carousel',
+  templateUrl: './carousel.component.html',
+  styleUrls: ['./carousel.component.scss']
 })
-export class ImageCarouselComponent implements OnInit {
+export class CarouselComponent implements OnInit {
   /**
    * List of images to show in carousel
    */

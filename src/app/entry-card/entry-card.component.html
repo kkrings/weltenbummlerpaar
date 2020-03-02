@@ -4,7 +4,7 @@
 </div>
 
 <div class="card border-0" *ngIf="diaryEntry">
-  <app-image-carousel [images]="diaryEntry.images"></app-image-carousel>
+  <app-carousel [images]="diaryEntry.images"></app-carousel>
   <div class="card-body">
     <h2 class="card-title">{{diaryEntry.title}}</h2>
     <h4 class="card-subtitle text-muted mb-2">{{diaryEntry.locationName}}</h4>

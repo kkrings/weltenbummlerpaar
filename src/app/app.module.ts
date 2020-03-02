@@ -22,7 +22,7 @@ import { EntryGridComponent } from './entry-grid/entry-grid.component';
 import { EntryCardComponent } from './entry-card/entry-card.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { AlertComponent } from './alert/alert.component';
-import { ImageCarouselComponent } from './image-carousel/image-carousel.component';
+import { CarouselComponent } from './carousel/carousel.component';
 
 import { EntryService } from './shared/entry.service';
 import { ImageService } from './shared/image.service';
@@ -47,7 +47,7 @@ registerLocaleData(localeDe);
     EntryCardComponent,
     SpinnerComponent,
     AlertComponent,
-    ImageCarouselComponent,
+    CarouselComponent,
   ],
   imports: [
     BrowserModule,
