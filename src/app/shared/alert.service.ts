@@ -33,11 +33,27 @@ export class AlertService {
    *   User-friendly error message
    */
   handleError(error: HttpErrorResponse) {
-    console.error(error);
+    // will hold user-friendly error message
+    let reason = '';
+
+    if (error.error instanceof ErrorEvent) {
+      // client-side error
+      console.error(
+          'HTTP request failed due to client-side error: ' +
+          `message: ${error.error.message}`);
+
+      reason = 'Ich kann nicht mit dem Backendserver reden.';
+    } else {
+      // server-side error
+      console.error(
+          'HTTP request failed due to server-side error: ' +
+          `status: ${error.status}, body: ${error.error}`);
+
+      reason = 'Der Backendserver mag nicht mit mir reden.';
+    }
 
     return throwError(
-        'Ups, da ist wohl etwas schief gegangen. ' +
-        'Der Backendserver mag nicht mit mir reden. ' +
-        'Versuche es später noch einmal.');
+        `Ups, da ist wohl etwas schief gegangen: ${reason}` +
+        ' Versuche es später noch einmal.');
   }
 }
