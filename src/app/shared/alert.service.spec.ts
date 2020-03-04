@@ -10,7 +10,9 @@ import { AlertService } from './alert.service';
 
 
 describe('AlertService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [AlertService]
+  }));
 
   it('#handleError should return user-friendly client-side error', () => {
     const service: AlertService = TestBed.get(AlertService);
