@@ -81,18 +81,36 @@ export class EntryGridComponent implements OnInit {
     // maximum number of characters
     const briefLength = 150;
 
-    let body = '';
-    if (diaryEntry.body.length > briefLength) {
+    let body = this.firstParagraph(diaryEntry.body);
+    if (body.length > briefLength) {
       // truncate body after last word and append '...' such that brief body
       // has less than briefLength characters
       const dots = ' ...';
-      body = diaryEntry.body.substring(0, briefLength - dots.length + 1);
+      body = body.substring(0, briefLength - dots.length + 1);
       const end = body.lastIndexOf(' ');
       body = body.substring(0, end) + dots;
-    } else {
-      body = diaryEntry.body;
     }
 
     return body;
+  }
+
+  /**
+   * Extract first paragraph from diary entry's body.
+   *
+   * @param body
+   *   Diary entry's body
+   *
+   * @returns
+   *   Diary entry's first paragraph
+   */
+  private firstParagraph(body: string) {
+    let paragraph = body;
+
+    const match = /<p>(?<paragraph>.*)<\/p>/.exec(body);
+    if (match) {
+      paragraph = match.groups.paragraph;
+    }
+
+    return paragraph;
   }
 }
