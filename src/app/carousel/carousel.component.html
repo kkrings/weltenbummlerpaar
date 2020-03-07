@@ -2,9 +2,9 @@
   <slide *ngFor="let image of images">
     <a href="{{getImageUrl(image)}}">
       <img src="{{getImageUrl(image)}}"
-           alt="{{image.path}}"
-           class="d-block w-100">
+           alt="{{image._id}}.jpg"
+           class="img-fluid">
     </a>
     <p class="carousel-caption">{{image.description}}</p>
   </slide>
-<carousel>
+</carousel>
