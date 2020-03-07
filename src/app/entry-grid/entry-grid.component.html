@@ -1,32 +1,16 @@
-<img class="d-block w-100" src="/assets/jumbotron.jpg" alt="jumbotron">
-
-<div class="jumbotron">
-  <h1 class="display-5">Reisetagebuch</h1>
-  <p class="lead">Willkommen in unserem Reisetagebuch.</p>
-  <p>Wir sind das Weltenbummlerpaar Susanna und Kai. Danke, dass ihr
-  vorbeischaut und euch für unsere Reiseabenteuer interessiert. Wir wünschen
-  euch viel Vergnügen beim Lesen.</p>
+<div class="position-relative mb-4">
+  <img class="img-fluid" src="/assets/jumbotron.jpg" alt="jumbotron">
+  <div class="position-absolute text-center text-light">
+    <h3 class="display-3 d-none d-md-block">Weltenbummlerpaar</h3>
+    <h3 class="d-md-none">Weltenbummlerpaar</h3>
+  </div>
 </div>
 
-<!--
 <div class="container">
-  <h4>Warum kein Reiseblog?</h4>
-  <p class="text-muted">Obwohl diese Seite sehr ähnlich zu einem Reiseblog
-  aufgebaut ist, so werdet ihr hier weder Reisetipps noch Empfehlungen für
-  Unterkünfte, Restaurants, oder ähnliches finden. Wir haben uns bewusst für
-  den Begriff <em>Reisetagebuch</em> entschieden, da wir hier unsere
-  persönlichen Reiseeindrücke festhalten möchten. Diese wollen wir aber
-  natürlich auch mit Familie und Freunden teilen.<p>
-  <hr class="my-4">
-</div>
--->
-
-<div class="container">
-  <h2>Tagebucheinträge</h2>
   <app-spinner [showSpinner]="!(diaryEntries || alertMessage)"></app-spinner>
   <app-alert [alertMessage]="alertMessage"></app-alert>
   <div class="row row-cols-1 row-cols-sm-2" *ngIf="hasEntries()">
-    <div class="col mt-4" *ngFor="let diaryEntry of diaryEntries">
+    <div class="col mb-4" *ngFor="let diaryEntry of diaryEntries">
       <div class="card h-100">
         <div class="card-body">
           <h4 class="card-title">{{diaryEntry.title}}</h4>
