@@ -1,4 +1,4 @@
-<div class="position-relative mb-4">
+<div class="position-relative">
   <img class="img-fluid" src="/assets/jumbotron.jpg" alt="jumbotron">
   <div class="position-absolute text-center text-light">
     <h3 class="display-3 d-none d-md-block">Weltenbummlerpaar</h3>
@@ -6,7 +6,7 @@
   </div>
 </div>
 
-<div class="container">
+<div class="container mt-4">
   <app-spinner [showSpinner]="!(diaryEntries || alertMessage)"></app-spinner>
   <app-alert [alertMessage]="alertMessage"></app-alert>
   <div class="row row-cols-1 row-cols-sm-2" *ngIf="hasEntries()">
