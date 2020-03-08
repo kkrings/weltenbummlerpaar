@@ -66,6 +66,9 @@ registerLocaleData(localeDe);
     ImageService,
     AlertService,
   ],
-  bootstrap: [AppComponent]
+  entryComponents: [
+    EntryModalComponent,
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

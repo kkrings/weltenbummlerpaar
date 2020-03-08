@@ -15,7 +15,7 @@ import { DiaryEntry } from '../shared/entry.model';
  * Present diary entry in a Bootstrap modal.
  */
 @Component({
-  selector: 'app-entry-model',
+  selector: 'app-entry-modal',
   templateUrl: './entry-modal.component.html',
   styleUrls: ['./entry-modal.component.scss']
 })

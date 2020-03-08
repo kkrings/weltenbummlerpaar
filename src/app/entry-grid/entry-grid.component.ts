@@ -4,7 +4,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { DiaryEntry } from '../shared/entry.model';
 import { EntryService } from '../shared/entry.service';
@@ -31,6 +31,8 @@ export class EntryGridComponent implements OnInit {
    * Alert message that is shown in case of HTTP errors
    */
   alertMessage: string;
+
+  modal: BsModalRef;
 
   /**
    * Construct entry grid component.
@@ -121,10 +123,14 @@ export class EntryGridComponent implements OnInit {
   /**
    * Open modal that shows the diary entry's full body.
    *
-   * @param diaryEntry
+   * @param modalDiaryEntry
    *   Diary entry
    */
-  openModal(diaryEntry: DiaryEntry) {
-    this.modalService.show(EntryModalComponent);
+  openModal(modalDiaryEntry: DiaryEntry) {
+    this.modal = this.modalService.show(EntryModalComponent, {
+      initialState: {
+        diaryEntry: modalDiaryEntry,
+      },
+    });
   }
 }

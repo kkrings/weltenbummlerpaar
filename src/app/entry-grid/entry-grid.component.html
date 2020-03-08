@@ -12,6 +12,10 @@
   <div class="row row-cols-1 row-cols-sm-2" *ngIf="hasEntries()">
     <div class="col mb-4" *ngFor="let diaryEntry of diaryEntries">
       <div class="card h-100">
+        <img *ngIf="diaryEntry.images.length > 0"
+             src="http://localhost:3000/images/{{diaryEntry.images[0]._id}}.jpg"
+             alt="{{diaryEntry.images[0]._id}}.jpg"
+             class="card-img-top">
         <div class="card-body">
           <h4 class="card-title">{{diaryEntry.title}}</h4>
           <h6 class="card-subtitle text-muted mb-2">
@@ -21,9 +25,11 @@
           <p class="card-text"><small class="text-muted">
             Erstellt am {{diaryEntry.createdAt | date}}.
           </small></p>
-          <a [routerLink]="['/entries', diaryEntry._id]" class="card-link">
-            Erfahre mehr
-          </a>
+          <button type="button"
+                  class="btn btn-primary"
+                  (click)="openModal(diaryEntry)">
+            <span>Erfahre mehr</span>
+          </button>
         </div>
       </div>
     </div>
