@@ -11,18 +11,19 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 
 import { HttpClientModule } from '@angular/common/http';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { EntryGridComponent } from './entry-grid/entry-grid.component';
-import { EntryCardComponent } from './entry-card/entry-card.component';
+import { EntryModalComponent } from './entry-modal/entry-modal.component';
+import { CarouselComponent } from './carousel/carousel.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { AlertComponent } from './alert/alert.component';
-import { CarouselComponent } from './carousel/carousel.component';
 
 import { EntryService } from './shared/entry.service';
 import { ImageService } from './shared/image.service';
@@ -44,19 +45,20 @@ registerLocaleData(localeDe);
     AppComponent,
     NavbarComponent,
     EntryGridComponent,
-    EntryCardComponent,
+    EntryModalComponent,
+    CarouselComponent,
     SpinnerComponent,
     AlertComponent,
-    CarouselComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
-    CollapseModule.forRoot(),
-    CarouselModule.forRoot(),
     AlertModule.forRoot(),
+    CarouselModule.forRoot(),
+    CollapseModule.forRoot(),
+    ModalModule.forRoot(),
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'de' },

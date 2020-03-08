@@ -4,9 +4,11 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 import { DiaryEntry } from '../shared/entry.model';
 import { EntryService } from '../shared/entry.service';
+import { EntryModalComponent } from '../entry-modal/entry-modal.component';
 
 
 /**
@@ -36,7 +38,9 @@ export class EntryGridComponent implements OnInit {
    * @param entryService
    *   Diary entry loading service
    */
-  constructor(private entryService: EntryService) { }
+  constructor(
+      private entryService: EntryService,
+      private modalService: BsModalService) { }
 
   /**
    * Subscribe to loaded list of diary entries when component is initialized.
@@ -112,5 +116,15 @@ export class EntryGridComponent implements OnInit {
     }
 
     return paragraph;
+  }
+
+  /**
+   * Open modal that shows the diary entry's full body.
+   *
+   * @param diaryEntry
+   *   Diary entry
+   */
+  openModal(diaryEntry: DiaryEntry) {
+    this.modalService.show(EntryModalComponent);
   }
 }

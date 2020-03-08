@@ -1,59 +1,40 @@
 /**
- * Diary entry card component
+ * Diary entry modal component
  * @packageDocumentation
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 import { DiaryEntry } from '../shared/entry.model';
-import { EntryService } from '../shared/entry.service';
 
 
 /**
- * Diary entry card component
+ * Diary entry modal component
  *
- * Present diary entry via a Bootstrap card.
+ * Present diary entry in a Bootstrap modal.
  */
 @Component({
-  selector: 'app-entry-card',
-  templateUrl: './entry-card.component.html',
-  styleUrls: ['./entry-card.component.scss']
+  selector: 'app-entry-model',
+  templateUrl: './entry-modal.component.html',
+  styleUrls: ['./entry-modal.component.scss']
 })
-export class EntryCardComponent implements OnInit {
+export class EntryModalComponent implements OnInit {
   /**
-   * Loaded diary entry
+   * Diary entry
    */
   diaryEntry: DiaryEntry;
 
   /**
-   * Alert message that is shown in case of HTTP errors
-   */
-  alertMessage: string;
-
-  /**
    * Construct entry card component.
    *
-   * @param route
-   *   Diary entry's ID will be extracted from activated route.
-   * @param entryService
-   *   Diary entry loading service
+   * @param modal
+   *   Holds a reference to the modal.
    */
-  constructor(
-      private route: ActivatedRoute,
-      private entryService: EntryService) { }
+  constructor(public modal: BsModalRef) { }
 
   /**
-   * Subscribe to loaded diary entry when component is initialized.
+   * Initialize component.
    */
-  ngOnInit() {
-    this.route.paramMap
-        .pipe(switchMap((params: ParamMap) => {
-          return this.entryService.getEntry(params.get('entryId') as string);
-        }))
-        .subscribe(
-            (diaryEntry: DiaryEntry) => this.diaryEntry = diaryEntry,
-            (error: string) => this.alertMessage = error);
-  }
+  ngOnInit() { }
 }

@@ -1,17 +1,16 @@
-<div class="container">
-  <app-spinner [showSpinner]="!(diaryEntry || alertMessage)"></app-spinner>
-  <app-alert [alertMessage]="alertMessage"></app-alert>
+<div class="modal-header">
+  <h2 class="modal-title">{{diaryEntry.title}}</h2>
+  <h4 class="modal-title">{{diaryEntry.locationName}}</h4>
+  <button type="button" class="close" (click)="modal.hide()">
+    <span>&times;</span>
+  </button>
 </div>
-<div *ngIf="diaryEntry">
-  <app-carousel [images]="diaryEntry.images"></app-carousel>
-  <div class="container my-4">
-    <h2>{{diaryEntry.title}}</h2>
-    <h4 class="text-muted">{{diaryEntry.locationName}}</h4>
-    <div [innerHtml]="diaryEntry.body"></div>
-    <p><small class="text-muted">Erstellt am {{diaryEntry.createdAt | date}}.
-    </small></p>
-    <button type="button" class="btn btn-primary" [routerLink]="'/'">
-      Zurück
-    </button>
-  </div>
+<div class="model-body">
+  <div [innerHtml]="diaryEntry.body"></div>
+  <p><small>Erstellt am {{diaryEntry.createdAt | date}}.</small></p>
+</div>
+<div>
+  <button type="button" class="btn btn-default" (click)="modal.hide()">
+    <span>Schließen</span>
+  </button>
 </div>
