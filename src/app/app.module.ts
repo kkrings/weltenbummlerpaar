@@ -17,7 +17,11 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { LoginModalComponent } from './login-modal/login-modal.component';
+
+import {
+  NavLoginModalComponent
+} from './nav-login-modal/nav-login-modal.component';
+
 import { JumbotronComponent } from './jumbotron/jumbotron.component';
 import { EntryGridComponent } from './entry-grid/entry-grid.component';
 import { EntryModalComponent } from './entry-modal/entry-modal.component';
@@ -48,7 +52,7 @@ registerLocaleData(localeDe);
   declarations: [
     AppComponent,
     NavbarComponent,
-    LoginModalComponent,
+    NavLoginModalComponent,
     JumbotronComponent,
     EntryGridComponent,
     EntryModalComponent,
@@ -71,8 +75,8 @@ registerLocaleData(localeDe);
     AlertService,
   ],
   entryComponents: [
+    NavLoginModalComponent,
     EntryModalComponent,
-    LoginModalComponent,
   ],
   bootstrap: [AppComponent],
 })

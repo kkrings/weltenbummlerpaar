@@ -11,11 +11,11 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
  * Admin login modal component
  */
 @Component({
-  selector: 'app-login-modal',
-  templateUrl: './login-modal.component.html',
-  styleUrls: ['./login-modal.component.scss']
+  selector: 'app-nav-login-modal',
+  templateUrl: './nav-login-modal.component.html',
+  styleUrls: ['./nav-login-modal.component.scss']
 })
-export class LoginModalComponent implements OnInit {
+export class NavLoginModalComponent implements OnInit {
   /**
    * Construct admin login modal component.
    */

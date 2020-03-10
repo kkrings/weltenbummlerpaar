@@ -6,7 +6,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
-import { LoginModalComponent } from '../login-modal/login-modal.component';
+import {
+  NavLoginModalComponent
+} from '../nav-login-modal/nav-login-modal.component';
 
 
 /**
@@ -52,7 +54,7 @@ export class NavbarComponent implements OnInit {
    * Open the admin login modal.
    */
   openLoginModal() {
-    this.loginModal = this.modalService.show(LoginModalComponent);
+    this.loginModal = this.modalService.show(NavLoginModalComponent);
     this.isCollapsed = true;
   }
 }
