@@ -42,9 +42,7 @@ export class ImgSliderComponent implements OnInit {
    * Initialize image slider component.
    */
   ngOnInit() {
-    if (this.imageList.length > 0) {
-      this.activeImage = this.imageList[this.activeIndex];
-    }
+    this.activeImage = this.imageList[this.activeIndex];
   }
 
   /**
@@ -61,34 +59,22 @@ export class ImgSliderComponent implements OnInit {
   }
 
   /**
-   * Move on to the next image. Wrap around the last image.
+   * Move on to next image; wrap around last image.
    */
   nextImage() {
-    // do nothing if list of images is empty
-    if (this.imageList.length < 1) {
-      return;
-    }
-
-    // increment index; wrap around last image
-    this.activeIndex = ((this.activeIndex < this.imageList.length) ?
-        this.activeIndex : 0) + 1;
-
+    const index = this.activeIndex + 1;
+    // wrap around last image
+    this.activeIndex = (index < this.imageList.length) ? index : 0;
     this.activeImage = this.imageList[this.activeIndex];
   }
 
   /**
-   * Go back to the previous image. Wrap around the first image.
+   * Go back to previous image; wrap around first image.
    */
   prevImage() {
-    // do nothing if list of images is empty
-    if (this.imageList.length < 1) {
-      return;
-    }
-
-    // decrement index; wrap around first image
-    this.activeIndex = ((this.activeIndex > 0) ?
-        this.activeIndex : this.imageList.length) - 1;
-
+    const index = this.activeIndex - 1;
+    // wrap around first image
+    this.activeIndex = (index < 0) ? this.imageList.length - 1 : index;
     this.activeImage = this.imageList[this.activeIndex];
   }
 }
