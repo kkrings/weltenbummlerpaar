@@ -1,18 +1,17 @@
-<button type="button" class="btn btn-primary" (click)="prevImage()">
-  <span>Zurück</span>
-</button>
-
-<button type="button" class="btn btn-primary" (click)="nextImage()">
-  <span>Vor</span>
-</button>
-
+<div class="d-flex align-items-center mb-2">
+  <button type="button" class="btn btn-primary mr-2" (click)="prevImage()">
+    <span>Zurück</span>
+  </button>
+  <button type="button" class="btn btn-primary" (click)="nextImage()">
+    <span>Vor</span>
+  </button>
+  <div class="ml-auto">{{activeIndex + 1}}/{{imageList.length}}</div>
+</div>
 <figure class="figure">
   <a href="{{imageUrl(activeImage)}}">
     <img src="{{imageUrl(activeImage)}}"
-         alt="{{image._id}}.jpg"
-         class="figure-img img-fluid">
+         alt="{{activeImage._id}}.jpg"
+         class="figure-img img-fluid rounded">
   </a>
-  <figcaption class="figure-caption">
-    <span class="text-center">{{image.description}}</span>
-  </figcaption>
+  <figcaption class="figure-caption">{{activeImage.description}}</figcaption>
 </figure>
