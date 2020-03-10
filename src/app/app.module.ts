@@ -12,7 +12,6 @@ import localeDe from '@angular/common/locales/de';
 
 import { HttpClientModule } from '@angular/common/http';
 import { AlertModule } from 'ngx-bootstrap/alert';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
@@ -21,7 +20,7 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { EntryGridComponent } from './entry-grid/entry-grid.component';
 import { EntryModalComponent } from './entry-modal/entry-modal.component';
-import { CarouselComponent } from './carousel/carousel.component';
+import { ImgSliderComponent } from './img-slider/img-slider.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { AlertComponent } from './alert/alert.component';
 
@@ -46,7 +45,7 @@ registerLocaleData(localeDe);
     NavbarComponent,
     EntryGridComponent,
     EntryModalComponent,
-    CarouselComponent,
+    ImgSliderComponent,
     SpinnerComponent,
     AlertComponent,
   ],
@@ -56,7 +55,6 @@ registerLocaleData(localeDe);
     HttpClientModule,
     AppRoutingModule,
     AlertModule.forRoot(),
-    CarouselModule.forRoot(),
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
   ],

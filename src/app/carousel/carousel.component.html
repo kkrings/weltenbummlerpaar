@@ -1,10 +1,18 @@
-<carousel *ngIf="images.length > 0" [interval]="false">
-  <slide *ngFor="let image of images">
-    <a href="{{getImageUrl(image)}}">
-      <img src="{{getImageUrl(image)}}"
-           alt="{{image._id}}.jpg"
-           class="img-fluid">
-    </a>
-    <p class="carousel-caption">{{image.description}}</p>
-  </slide>
-</carousel>
+<button type="button" class="btn btn-primary" (click)="prevImage()">
+  <span>Zurück</span>
+</button>
+
+<button type="button" class="btn btn-primary" (click)="nextImage()">
+  <span>Vor</span>
+</button>
+
+<figure class="figure">
+  <a href="{{imageUrl(activeImage)}}">
+    <img src="{{imageUrl(activeImage)}}"
+         alt="{{image._id}}.jpg"
+         class="figure-img img-fluid">
+  </a>
+  <figcaption class="figure-caption">
+    <span class="text-center">{{image.description}}</span>
+  </figcaption>
+</figure>
