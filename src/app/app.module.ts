@@ -17,6 +17,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { LoginModalComponent } from './login-modal/login-modal.component';
 import { EntryGridComponent } from './entry-grid/entry-grid.component';
 import { EntryModalComponent } from './entry-modal/entry-modal.component';
 import { ImgSliderComponent } from './img-slider/img-slider.component';
@@ -42,6 +43,7 @@ registerLocaleData(localeDe);
   declarations: [
     AppComponent,
     NavbarComponent,
+    LoginModalComponent,
     EntryGridComponent,
     EntryModalComponent,
     ImgSliderComponent,
@@ -64,6 +66,7 @@ registerLocaleData(localeDe);
   ],
   entryComponents: [
     EntryModalComponent,
+    LoginModalComponent,
   ],
   bootstrap: [AppComponent],
 })

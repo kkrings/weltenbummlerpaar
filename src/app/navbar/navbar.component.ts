@@ -4,6 +4,9 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+
+import { LoginModalComponent } from '../login-modal/login-modal.component';
 
 
 /**
@@ -21,20 +24,35 @@ export class NavbarComponent implements OnInit {
   isCollapsed = true;
 
   /**
-   * Construct navigation bar component.
+   * Holds reference to login modal.
    */
-  constructor() { }
+  loginModal: BsModalRef;
+
+  /**
+   * Construct navigation bar component.
+   *
+   * @param modalService
+   *   Service for showing the admin login modal
+   */
+  constructor(private modalService: BsModalService) { }
 
   /**
    * Initialize navigation bar component.
    */
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   /**
    * Uncollapse/collapse navigation bar's menu.
    */
   toggle() {
     this.isCollapsed = !this.isCollapsed;
+  }
+
+  /**
+   * Open the admin login modal.
+   */
+  openLoginModal() {
+    this.loginModal = this.modalService.show(LoginModalComponent);
+    this.isCollapsed = true;
   }
 }
