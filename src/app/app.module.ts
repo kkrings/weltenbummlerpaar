@@ -21,7 +21,11 @@ import { LoginModalComponent } from './login-modal/login-modal.component';
 import { JumbotronComponent } from './jumbotron/jumbotron.component';
 import { EntryGridComponent } from './entry-grid/entry-grid.component';
 import { EntryModalComponent } from './entry-modal/entry-modal.component';
-import { ImgSliderComponent } from './img-slider/img-slider.component';
+
+import {
+  EntryImgSliderComponent
+} from './entry-img-slider/entry-img-slider.component';
+
 import { SpinnerComponent } from './spinner/spinner.component';
 import { AlertComponent } from './alert/alert.component';
 
@@ -48,7 +52,7 @@ registerLocaleData(localeDe);
     JumbotronComponent,
     EntryGridComponent,
     EntryModalComponent,
-    ImgSliderComponent,
+    EntryImgSliderComponent,
     SpinnerComponent,
     AlertComponent,
   ],

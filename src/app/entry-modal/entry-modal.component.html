@@ -6,7 +6,8 @@
 </div>
 <div class="modal-body">
   <div *ngIf="diaryEntry.images.length > 0">
-    <app-img-slider [imageList]="diaryEntry.images"></app-img-slider>
+    <app-entry-img-slider [imageList]="diaryEntry.images">
+    </app-entry-img-slider>
   </div>
   <h6 class="beach-subtitle">{{diaryEntry.locationName}}</h6>
   <div [innerHtml]="diaryEntry.body"></div>
