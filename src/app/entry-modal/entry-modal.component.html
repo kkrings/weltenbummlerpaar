@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title">{{diaryEntry.title}}</h4>
+  <h4 class="modal-title beach-title">{{diaryEntry.title}}</h4>
   <button type="button" class="close" (click)="modal.hide()">
     <span>&times;</span>
   </button>
@@ -8,13 +8,15 @@
   <div *ngIf="diaryEntry.images.length > 0">
     <app-img-slider [imageList]="diaryEntry.images"></app-img-slider>
   </div>
-  <h6 class="text-muted">{{diaryEntry.locationName}}</h6>
+  <h6 class="beach-subtitle">{{diaryEntry.locationName}}</h6>
   <div [innerHtml]="diaryEntry.body"></div>
   <p><small class="text-muted">Erstellt am {{diaryEntry.createdAt | date}}.
   </small></p>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="modal.hide()">
+  <button type="button"
+          class="btn rounded-pill beach-button"
+          (click)="modal.hide()">
     <span>Schließen</span>
   </button>
 </div>

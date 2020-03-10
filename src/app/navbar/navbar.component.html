@@ -1,21 +1,13 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand h3">
-    <img alt="Weltenbummlerpaar"
-         src="/assets/logo.svg"
-         width="150px"
-         class="d-none d-sm-block">
-    <img alt="Weltenbummlerpaar"
-         src="/assets/logo.svg"
-         width="100px"
-         class="d-sm-none">
-  </a>
-  <button class="navbar-toggler" type="button" (click)="toggle()">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<nav class="navbar navbar-expand-md navbar-light">
+  <div class="ml-auto">
+    <button class="navbar-toggler" type="button" (click)="toggle()">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
   <div class="collapse navbar-collapse"
        [collapse]="isCollapsed"
        [isAnimated]="true">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <a class="nav-link" (click)="openLoginModal()">Login</a>
       </li>

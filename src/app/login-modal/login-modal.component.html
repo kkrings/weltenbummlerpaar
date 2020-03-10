@@ -1,6 +1,6 @@
 <form class="form">
   <div class="modal-header">
-    <h4 class="modal-title">Administrator-Login</h4>
+    <h4 class="modal-title beach-title">Administrator-Login</h4>
     <button type="button" class="close" (click)="closeModal()">
       <span>&times;</span>
     </button>
@@ -22,11 +22,13 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="closeModal()">
-      Abbruch
+    <button type="button"
+            class="btn btn-secondary rounded-pill"
+            (click)="closeModal()">
+      <span>Abbruch</span>
     </button>
-    <button type="submit" class="btn btn-primary">
-      Login
+    <button type="submit" class="btn rounded-pill beach-button">
+      <span>Login</span>
     </button>
   </div>
 </form>

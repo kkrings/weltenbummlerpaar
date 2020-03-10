@@ -1,12 +1,4 @@
-<div class="position-relative">
-  <img class="img-fluid" src="/assets/jumbotron.jpg" alt="jumbotron">
-  <div class="position-absolute text-center text-light">
-    <h3 class="display-3 d-none d-md-block">Weltenbummlerpaar</h3>
-    <h3 class="d-md-none">Weltenbummlerpaar</h3>
-  </div>
-</div>
-
-<div class="container mt-4">
+<div class="container">
   <app-spinner [showSpinner]="!(diaryEntries || alertMessage)"></app-spinner>
   <app-alert [alertMessage]="alertMessage"></app-alert>
   <div class="row row-cols-1 row-cols-sm-2" *ngIf="hasEntries()">
@@ -17,8 +9,8 @@
              alt="{{diaryEntry.images[0]._id}}.jpg"
              class="card-img-top">
         <div class="card-body">
-          <h4 class="card-title">{{diaryEntry.title}}</h4>
-          <h6 class="card-subtitle text-muted mb-2">
+          <h4 class="card-title beach-title">{{diaryEntry.title}}</h4>
+          <h6 class="card-subtitle beach-subtitle mb-2">
             {{diaryEntry.locationName}}
           </h6>
           <p class="card-text">{{brief(diaryEntry)}}</p>
@@ -26,7 +18,7 @@
             Erstellt am {{diaryEntry.createdAt | date}}.
           </small></p>
           <button type="button"
-                  class="btn btn-primary"
+                  class="btn rounded-pill beach-button"
                   (click)="openModal(diaryEntry)">
             <span>Erfahre mehr</span>
           </button>
