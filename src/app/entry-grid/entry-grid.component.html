@@ -1,6 +1,6 @@
 <div class="container">
   <app-spinner [showSpinner]="!(diaryEntries || alertMessage)"></app-spinner>
-  <app-alert [alertMessage]="alertMessage"></app-alert>
+  <app-http-alert [alertMessage]="alertMessage"></app-http-alert>
   <div class="row row-cols-1 row-cols-sm-2" *ngIf="hasEntries()">
     <div class="col mb-4" *ngFor="let diaryEntry of diaryEntries">
       <div class="card h-100">

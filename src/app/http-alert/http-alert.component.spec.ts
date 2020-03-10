@@ -1,17 +1,17 @@
 /**
- * Unit tests for alert component
+ * Unit tests for http-alert.component
  * @packageDocumentation
  */
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AlertModule } from 'ngx-bootstrap/alert';
 
-import { AlertComponent } from './alert.component';
+import { HttpAlertComponent } from './http-alert.component';
 
 
-describe('AlertComponent', () => {
-  let component: AlertComponent;
-  let fixture: ComponentFixture<AlertComponent>;
+describe('HttpAlertComponent', () => {
+  let component: HttpAlertComponent;
+  let fixture: ComponentFixture<HttpAlertComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -19,13 +19,13 @@ describe('AlertComponent', () => {
         AlertModule.forRoot()
       ],
       declarations: [
-        AlertComponent
+        HttpAlertComponent
       ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AlertComponent);
+    fixture = TestBed.createComponent(HttpAlertComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

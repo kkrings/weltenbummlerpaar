@@ -12,11 +12,11 @@ import { Component, OnInit, Input } from '@angular/core';
  * Present an alert message to the user in case of a failed HTTP request.
  */
 @Component({
-  selector: 'app-alert',
-  templateUrl: './alert.component.html',
-  styleUrls: ['./alert.component.scss']
+  selector: 'app-http-alert',
+  templateUrl: './http-alert.component.html',
+  styleUrls: ['./http-alert.component.scss']
 })
-export class AlertComponent implements OnInit {
+export class HttpAlertComponent implements OnInit {
   /**
    * Input alert message
    */
