@@ -30,7 +30,7 @@ import {
   EntryImgSliderComponent
 } from './entry-img-slider/entry-img-slider.component';
 
-import { SpinnerComponent } from './spinner/spinner.component';
+import { HttpSpinnerComponent } from './http-spinner/http-spinner.component';
 import { HttpAlertComponent } from './http-alert/http-alert.component';
 
 import { EntryService } from './shared/entry.service';
@@ -57,7 +57,7 @@ registerLocaleData(localeDe);
     EntryGridComponent,
     EntryModalComponent,
     EntryImgSliderComponent,
-    SpinnerComponent,
+    HttpSpinnerComponent,
     HttpAlertComponent,
   ],
   imports: [

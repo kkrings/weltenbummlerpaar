@@ -6,23 +6,23 @@
 import { async, ComponentFixture, TestBed, } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { SpinnerComponent } from './spinner.component';
+import { HttpSpinnerComponent } from './http-spinner.component';
 
 
-describe('SpinnerComponent', () => {
-  let component: SpinnerComponent;
-  let fixture: ComponentFixture<SpinnerComponent>;
+describe('HttpSpinnerComponent', () => {
+  let component: HttpSpinnerComponent;
+  let fixture: ComponentFixture<HttpSpinnerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        SpinnerComponent
+        HttpSpinnerComponent
       ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SpinnerComponent);
+    fixture = TestBed.createComponent(HttpSpinnerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -12,11 +12,11 @@ import { Component, OnInit, Input } from '@angular/core';
  * Show a loading spinner when retrieving data from the back-end server.
  */
 @Component({
-  selector: 'app-spinner',
-  templateUrl: './spinner.component.html',
-  styleUrls: ['./spinner.component.scss']
+  selector: 'app-http-spinner',
+  templateUrl: './http-spinner.component.html',
+  styleUrls: ['./http-spinner.component.scss']
 })
-export class SpinnerComponent implements OnInit {
+export class HttpSpinnerComponent implements OnInit {
   /**
    * Controls if loading spinner is shown.
    */
