@@ -5,6 +5,9 @@
   </button>
 </div>
 <div class="modal-body">
+  <div *ngIf="diaryEntry.images.length > 0">
+    <app-img-slider [imageList]="diaryEntry.images"></app-img-slider>
+  </div>
   <h6 class="text-muted">{{diaryEntry.locationName}}</h6>
   <div [innerHtml]="diaryEntry.body"></div>
   <p><small class="text-muted">Erstellt am {{diaryEntry.createdAt | date}}.
