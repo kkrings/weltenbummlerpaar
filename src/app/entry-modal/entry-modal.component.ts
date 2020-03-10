@@ -26,7 +26,7 @@ export class EntryModalComponent implements OnInit {
   diaryEntry: DiaryEntry;
 
   /**
-   * Construct entry card component.
+   * Construct diary entry model component.
    *
    * @param modal
    *   Holds a reference to the modal.
