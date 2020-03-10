@@ -15,7 +15,6 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { EntryGridComponent } from './entry-grid/entry-grid.component';
@@ -53,7 +52,6 @@ registerLocaleData(localeDe);
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    AppRoutingModule,
     AlertModule.forRoot(),
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
