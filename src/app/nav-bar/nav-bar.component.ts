@@ -15,11 +15,11 @@ import {
  * Navigation bar component
  */
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  selector: 'app-nav-bar',
+  templateUrl: './nav-bar.component.html',
+  styleUrls: ['./nav-bar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavBarComponent implements OnInit {
   /**
    * Specifies if navigation bar's menu is collapsed.
    */

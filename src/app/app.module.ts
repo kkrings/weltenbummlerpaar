@@ -16,7 +16,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 import {
   NavLoginModalComponent
@@ -51,7 +51,7 @@ registerLocaleData(localeDe);
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
+    NavBarComponent,
     NavLoginModalComponent,
     JumbotronComponent,
     EntryGridComponent,
