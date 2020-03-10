@@ -1,15 +1,17 @@
 <div class="d-flex align-items-center mb-2">
   <button type="button"
-          class="btn beach-button rounded-pill mr-2"
+          class="btn btn-sm beach-button rounded-pill mr-2"
           (click)="prevImage()">
     <span>Zurück</span>
   </button>
   <button type="button"
-          class="btn beach-button rounded-pill"
+          class="btn btn-sm beach-button rounded-pill"
           (click)="nextImage()">
     <span>Vor</span>
   </button>
-  <div class="ml-auto">{{activeIndex + 1}}/{{imageList.length}}</div>
+  <div class="ml-auto">
+    <small class="text-muted">{{activeIndex + 1}}/{{imageList.length}}</small>
+  </div>
 </div>
 <figure class="figure">
   <a href="{{imageUrl(activeImage)}}">
