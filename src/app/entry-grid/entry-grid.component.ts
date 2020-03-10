@@ -32,6 +32,9 @@ export class EntryGridComponent implements OnInit {
    */
   alertMessage: string;
 
+  /**
+   * Holds reference to entry diary modal.
+   */
   modal: BsModalRef;
 
   /**
@@ -39,6 +42,8 @@ export class EntryGridComponent implements OnInit {
    *
    * @param entryService
    *   Diary entry loading service
+   * @param modalService
+   *   Service for showing the entry diary modal
    */
   constructor(
       private entryService: EntryService,
