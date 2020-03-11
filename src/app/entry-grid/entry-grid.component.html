@@ -6,7 +6,7 @@
     <div class="col mb-4" *ngFor="let diaryEntry of diaryEntries">
       <div class="card h-100">
         <img *ngIf="diaryEntry.images.length > 0"
-             src="http://localhost:3000/images/{{diaryEntry.images[0]._id}}.jpg"
+             [src]="imageUrl(diaryEntry.images[0])"
              alt="{{diaryEntry.images[0]._id}}.jpg"
              class="card-img-top">
         <div class="card-body">

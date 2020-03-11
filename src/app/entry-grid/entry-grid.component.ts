@@ -8,6 +8,8 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { DiaryEntry } from '../shared/entry.model';
 import { EntryService } from '../shared/entry.service';
+import { Image } from '../shared/image.model';
+import { ImageService } from '../shared/image.service';
 import { EntryModalComponent } from '../entry-modal/entry-modal.component';
 
 
@@ -77,6 +79,19 @@ export class EntryGridComponent implements OnInit {
    */
   noEntries(): boolean {
     return this.diaryEntries !== undefined && this.diaryEntries.length === 0;
+  }
+
+  /**
+   * Get image's URL.
+   *
+   * @param image
+   *   Image
+   *
+   * @returns
+   *   Image's URL
+   */
+  imageUrl(image: Image): string {
+    return ImageService.getImageUrl(image);
   }
 
   /**
