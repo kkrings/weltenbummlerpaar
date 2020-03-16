@@ -10,7 +10,9 @@ import { environment } from '../../environments/environment';
 
 
 /**
- * Service for loading images from back-end server
+ * Image service
+ *
+ * This service enable the application to get images from back-end server.
  */
 @Injectable({
   providedIn: 'root'
@@ -30,7 +32,7 @@ export class ImageService {
   }
 
   /**
-   * Construct image service.
+   * Construct the image service.
    */
   constructor() { }
 }

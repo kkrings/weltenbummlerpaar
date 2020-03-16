@@ -1,5 +1,5 @@
 /**
- * Alert service
+ * HTTP alert service
  * @packageDocumentation
  */
 
@@ -9,14 +9,16 @@ import { throwError } from 'rxjs';
 
 
 /**
- * Service for handling errors thrown by the HTTP client
+ * HTTP alert service
+ *
+ * This service handles errors thrown by the HTTP client.
  */
 @Injectable({
   providedIn: 'root'
 })
-export class AlertService {
+export class HttpAlertService {
   /**
-   * Construct alert service.
+   * Construct the HTTP alert service.
    */
   constructor() { }
 

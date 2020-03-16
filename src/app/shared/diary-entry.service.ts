@@ -8,32 +8,36 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { DiaryEntry } from './entry.model';
-import { AlertService } from './alert.service';
+import { DiaryEntry } from './diary-entry.model';
+import { HttpAlertService } from './http-alert.service';
 import { environment } from '../../environments/environment';
 
 
 /**
- * Service for loading diary entries from back-end server
+ * Diary entry service
+ *
+ * This service interacts with the back-end server and enables the application
+ * to get, create, delete, and update diary entries.
  */
 @Injectable({
   providedIn: 'root'
 })
-export class EntryService {
+export class DiaryEntryService {
   /**
-   * Construct diary entry service.
+   * Construct the diary entry service.
    *
    * @param http
-   *   Allows to communicate with the back-end server.
+   *   Enables the communication with the back-end server.
    * @param alertService
    *   Handles failed HTTP requests.
    */
   constructor(
       private http: HttpClient,
-      private alertService: AlertService) { }
+      private httpAlertService: HttpAlertService) { }
 
   /**
-   * Load list of all diary entries in descending order from back-end server.
+   * Get a list of all diary entries in descending order from the back-end
+   * server.
    *
    * @returns
    *   Diary entries
@@ -42,11 +46,11 @@ export class EntryService {
     return this.http
         .get<DiaryEntry[]>(
             `${environment.baseurl}/db/entries?options[sort][createdAt]=-1`)
-        .pipe(catchError(this.alertService.handleError));
+        .pipe(catchError(this.httpAlertService.handleError));
   }
 
   /**
-   * Load diary entry from back-end server given its ID.
+   * Get diary entry from the back-end server given its ID.
    *
    * @param entryId
    *   Diary entry's ID
@@ -57,6 +61,6 @@ export class EntryService {
   getEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
         .get<DiaryEntry>(`${environment.baseurl}/db/entries/${entryId}`)
-        .pipe(catchError(this.alertService.handleError));
+        .pipe(catchError(this.httpAlertService.handleError));
   }
 }

@@ -1,20 +1,12 @@
-$beach-color-primary: #96ceb4;
-$beach-color-primary-darker: #87b9a2;
-$beach-color-secondary: #ffcc5c;
+// override Bootstrap's primary and secondary color variables with colors from
+// the Beach color palette: https://www.color-hex.com/color-palette/895
+$primary: #96ceb4;
+$secondary: #ffcc5c;
+$danger: #ff6f69;
 
-.beach-title {
-    color: $beach-color-primary;
-}
+@import "../node_modules/bootstrap/scss/bootstrap";
 
-.beach-subtitle {
-    color: $beach-color-secondary;
-}
-
-.beach-button {
-    background-color: $beach-color-primary;
-    color: #ffffff;
-}
-.beach-button:hover {
-    background-color: $beach-color-primary-darker;
-    color: #ffffff;
+button.btn.btn-primary {
+  border-radius: $rounded-pill;
+  color: #fff;
 }

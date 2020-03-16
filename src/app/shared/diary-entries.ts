@@ -3,13 +3,13 @@
  * @packageDocumentation
  */
 
-import { DiaryEntry } from './entry.model';
+import { DiaryEntry } from './diary-entry.model';
 
 
 /**
  * List of mock diary entries for testing purposes.
  */
-export const ENTRIES: DiaryEntry[] = [
+export const DIARY_ENTRIES: DiaryEntry[] = [
   {
     _id: '0',
     title: '1st diary entry',

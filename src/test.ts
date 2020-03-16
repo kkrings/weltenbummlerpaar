@@ -1,5 +1,5 @@
 /**
- * Global test setup
+ * Global unit testing setup
  * @packageDocumentation
  */
 
@@ -8,20 +8,25 @@ import { getTestBed } from '@angular/core/testing';
 
 import {
   BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
+  platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
 
 
-declare const require: any;
+declare const require: {
+  context(path: string, deep?: boolean, filter?: RegExp): {
+    keys(): string[];
+    <T>(id: string): T;
+  };
+};
 
-// initialize the Angular testing environment
+// initialize Angular testing environment
 getTestBed().initTestEnvironment(
-    BrowserDynamicTestingModule,
-    platformBrowserDynamicTesting()
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting()
 );
 
-// find all the tests
+// find all unit tests
 const context = require.context('./', true, /\.spec\.ts$/);
 
-// load the modules
+// load modules
 context.keys().map(context);

@@ -1,20 +1,20 @@
 // import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 //
-// import { EntryCardComponent } from './entry-card.component';
+// import { DiaryEntryGridComponent } from './diary-entry-grid.component';
 //
-// describe('EntryCardComponent', () => {
-//   let component: EntryCardComponent;
-//   let fixture: ComponentFixture<EntryCardComponent>;
+// describe('DiaryEntryGridComponent', () => {
+//   let component: DiaryEntryGridComponent;
+//   let fixture: ComponentFixture<DiaryEntryGridComponent>;
 //
 //   beforeEach(async(() => {
 //     TestBed.configureTestingModule({
-//       declarations: [ EntryCardComponent ]
+//       declarations: [ DiaryEntryGridComponent ]
 //     })
 //     .compileComponents();
 //   }));
 //
 //   beforeEach(() => {
-//     fixture = TestBed.createComponent(EntryCardComponent);
+//     fixture = TestBed.createComponent(DiaryEntryGridComponent);
 //     component = fixture.componentInstance;
 //     fixture.detectChanges();
 //   });

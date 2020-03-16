@@ -1,83 +1,65 @@
 /**
- * Root module
+ * Application's root module
  * @packageDocumentation
  */
 
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+
+import {
+  NgbAlertModule,
+  NgbCarouselModule,
+  NgbModalModule
+} from '@ng-bootstrap/ng-bootstrap';
 
 import localeDe from '@angular/common/locales/de';
 
-import { HttpClientModule } from '@angular/common/http';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { ModalModule } from 'ngx-bootstrap/modal';
-
 import { AppComponent } from './app.component';
-import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 import {
-  NavLoginModalComponent
-} from './nav-login-modal/nav-login-modal.component';
-
-import { JumbotronComponent } from './jumbotron/jumbotron.component';
-import { EntryGridComponent } from './entry-grid/entry-grid.component';
-import { EntryModalComponent } from './entry-modal/entry-modal.component';
+  DiaryEntryGridComponent
+} from './diary-entry-grid/diary-entry-grid.component';
 
 import {
-  EntryImgSliderComponent
-} from './entry-img-slider/entry-img-slider.component';
+  DiaryEntryCardComponent
+} from './diary-entry-card/diary-entry-card.component';
 
-import { HttpSpinnerComponent } from './http-spinner/http-spinner.component';
-import { HttpAlertComponent } from './http-alert/http-alert.component';
-
-import { EntryService } from './shared/entry.service';
-import { ImageService } from './shared/image.service';
-import { AlertService } from './shared/alert.service';
+import {
+  DiaryEntryModalComponent
+} from './diary-entry-modal/diary-entry-modal.component';
+import { ImageCarouselComponent } from './image-carousel/image-carousel.component';
 
 
-// application expects german-speaking users
+// application expects German-speaking users
 registerLocaleData(localeDe);
 
 
 /**
- * Root module
+ * Application's root module
  *
- * Configure declarations (e.g. components), imports, and providers (e.g.
- * services).
+ * Configure declarations (e.g. components), imports, and providers.
  */
 @NgModule({
   declarations: [
     AppComponent,
-    NavBarComponent,
-    NavLoginModalComponent,
-    JumbotronComponent,
-    EntryGridComponent,
-    EntryModalComponent,
-    EntryImgSliderComponent,
-    HttpSpinnerComponent,
-    HttpAlertComponent,
+    DiaryEntryGridComponent,
+    DiaryEntryCardComponent,
+    DiaryEntryModalComponent,
+    ImageCarouselComponent
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     HttpClientModule,
-    AlertModule.forRoot(),
-    CollapseModule.forRoot(),
-    ModalModule.forRoot(),
+    NgbAlertModule,
+    NgbCarouselModule,
+    NgbModalModule
   ],
   providers: [
-    {provide: LOCALE_ID, useValue: 'de' },
-    EntryService,
-    ImageService,
-    AlertService,
+    // application's default language is German
+    {provide: LOCALE_ID, useValue: 'de'}
   ],
-  entryComponents: [
-    NavLoginModalComponent,
-    EntryModalComponent,
-  ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -10,15 +10,15 @@ import {
   HttpTestingController
 } from '@angular/common/http/testing';
 
-import { EntryService } from './entry.service';
-import { AlertService } from './alert.service';
-import { DiaryEntry } from './entry.model';
-import { ENTRIES } from './mock-entries';
+import { DiaryEntryService } from './diary-entry.service';
+import { DiaryEntry } from './diary-entry.model';
+import { DIARY_ENTRIES } from './diary-entries';
+import { HttpAlertService } from './http-alert.service';
 import { environment } from '../../environments/environment';
 
 
-describe('EntryService', () => {
-  let entryService: EntryService;
+describe('DiaryEntryService', () => {
+  let service: DiaryEntryService;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
@@ -27,18 +27,20 @@ describe('EntryService', () => {
         HttpClientTestingModule
       ],
       providers: [
-        EntryService,
-        AlertService
+        DiaryEntryService,
+        HttpAlertService
       ]
     });
 
-    entryService = TestBed.get(EntryService);
-    httpTestingController = TestBed.get(HttpTestingController);
+    service = TestBed.inject(DiaryEntryService);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   it('#getEntries should return diary entries', () => {
-    entryService.getEntries().subscribe(
-        (diaryEntries: DiaryEntry[]) => expect(diaryEntries).toEqual(ENTRIES),
+    service.getEntries().subscribe(
+        (diaryEntries: DiaryEntry[]) => {
+          expect(diaryEntries).toEqual(DIARY_ENTRIES);
+        },
         fail);
 
     const testRequest = httpTestingController.expectOne(
@@ -46,11 +48,11 @@ describe('EntryService', () => {
 
     expect(testRequest.request.method).toMatch('GET');
 
-    testRequest.flush(ENTRIES);
+    testRequest.flush(DIARY_ENTRIES);
   });
 
   it('#getEntries should return alert message', () => {
-    entryService.getEntries().subscribe(
+    service.getEntries().subscribe(
         fail, (message: string) => expect(message).toBeDefined());
 
     const testRequest = httpTestingController.expectOne(
@@ -65,28 +67,28 @@ describe('EntryService', () => {
   });
 
   it('#getEntry should return diary entry', () => {
-    const testEntry = ENTRIES[0];
+    const testDiaryEntry = DIARY_ENTRIES[0];
 
-    entryService.getEntry(testEntry._id).subscribe(
-        (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testEntry),
+    service.getEntry(testDiaryEntry._id).subscribe(
+        (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
         fail);
 
     const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries/${testEntry._id}`);
+        `${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
 
     expect(testRequest.request.method).toMatch('GET');
 
-    testRequest.flush(testEntry);
+    testRequest.flush(testDiaryEntry);
   });
 
   it('#getEntry should return alert message', () => {
-    const testEntry = ENTRIES[0];
+    const testDiaryEntry = DIARY_ENTRIES[0];
 
-    entryService.getEntry(testEntry._id).subscribe(
+    service.getEntry(testDiaryEntry._id).subscribe(
         fail, (message: string) => expect(message).toBeDefined());
 
     const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries/${testEntry._id}`);
+        `${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
 
     expect(testRequest.request.method).toMatch('GET');
 
