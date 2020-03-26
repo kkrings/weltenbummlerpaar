@@ -28,7 +28,7 @@ export class DiaryEntryService {
    *
    * @param http
    *   Enables the communication with the back-end server.
-   * @param alertService
+   * @param httpAlertService
    *   Handles failed HTTP requests.
    */
   constructor(
