@@ -32,9 +32,15 @@ describe('AuthService', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
-  it('#login should return true if login was successful', () => {
-    service.login('username', 'password')
-        .subscribe((success: boolean) => expect(success).toBeTrue(), fail);
+  it('test successful login and logout of admin user', () => {
+    service.login('username', 'password').subscribe((success: boolean) => {
+      // test login
+      expect(success).toBeTrue();
+      expect(service.isLoggedIn).toBeTrue();
+      // test logout
+      service.logout();
+      expect(service.isLoggedIn).toBeFalse();
+    }, fail);
 
     const testRequest = httpTestingController.expectOne(
         `${environment.baseurl}/db/admins/login`);
@@ -45,4 +51,6 @@ describe('AuthService', () => {
 
     testRequest.flush({token: 'testJWT'});
   });
+
+  afterEach(() => httpTestingController.verify());
 });
