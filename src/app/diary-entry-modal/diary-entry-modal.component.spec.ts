@@ -3,11 +3,22 @@
  * @packageDocumentation
  */
 
+import { Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryModalComponent } from './diary-entry-modal.component';
+import { Image } from '../shared/image.model';
 import { DIARY_ENTRIES } from '../shared/diary-entries';
+
+
+@Component({
+  selector: 'app-image-carousel',
+  template: ''
+})
+class ImageCarouselStubComponent {
+  @Input() imageList: Image[];
+}
 
 
 describe('DiaryEntryModalComponent', () => {
@@ -19,7 +30,8 @@ describe('DiaryEntryModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        DiaryEntryModalComponent
+        DiaryEntryModalComponent,
+        ImageCarouselStubComponent
       ],
       providers: [
         NgbActiveModal
