@@ -7,6 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import {
   NgbAlertModule,
@@ -17,6 +18,11 @@ import {
 import localeDe from '@angular/common/locales/de';
 
 import { AppComponent } from './app.component';
+import { NavbarComponent } from './navbar/navbar.component';
+
+import {
+  NavbarLoginModalComponent
+} from './navbar-login-modal/navbar-login-modal.component';
 
 import {
   DiaryEntryGridComponent
@@ -29,7 +35,10 @@ import {
 import {
   DiaryEntryModalComponent
 } from './diary-entry-modal/diary-entry-modal.component';
-import { ImageCarouselComponent } from './image-carousel/image-carousel.component';
+
+import {
+  ImageCarouselComponent
+} from './image-carousel/image-carousel.component';
 
 
 // application expects German-speaking users
@@ -44,14 +53,17 @@ registerLocaleData(localeDe);
 @NgModule({
   declarations: [
     AppComponent,
+    NavbarComponent,
+    NavbarLoginModalComponent,
     DiaryEntryGridComponent,
     DiaryEntryCardComponent,
     DiaryEntryModalComponent,
-    ImageCarouselComponent
+    ImageCarouselComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    ReactiveFormsModule,
     NgbAlertModule,
     NgbCarouselModule,
     NgbModalModule
