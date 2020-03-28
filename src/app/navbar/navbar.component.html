@@ -1,0 +1,17 @@
+<nav class="navbar navbar-light">
+  <div class="navbar-brand"></div>
+  <div class="d-inline mr-0">
+    <button class="btn btn-primary"
+            type="button"
+            [hidden]="isLoggedIn"
+            (click)="openLoginModal()">
+      Login
+    </button>
+    <button class="btn btn-primary"
+            type="button"
+            *ngIf="isLoggedIn"
+            (click)="logout()">
+      Logout
+    </button>
+  </div>
+</nav>
