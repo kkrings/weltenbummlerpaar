@@ -49,7 +49,7 @@ describe('AuthService', () => {
     expect(testRequest.request.body.username).toMatch('username');
     expect(testRequest.request.body.password).toMatch('password');
 
-    testRequest.flush({token: 'testJWT'});
+    testRequest.flush({success: true, token: 'testJWT'});
   });
 
   afterEach(() => httpTestingController.verify());

@@ -13,6 +13,20 @@ import { environment } from '../../environments/environment';
 
 
 /**
+ * Interface for token response from back-end server
+ */
+interface Token {
+  /**
+   * Specifies if admin login request was successful.
+   */
+  readonly success: boolean;
+  /**
+   * Actual JSON web token
+   */
+  readonly token: string;
+}
+
+/**
  * Authentication service
  *
  * This service allows an admin user to authenticate against the back-end
@@ -50,11 +64,14 @@ export class AuthService {
    */
   login(username: string, password: string): Observable<boolean> {
     return this.http
-        .post<{token: string}>(
+        .post<Token>(
             `${environment.baseurl}/db/admins/login`, {username, password})
-        .pipe(map(res => {
-          localStorage.setItem('JWT', res.token);
-          return true;
+        .pipe(map((res: Token) => {
+          if (res.success) {
+            localStorage.setItem('JWT', res.token);
+          }
+
+          return res.success;
         }), catchError(this.httpAlertService.handleError));
   }
 
