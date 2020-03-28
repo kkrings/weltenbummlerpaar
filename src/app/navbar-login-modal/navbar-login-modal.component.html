@@ -1,0 +1,53 @@
+<form [formGroup]="adminLoginForm" (ngSubmit)="onSubmit()">
+  <div class="modal-header">
+    <h4 class="modal-title text-primary">Admin-Login</h4>
+    <button type="button" class="close" (click)="dismiss()">
+      <span>&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label class="sr-only" for="username">Username</label>
+      <input class="form-control"
+             formControlName="username"
+             id="username"
+             placeholder="Username"
+             required
+             type="text">
+      <div class="text-danger" *ngIf="showValidationError('username')">
+        <small>Ohne Username ist kein Login möglich.</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="password">Passwort</label>
+      <input class="form-control"
+             formControlName="password"
+             id="password"
+             placeholder="Passwort"
+             required
+             type="password">
+      <div class="text-danger" *ngIf="showValidationError('password')">
+        <small>Ohne Passwort ist kein Login möglich.</small>
+      </div>
+    </div>
+    <div *ngIf="loginFailedMessage">
+      <ngb-alert [dismissible]="false" [type]="'danger'">
+        {{loginFailedMessage}}
+      </ngb-alert>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="dismiss()">
+      Abbrechen
+    </button>
+    <button type="submit"
+            class="btn btn-primary"
+            [disabled]="adminLoginForm.invalid"
+            [hidden]="showSpinner">
+      Login
+    </button>
+    <div *ngIf="showSpinner" class="spinner-border text-primary" role="status">
+      <span class="sr-only">Sende Login-Request...</span>
+    </div>
+  </div>
+</form>
