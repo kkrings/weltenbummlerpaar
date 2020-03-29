@@ -4,8 +4,12 @@
  */
 
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { Image } from './image.model';
+import { HttpAlertService } from './http-alert.service';
 import { environment } from '../../environments/environment';
 
 
@@ -34,5 +38,13 @@ export class ImageService {
   /**
    * Construct the image service.
    */
-  constructor() { }
+  constructor(
+      private http: HttpClient,
+      private httpAlertService: HttpAlertService) { }
+
+  upload(image: FormData): Observable<Image> {
+    return this.http
+        .post<Image>(`${environment.baseurl}/db/images/upload`, image)
+        .pipe(catchError(this.httpAlertService.handleError));
+  }
 }
