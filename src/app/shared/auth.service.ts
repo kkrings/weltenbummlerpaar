@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { JwtHelperService } from "@auth0/angular-jwt"
 
 import { HttpAlertService } from './http-alert.service';
 import { environment } from '../../environments/environment';
@@ -43,10 +44,13 @@ export class AuthService {
    *   Enables the communication with the back-end server.
    * @param httpAlertService
    *   Handles failed HTTP requests.
+   * @param jwtHelperService
+   *   Checks if the JSON web token is expired.
    */
   constructor(
       private http: HttpClient,
-      private httpAlertService: HttpAlertService) { }
+      private httpAlertService: HttpAlertService,
+      private jwtHelperService: JwtHelperService) { }
 
   /**
    * Admin login
@@ -89,6 +93,12 @@ export class AuthService {
    * Specifies if admin user is logged in or not.
    */
   get isLoggedIn(): boolean {
-    return localStorage.getItem('JWT') !== null;
+    const token = localStorage.getItem('JWT');
+
+    if (token) {
+      return !this.jwtHelperService.isTokenExpired(token);
+    }
+
+    return false;
   }
 }
