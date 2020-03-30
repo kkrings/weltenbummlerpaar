@@ -110,17 +110,19 @@ export class NavbarLoginModalComponent implements OnInit {
 
     this.authService.login(username, password).subscribe(
       (success: boolean) => {
+        this.showSpinner = false;
+
         if (success) {
-          this.showSpinner = false;
           this.modal.close();
         } else {
-          this.showSpinner = false;
-
           this.loginFailedMessage =
               'Der Admin-Login ist fehl geschlagen, ' +
               'da Username und/oder Passwort falsch sind.';
         }
       },
-      (error: string) => this.loginFailedMessage = error);
+      (error: string) => {
+        this.showSpinner = false;
+        this.loginFailedMessage = error;
+      });
   }
 }
