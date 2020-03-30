@@ -63,4 +63,19 @@ export class DiaryEntryService {
         .get<DiaryEntry>(`${environment.baseurl}/db/entries/${entryId}`)
         .pipe(catchError(this.httpAlertService.handleError));
   }
+
+  /**
+   * Save a new diary entry on the back-end server.
+   *
+   * @param diaryEntry
+   *   New diary entry
+   *
+   * @returns
+   *   Saved diary entry
+   */
+  saveEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
+    return this.http
+        .post<DiaryEntry>(`${environment.baseurl}/db/entries`, diaryEntry)
+        .pipe(catchError(this.httpAlertService.handleError));
+  }
 }

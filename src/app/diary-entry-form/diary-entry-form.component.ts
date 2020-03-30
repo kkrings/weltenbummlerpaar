@@ -11,6 +11,7 @@ import {
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { DiaryEntryService } from '../shared/diary-entry.service';
 import { DiaryEntry } from '../shared/diary-entry.model';
 import { Image } from '../shared/image.model';
 
@@ -35,16 +36,29 @@ export class DiaryEntryFormComponent implements OnInit {
   private imageList: Image[] = [];
 
   /**
+   * Show spinner instead of submit button while post/put request is processed.
+   */
+  showSpinner = false;
+
+  /**
+   * Alert message that is shown in case of HTTP errors
+   */
+  alertMessage = '';
+
+  /**
    * Construct the diary entry form component.
    *
    * @param formBuilder
    *   Builds the reactive form for creating/updating a diary entry.
    * @param modal
    *   Holds a reference to the modal.
+   * @param diaryEntryService
+   *   Service for saving/updating diary entries on the back-end server
    */
   constructor(
       private formBuilder: FormBuilder,
-      private modal: NgbActiveModal) { }
+      private modal: NgbActiveModal,
+      private diaryEntryService: DiaryEntryService) { }
 
   /**
    * Initialize the diary entry form component.
@@ -115,6 +129,23 @@ export class DiaryEntryFormComponent implements OnInit {
   onSubmit(): void {
     const diaryEntry: DiaryEntry = this.diaryEntryForm.value;
     diaryEntry.images = this.imageList;
-    console.log(diaryEntry);
+
+    // reset alert message
+    this.alertMessage = '';
+
+    // activate spinner; gets deactivated again when back-end server has
+    // responded
+    this.showSpinner = true;
+
+    this.diaryEntryService.saveEntry(diaryEntry).subscribe(
+      (savedDiaryEntry: DiaryEntry) => {
+        this.showSpinner = false;
+        this.modal.close(savedDiaryEntry);
+      },
+      (error: string) => {
+        this.showSpinner = false;
+        this.alertMessage = error;
+      }
+    );
   }
 }

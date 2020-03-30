@@ -69,6 +69,11 @@
           </div>
         </div>
       </div>
+      <div *ngIf="alertMessage">
+        <ngb-alert [dismissible]="false" [type]="'danger'">
+          {{alertMessage}}
+        </ngb-alert>
+      </div>
     </div>
   </div>
   <div class="modal-footer">
@@ -77,8 +82,12 @@
     </button>
     <button type="submit"
             class="btn btn-primary"
-            [disabled]="diaryEntryForm.invalid">
+            [disabled]="diaryEntryForm.invalid"
+            [hidden]="showSpinner">
       Abschicken
     </button>
+    <div *ngIf="showSpinner" class="spinner-border text-primary" role="status">
+      <span class="sr-only">Erstelle/bearbeite Tagebucheintrag...</span>
+    </div>
   </div>
 </form>
