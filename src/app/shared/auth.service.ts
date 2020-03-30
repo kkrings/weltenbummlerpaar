@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { JwtHelperService } from "@auth0/angular-jwt"
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { HttpAlertService } from './http-alert.service';
 import { environment } from '../../environments/environment';
