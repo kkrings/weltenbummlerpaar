@@ -9,7 +9,6 @@ import {
   FormBuilder, FormControl, FormGroup, Validators
 } from '@angular/forms';
 
-import { of } from 'rxjs';
 import bsCustomFileInput from 'bs-custom-file-input';
 
 import { ImageService } from '../shared/image.service';
