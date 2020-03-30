@@ -98,5 +98,37 @@ describe('DiaryEntryService', () => {
     });
   });
 
+  it('#saveEntry should return diary entry', () => {
+    const testDiaryEntry = DIARY_ENTRIES[0];
+
+    service.saveEntry(testDiaryEntry).subscribe(
+        (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
+        fail);
+
+    const testRequest = httpTestingController.expectOne(
+        `${environment.baseurl}/db/entries`);
+
+    expect(testRequest.request.method).toMatch('POST');
+
+    testRequest.flush(testDiaryEntry);
+  });
+
+  it('#saveEntry should return alert message', () => {
+    const testDiaryEntry = DIARY_ENTRIES[0];
+
+    service.saveEntry(testDiaryEntry).subscribe(
+        fail, (message: string) => expect(message).toBeDefined());
+
+    const testRequest = httpTestingController.expectOne(
+        `${environment.baseurl}/db/entries`);
+
+    expect(testRequest.request.method).toMatch('POST');
+
+    testRequest.flush('mock HTTP error response', {
+      status: 500,
+      statusText: 'Mock error on back-end server'
+    });
+  });
+
   afterEach(() => httpTestingController.verify());
 });
