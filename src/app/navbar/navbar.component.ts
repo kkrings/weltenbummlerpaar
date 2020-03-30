@@ -12,6 +12,10 @@ import {
   NavbarLoginModalComponent
 } from '../navbar-login-modal/navbar-login-modal.component';
 
+import {
+  DiaryEntryFormComponent
+} from '../diary-entry-form/diary-entry-form.component';
+
 
 /**
  * Navigation bar component
@@ -45,14 +49,25 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void { }
 
   /**
-   * Open Bootstrap modal that shows the admin login form.
+   * Admin login modal
+   *
+   * Open modal that shows the admin login form.
    */
   openLoginModal(): void {
     this.modalService.open(NavbarLoginModalComponent);
   }
 
   /**
-   * Admin user logout
+   * Diary entry modal
+   *
+   * Open modal that shows the form for creating/updating a diary entry.
+   */
+  openDiaryEntryModal(): void {
+    this.modalService.open(DiaryEntryFormComponent);
+  }
+
+  /**
+   * Admin logout
    *
    * Use the authentication service to log out the currently logged in admin
    * user.

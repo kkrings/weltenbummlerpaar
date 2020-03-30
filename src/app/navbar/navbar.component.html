@@ -7,11 +7,17 @@
             (click)="openLoginModal()">
       Login
     </button>
-    <button class="btn btn-primary"
-            type="button"
-            *ngIf="isLoggedIn"
-            (click)="logout()">
-      Logout
-    </button>
+    <div *ngIf="isLoggedIn">
+      <button class="btn btn-secondary"
+              type="button"
+              (click)="openDiaryEntryModal()">
+        Neuer Tagebucheintrag
+      </button>
+      <button class="btn btn-primary ml-2"
+              type="button"
+              (click)="logout()">
+        Logout
+      </button>
+    </div>
   </div>
 </nav>

@@ -26,6 +26,10 @@ import {
 } from './navbar-login-modal/navbar-login-modal.component';
 
 import {
+  DiaryEntryFormComponent
+} from './diary-entry-form/diary-entry-form.component';
+
+import {
   DiaryEntryGridComponent
 } from './diary-entry-grid/diary-entry-grid.component';
 
@@ -40,6 +44,8 @@ import {
 import {
   ImageCarouselComponent
 } from './image-carousel/image-carousel.component';
+
+import { ImageUploadComponent } from './image-upload/image-upload.component';
 
 import { environment } from '../environments/environment';
 
@@ -58,10 +64,12 @@ registerLocaleData(localeDe);
     AppComponent,
     NavbarComponent,
     NavbarLoginModalComponent,
+    DiaryEntryFormComponent,
     DiaryEntryGridComponent,
     DiaryEntryCardComponent,
     DiaryEntryModalComponent,
     ImageCarouselComponent,
+    ImageUploadComponent
   ],
   imports: [
     BrowserModule,
