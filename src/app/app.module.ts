@@ -7,6 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import {
@@ -40,6 +41,8 @@ import {
   ImageCarouselComponent
 } from './image-carousel/image-carousel.component';
 
+import { environment } from '../environments/environment';
+
 
 // application expects German-speaking users
 registerLocaleData(localeDe);
@@ -63,6 +66,13 @@ registerLocaleData(localeDe);
   imports: [
     BrowserModule,
     HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem('JWT'),
+        whitelistedDomains: [environment.domain],
+        blacklistedRoutes: [`${environment.domain}/db/admins/login`]
+      }
+    }),
     ReactiveFormsModule,
     NgbAlertModule,
     NgbCarouselModule,
