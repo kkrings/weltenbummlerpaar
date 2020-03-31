@@ -6,7 +6,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 import { Image } from './image.model';
 import { HttpAlertService } from './http-alert.service';
@@ -42,6 +42,16 @@ export class ImageService {
       private http: HttpClient,
       private httpAlertService: HttpAlertService) { }
 
+  /**
+   * Upload an image to the back-end server.
+   *
+   * @param image
+   *   The back-end server's end point for image uploads expects content of
+   *   type multipart/form-data.
+   *
+   * @returns
+   *   The uploaded image
+   */
   upload(image: FormData): Observable<Image> {
     return this.http
         .post<Image>(`${environment.baseurl}/db/images/upload`, image)
