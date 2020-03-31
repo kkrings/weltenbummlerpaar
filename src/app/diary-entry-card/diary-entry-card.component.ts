@@ -3,12 +3,13 @@
  * @packageDocumentation
  */
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { DiaryEntryService } from '../shared/diary-entry.service';
 import { DiaryEntry } from '../shared/diary-entry.model';
-import { Image } from '../shared/image.model';
 import { ImageService } from '../shared/image.service';
+import { Image } from '../shared/image.model';
 
 import {
   DiaryEntryModalComponent
@@ -33,12 +34,29 @@ export class DiaryEntryCardComponent implements OnInit {
   @Input() diaryEntry: DiaryEntry;
 
   /**
+   * If the admin user clicks the delete button, notify the parent comment that
+   * the diary entry was deleted from the back-end server.
+   */
+  @Output() entryDeleted = new EventEmitter<DiaryEntry>();
+
+  /**
+   * Show a spinner instead of the delete button and disable the button that
+   * opens the full diary entry in a modal when the delete request is being
+   * processed.
+   */
+  showSpinner = false;
+
+  /**
    * Construct the diary entry card component.
    *
    * @param modalService
    *   Service for showing the full diary entry via Bootstrap's modal component
+   * @param diaryEntryService
+   *   Service for deleting the diary entry on the back-end server
    */
-  constructor(private modalService: NgbModal) { }
+  constructor(
+      private modalService: NgbModal,
+      private diaryEntryService: DiaryEntryService) { }
 
   /**
    * Intialize the diary entry card component.
@@ -106,5 +124,29 @@ export class DiaryEntryCardComponent implements OnInit {
   openModal(): void {
     const modal = this.modalService.open(DiaryEntryModalComponent);
     modal.componentInstance.diaryEntry = this.diaryEntry;
+  }
+
+  /**
+   * Delete diary entry
+   *
+   * Delete the diary entry from the back-end server and notify the parent
+   * component about its deletion.
+   */
+  deleteEntry(): void {
+    // show spinner while the delete request is being processed
+    this.showSpinner = true;
+
+    this.diaryEntryService.deleteEntry(this.diaryEntry._id).subscribe(
+      (diaryEntry: DiaryEntry) => {
+        this.entryDeleted.emit(diaryEntry);
+        this.showSpinner = false;
+      },
+      (error: string) => {
+        // @TODO this will most likely be replaced with a message service based
+        // on Bootstrap's toasts
+        console.error(error);
+        this.showSpinner = false;
+      }
+    );
   }
 }

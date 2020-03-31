@@ -4,10 +4,32 @@
  */
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Observable, of } from 'rxjs';
 
 import { DiaryEntryCardComponent } from './diary-entry-card.component';
-import { ImageService } from '../shared/image.service';
+import { DiaryEntryService } from '../shared/diary-entry.service';
+import { DiaryEntry } from '../shared/diary-entry.model';
 import { DIARY_ENTRIES } from '../shared/diary-entries';
+import { ImageService } from '../shared/image.service';
+
+
+/**
+ * Mock diary entry service
+ */
+class MockDiaryEntryService {
+  /**
+   * Mock diary entry delete method
+   *
+   * @param diaryEntry
+   *   Diary entry that should be deleted
+   *
+   * @returns
+   *   Deleted diary entry
+   */
+  deleteEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
+    return of(diaryEntry);
+  }
+}
 
 
 describe('DiaryEntryCardComponent', () => {
@@ -20,6 +42,9 @@ describe('DiaryEntryCardComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         DiaryEntryCardComponent
+      ],
+      providers: [
+        {provide: DiaryEntryService, useClass: MockDiaryEntryService}
       ]
     }).compileComponents();
   }));

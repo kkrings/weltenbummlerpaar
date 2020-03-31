@@ -1,4 +1,22 @@
 <div class="card h-100">
+  <div class="card-header bg-transparent" appAdminMode>
+    <button type="button"
+            class="btn btn-secondary btn-sm mr-1"
+            [disabled]="showSpinner || true">
+      Bearbeiten
+    </button>
+    <button type="button"
+            class="btn btn-danger btn-sm"
+            [hidden]="showSpinner"
+            (click)="deleteEntry()">
+      Löschen
+    </button>
+    <div *ngIf="showSpinner"
+         class="spinner-border text-danger"
+         role="status">
+      <span class="sr-only">Lösche Tagebucheintrag...</span>
+    </div>
+  </div>
   <img *ngIf="diaryEntry.images.length > 0"
        [src]="getImageUrl(diaryEntry.images[0])"
        alt="{{diaryEntry.images[0]._id}}.jpg"
@@ -12,8 +30,10 @@
     <p class="card-text"><small class="text-muted">
       Erstellt am {{diaryEntry.createdAt | date}}.
     </small></p>
-    <button type="button" class="btn btn-primary" (click)="openModal()">
-      <span>Erfahre mehr</span>
+    <button type="button"
+            class="btn btn-primary"
+            (click)="openModal()">
+        Erfahre mehr
     </button>
   </div>
 </div>
