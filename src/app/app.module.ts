@@ -18,6 +18,9 @@ import {
 
 import localeDe from '@angular/common/locales/de';
 
+import { environment } from '../environments/environment';
+
+// components
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 
@@ -47,7 +50,8 @@ import {
 
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 
-import { environment } from '../environments/environment';
+// directives
+import { AdminModeDirective } from './shared/admin-mode.directive';
 
 
 // application expects German-speaking users
@@ -69,7 +73,8 @@ registerLocaleData(localeDe);
     DiaryEntryCardComponent,
     DiaryEntryModalComponent,
     ImageCarouselComponent,
-    ImageUploadComponent
+    ImageUploadComponent,
+    AdminModeDirective
   ],
   imports: [
     BrowserModule,
