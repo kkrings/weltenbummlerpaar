@@ -130,5 +130,37 @@ describe('DiaryEntryService', () => {
     });
   });
 
+  it('#deleteEntry should return diary entry', () => {
+    const testDiaryEntry = DIARY_ENTRIES[0];
+
+    service.deleteEntry(testDiaryEntry._id).subscribe(
+        (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
+        fail);
+
+    const testRequest = httpTestingController.expectOne(
+        `${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
+
+    expect(testRequest.request.method).toMatch('DELETE');
+
+    testRequest.flush(testDiaryEntry);
+  });
+
+  it('#deleteEntry should return alert message', () => {
+    const testDiaryEntry = DIARY_ENTRIES[0];
+
+    service.deleteEntry(testDiaryEntry._id).subscribe(
+        fail, (message: string) => expect(message).toBeDefined());
+
+    const testRequest = httpTestingController.expectOne(
+        `${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
+
+    expect(testRequest.request.method).toMatch('DELETE');
+
+    testRequest.flush('mock HTTP error response', {
+      status: 500,
+      statusText: 'Mock error on back-end server'
+    });
+  });
+
   afterEach(() => httpTestingController.verify());
 });

@@ -78,4 +78,19 @@ export class DiaryEntryService {
         .post<DiaryEntry>(`${environment.baseurl}/db/entries`, diaryEntry)
         .pipe(catchError(this.httpAlertService.handleError));
   }
+
+  /**
+   * Delete diary entry from the back-end server given its ID.
+   *
+   * @param entryId
+   *   Diary entry's ID
+   *
+   * @returns
+   *   Deleted diary entry
+   */
+  deleteEntry(entryId: string): Observable<DiaryEntry> {
+    return this.http
+        .delete<DiaryEntry>(`${environment.baseurl}/db/entries/${entryId}`)
+        .pipe(catchError(this.httpAlertService.handleError));
+  }
 }
