@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryService } from '../shared/diary-entry.service';
@@ -27,7 +27,7 @@ import {
   templateUrl: './diary-entry-card.component.html',
   styleUrls: ['./diary-entry-card.component.scss']
 })
-export class DiaryEntryCardComponent implements OnInit {
+export class DiaryEntryCardComponent {
   /**
    * Injected diary entry
    */
@@ -35,9 +35,9 @@ export class DiaryEntryCardComponent implements OnInit {
 
   /**
    * If the admin user clicks the delete button, notify the parent comment that
-   * the diary entry was deleted from the back-end server.
+   * the diary entry was deleted from the back-end server and provide its ID.
    */
-  @Output() entryDeleted = new EventEmitter<DiaryEntry>();
+  @Output() deletedEntryId = new EventEmitter<string>();
 
   /**
    * Show a spinner instead of the delete button and disable the button that
@@ -57,11 +57,6 @@ export class DiaryEntryCardComponent implements OnInit {
   constructor(
       private modalService: NgbModal,
       private diaryEntryService: DiaryEntryService) { }
-
-  /**
-   * Intialize the diary entry card component.
-   */
-  ngOnInit(): void { }
 
   /**
    * Get image's URL.
@@ -138,7 +133,7 @@ export class DiaryEntryCardComponent implements OnInit {
 
     this.diaryEntryService.deleteEntry(this.diaryEntry._id).subscribe(
       (diaryEntry: DiaryEntry) => {
-        this.entryDeleted.emit(diaryEntry);
+        this.deletedEntryId.emit(diaryEntry._id);
         this.showSpinner = false;
       },
       (error: string) => {

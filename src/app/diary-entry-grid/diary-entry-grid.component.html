@@ -1,15 +1,19 @@
-<div class="container">
-  <div *ngIf="showSpinner" class="d-flex justify-content-center">
-    <div class="spinner-border" role="status"></div>
-  </div>
-  <p *ngIf="alertMessage"><ngb-alert [dismissible]="false" [type]="'danger'">
-    {{alertMessage}}
-  </ngb-alert></p>
-  <div class="row row-cols-1 row-cols-sm-2" *ngIf="hasDiaryEntries()">
-    <div class="col mb-4" *ngFor="let diaryEntry of diaryEntries">
-      <app-diary-entry-card [diaryEntry]="diaryEntry"></app-diary-entry-card>
+<div *ngIf="diaryEntries.length > 0">
+  <div class="container">
+    <div class="row row-cols-1 row-cols-sm-2">
+      <div class="col mb-4" *ngFor="let diaryEntry of diaryEntries">
+        <app-diary-entry-card [diaryEntry]="diaryEntry"
+                              (deletedEntryId)="deleteDiaryEntry($event)">
+        </app-diary-entry-card>
+      </div>
     </div>
   </div>
-  <p *ngIf="noDiaryEntries()">Sorry, es sind leider noch keine Tagebucheinträge
-  vorhanden. Wir hoffen, ihr habt noch etwas Geduld mit uns.</p>
+</div>
+<div *ngIf="diaryEntries.length === 0">
+  <div class="container">
+    <ngb-alert [dismissible]="false" [type]="'secondary'">
+      Sorry, es sind leider noch keine Tagebucheinträge vorhanden. Wir hoffen,
+      ihr habt noch etwas Geduld mit uns.
+    </ngb-alert>
+  </div>
 </div>

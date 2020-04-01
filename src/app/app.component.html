@@ -1,5 +1,23 @@
-<div class="container py-4">
+<app-navbar (newDiaryEntry)="addDiaryEntry($event)"></app-navbar>
+
+<div class="container pt-2 pb-4">
   <img class="img-fluid rounded" src="/assets/welcome.jpg" alt="welcome.jpg">
 </div>
 
-<app-diary-entry-grid></app-diary-entry-grid>
+<div *ngIf="showSpinner">
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Lade Tagebucheinträge...</span>
+    </div>
+  </div>
+</div>
+<div *ngIf="alertMessage">
+  <div class="container">
+    <ngb-alert [dismissible]="false" [type]="'danger'">
+      {{alertMessage}}
+    </ngb-alert>
+  </div>
+</div>
+<div *ngIf="diaryEntries">
+  <app-diary-entry-grid [diaryEntries]="diaryEntries"></app-diary-entry-grid>
+</div>

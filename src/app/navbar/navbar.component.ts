@@ -3,10 +3,11 @@
  * @packageDocumentation
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthService } from '../shared/auth.service';
+import { DiaryEntry } from '../shared/diary-entry.model';
 
 import {
   NavbarLoginModalComponent
@@ -31,6 +32,11 @@ import {
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  /**
+   * Send new diary entries back the parent component
+   */
+  @Output() newDiaryEntry = new EventEmitter<DiaryEntry>();
+
   /**
    * Construct the navigation bar component.
    *
@@ -60,10 +66,15 @@ export class NavbarComponent implements OnInit {
   /**
    * Diary entry modal
    *
-   * Open modal that shows the form for creating/updating a diary entry.
+   * Open modal that shows the form for creating/updating a diary entry. New
+   * diary entries are send back to the parent component.
    */
   openDiaryEntryModal(): void {
-    this.modalService.open(DiaryEntryFormComponent);
+    const modal = this.modalService.open(DiaryEntryFormComponent);
+
+    modal.result.then((diaryEntry: DiaryEntry) => {
+      this.newDiaryEntry.emit(diaryEntry);
+    });
   }
 
   /**

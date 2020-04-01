@@ -3,10 +3,9 @@
  * @packageDocumentation
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { DiaryEntry } from '../shared/diary-entry.model';
-import { DiaryEntryService } from '../shared/diary-entry.service';
 
 
 /**
@@ -19,67 +18,23 @@ import { DiaryEntryService } from '../shared/diary-entry.service';
   templateUrl: './diary-entry-grid.component.html',
   styleUrls: ['./diary-entry-grid.component.scss']
 })
-export class DiaryEntryGridComponent implements OnInit {
+export class DiaryEntryGridComponent {
   /**
-   * List of diary entries
+   * List of shown diary entries
    */
-  diaryEntries: DiaryEntry[];
+  @Input() diaryEntries: DiaryEntry[];
 
   /**
-   * Show a spinner while the list of diary entries is requested from the
-   * back-ender server.
-   */
-  showSpinner = true;
-
-  /**
-   * Alert message that is shown in case of HTTP errors
-   */
-  alertMessage: string;
-
-  /**
-   * Construct the diary entry grid component.
+   * Delete diary entry given its ID.
    *
-   * @param diaryEntryService
-   *   Service for requesting the list of diary entries from the back-end
-   *   server
-   */
-  constructor(private diaryEntryService: DiaryEntryService) { }
-
-  /**
-   * Initialize the diary entry grid component.
+   * Delete diary entry from the list of shown diary entries.
    *
-   * Subscribe to the list of diary entries when the component is initialized.
+   * @param entryId
+   *   Diary entry's ID
    */
-  ngOnInit() {
-    this.diaryEntryService.getEntries().subscribe(
-        (diaryEntries: DiaryEntry[]) => {
-          this.showSpinner = false;
-          this.diaryEntries = diaryEntries;
-        },
-        (error: string) => {
-          this.showSpinner = false;
-          this.alertMessage = error;
-        });
-  }
-
-  /**
-   * Specifies if diary entries are available for presentation.
-   *
-   * @returns
-   *   Boolean specifying if list of loaded diary entries is not empty.
-   */
-  hasDiaryEntries(): boolean {
-    return this.diaryEntries !== undefined && this.diaryEntries.length > 0;
-  }
-
-  /**
-   * If the list of diary entries is empty, the user is informed that no diary
-   * entries have been added yet.
-   *
-   * @returns
-   *   Boolean specifying if list of loaded diary entries is empty.
-   */
-  noDiaryEntries(): boolean {
-    return this.diaryEntries !== undefined && this.diaryEntries.length === 0;
+  deleteDiaryEntry(entryId: string) {
+    this.diaryEntries = this.diaryEntries.filter((diaryEntry: DiaryEntry) => {
+      return diaryEntry._id !== entryId;
+    });
   }
 }
