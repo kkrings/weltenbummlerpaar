@@ -71,11 +71,27 @@ export class DiaryEntryService {
    *   New diary entry
    *
    * @returns
-   *   Saved diary entry
+   *   The saved diary entry
    */
   saveEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
     return this.http
         .post<DiaryEntry>(`${environment.baseurl}/db/entries`, diaryEntry)
+        .pipe(catchError(this.httpAlertService.handleError));
+  }
+
+  /**
+   * Update diary entry on the back-end server.
+   *
+   * @param diaryEntry
+   *   Diary entry
+   *
+   * @returns
+   *   The updated diary entry
+   */
+  updateEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
+    return this.http
+        .put<DiaryEntry>(
+            `${environment.baseurl}/db/entries/${diaryEntry._id}`, diaryEntry)
         .pipe(catchError(this.httpAlertService.handleError));
   }
 
