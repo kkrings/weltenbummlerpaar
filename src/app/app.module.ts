@@ -48,7 +48,7 @@ import {
   ImageCarouselComponent
 } from './image-carousel/image-carousel.component';
 
-import { ImageUploadComponent } from './image-upload/image-upload.component';
+import { ImageUploadComponent } from './image-form/image-form.component';
 
 // directives
 import { AdminModeDirective } from './shared/admin-mode.directive';
