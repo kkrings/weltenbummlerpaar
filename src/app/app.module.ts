@@ -44,11 +44,11 @@ import {
   DiaryEntryModalComponent
 } from './diary-entry-modal/diary-entry-modal.component';
 
+import { ImageFormComponent } from './image-form/image-form.component';
+
 import {
   ImageCarouselComponent
 } from './image-carousel/image-carousel.component';
-
-import { ImageUploadComponent } from './image-form/image-form.component';
 
 // directives
 import { AdminModeDirective } from './shared/admin-mode.directive';
@@ -72,8 +72,8 @@ registerLocaleData(localeDe);
     DiaryEntryGridComponent,
     DiaryEntryCardComponent,
     DiaryEntryModalComponent,
+    ImageFormComponent,
     ImageCarouselComponent,
-    ImageUploadComponent,
     AdminModeDirective
   ],
   imports: [

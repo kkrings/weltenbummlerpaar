@@ -1,20 +1,20 @@
 // import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 //
-// import { ImageUploadComponent } from './image-upload.component';
+// import { ImageFormComponent } from './image-form.component';
 //
-// describe('ImageUploadComponent', () => {
-//   let component: ImageUploadComponent;
-//   let fixture: ComponentFixture<ImageUploadComponent>;
+// describe('ImageFormComponent', () => {
+//   let component: ImageFormComponent;
+//   let fixture: ComponentFixture<ImageFormComponent>;
 //
 //   beforeEach(async(() => {
 //     TestBed.configureTestingModule({
-//       declarations: [ ImageUploadComponent ]
+//       declarations: [ ImageFormComponent ]
 //     })
 //     .compileComponents();
 //   }));
 //
 //   beforeEach(() => {
-//     fixture = TestBed.createComponent(ImageUploadComponent);
+//     fixture = TestBed.createComponent(ImageFormComponent);
 //     component = fixture.componentInstance;
 //     fixture.detectChanges();
 //   });

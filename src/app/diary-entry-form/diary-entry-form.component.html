@@ -65,12 +65,12 @@
     </div>
     <hr class="my-4">
     <h6 class="text-secondary">Fotos</h6>
-    <app-image-upload (uploadedImage)="addImage($event)"></app-image-upload>
+    <app-image-form (uploadedImage)="addImage($event)"></app-image-form>
     <div *ngFor="let image of imageList">
       <div class="py-2">
-        <app-image-upload [inputImage]="image"
+        <app-image-form [inputImage]="image"
                           (deletedImage)="deleteImage($event)">
-        </app-image-upload>
+        </app-image-form>
       </div>
     </div>
     <div *ngIf="alertMessage">

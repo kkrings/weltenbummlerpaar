@@ -23,11 +23,11 @@ import { Image } from '../shared/image.model';
  * deleting images to, on, or from the back-end server, respectively.
  */
 @Component({
-  selector: 'app-image-upload',
-  templateUrl: './image-upload.component.html',
-  styleUrls: ['./image-upload.component.scss']
+  selector: 'app-image-form',
+  templateUrl: './image-form.component.html',
+  styleUrls: ['./image-form.component.scss']
 })
-export class ImageUploadComponent implements OnInit {
+export class ImageFormComponent implements OnInit {
   /**
    * Update/delete an existing image.
    */
