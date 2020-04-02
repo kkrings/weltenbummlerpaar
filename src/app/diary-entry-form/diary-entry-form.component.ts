@@ -33,7 +33,7 @@ export class DiaryEntryFormComponent implements OnInit {
   /**
    * Holds uploaded images.
    */
-  private imageList: Image[] = [];
+  imageList: Image[] = [];
 
   /**
    * Show spinner instead of submit button while post/put request is processed.
@@ -104,6 +104,17 @@ export class DiaryEntryFormComponent implements OnInit {
   }
 
   /**
+   * Delete image from diary entry given its ID.
+   *
+   * @param imageId
+   *   ID of deleted image
+   */
+  deleteImage(imageId: string): void {
+    this.imageList = this.imageList
+        .filter((image: Image) => image._id !== imageId);
+  }
+
+  /**
    * Form control validation
    *
    * @param formControl
@@ -117,10 +128,11 @@ export class DiaryEntryFormComponent implements OnInit {
   }
 
   /**
-   * Dismiss the diary entry form modal.
+   * Close the diary entry form modal without sending anything back to the
+   * parent component.
    */
-  dismiss(): void {
-    this.modal.dismiss();
+  closeModal(): void {
+    this.modal.close();
   }
 
   /**

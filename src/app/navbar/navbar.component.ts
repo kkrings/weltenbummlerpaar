@@ -72,8 +72,10 @@ export class NavbarComponent implements OnInit {
   openDiaryEntryModal(): void {
     const modal = this.modalService.open(DiaryEntryFormComponent);
 
-    modal.result.then((diaryEntry: DiaryEntry) => {
-      this.newDiaryEntry.emit(diaryEntry);
+    modal.result.then((diaryEntry?: DiaryEntry) => {
+      if (diaryEntry) {
+        this.newDiaryEntry.emit(diaryEntry);
+      }
     });
   }
 

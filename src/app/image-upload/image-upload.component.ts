@@ -1,9 +1,10 @@
 /**
- * Image upload component
+ * Image form component
  * @packageDocumentation
  */
 
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import {
   FormBuilder, FormControl, FormGroup, Validators
@@ -16,10 +17,10 @@ import { Image } from '../shared/image.model';
 
 
 /**
- * Image upload component
+ * Image form component
  *
- * This component presents a form to the user for uploading an image to the
- * back-end server.
+ * This component presents a form to the user for uploading, updating, or
+ * deleting images to, on, or from the back-end server, respectively.
  */
 @Component({
   selector: 'app-image-upload',
@@ -28,14 +29,36 @@ import { Image } from '../shared/image.model';
 })
 export class ImageUploadComponent implements OnInit {
   /**
+   * Update/delete an existing image.
+   */
+  @Input() inputImage: Image;
+
+  /**
    * The uploaded image is emitted back to the parent component.
    */
   @Output() uploadedImage = new EventEmitter<Image>();
 
   /**
-   * Reactive form for image upload
+   * The ID of the deleted image is emitted back to the parent component.
+   */
+  @Output() deletedImage = new EventEmitter<string>();
+
+  /**
+   * Reactive form for image upload/update
    */
   imageForm: FormGroup;
+
+  /**
+   * Show a spinner while sending a upload/update request to the back-end
+   * server and waiting for its response.
+   */
+  showUploadSpinner = false;
+
+  /**
+   * Show a spinner while sending a delete request to the back-end server and
+   * waiting for its response.
+   */
+  showDeleteSpinner = false;
 
   /**
    * Alert message that is shown in case of HTTP errors
@@ -43,27 +66,37 @@ export class ImageUploadComponent implements OnInit {
   alertMessage = '';
 
   /**
-   * Construct the image upload component.
+   * Construct the image form component.
    *
    * @param formBuilder
-   *   Builds the reactive for for the image upload.
+   *   Builds the reactive form for uploading/updating images.
+   * @param imageService
+   *   Service for uploading, updating, or deleting images to, on, or from the
+   *   back-end server, respectively
    */
   constructor(
       private formBuilder: FormBuilder,
       private imageService: ImageService) { }
 
   /**
-   * Initialize the image upload component.
+   * Initialize the image form component.
    */
   ngOnInit(): void {
     // this module allows to style the file input tag
     bsCustomFileInput.init();
 
-    // build the image upload form
-    this.imageForm = this.formBuilder.group({
-      imageFile: [null, Validators.required],
-      description: ['', Validators.required]
-    });
+    // build the image upload/update form
+    if (this.inputImage) {
+      this.imageForm = this.formBuilder.group({
+        imageFile: [null],
+        description: [this.inputImage.description, Validators.required]
+      });
+    } else {
+      this.imageForm = this.formBuilder.group({
+        imageFile: [null, Validators.required],
+        description: ['', Validators.required]
+      });
+    }
   }
 
   /**
@@ -94,25 +127,64 @@ export class ImageUploadComponent implements OnInit {
   }
 
   /**
-   * Submit image upload request to back-end server.
+   * Submit image upload/update request to back-end server.
    */
   onSubmit(): void {
     const {imageFile, description} = this.imageForm.value;
 
-    // image upload functions via multipart/form-data
-    const imageData = new FormData();
-    imageData.append('image', imageFile);
-    imageData.append('description', description);
+    // image representation; upload/update is based on multipart/form-data
+    const imageFormData = new FormData();
+    imageFormData.append('image', imageFile);
+    imageFormData.append('description', description);
+
+    let request: Observable<Image>;
+
+    if (this.inputImage) {
+      request = this.imageService.updateImage(
+          this.inputImage._id, imageFormData);
+    } else {
+      request = this.imageService.uploadImage(imageFormData);
+    }
+
+    // show spinner while talking to the back-end server
+    this.showUploadSpinner = true;
 
     // reset alert message
     this.alertMessage = '';
 
-    this.imageService.upload(imageData).subscribe(
+    request.subscribe(
       (image: Image) => {
+        this.showUploadSpinner = false;
         this.uploadedImage.emit(image);
-        this.imageForm.reset();
+
+        if (!this.inputImage) {
+          this.imageForm.reset();
+        }
       },
-      (error: string) => this.alertMessage = error
-    );
+      (error: string) => {
+        this.showUploadSpinner = false;
+        this.alertMessage = error;
+      });
+  }
+
+  /**
+   * Delete the input image from the back-end server.
+   */
+  deleteInputImage(): void {
+    // show spinner while talking to the back-end server
+    this.showDeleteSpinner = true;
+
+    // reset alert message
+    this.alertMessage = '';
+
+    this.imageService.deleteImage(this.inputImage._id).subscribe(
+        (image: Image) => {
+          this.showDeleteSpinner = false;
+          this.deletedImage.emit(image._id);
+        },
+        (error: string) => {
+          this.showDeleteSpinner = false;
+          this.alertMessage = error;
+        });
   }
 }
