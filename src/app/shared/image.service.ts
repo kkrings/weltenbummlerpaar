@@ -16,7 +16,8 @@ import { environment } from '../../environments/environment';
 /**
  * Image service
  *
- * This service enable the application to get images from back-end server.
+ * This service enables the application to upload, update, or delete images to,
+ * on, or from the back-end server, respectively.
  */
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,11 @@ export class ImageService {
 
   /**
    * Construct the image service.
+   *
+   * @param http
+   *   Service for sending HTTP requests to the back-end server
+   * @param httpAlertService
+   *   Service for handling HTTP errors
    */
   constructor(
       private http: HttpClient,
@@ -45,16 +51,48 @@ export class ImageService {
   /**
    * Upload an image to the back-end server.
    *
-   * @param image
-   *   The back-end server's end point for image uploads expects content of
-   *   type multipart/form-data.
+   * @param imageFormData
+   *   Form data representing the image
    *
    * @returns
    *   The uploaded image
    */
-  upload(image: FormData): Observable<Image> {
+  uploadImage(imageFormData: FormData): Observable<Image> {
     return this.http
-        .post<Image>(`${environment.baseurl}/db/images/upload`, image)
+        .post<Image>(`${environment.baseurl}/db/images/upload`, imageFormData)
+        .pipe(catchError(this.httpAlertService.handleError));
+  }
+
+  /**
+   * Update an image on the back-end server given its ID.
+   *
+   * @param imageId
+   *   Image's ID
+   * @param imageFormData
+   *   Form data representing the image's updates
+   *
+   * @returns
+   *   The updated image
+   */
+  updateImage(imageId: string, imageFormData: FormData): Observable<Image> {
+    return this.http
+        .put<Image>(
+            `${environment.baseurl}/db/images/${imageId}`, imageFormData)
+        .pipe(catchError(this.httpAlertService.handleError));
+  }
+
+  /**
+   * Delete an image from the back-end server given its ID.
+   *
+   * @param imageId
+   *   Image's ID
+   *
+   * @returns
+   *   The deleted image
+   */
+  deleteImage(imageId: string): Observable<Image> {
+    return this.http
+        .delete<Image>(`${environment.baseurl}/db/images/${imageId}`)
         .pipe(catchError(this.httpAlertService.handleError));
   }
 }
