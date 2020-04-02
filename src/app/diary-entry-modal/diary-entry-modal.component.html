@@ -9,7 +9,7 @@
     <app-image-carousel [imageList]="diaryEntry.images"></app-image-carousel>
   </div>
   <h6 class="text-secondary">{{diaryEntry.locationName}}</h6>
-  <div [innerHtml]="diaryEntry.body"></div>
+  <p class="text-pre-line">{{diaryEntry.body}}</p>
   <p><small class="text-muted">Erstellt am {{diaryEntry.createdAt | date}}.
   </small></p>
 </div>
