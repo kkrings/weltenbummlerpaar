@@ -3,21 +3,24 @@
  * @packageDocumentation
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import {
   FormBuilder, FormControl, FormGroup, Validators
 } from '@angular/forms';
 
+import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryService } from '../shared/diary-entry.service';
 import { DiaryEntry } from '../shared/diary-entry.model';
-import { Image } from '../shared/image.model';
 
 
 /**
  * Diary entry form component
+ *
+ * This component presents a form to the user for creating or updating diary
+ * entries on the back-end server via Bootstrap's modal component.
  */
 @Component({
   selector: 'app-diary-entry-form',
@@ -26,19 +29,29 @@ import { Image } from '../shared/image.model';
 })
 export class DiaryEntryFormComponent implements OnInit {
   /**
+   * Modal's title
+   */
+  modalTitle = 'Erstelle Tagebucheintrag';
+
+  /**
+   * Text content of form's submit button
+   */
+  submitButtonText = 'Erstellen';
+
+  /**
+   * Update an existing diary entry.
+   */
+  @Input() updateEntry: DiaryEntry;
+
+  /**
    * Reactive form for creating/updating diary entry
    */
   diaryEntryForm: FormGroup;
 
   /**
-   * Holds uploaded images.
-   */
-  imageList: Image[] = [];
-
-  /**
    * Show spinner instead of submit button while post/put request is processed.
    */
-  showSpinner = false;
+  processRequest = false;
 
   /**
    * Alert message that is shown in case of HTTP errors
@@ -50,15 +63,15 @@ export class DiaryEntryFormComponent implements OnInit {
    *
    * @param formBuilder
    *   Builds the reactive form for creating/updating a diary entry.
-   * @param modal
-   *   Holds a reference to the modal.
    * @param diaryEntryService
    *   Service for saving/updating diary entries on the back-end server
+   * @param modal
+   *   Holds a reference to the modal.
    */
   constructor(
       private formBuilder: FormBuilder,
-      private modal: NgbActiveModal,
-      private diaryEntryService: DiaryEntryService) { }
+      private diaryEntryService: DiaryEntryService,
+      private modal: NgbActiveModal) {}
 
   /**
    * Initialize the diary entry form component.
@@ -70,6 +83,17 @@ export class DiaryEntryFormComponent implements OnInit {
       locationName: ['', Validators.required],
       body: ['', Validators.required]
     });
+
+    if (this.updateEntry) {
+      this.diaryEntryForm.setValue({
+        title: this.updateEntry.title,
+        locationName: this.updateEntry.locationName,
+        body: this.updateEntry.body
+      });
+
+      this.modalTitle = 'Bearbeite Tagebucheintrag';
+      this.submitButtonText = 'Bearbeiten';
+    }
   }
 
   /**
@@ -94,27 +118,6 @@ export class DiaryEntryFormComponent implements OnInit {
   }
 
   /**
-   * Add image to diary entry.
-   *
-   * @param Image
-   *   Image
-   */
-  addImage(image: Image): void {
-    this.imageList.push(image);
-  }
-
-  /**
-   * Delete image from diary entry given its ID.
-   *
-   * @param imageId
-   *   ID of deleted image
-   */
-  deleteImage(imageId: string): void {
-    this.imageList = this.imageList
-        .filter((image: Image) => image._id !== imageId);
-  }
-
-  /**
    * Form control validation
    *
    * @param formControl
@@ -128,34 +131,42 @@ export class DiaryEntryFormComponent implements OnInit {
   }
 
   /**
-   * Close the diary entry form modal without sending anything back to the
-   * parent component.
+   * Close the diary entry form modal without passing anything to the parent
+   * component.
    */
   closeModal(): void {
     this.modal.close();
   }
 
   /**
-   * Submit created/updated diary entry to back-end server.
+   * Submit created/updated diary entry to back-end server and pass it to the
+   * parent component.
    */
   onSubmit(): void {
     const diaryEntry: DiaryEntry = this.diaryEntryForm.value;
-    diaryEntry.images = this.imageList;
+
+    let request: Observable<DiaryEntry>;
+    if (this.updateEntry) {
+      diaryEntry._id = this.updateEntry._id;
+      request = this.diaryEntryService.updateEntry(diaryEntry);
+    } else {
+      request = this.diaryEntryService.saveEntry(diaryEntry);
+    }
 
     // reset alert message
     this.alertMessage = '';
 
     // activate spinner; gets deactivated again when back-end server has
     // responded
-    this.showSpinner = true;
+    this.processRequest = true;
 
-    this.diaryEntryService.saveEntry(diaryEntry).subscribe(
-      (savedDiaryEntry: DiaryEntry) => {
-        this.showSpinner = false;
-        this.modal.close(savedDiaryEntry);
+    request.subscribe(
+      (response: DiaryEntry) => {
+        this.processRequest = false;
+        this.modal.close(response);
       },
       (error: string) => {
-        this.showSpinner = false;
+        this.processRequest = false;
         this.alertMessage = error;
       }
     );

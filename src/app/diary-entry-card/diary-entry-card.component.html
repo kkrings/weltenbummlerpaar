@@ -2,7 +2,8 @@
   <div class="card-header bg-transparent" appAdminMode>
     <button type="button"
             class="btn btn-secondary btn-sm mr-1"
-            [disabled]="showSpinner || true">
+            (click)="openUpdateEntryModal()"
+            [disabled]="showSpinner">
       Bearbeiten
     </button>
     <button type="button"
@@ -32,7 +33,7 @@
     </small></p>
     <button type="button"
             class="btn btn-primary"
-            (click)="openModal()">
+            (click)="openEntryModal()">
         Erfahre mehr
     </button>
   </div>

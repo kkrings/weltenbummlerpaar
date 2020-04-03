@@ -12,6 +12,10 @@ import { ImageService } from '../shared/image.service';
 import { Image } from '../shared/image.model';
 
 import {
+  DiaryEntryFormComponent
+} from '../diary-entry-form/diary-entry-form.component';
+
+import {
   DiaryEntryModalComponent
 } from '../diary-entry-modal/diary-entry-modal.component';
 
@@ -116,9 +120,24 @@ export class DiaryEntryCardComponent {
   /**
    * Open Bootstrap modal that shows the full diary entry.
    */
-  openModal(): void {
+  openEntryModal(): void {
     const modal = this.modalService.open(DiaryEntryModalComponent);
     modal.componentInstance.diaryEntry = this.diaryEntry;
+  }
+
+  /**
+   * Open Bootstrap modal that shows the form for updating the diary entry.
+   */
+  openUpdateEntryModal(): void {
+    const modal = this.modalService.open(DiaryEntryFormComponent);
+    modal.componentInstance.updateEntry = this.diaryEntry;
+
+    modal.result.then((diaryEntry?: DiaryEntry) => {
+      if (diaryEntry) {
+        // update view of updated diary entry
+        this.diaryEntry = diaryEntry;
+      }
+    });
   }
 
   /**

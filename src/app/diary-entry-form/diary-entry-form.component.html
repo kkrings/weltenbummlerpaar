@@ -1,9 +1,12 @@
 <form [formGroup]="diaryEntryForm" (ngSubmit)="onSubmit()">
   <div class="modal-header">
     <h4 class="modal-title text-primary">
-      Erstelle/bearbeite Tagebucheintrag
+      {{modalTitle}}
     </h4>
-    <button type="button" class="close" (click)="closeModal()">
+    <button type="button"
+            class="close"
+            [disabled]="processRequest"
+            (click)="closeModal()">
       <span>&times;</span>
     </button>
   </div>
@@ -17,6 +20,7 @@
              type="text"
              id="title"
              placeholder="Titel"
+             value="{{title.value}}"
              required>
       <div *ngIf="isInvalid(title)">
         <div *ngIf="title.errors && title.errors.required">
@@ -35,6 +39,7 @@
              type="text"
              id="location"
              placeholder="Stadt, Region, Land, ..."
+             value="{{locationName.value}}"
              required>
       <div *ngIf="isInvalid(locationName)">
         <div *ngIf="locationName.errors && locationName.errors.required">
@@ -53,6 +58,7 @@
                 rows="10"
                 id="body"
                 placeholder="Inhalt"
+                value="{{body.value}}"
                 required>
       </textarea>
       <div *ngIf="isInvalid(body)">
@@ -63,34 +69,29 @@
         </div>
       </div>
     </div>
-    <hr class="my-4">
-    <h6 class="text-secondary">Fotos</h6>
-    <app-image-form (uploadedImage)="addImage($event)"></app-image-form>
-    <div *ngFor="let image of imageList">
-      <div class="py-2">
-        <app-image-form [inputImage]="image"
-                          (deletedImage)="deleteImage($event)">
-        </app-image-form>
-      </div>
-    </div>
-    <div *ngIf="alertMessage">
+    <div *ngIf="alertMessage" class="py-2">
       <ngb-alert [dismissible]="false" [type]="'danger'">
         {{alertMessage}}
       </ngb-alert>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-danger" (click)="closeModal()">
+    <button type="button"
+            class="btn btn-danger"
+            [disabled]="processRequest"
+            (click)="closeModal()">
       Abbrechen
     </button>
     <button type="submit"
             class="btn btn-primary"
             [disabled]="diaryEntryForm.invalid"
-            [hidden]="showSpinner">
-      Abschicken
+            [hidden]="processRequest">
+      {{submitButtonText}}
     </button>
-    <div *ngIf="showSpinner" class="spinner-border text-primary" role="status">
-      <span class="sr-only">Erstelle/bearbeite Tagebucheintrag...</span>
+    <div *ngIf="processRequest"
+         class="spinner-border text-primary"
+         role="status">
+      <span class="sr-only">{{modalTitle}} ...</span>
     </div>
   </div>
 </form>
