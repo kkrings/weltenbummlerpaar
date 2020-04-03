@@ -8,6 +8,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 
 import { DiaryEntryCardComponent } from './diary-entry-card.component';
+import { DiaryEntryBriefPipe } from '../diary-entry-brief.pipe';
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntry } from '../diary-entry.model';
 import { DIARY_ENTRIES } from '../diary-entries';
@@ -55,6 +56,7 @@ describe('DiaryEntryCardComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         DiaryEntryCardComponent,
+        DiaryEntryBriefPipe,
         MockImageDirective
       ],
       providers: [

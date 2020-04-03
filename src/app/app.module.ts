@@ -43,6 +43,8 @@ import {
   DiaryEntryModalComponent
 } from './diary-entry/diary-entry-modal/diary-entry-modal.component';
 
+import { DiaryEntryBriefPipe } from './diary-entry/diary-entry-brief.pipe';
+
 import {
   ImageCarouselComponent
 } from './image/image-carousel/image-carousel.component';
@@ -69,6 +71,7 @@ registerLocaleData(localeDe);
     DiaryEntryGridComponent,
     DiaryEntryCardComponent,
     DiaryEntryModalComponent,
+    DiaryEntryBriefPipe,
     ImageCarouselComponent,
     ImageDirective
   ],
