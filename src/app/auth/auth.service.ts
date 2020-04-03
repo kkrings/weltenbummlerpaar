@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-import { HttpAlertService } from './http-alert.service';
+import { HttpAlertService } from '../shared/http-alert.service';
 import { environment } from '../../environments/environment';
 
 

@@ -5,7 +5,7 @@
 
 import { Component, Input } from '@angular/core';
 
-import { DiaryEntry } from '../shared/diary-entry.model';
+import { DiaryEntry } from '../diary-entry.model';
 
 
 /**

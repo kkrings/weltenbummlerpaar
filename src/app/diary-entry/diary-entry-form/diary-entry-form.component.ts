@@ -12,8 +12,8 @@ import {
 import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { DiaryEntryService } from '../shared/diary-entry.service';
-import { DiaryEntry } from '../shared/diary-entry.model';
+import { DiaryEntryService } from '../diary-entry.service';
+import { DiaryEntry } from '../diary-entry.model';
 
 
 /**

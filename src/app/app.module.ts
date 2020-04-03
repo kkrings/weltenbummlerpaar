@@ -6,6 +6,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -16,40 +17,35 @@ import {
   NgbModalModule
 } from '@ng-bootstrap/ng-bootstrap';
 
-import localeDe from '@angular/common/locales/de';
-
 import { environment } from '../environments/environment';
-
-// components
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 
 import {
-  NavbarLoginModalComponent
-} from './navbar-login-modal/navbar-login-modal.component';
+  AuthModalComponent
+} from './auth/auth-modal/auth-modal.component';
+
+import { AuthDirective } from './auth/auth.directive';
 
 import {
   DiaryEntryFormComponent
-} from './diary-entry-form/diary-entry-form.component';
+} from './diary-entry/diary-entry-form/diary-entry-form.component';
 
 import {
   DiaryEntryGridComponent
-} from './diary-entry-grid/diary-entry-grid.component';
+} from './diary-entry/diary-entry-grid/diary-entry-grid.component';
 
 import {
   DiaryEntryCardComponent
-} from './diary-entry-card/diary-entry-card.component';
+} from './diary-entry/diary-entry-card/diary-entry-card.component';
 
 import {
   DiaryEntryModalComponent
-} from './diary-entry-modal/diary-entry-modal.component';
+} from './diary-entry/diary-entry-modal/diary-entry-modal.component';
 
 import {
   ImageCarouselComponent
-} from './image-carousel/image-carousel.component';
-
-// directives
-import { AdminModeDirective } from './shared/admin-mode.directive';
+} from './image/image-carousel/image-carousel.component';
 
 
 // application expects German-speaking users
@@ -65,13 +61,13 @@ registerLocaleData(localeDe);
   declarations: [
     AppComponent,
     NavbarComponent,
-    NavbarLoginModalComponent,
+    AuthModalComponent,
+    AuthDirective,
     DiaryEntryFormComponent,
     DiaryEntryGridComponent,
     DiaryEntryCardComponent,
     DiaryEntryModalComponent,
-    ImageCarouselComponent,
-    AdminModeDirective
+    ImageCarouselComponent
   ],
   imports: [
     BrowserModule,

@@ -8,8 +8,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryModalComponent } from './diary-entry-modal.component';
-import { Image } from '../shared/image.model';
-import { DIARY_ENTRIES } from '../shared/diary-entries';
+import { DIARY_ENTRIES } from '../diary-entries';
+import { Image } from '../../image/image.model';
 
 
 @Component({

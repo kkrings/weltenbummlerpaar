@@ -1,5 +1,5 @@
 /**
- * Admin login modal component
+ * Authentication modal component
  * @packageDocumentation
  */
 
@@ -7,21 +7,21 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { AuthService } from '../shared/auth.service';
+import { AuthService } from '../auth.service';
 
 
 /**
- * Admin login modal component
+ * Authentication modal component
  *
  * This component represents a login form for admin users. The login form is
  * presented to the user via Bootstrap's modal component.
  */
 @Component({
-  selector: 'app-navbar-login-modal',
-  templateUrl: './navbar-login-modal.component.html',
-  styleUrls: ['./navbar-login-modal.component.scss']
+  selector: 'app-auth-modal',
+  templateUrl: './auth-modal.component.html',
+  styleUrls: ['./auth-modal.component.scss']
 })
-export class NavbarLoginModalComponent implements OnInit {
+export class AuthModalComponent implements OnInit {
   /**
    * Reactive form for admin login
    */

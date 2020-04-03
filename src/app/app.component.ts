@@ -5,8 +5,8 @@
 
 import { Component, OnInit } from '@angular/core';
 
-import { DiaryEntryService } from './shared/diary-entry.service';
-import { DiaryEntry } from './shared/diary-entry.model';
+import { DiaryEntryService } from './diary-entry/diary-entry.service';
+import { DiaryEntry } from './diary-entry/diary-entry.model';
 
 
 /**

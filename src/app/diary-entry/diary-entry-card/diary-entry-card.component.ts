@@ -6,10 +6,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { DiaryEntryService } from '../shared/diary-entry.service';
-import { DiaryEntry } from '../shared/diary-entry.model';
-import { ImageService } from '../shared/image.service';
-import { Image } from '../shared/image.model';
+import { DiaryEntryService } from '../diary-entry.service';
+import { DiaryEntry } from '../diary-entry.model';
+import { ImageService } from '../../image/image.service';
+import { Image } from '../../image/image.model';
 
 import {
   DiaryEntryFormComponent

@@ -1,5 +1,5 @@
 /**
- * Admin mode directive
+ * Authentication directive
  * @packageDocumentation
  */
 
@@ -9,17 +9,17 @@ import { AuthService } from './auth.service';
 
 
 /**
- * Admin mode directive
+ * Authentication directive
  *
  * This attribute directive can be used to show or hide a HTML element
  * depending on if an admin user is logged in or not, respectively.
  */
 @Directive({
-  selector: '[appAdminMode]'
+  selector: '[appAuth]'
 })
-export class AdminModeDirective implements DoCheck {
+export class AuthDirective implements DoCheck {
   /**
-   * Construct the admin mode directive.
+   * Construct the authentication directive.
    *
    * @param renderer
    *   Used to add or remove 'd-none' class to or from `element`, respectively.

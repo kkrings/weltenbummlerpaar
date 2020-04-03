@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { async, TestBed } from '@angular/core/testing';
 
-import { AdminModeDirective } from './admin-mode.directive';
+import { AuthDirective } from './auth.directive';
 import { AuthService } from './auth.service';
 
 
@@ -15,12 +15,12 @@ import { AuthService } from './auth.service';
  * Dummy admin mode component
  */
 @Component({
-  template: '<div appAdminMode>Dummy admin mode component</div>'
+  template: '<div appAuth>Dummy admin mode component</div>'
 })
-class AdminModeComponent {}
+class AuthComponent {}
 
 
-describe('AdminModeDirective', () => {
+describe('AuthDirective', () => {
   it('should hide element if no admin user is logged in', async(() => {
     // no admin user is logged in
     const mockAuthService: Partial<AuthService> = {
@@ -29,15 +29,15 @@ describe('AdminModeDirective', () => {
 
     TestBed.configureTestingModule({
       declarations: [
-        AdminModeComponent,
-        AdminModeDirective
+        AuthComponent,
+        AuthDirective
       ],
       providers: [
         {provide: AuthService, useValue: mockAuthService}
       ]
     }).compileComponents();
 
-    const fixture = TestBed.createComponent(AdminModeComponent);
+    const fixture = TestBed.createComponent(AuthComponent);
     fixture.detectChanges();
 
     const div = fixture.debugElement.query(By.css('div'));
@@ -52,15 +52,15 @@ describe('AdminModeDirective', () => {
 
     TestBed.configureTestingModule({
       declarations: [
-        AdminModeComponent,
-        AdminModeDirective
+        AuthComponent,
+        AuthDirective
       ],
       providers: [
         {provide: AuthService, useValue: mockAuthService}
       ]
     }).compileComponents();
 
-    const fixture = TestBed.createComponent(AdminModeComponent);
+    const fixture = TestBed.createComponent(AuthComponent);
     fixture.detectChanges();
 
     const div = fixture.debugElement.query(By.css('div'));

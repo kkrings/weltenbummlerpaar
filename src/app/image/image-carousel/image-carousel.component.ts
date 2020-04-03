@@ -5,8 +5,8 @@
 
 import { Component, OnInit, Input } from '@angular/core';
 
-import { Image } from '../shared/image.model';
-import { ImageService } from '../shared/image.service';
+import { Image } from '../image.model';
+import { ImageService } from '../image.service';
 
 
 /**

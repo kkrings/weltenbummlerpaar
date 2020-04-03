@@ -13,7 +13,7 @@ import {
 import { DiaryEntryService } from './diary-entry.service';
 import { DiaryEntry } from './diary-entry.model';
 import { DIARY_ENTRIES } from './diary-entries';
-import { HttpAlertService } from './http-alert.service';
+import { HttpAlertService } from '../shared/http-alert.service';
 import { environment } from '../../environments/environment';
 
 

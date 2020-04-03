@@ -1,5 +1,5 @@
 <div class="card h-100">
-  <div class="card-header bg-transparent" appAdminMode>
+  <div class="card-header bg-transparent" appAuth>
     <button type="button"
             class="btn btn-secondary btn-sm mr-1"
             (click)="openUpdateEntryModal()"
@@ -19,7 +19,7 @@
     </div>
   </div>
   <img *ngIf="diaryEntry.images.length > 0"
-       [src]="getImageUrl(diaryEntry.images[0])"
+       src="{{getImageUrl(diaryEntry.images[0])}}"
        alt="{{diaryEntry.images[0]._id}}.jpg"
        class="card-img-top">
   <div class="card-body">

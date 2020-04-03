@@ -7,10 +7,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 
 import { DiaryEntryCardComponent } from './diary-entry-card.component';
-import { DiaryEntryService } from '../shared/diary-entry.service';
-import { DiaryEntry } from '../shared/diary-entry.model';
-import { DIARY_ENTRIES } from '../shared/diary-entries';
-import { ImageService } from '../shared/image.service';
+import { DiaryEntryService } from '../diary-entry.service';
+import { DiaryEntry } from '../diary-entry.model';
+import { DIARY_ENTRIES } from '../diary-entries';
+import { ImageService } from '../../image/image.service';
 
 
 /**

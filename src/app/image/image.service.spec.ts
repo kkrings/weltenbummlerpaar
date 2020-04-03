@@ -12,7 +12,7 @@ import {
 
 import { ImageService } from './image.service';
 import { Image } from './image.model';
-import { HttpAlertService } from './http-alert.service';
+import { HttpAlertService } from '../shared/http-alert.service';
 import { environment } from '../../environments/environment';
 
 

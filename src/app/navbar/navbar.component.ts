@@ -6,16 +6,16 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { AuthService } from '../shared/auth.service';
-import { DiaryEntry } from '../shared/diary-entry.model';
+import { AuthService } from '../auth/auth.service';
+import { DiaryEntry } from '../diary-entry/diary-entry.model';
 
 import {
-  NavbarLoginModalComponent
-} from '../navbar-login-modal/navbar-login-modal.component';
+  AuthModalComponent
+} from '../auth/auth-modal/auth-modal.component';
 
 import {
   DiaryEntryFormComponent
-} from '../diary-entry-form/diary-entry-form.component';
+} from '../diary-entry/diary-entry-form/diary-entry-form.component';
 
 
 /**
@@ -60,7 +60,7 @@ export class NavbarComponent implements OnInit {
    * Open modal that shows the admin login form.
    */
   openLoginModal(): void {
-    this.modalService.open(NavbarLoginModalComponent);
+    this.modalService.open(AuthModalComponent);
   }
 
   /**
