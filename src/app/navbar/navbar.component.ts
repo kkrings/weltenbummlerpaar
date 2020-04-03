@@ -60,7 +60,10 @@ export class NavbarComponent implements OnInit {
    * Open modal that shows the admin login form.
    */
   openLoginModal(): void {
-    this.modalService.open(AuthModalComponent);
+    this.modalService.open(AuthModalComponent, {
+      backdrop: 'static',
+      keyboard: false
+    });
   }
 
   /**
@@ -70,7 +73,10 @@ export class NavbarComponent implements OnInit {
    * diary entries are send back to the parent component.
    */
   openDiaryEntryModal(): void {
-    const modal = this.modalService.open(DiaryEntryFormComponent);
+    const modal = this.modalService.open(DiaryEntryFormComponent, {
+      backdrop: 'static',
+      keyboard: false
+    });
 
     modal.result.then((diaryEntry?: DiaryEntry) => {
       if (diaryEntry) {

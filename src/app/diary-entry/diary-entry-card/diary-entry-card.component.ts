@@ -72,7 +72,11 @@ export class DiaryEntryCardComponent {
    * Open Bootstrap modal that shows the form for updating the diary entry.
    */
   openUpdateEntryModal(): void {
-    const modal = this.modalService.open(DiaryEntryFormComponent);
+    const modal = this.modalService.open(DiaryEntryFormComponent, {
+      backdrop: 'static',
+      keyboard: false
+    });
+
     modal.componentInstance.updateEntry = this.diaryEntry;
 
     modal.result.then((diaryEntry?: DiaryEntry) => {
