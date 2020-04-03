@@ -12,10 +12,10 @@ import { AuthService } from './auth.service';
 
 
 /**
- * Dummy admin mode component
+ * Dummy authentication component
  */
 @Component({
-  template: '<div appAuth>Dummy admin mode component</div>'
+  template: '<div appAuth></div>'
 })
 class AuthComponent {}
 
