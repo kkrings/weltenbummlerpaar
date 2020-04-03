@@ -19,8 +19,7 @@
     </div>
   </div>
   <img *ngIf="diaryEntry.images.length > 0"
-       src="{{getImageUrl(diaryEntry.images[0])}}"
-       alt="{{diaryEntry.images[0]._id}}.jpg"
+       [appImage]="diaryEntry.images[0]"
        class="card-img-top">
   <div class="card-body">
     <h4 class="card-title text-primary">{{diaryEntry.title}}</h4>

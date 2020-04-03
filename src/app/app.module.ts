@@ -47,6 +47,8 @@ import {
   ImageCarouselComponent
 } from './image/image-carousel/image-carousel.component';
 
+import { ImageDirective } from './image/image.directive';
+
 
 // application expects German-speaking users
 registerLocaleData(localeDe);
@@ -67,7 +69,8 @@ registerLocaleData(localeDe);
     DiaryEntryGridComponent,
     DiaryEntryCardComponent,
     DiaryEntryModalComponent,
-    ImageCarouselComponent
+    ImageCarouselComponent,
+    ImageDirective
   ],
   imports: [
     BrowserModule,

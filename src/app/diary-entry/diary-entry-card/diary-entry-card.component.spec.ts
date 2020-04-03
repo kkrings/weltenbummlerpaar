@@ -3,6 +3,7 @@
  * @packageDocumentation
  */
 
+import { Directive, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 
@@ -10,7 +11,6 @@ import { DiaryEntryCardComponent } from './diary-entry-card.component';
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntry } from '../diary-entry.model';
 import { DIARY_ENTRIES } from '../diary-entries';
-import { ImageService } from '../../image/image.service';
 
 
 /**
@@ -31,6 +31,19 @@ class MockDiaryEntryService {
   }
 }
 
+/**
+ * Mock image directive
+ */
+@Directive({
+  selector: '[appImage]'
+})
+class MockImageDirective {
+  /**
+   * Mock image
+   */
+  @Input('appImage') mockImage = null;
+}
+
 
 describe('DiaryEntryCardComponent', () => {
   let component: DiaryEntryCardComponent;
@@ -41,7 +54,8 @@ describe('DiaryEntryCardComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        DiaryEntryCardComponent
+        DiaryEntryCardComponent,
+        MockImageDirective
       ],
       providers: [
         {provide: DiaryEntryService, useClass: MockDiaryEntryService}
@@ -54,12 +68,6 @@ describe('DiaryEntryCardComponent', () => {
     component = fixture.componentInstance;
     component.diaryEntry = testDiaryEntry;
     fixture.detectChanges();
-  });
-
-  it('#getImageUrl should return image\'s URL', () => {
-    const testImage = testDiaryEntry.images[0];
-    const imageUrl = component.getImageUrl(testImage);
-    expect(imageUrl).toMatch(ImageService.getImageUrl(testImage));
   });
 
   it('should render diary entry\'s title', () => {

@@ -8,10 +8,8 @@
       </small>
     </div>
     <figure class="figure">
-      <a href="{{getImageUrl(image)}}">
-        <img src="{{getImageUrl(image)}}"
-             alt="{{image._id}}.jpg"
-             class="figure-img img-fluid rounded">
+      <a [appImage]="image">
+        <img [appImage]="image" class="figure-img img-fluid rounded">
       </a>
       <figcaption class="figure-caption">{{image.description}}</figcaption>
     </figure>

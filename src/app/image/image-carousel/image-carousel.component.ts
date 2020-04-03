@@ -6,7 +6,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { Image } from '../image.model';
-import { ImageService } from '../image.service';
 
 
 /**
@@ -35,17 +34,4 @@ export class ImageCarouselComponent implements OnInit {
    * Initialize the image carousel component.
    */
   ngOnInit(): void { }
-
-  /**
-   * Get image's URL.
-   *
-   * @param image
-   *   Image
-   *
-   * @returns
-   *   Image's URL
-   */
-  getImageUrl(image: Image): string {
-    return ImageService.getImageUrl(image);
-  }
 }

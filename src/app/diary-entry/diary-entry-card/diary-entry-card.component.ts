@@ -8,8 +8,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntry } from '../diary-entry.model';
-import { ImageService } from '../../image/image.service';
-import { Image } from '../../image/image.model';
 
 import {
   DiaryEntryFormComponent
@@ -61,19 +59,6 @@ export class DiaryEntryCardComponent {
   constructor(
       private modalService: NgbModal,
       private diaryEntryService: DiaryEntryService) { }
-
-  /**
-   * Get image's URL.
-   *
-   * @param image
-   *   Image
-   *
-   * @returns
-   *   Image's URL
-   */
-  getImageUrl(image: Image): string {
-    return ImageService.getImageUrl(image);
-  }
 
   /**
    * Brief version of diary entry's body
