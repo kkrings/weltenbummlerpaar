@@ -18,11 +18,6 @@ import { throwError } from 'rxjs';
 })
 export class HttpAlertService {
   /**
-   * Construct the HTTP alert service.
-   */
-  constructor() { }
-
-  /**
    * Handle HTTP errors.
    *
    * Handle HTTP errors that can occur when requesting data from the back-end
@@ -51,11 +46,14 @@ export class HttpAlertService {
           'HTTP request failed due to server-side error: ' +
           `status: ${error.status}, body: ${error.error}`);
 
-      reason = 'Der Backendserver mag nicht mit mir reden.';
+      if (error.status === 401) {
+        reason = 'Der Backendserver sagt, ' +
+            'dass ich keine Erlaubnis habe dies zu tun.';
+      } else {
+        reason = 'Der Backendserver mag nicht mit mir reden.';
+      }
     }
 
-    return throwError(
-        `Ups, da ist wohl etwas schief gegangen: ${reason}` +
-        ' Versuche es später noch einmal.');
+    return throwError(`Ups, da ist etwas schief gegangen: ${reason}`);
   }
 }
