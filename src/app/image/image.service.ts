@@ -5,7 +5,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { Image } from './image.model';
@@ -49,36 +49,36 @@ export class ImageService {
       private httpAlertService: HttpAlertService) { }
 
   /**
-   * Upload an image to the back-end server.
+   * Compress the given image inside a web worker.
    *
-   * @param imageFormData
-   *   Form data representing the image
+   * @param image
+   *   Path to image (data URL)
    *
    * @returns
-   *   The uploaded image
+   *   Compressed image
    */
-  uploadImage(imageFormData: FormData): Observable<Image> {
-    return this.http
-        .post<Image>(`${environment.baseurl}/db/images/upload`, imageFormData)
-        .pipe(catchError(this.httpAlertService.handleError));
-  }
+  compressImage(image: string): Observable<string> {
+    const compImage = new Subject<string>();
 
-  /**
-   * Update an image on the back-end server given its ID.
-   *
-   * @param imageId
-   *   Image's ID
-   * @param imageFormData
-   *   Form data representing the image's updates
-   *
-   * @returns
-   *   The updated image
-   */
-  updateImage(imageId: string, imageFormData: FormData): Observable<Image> {
-    return this.http
-        .put<Image>(
-            `${environment.baseurl}/db/images/${imageId}`, imageFormData)
-        .pipe(catchError(this.httpAlertService.handleError));
+    if (typeof Worker !== 'undefined') {
+      const compWorker = new Worker('./image.worker', {type: 'module'});
+
+      compWorker.onmessage = ({data}) => {
+        compImage.next(data);
+      };
+
+      compWorker.onerror = () => {
+        compImage.error(new Error('Image compression failed.'));
+      };
+
+      compWorker.postMessage(image);
+    } else {
+      compImage.error(
+          `Cannot compress ${image} because web workers are not ` +
+          'supported in this environment.');
+    }
+
+    return compImage;
   }
 
   /**
