@@ -19,18 +19,18 @@ import * as Jimp from 'jimp';
  * @returns
  *   Processed image
  */
-async function compressImage(url: string): Promise<string> {
+async function compressImage(url: string): Promise<Buffer> {
   const image = await Jimp.read(url);
 
   return image
       .resize(2500, Jimp.AUTO)
       .quality(75)
-      .getBase64Async(Jimp.MIME_JPEG);
+      .getBufferAsync(Jimp.MIME_JPEG);
 }
 
 /**
  * Compress the given image and send it back to the main thread.
  */
-addEventListener('message', ({data}) => {
-  postMessage(compressImage(data));
+addEventListener('message', async ({data}) => {
+  postMessage(await compressImage(data));
 });

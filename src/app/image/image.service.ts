@@ -49,29 +49,63 @@ export class ImageService {
       private httpAlertService: HttpAlertService) { }
 
   /**
+   * Upload a new image to the back-end server.
+   *
+   * @param image
+   *   Image file
+   * @param description
+   *   Image's description
+   *
+   * @returns
+   *   The uploaded image
+   */
+  uploadImage(image: File, description: string): Observable<Image> {
+    // upload is based on multipart/form-data
+    const formData = new FormData();
+
+    formData.set('image', image);
+    formData.set('description', description);
+
+    return this.http
+        .post<Image>(`${environment.baseurl}/db/images/upload`, formData)
+        .pipe(catchError(this.httpAlertService.handleError));
+  }
+
+  /**
    * Compress the given image inside a web worker.
    *
    * @param image
-   *   Path to image (data URL)
+   *   Image file
    *
    * @returns
-   *   Compressed image
+   *   The compressed image
    */
-  compressImage(image: string): Observable<string> {
-    const compImage = new Subject<string>();
+  compressImage(image: File): Observable<File> {
+    const compImage = new Subject<File>();
 
     if (typeof Worker !== 'undefined') {
       const compWorker = new Worker('./image.worker', {type: 'module'});
 
       compWorker.onmessage = ({data}) => {
-        compImage.next(data);
+        const file = new File([data], image.name);
+        compImage.next(file);
       };
 
-      compWorker.onerror = () => {
-        compImage.error(new Error('Image compression failed.'));
+      compWorker.onerror = (error) => {
+        compImage.error(error);
       };
 
-      compWorker.postMessage(image);
+      const imageReader = new FileReader();
+
+      imageReader.onload = () => {
+        compWorker.postMessage(imageReader.result);
+      };
+
+      imageReader.onerror = () => {
+        compImage.error(imageReader.error);
+      };
+
+      imageReader.readAsDataURL(image);
     } else {
       compImage.error(
           `Cannot compress ${image} because web workers are not ` +
