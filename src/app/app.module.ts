@@ -17,6 +17,8 @@ import {
   NgbModalModule
 } from '@ng-bootstrap/ng-bootstrap';
 
+import { FileInputAccessorModule } from 'file-input-accessor';
+
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -49,6 +51,10 @@ import {
   ImageCarouselComponent
 } from './image/image-carousel/image-carousel.component';
 
+import {
+  ImageUploadComponent
+} from './image/image-upload/image-upload.component';
+
 import { ImageDirective } from './image/image.directive';
 
 
@@ -73,6 +79,7 @@ registerLocaleData(localeDe);
     DiaryEntryModalComponent,
     DiaryEntryBriefPipe,
     ImageCarouselComponent,
+    ImageUploadComponent,
     ImageDirective
   ],
   imports: [
@@ -86,6 +93,7 @@ registerLocaleData(localeDe);
       }
     }),
     ReactiveFormsModule,
+    FileInputAccessorModule,
     NgbAlertModule,
     NgbCarouselModule,
     NgbModalModule
