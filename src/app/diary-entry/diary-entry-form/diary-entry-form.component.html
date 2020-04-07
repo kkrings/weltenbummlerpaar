@@ -69,8 +69,48 @@
         </div>
       </div>
     </div>
+    <div formArrayName="tags" class="form-group">
+      <label for="tags">
+        Unter welchen Stichwörtern soll der Tagebucheintrag gefunden werden
+        können?
+      </label>
+      <div id="tags">
+        <div *ngFor="let tag of tags.controls; let tagIndex = index">
+          <div class="form-group">
+            <div class="d-flex">
+              <label for="tag{{tagIndex}}" class="sr-only">
+                Gib hier ein Stichwort ein:
+              </label>
+              <input [formControlName]="tagIndex"
+                     class="form-control"
+                     id="tag{{tagIndex}}"
+                     type="text"
+                     placeholder="Stichwort"
+                     value="{{tag.value}}">
+              <button type="button"
+                      class="btn btn-danger ml-2"
+                      (click)="tags.removeAt(tagIndex)">
+                Entfernen
+              </button>
+            </div>
+            <div *ngIf="isInvalid(tag)">
+              <div class="tag.errors && tag.errors.required">
+                <small class="text-danger">
+                  Du hast vergessen ein Stichwort einzugeben.
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button"
+              class="btn btn-secondary"
+              (click)="addNewTag()">
+        Neues Stichwort
+      </button>
+    </div>
     <div *ngIf="alertMessage" class="py-2">
-      <ngb-alert [dismissible]="false" [type]="'danger'">
+      <ngb-alert [dismissible]="false" type="danger">
         {{alertMessage}}
       </ngb-alert>
     </div>

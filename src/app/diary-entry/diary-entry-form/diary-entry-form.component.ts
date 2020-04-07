@@ -6,7 +6,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import {
-  FormBuilder, FormControl, FormGroup, Validators
+  FormBuilder, FormArray, FormControl, FormGroup, Validators
 } from '@angular/forms';
 
 import { Observable } from 'rxjs';
@@ -81,15 +81,20 @@ export class DiaryEntryFormComponent implements OnInit {
     this.diaryEntryForm = this.formBuilder.group({
       title: ['', Validators.required],
       locationName: ['', Validators.required],
-      body: ['', Validators.required]
+      body: ['', Validators.required],
+      tags: this.formBuilder.array([])
     });
 
     if (this.updateEntry) {
-      this.diaryEntryForm.setValue({
+      this.diaryEntryForm.patchValue({
         title: this.updateEntry.title,
         locationName: this.updateEntry.locationName,
-        body: this.updateEntry.body
+        body: this.updateEntry.body,
       });
+
+      for (const tag of this.updateEntry.tags) {
+        this.tags.push(this.formBuilder.control(tag, Validators.required));
+      }
 
       this.modalTitle = 'Bearbeite Tagebucheintrag';
       this.submitButtonText = 'Bearbeiten';
@@ -115,6 +120,20 @@ export class DiaryEntryFormComponent implements OnInit {
    */
   get body(): FormControl {
     return this.diaryEntryForm.get('body') as FormControl;
+  }
+
+  /**
+   * Tags form array
+   */
+  get tags(): FormArray {
+    return this.diaryEntryForm.get('tags') as FormArray;
+  }
+
+  /**
+   * Add a new tag to the tags form array.
+   */
+  addNewTag(): void {
+    this.tags.push(this.formBuilder.control('', Validators.required));
   }
 
   /**
