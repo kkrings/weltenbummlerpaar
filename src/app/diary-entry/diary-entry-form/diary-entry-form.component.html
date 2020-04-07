@@ -11,6 +11,17 @@
     </button>
   </div>
   <div class="modal-body">
+    <div *ngIf="updateEntry">
+      <div class="form-group">
+        <label for="_id">Die ID deines Tagebucheintrages:</label>
+        <input formControlName="_id"
+               class="form-control"
+               id="_id"
+               type="text"
+               value="{{updateEntry._id}}"
+               readonly>
+      </div>
+    </div>
     <div class="form-group">
       <label for="title">
         Gib dem Tagebucheintrag einen Titel:

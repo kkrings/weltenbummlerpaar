@@ -9,7 +9,6 @@ import {
   FormBuilder, FormArray, FormControl, FormGroup, Validators
 } from '@angular/forms';
 
-import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryService } from '../diary-entry.service';
@@ -86,6 +85,9 @@ export class DiaryEntryFormComponent implements OnInit {
     });
 
     if (this.updateEntry) {
+      this.diaryEntryForm.addControl(
+        '_id', this.formBuilder.control(this.updateEntry._id));
+
       this.diaryEntryForm.patchValue({
         title: this.updateEntry.title,
         locationName: this.updateEntry.locationName,
@@ -164,13 +166,9 @@ export class DiaryEntryFormComponent implements OnInit {
   onSubmit(): void {
     const diaryEntry: DiaryEntry = this.diaryEntryForm.value;
 
-    let request: Observable<DiaryEntry>;
-    if (this.updateEntry) {
-      diaryEntry._id = this.updateEntry._id;
-      request = this.diaryEntryService.updateEntry(diaryEntry);
-    } else {
-      request = this.diaryEntryService.saveEntry(diaryEntry);
-    }
+    const request = (this.updateEntry)
+        ? this.diaryEntryService.updateEntry(diaryEntry)
+        : this.diaryEntryService.saveEntry(diaryEntry);
 
     // reset alert message
     this.alertMessage = '';
@@ -187,7 +185,6 @@ export class DiaryEntryFormComponent implements OnInit {
       (error: string) => {
         this.processRequest = false;
         this.alertMessage = error;
-      }
-    );
+      });
   }
 }
