@@ -8,6 +8,11 @@
  */
 export interface Image {
   /**
+   * Image file that should be uploaded to the back-end server
+   */
+  file?: File;
+
+  /**
    * Image's ID
    */
   _id: string;
