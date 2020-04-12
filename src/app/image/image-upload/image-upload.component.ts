@@ -190,6 +190,7 @@ export class ImageUploadComponent implements OnInit {
         this.processUploadRequest = false;
         this.processing.emit(false);
         this.imageChange.emit(image);
+        this.imageForm.reset();
       },
       (error: string) => {
         this.processUploadRequest = false;
