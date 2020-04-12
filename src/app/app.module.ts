@@ -52,6 +52,10 @@ import {
 } from './image/image-carousel/image-carousel.component';
 
 import {
+  ImageModalComponent
+} from './image/image-modal/image-modal.component';
+
+import {
   ImageUploadComponent
 } from './image/image-upload/image-upload.component';
 
@@ -79,6 +83,7 @@ registerLocaleData(localeDe);
     DiaryEntryModalComponent,
     DiaryEntryBriefPipe,
     ImageCarouselComponent,
+    ImageModalComponent,
     ImageUploadComponent,
     ImageDirective
   ],
