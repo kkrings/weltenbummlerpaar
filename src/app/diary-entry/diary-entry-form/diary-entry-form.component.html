@@ -11,17 +11,6 @@
     </button>
   </div>
   <div class="modal-body">
-    <div *ngIf="updateEntry">
-      <div class="form-group">
-        <label for="_id">Die ID deines Tagebucheintrages:</label>
-        <input formControlName="_id"
-               class="form-control"
-               id="_id"
-               type="text"
-               value="{{updateEntry._id}}"
-               readonly>
-      </div>
-    </div>
     <div class="form-group">
       <label for="title">
         Gib dem Tagebucheintrag einen Titel:
@@ -80,45 +69,38 @@
         </div>
       </div>
     </div>
-    <div formArrayName="tags" class="form-group">
+    <div class="form-group">
       <label for="tags">
         Unter welchen Stichwörtern soll der Tagebucheintrag gefunden werden
         können?
       </label>
-      <div id="tags">
-        <div *ngFor="let tag of tags.controls; let tagIndex = index">
-          <div class="form-group">
-            <div class="d-flex">
-              <label for="tag{{tagIndex}}" class="sr-only">
-                Gib hier ein Stichwort ein:
-              </label>
-              <input [formControlName]="tagIndex"
-                     class="form-control"
-                     id="tag{{tagIndex}}"
-                     type="text"
-                     placeholder="Stichwort"
-                     value="{{tag.value}}">
-              <button type="button"
-                      class="btn btn-danger ml-2"
-                      (click)="tags.removeAt(tagIndex)">
-                Entfernen
-              </button>
-            </div>
-            <div *ngIf="isInvalid(tag)">
-              <div class="tag.errors && tag.errors.required">
-                <small class="text-danger">
-                  Du hast vergessen ein Stichwort einzugeben.
-                </small>
-              </div>
-            </div>
-          </div>
+      <input formControlName="tags"
+             class="form-control"
+             id="tags"
+             type="text"
+             placeholder="Stichwort, noch ein Stichwort, ..."
+             value="{{tags.value}}">
+    </div>
+    <div *ngIf="diaryEntry.images.length > 0">
+      <h5 class="text-secondary">Fotoreihenfolge</h5>
+      <div *ngFor="let image of diaryEntry.images; let imageIndex = index">
+        <div class="mb-1">
+          <button type="button"
+                  class="btn btn-primary btn-sm"
+                  (click)="moveImageUp(imageIndex)">
+            <i class="fas fa-arrow-up"></i> Hoch
+          </button>
+          <button type="button"
+                  class="btn btn-primary btn-sm ml-1"
+                  (click)="moveImageDown(imageIndex)">
+            <i class="fas fa-arrow-down"></i> Runter
+          </button>
         </div>
+        <figure class="figure">
+          <img [appImage]="image" class="figure-img img-fluid rounded">
+          <figcaption class="figure-caption">{{image.description}}</figcaption>
+        </figure>
       </div>
-      <button type="button"
-              class="btn btn-secondary"
-              (click)="addNewTag()">
-        Neues Stichwort
-      </button>
     </div>
     <div *ngIf="alertMessage" class="py-2">
       <ngb-alert [dismissible]="false" type="danger">
@@ -137,7 +119,7 @@
             class="btn btn-primary"
             [disabled]="diaryEntryForm.invalid"
             [hidden]="processRequest">
-      {{submitButtonText}}
+      Speichern
     </button>
     <div *ngIf="processRequest"
          class="spinner-border text-primary"

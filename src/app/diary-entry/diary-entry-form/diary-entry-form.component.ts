@@ -6,7 +6,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import {
-  FormBuilder, FormArray, FormControl, FormGroup, Validators
+  FormBuilder, FormControl, FormGroup, Validators
 } from '@angular/forms';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -30,25 +30,30 @@ export class DiaryEntryFormComponent implements OnInit {
   /**
    * Modal's title
    */
-  modalTitle = 'Erstelle Tagebucheintrag';
+  @Input() modalTitle = 'Erstelle Tagebucheintrag';
 
   /**
-   * Text content of form's submit button
+   * Optional: inject a diary entry that should be updated.
    */
-  submitButtonText = 'Erstellen';
+  @Input() diaryEntry: DiaryEntry = {
+    _id: '',
+    title: '',
+    locationName: '',
+    body: '',
+    images: [],
+    tags: [],
+    createdAt: '',
+    updatedAt: ''
+  };
 
   /**
-   * Update an existing diary entry.
-   */
-  @Input() updateEntry: DiaryEntry;
-
-  /**
-   * Reactive form for creating/updating diary entry
+   * Reactive form for creating/updating a diary entry
    */
   diaryEntryForm: FormGroup;
 
   /**
-   * Show spinner instead of submit button while post/put request is processed.
+   * Show a spinner instead of the submit button and disable the modal's close
+   * buttons while the request is being processed by the back-end server.
    */
   processRequest = false;
 
@@ -63,7 +68,7 @@ export class DiaryEntryFormComponent implements OnInit {
    * @param formBuilder
    *   Builds the reactive form for creating/updating a diary entry.
    * @param diaryEntryService
-   *   Service for saving/updating diary entries on the back-end server
+   *   Service for saving/updating diary entries to/on the back-end server
    * @param modal
    *   Holds a reference to the modal.
    */
@@ -78,29 +83,11 @@ export class DiaryEntryFormComponent implements OnInit {
   ngOnInit(): void {
     // build the diary entry form
     this.diaryEntryForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      locationName: ['', Validators.required],
-      body: ['', Validators.required],
-      tags: this.formBuilder.array([])
+      title: [this.diaryEntry.title, Validators.required],
+      locationName: [this.diaryEntry.locationName, Validators.required],
+      body: [this.diaryEntry.body, Validators.required],
+      tags: [this.diaryEntry.tags.join(', ')]
     });
-
-    if (this.updateEntry) {
-      this.diaryEntryForm.addControl(
-        '_id', this.formBuilder.control(this.updateEntry._id));
-
-      this.diaryEntryForm.patchValue({
-        title: this.updateEntry.title,
-        locationName: this.updateEntry.locationName,
-        body: this.updateEntry.body,
-      });
-
-      for (const tag of this.updateEntry.tags) {
-        this.tags.push(this.formBuilder.control(tag, Validators.required));
-      }
-
-      this.modalTitle = 'Bearbeite Tagebucheintrag';
-      this.submitButtonText = 'Bearbeiten';
-    }
   }
 
   /**
@@ -125,17 +112,10 @@ export class DiaryEntryFormComponent implements OnInit {
   }
 
   /**
-   * Tags form array
+   * Tags form control
    */
-  get tags(): FormArray {
-    return this.diaryEntryForm.get('tags') as FormArray;
-  }
-
-  /**
-   * Add a new tag to the tags form array.
-   */
-  addNewTag(): void {
-    this.tags.push(this.formBuilder.control('', Validators.required));
+  get tags(): FormControl {
+    return this.diaryEntryForm.get('tags') as FormControl;
   }
 
   /**
@@ -152,23 +132,53 @@ export class DiaryEntryFormComponent implements OnInit {
   }
 
   /**
-   * Close the diary entry form modal without passing anything to the parent
-   * component.
+   * Move the given image down in the shown vertical list of images.
+   *
+   * @param index
+   *   Image's index
+   */
+  moveImageDown(index: number): void {
+    const next = (index + 1) % this.diaryEntry.images.length;
+    const image = this.diaryEntry.images.splice(index, 1)[0];
+    this.diaryEntry.images.splice(next, 0, image);
+  }
+
+  /**
+   * Move the given image up in the shown vertical list of images.
+   *
+   * @param index
+   *   Image's index
+   */
+  moveImageUp(index: number): void {
+    const prev = ((index > 0) ? index : this.diaryEntry.images.length) - 1;
+    const image = this.diaryEntry.images.splice(index, 1)[0];
+    this.diaryEntry.images.splice(prev, 0, image);
+  }
+
+  /**
+   * Close the modal without passing anything back to the parent component.
    */
   closeModal(): void {
     this.modal.close();
   }
 
   /**
-   * Submit created/updated diary entry to back-end server and pass it to the
-   * parent component.
+   * Form submission
+   *
+   * Submit created/updated diary entry to the back-end server and pass it back
+   * to the parent component.
    */
   onSubmit(): void {
-    const diaryEntry: DiaryEntry = this.diaryEntryForm.value;
+    const formValue = this.diaryEntryForm.value;
 
-    const request = (this.updateEntry)
-        ? this.diaryEntryService.updateEntry(diaryEntry)
-        : this.diaryEntryService.saveEntry(diaryEntry);
+    this.diaryEntry.title = formValue.title;
+    this.diaryEntry.locationName = formValue.locationName;
+    this.diaryEntry.body = formValue.body;
+    this.diaryEntry.tags = formValue.tags.split(', ');
+
+    const request = (this.diaryEntry._id)
+        ? this.diaryEntryService.updateEntry(this.diaryEntry)
+        : this.diaryEntryService.saveEntry(this.diaryEntry);
 
     // reset alert message
     this.alertMessage = '';
@@ -178,9 +188,9 @@ export class DiaryEntryFormComponent implements OnInit {
     this.processRequest = true;
 
     request.subscribe(
-      (response: DiaryEntry) => {
+      (diaryEntry: DiaryEntry) => {
         this.processRequest = false;
-        this.modal.close(response);
+        this.modal.close(diaryEntry);
       },
       (error: string) => {
         this.processRequest = false;
