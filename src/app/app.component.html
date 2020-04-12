@@ -3,12 +3,12 @@
   <div class="d-none d-sm-block">
     <img class="img-fluid"
          src="/assets/welcome_sm.jpg"
-         alt="Willkommen in unserem Reisetagebuch">
+         alt="{{welcomeMessage}}">
   </div>
   <div class="d-block d-sm-none">
     <img class="img-fluid"
          src="/assets/welcome_xs.jpg"
-         alt="Willkommen in unserem Reisetagebuch">
+         alt="{{welcomeMessage}}">
   </div>
 </div>
 <div *ngIf="showSpinner">
@@ -27,4 +27,23 @@
 </div>
 <div *ngIf="diaryEntries">
   <app-diary-entry-grid [diaryEntries]="diaryEntries"></app-diary-entry-grid>
+</div>
+<div class="bg-primary text-white">
+  <div class="container-fluid p-4">
+    <div class="row">
+      <div class="col-sm-6">
+        <h5>Warum ein Reisetagebuch?</h5>
+        <p>Mit unserem Reisetagebuch möchten wir unsere Eindrücke und
+        Erlebnisse auf Reise mit unseren Familien und Freunden teilen. Das
+        bedeutet, dass ihr hier weder Reisetipps noch Empfehlungen für
+        Unterkünfte, Restaurants usw. finden werdet.</p>
+      </div>
+      <div class="col-sm-6">
+        <h5>Was ist mit personenbezogenen Daten?</h5>
+        <p>Auf unserer Seite werden keinerlei personenbezogene Daten
+        gespeichert. Das bedeutet: keine Cookies, keine Social Media Buttons
+        und keine Tools wie Google Analytics usw.</p>
+      </div>
+    </div>
+  </div>
 </div>

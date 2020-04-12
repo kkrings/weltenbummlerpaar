@@ -19,6 +19,11 @@ import { DiaryEntry } from './diary-entry/diary-entry.model';
 })
 export class AppComponent implements OnInit {
   /**
+   * Alternative welcome message if welcome image cannot be loaded
+   */
+  welcomeMessage = 'Willkommen in unserem Reisetagebuch';
+
+  /**
    * List of shown diary entries
    */
   diaryEntries: DiaryEntry[];
