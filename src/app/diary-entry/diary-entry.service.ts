@@ -50,7 +50,7 @@ export class DiaryEntryService {
   }
 
   /**
-   * Get diary entry from the back-end server given its ID.
+   * Get a diary entry from the back-end server given its ID.
    *
    * @param entryId
    *   Diary entry's ID
@@ -65,7 +65,7 @@ export class DiaryEntryService {
   }
 
   /**
-   * Save a new diary entry on the back-end server.
+   * Save a new diary entry to the back-end server.
    *
    * @param diaryEntry
    *   New diary entry
@@ -75,12 +75,18 @@ export class DiaryEntryService {
    */
   saveEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
     return this.http
-        .post<DiaryEntry>(`${environment.baseurl}/db/entries`, diaryEntry)
+        .post<DiaryEntry>(`${environment.baseurl}/db/entries`, {
+          title: diaryEntry.title,
+          locationName: diaryEntry.locationName,
+          body: diaryEntry.body,
+          images: diaryEntry.images,
+          tags: diaryEntry.tags
+        })
         .pipe(catchError(this.httpAlertService.handleError));
   }
 
   /**
-   * Update diary entry on the back-end server.
+   * Update a diary entry on the back-end server.
    *
    * @param diaryEntry
    *   Diary entry
@@ -91,18 +97,24 @@ export class DiaryEntryService {
   updateEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
     return this.http
         .put<DiaryEntry>(
-            `${environment.baseurl}/db/entries/${diaryEntry._id}`, diaryEntry)
+            `${environment.baseurl}/db/entries/${diaryEntry._id}`, {
+              title: diaryEntry.title,
+              locationName: diaryEntry.locationName,
+              body: diaryEntry.body,
+              images: diaryEntry.images,
+              tags: diaryEntry.tags
+            })
         .pipe(catchError(this.httpAlertService.handleError));
   }
 
   /**
-   * Delete diary entry from the back-end server given its ID.
+   * Delete a diary entry from the back-end server given its ID.
    *
    * @param entryId
    *   Diary entry's ID
    *
    * @returns
-   *   Deleted diary entry
+   *   The deleted diary entry
    */
   deleteEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
