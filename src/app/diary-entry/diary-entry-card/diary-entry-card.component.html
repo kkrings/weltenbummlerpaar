@@ -42,5 +42,10 @@
             [disabled]="showSpinner">
         Erfahre mehr
     </button>
+    <div *ngIf="alertMessage" class="mt-4">
+      <ngb-alert [dismissible]="false" type="danger">
+        {{alertMessage}}
+      </ngb-alert>
+    </div>
   </div>
 </div>

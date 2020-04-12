@@ -54,6 +54,11 @@ export class DiaryEntryCardComponent {
   showSpinner = false;
 
   /**
+   * Alert message that is shown is case of HTTP errors
+   */
+  alertMessage = '';
+
+  /**
    * Construct the diary entry card component.
    *
    * @param modalService
@@ -124,16 +129,17 @@ export class DiaryEntryCardComponent {
     // show spinner while the delete request is being processed
     this.showSpinner = true;
 
+    // reset alert message
+    this.alertMessage = '';
+
     this.diaryEntryService.deleteEntry(this.diaryEntry._id).subscribe(
       (diaryEntry: DiaryEntry) => {
         this.deletedEntryId.emit(diaryEntry._id);
         this.showSpinner = false;
       },
       (error: string) => {
-        // @TODO this will most likely be replaced with a message service based
-        // on Bootstrap's toasts
-        console.error(error);
         this.showSpinner = false;
+        this.alertMessage = error;
       }
     );
   }
