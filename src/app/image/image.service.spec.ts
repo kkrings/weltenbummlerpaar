@@ -48,6 +48,8 @@ describe('ImageService', () => {
   });
 
   it('#delteImage should return image', () => {
+    const testEntryId = '0';
+
     const testImage: Image = {
       _id: '0',
       description: 'This is a test image.',
@@ -55,12 +57,13 @@ describe('ImageService', () => {
       updatedAt: (new Date()).toISOString()
     };
 
-    service.deleteImage(testImage._id).subscribe(
+    service.deleteImage(testEntryId, testImage._id).subscribe(
         (image: Image) => expect(image).toEqual(testImage),
         fail);
 
     const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/images/${testImage._id}`);
+        environment.baseurl +
+            `/db/entries/${testEntryId}/images/${testImage._id}`);
 
     expect(testRequest.request.method).toMatch('DELETE');
 
@@ -68,6 +71,8 @@ describe('ImageService', () => {
   });
 
   it('#deleteImage should return alert message', () => {
+    const testEntryId = '0';
+
     const testImage: Image = {
       _id: '0',
       description: 'This is a test image.',
@@ -75,11 +80,12 @@ describe('ImageService', () => {
       updatedAt: (new Date()).toISOString()
     };
 
-    service.deleteImage(testImage._id).subscribe(
+    service.deleteImage(testEntryId, testImage._id).subscribe(
         fail, (message: string) => expect(message).toBeDefined());
 
     const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/images/${testImage._id}`);
+        environment.baseurl +
+            `/db/entries/${testEntryId}/images/${testImage._id}`);
 
     expect(testRequest.request.method).toMatch('DELETE');
 
