@@ -9,4 +9,4 @@ language: node_js
 node_js:
     - lts/*
 script:
-    - npm run test -- --no-watch --no-progress
+    - npm run test -- --no-watch --no-progress --browsers=ChromeHeadless
