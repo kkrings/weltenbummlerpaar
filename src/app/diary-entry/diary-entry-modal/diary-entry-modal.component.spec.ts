@@ -3,13 +3,19 @@
  * @packageDocumentation
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, LOCALE_ID } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { By } from '@angular/platform-browser';
+import { registerLocaleData, formatDate } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryModalComponent } from './diary-entry-modal.component';
 import { DIARY_ENTRIES } from '../diary-entries';
 import { Image } from '../../image/image.model';
+
+
+registerLocaleData(localeDe);
 
 
 @Component({
@@ -34,7 +40,8 @@ describe('DiaryEntryModalComponent', () => {
         ImageCarouselStubComponent
       ],
       providers: [
-        NgbActiveModal
+        NgbActiveModal,
+        {provide: LOCALE_ID, useValue: 'de'}
       ]
     }).compileComponents();
   }));
@@ -46,7 +53,39 @@ describe('DiaryEntryModalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('modal\'s header\'s title should show diary entry\'s title', () => {
+    const modalTitle = fixture.debugElement
+        .query(By.css('.modal-title'))
+        .nativeElement;
+
+    expect(modalTitle.textContent).toMatch(testDiaryEntry.title);
+  });
+
+  it('modal\'s body should show diary entry\'s location name', () => {
+    const locationName = fixture.debugElement
+        .query(By.css('.modal-body'))
+        .children[1]
+        .nativeElement;
+
+    expect(locationName.textContent).toMatch(testDiaryEntry.locationName);
+  });
+
+  it('modal\'s body should show diary entry\'s body', () => {
+    const body = fixture.debugElement
+        .query(By.css('.modal-body'))
+        .children[2]
+        .nativeElement;
+
+    expect(body.textContent).toMatch(testDiaryEntry.body);
+  });
+
+  it('modal\'s body should show diary entry\'s creation date', () => {
+    const createdAt = fixture.debugElement
+        .query(By.css('.modal-body'))
+        .children[3]
+        .nativeElement;
+
+    expect(createdAt.textContent).toContain(formatDate(
+        testDiaryEntry.createdAt, 'mediumDate', 'de'));
   });
 });
