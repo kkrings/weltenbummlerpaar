@@ -20,7 +20,7 @@ import { DiaryEntry } from '../diary-entry.model';
   templateUrl: './diary-entry-modal.component.html',
   styleUrls: ['./diary-entry-modal.component.scss']
 })
-export class DiaryEntryModalComponent implements OnInit {
+export class DiaryEntryModalComponent {
   /**
    * Input diary entry
    */
@@ -35,14 +35,9 @@ export class DiaryEntryModalComponent implements OnInit {
   constructor(private modal: NgbActiveModal) { }
 
   /**
-   * Initialize the diary entry modal component.
-   */
-  ngOnInit(): void { }
-
-  /**
    * Close the diary entry modal.
    */
   close(): void {
-    this.modal.dismiss();
+    this.modal.close();
   }
 }
