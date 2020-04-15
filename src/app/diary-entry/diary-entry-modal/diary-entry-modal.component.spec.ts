@@ -8,7 +8,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { registerLocaleData, formatDate } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryModalComponent } from './diary-entry-modal.component';
 import { DIARY_ENTRIES } from '../diary-entries';
@@ -18,12 +18,28 @@ import { Image } from '../../image/image.model';
 registerLocaleData(localeDe);
 
 
+/**
+ * Mock image carousel component
+ */
 @Component({
   selector: 'app-image-carousel',
   template: ''
 })
-class ImageCarouselStubComponent {
+class MockImageCarouselComponent {
+  /**
+   * Mock list of diary entry's images
+   */
   @Input() imageList: Image[];
+}
+
+/**
+ * Mock active modal
+ */
+class MockNgbActiveModal {
+  /**
+   * Mock the close the active modal's close method.
+   */
+  close(): void { }
 }
 
 
@@ -37,10 +53,10 @@ describe('DiaryEntryModalComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         DiaryEntryModalComponent,
-        ImageCarouselStubComponent
+        MockImageCarouselComponent
       ],
       providers: [
-        NgbActiveModal,
+        {provide: NgbActiveModal, useClass: MockNgbActiveModal},
         {provide: LOCALE_ID, useValue: 'de'}
       ]
     }).compileComponents();
@@ -51,6 +67,31 @@ describe('DiaryEntryModalComponent', () => {
     component = fixture.componentInstance;
     component.diaryEntry = testDiaryEntry;
     fixture.detectChanges();
+  });
+
+  it('#close should close the modal', () => {
+    const modal: NgbActiveModal = TestBed.inject(NgbActiveModal);
+    spyOn(modal, 'close');
+    component.close();
+    expect(modal.close).toHaveBeenCalled();
+  });
+
+  it('close button in modal\'s header should close the modal', () => {
+    const closeButton = fixture.debugElement.query(
+        By.css('.modal-header > button'));
+
+    spyOn(component, 'close');
+    closeButton.triggerEventHandler('click', null);
+    expect(component.close).toHaveBeenCalled();
+  });
+
+  it('close button in modal\'s footer should close the modal', () => {
+    const closeButton = fixture.debugElement.query(
+        By.css('.modal-footer > button'));
+
+    spyOn(component, 'close');
+    closeButton.triggerEventHandler('click', null);
+    expect(component.close).toHaveBeenCalled();
   });
 
   it('modal\'s header\'s title should show diary entry\'s title', () => {
