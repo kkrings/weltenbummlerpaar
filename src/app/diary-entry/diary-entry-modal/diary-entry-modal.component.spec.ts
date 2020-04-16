@@ -78,7 +78,7 @@ describe('DiaryEntryModalComponent', () => {
 
   it('close button in modal\'s header should close the modal', () => {
     const closeButton = fixture.debugElement.query(
-        By.css('.modal-header > button'));
+        By.css('.modal-header button'));
 
     spyOn(component, 'close');
     closeButton.triggerEventHandler('click', null);
@@ -87,7 +87,7 @@ describe('DiaryEntryModalComponent', () => {
 
   it('close button in modal\'s footer should close the modal', () => {
     const closeButton = fixture.debugElement.query(
-        By.css('.modal-footer > button'));
+        By.css('.modal-footer button'));
 
     spyOn(component, 'close');
     closeButton.triggerEventHandler('click', null);
