@@ -23,5 +23,6 @@ Development status
 
 Note that this application is still under active development and has not
 reached a stable release yet. I'm currently working on implementing both unit
-and full integration tests. Once this is done, I will publish a first release
-and afterwards focus again on implementing new features.
+and full integration tests, as well as on better documenting the code. Once
+this is done, I will publish a first release and afterwards focus again on
+implementing new features.
