@@ -4,33 +4,23 @@
  */
 
 import { Directive, Input } from '@angular/core';
+import { By } from '@angular/platform-browser';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { DiaryEntryCardComponent } from './diary-entry-card.component';
 import { DiaryEntryBriefPipe } from '../diary-entry-brief.pipe';
 import { DiaryEntryService } from '../diary-entry.service';
-import { DiaryEntry } from '../diary-entry.model';
 import { DIARY_ENTRIES } from '../diary-entries';
 
 
 /**
- * Mock diary entry service
+ * Mock authentication directive
  */
-class MockDiaryEntryService {
-  /**
-   * Mock diary entry delete method
-   *
-   * @param diaryEntry
-   *   Diary entry that should be deleted
-   *
-   * @returns
-   *   Deleted diary entry
-   */
-  deleteEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
-    return of(diaryEntry);
-  }
-}
+@Directive({
+  selector: '[appAuth]'
+})
+class MockAuthDirective {}
 
 /**
  * Mock image directive
@@ -49,18 +39,25 @@ class MockImageDirective {
 describe('DiaryEntryCardComponent', () => {
   let component: DiaryEntryCardComponent;
   let fixture: ComponentFixture<DiaryEntryCardComponent>;
+  let service: jasmine.SpyObj<DiaryEntryService>;
 
   const testDiaryEntry = DIARY_ENTRIES[0];
 
   beforeEach(async(() => {
+    const serviceSpy = jasmine.createSpyObj(
+        'DiaryEntryService', ['deleteEntry']);
+
+    serviceSpy.deleteEntry.and.returnValue(of(testDiaryEntry));
+
     TestBed.configureTestingModule({
       declarations: [
         DiaryEntryCardComponent,
         DiaryEntryBriefPipe,
+        MockAuthDirective,
         MockImageDirective
       ],
       providers: [
-        {provide: DiaryEntryService, useClass: MockDiaryEntryService}
+        {provide: DiaryEntryService, useValue: serviceSpy}
       ]
     }).compileComponents();
   }));
@@ -73,12 +70,58 @@ describe('DiaryEntryCardComponent', () => {
   });
 
   it('should render diary entry\'s title', () => {
-    const cardTitle = fixture.nativeElement.querySelector('.card-title');
-    expect(cardTitle.textContent).toMatch(testDiaryEntry.title);
+    const cardTitle = fixture.debugElement.query(By.css('.card-title'));
+    expect(cardTitle.nativeElement.textContent).toMatch(testDiaryEntry.title);
   });
 
   it('should render diary entry\'s location name', () => {
-    const cardSubtitle = fixture.nativeElement.querySelector('.card-subtitle');
-    expect(cardSubtitle.textContent).toMatch(testDiaryEntry.locationName);
+    const cardSubtitle = fixture.debugElement.query(By.css('.card-subtitle'));
+
+    expect(cardSubtitle.nativeElement.textContent)
+        .toMatch(testDiaryEntry.locationName);
+  });
+
+  it('#deleteEntry should emit deleted entry', () => {
+    service = TestBed.inject(DiaryEntryService) as
+        jasmine.SpyObj<DiaryEntryService>;
+
+    let deletedEntryId = '';
+
+    component.deletedEntryId.subscribe((entryId: string) => {
+      deletedEntryId = entryId;
+    });
+
+    component.deleteEntry();
+    expect(deletedEntryId).toMatch(testDiaryEntry._id);
+    expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry._id);
+  });
+
+  it('#deleteEntry should reset alert message', () => {
+    component.alertMessage = 'This is mock alert message.';
+    component.deleteEntry();
+    expect(component.alertMessage).toMatch('');
+  });
+
+  it('#deleteEntry should set alert message', () => {
+    service = TestBed.inject(DiaryEntryService) as
+        jasmine.SpyObj<DiaryEntryService>;
+
+    const alertMessage = 'This is mock error observable.';
+    service.deleteEntry.and.returnValue(throwError(alertMessage));
+
+    component.deleteEntry();
+
+    expect(component.alertMessage).toMatch(alertMessage);
+    expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry._id);
+  });
+
+  it('delete button should trigger #deletedEntry', () => {
+    spyOn(component, 'deleteEntry');
+
+    const deleteButton = fixture.debugElement.query(
+        By.css('.card-header .btn-danger'));
+
+    deleteButton.triggerEventHandler('click', null);
+    expect(component.deleteEntry).toHaveBeenCalled();
   });
 });
