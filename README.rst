@@ -6,7 +6,7 @@ Weltenbummlerpaar
 
 This project contains the Angular_-based front end of the *Weltenbummlerpaar*
 travel diary web application. The corresponding Express_-based back end can be
-found `here <https://github.com/kkrings/weltenbummlerpaar-backend/>`.
+found `here <https://github.com/kkrings/weltenbummlerpaar-backend/>`_.
 
 .. _Angular:
     https://angular.io/
