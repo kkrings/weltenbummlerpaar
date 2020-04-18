@@ -7,6 +7,7 @@ import { Directive, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryCardComponent } from './diary-entry-card.component';
 import { DiaryEntryBriefPipe } from '../diary-entry-brief.pipe';
@@ -58,6 +59,9 @@ describe('DiaryEntryCardComponent', () => {
       ],
       providers: [
         {provide: DiaryEntryService, useValue: serviceSpy}
+      ],
+      imports: [
+        NgbAlertModule
       ]
     }).compileComponents();
   }));
@@ -79,6 +83,19 @@ describe('DiaryEntryCardComponent', () => {
 
     expect(cardSubtitle.nativeElement.textContent)
         .toMatch(testDiaryEntry.locationName);
+  });
+
+  it('should not render empty alert message', () => {
+    const alert = fixture.debugElement.query(By.css('ngb-alert'));
+    expect(alert).toBeNull();
+  });
+
+  it('should render alert message', () => {
+    const alertMessage = 'This is a mock alert message';
+    component.alertMessage = alertMessage;
+    fixture.detectChanges();
+    const alert = fixture.debugElement.query(By.css('ngb-alert'));
+    expect(alert.nativeElement.textContent).toMatch(alertMessage);
   });
 
   it('#deleteEntry should emit deleted entry', () => {
@@ -106,7 +123,7 @@ describe('DiaryEntryCardComponent', () => {
     service = TestBed.inject(DiaryEntryService) as
         jasmine.SpyObj<DiaryEntryService>;
 
-    const alertMessage = 'This is mock error observable.';
+    const alertMessage = 'This is a mock error observable.';
     service.deleteEntry.and.returnValue(throwError(alertMessage));
 
     component.deleteEntry();
