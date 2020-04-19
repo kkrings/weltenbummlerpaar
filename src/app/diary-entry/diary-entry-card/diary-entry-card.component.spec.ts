@@ -7,9 +7,17 @@ import { Directive, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+
+import {
+  NgbAlertModule, NgbModal, NgbModalRef
+} from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryCardComponent } from './diary-entry-card.component';
+
+import {
+  DiaryEntryModalComponent
+} from '../diary-entry-modal/diary-entry-modal.component';
+
 import { DiaryEntryBriefPipe } from '../diary-entry-brief.pipe';
 import { DiaryEntryService } from '../diary-entry.service';
 import { DIARY_ENTRIES } from '../diary-entries';
@@ -40,15 +48,20 @@ class MockImageDirective {
 describe('DiaryEntryCardComponent', () => {
   let component: DiaryEntryCardComponent;
   let fixture: ComponentFixture<DiaryEntryCardComponent>;
-  let service: jasmine.SpyObj<DiaryEntryService>;
 
   const testDiaryEntry = DIARY_ENTRIES[0];
 
   beforeEach(async(() => {
-    const serviceSpy = jasmine.createSpyObj(
+    const modalServiceSpy = jasmine.createSpyObj('NgbModal', ['open']);
+
+    const mockModal: Partial<NgbModalRef> = {
+      componentInstance: {diaryEntry: null}
+    };
+
+    const diaryServiceSpy = jasmine.createSpyObj(
         'DiaryEntryService', ['deleteEntry']);
 
-    serviceSpy.deleteEntry.and.returnValue(of(testDiaryEntry));
+    diaryServiceSpy.deleteEntry.and.returnValue(of(testDiaryEntry));
 
     TestBed.configureTestingModule({
       declarations: [
@@ -58,7 +71,9 @@ describe('DiaryEntryCardComponent', () => {
         MockImageDirective
       ],
       providers: [
-        {provide: DiaryEntryService, useValue: serviceSpy}
+        {provide: NgbModal, useValue: modalServiceSpy},
+        {provide: NgbModalRef, useValue: mockModal},
+        {provide: DiaryEntryService, useValue: diaryServiceSpy}
       ],
       imports: [
         NgbAlertModule
@@ -92,14 +107,28 @@ describe('DiaryEntryCardComponent', () => {
 
   it('should render alert message', () => {
     const alertMessage = 'This is a mock alert message';
+
     component.alertMessage = alertMessage;
     fixture.detectChanges();
+
     const alert = fixture.debugElement.query(By.css('ngb-alert'));
     expect(alert.nativeElement.textContent).toMatch(alertMessage);
   });
 
+  it('#openEntryModal should open diary entry modal component', () => {
+    const service = TestBed.inject(NgbModal) as jasmine.SpyObj<NgbModal>;
+
+    const modal: NgbModalRef = TestBed.inject(NgbModalRef);
+    service.open.and.returnValue(modal);
+
+    component.openEntryModal();
+
+    expect(modal.componentInstance.diaryEntry).toEqual(testDiaryEntry);
+    expect(service.open).toHaveBeenCalledWith(DiaryEntryModalComponent);
+  });
+
   it('#deleteEntry should emit deleted entry', () => {
-    service = TestBed.inject(DiaryEntryService) as
+    const service = TestBed.inject(DiaryEntryService) as
         jasmine.SpyObj<DiaryEntryService>;
 
     let deletedEntryId = '';
@@ -120,7 +149,7 @@ describe('DiaryEntryCardComponent', () => {
   });
 
   it('#deleteEntry should set alert message', () => {
-    service = TestBed.inject(DiaryEntryService) as
+    const service = TestBed.inject(DiaryEntryService) as
         jasmine.SpyObj<DiaryEntryService>;
 
     const alertMessage = 'This is a mock error observable.';
