@@ -95,13 +95,6 @@ export class DiaryEntryCardComponent {
 
     modal.componentInstance.modalTitle = 'Bearbeite Tagebucheintrag';
     modal.componentInstance.diaryEntry = this.diaryEntry;
-
-    modal.result.then((diaryEntry?: DiaryEntry) => {
-      if (diaryEntry) {
-        // update view of injected diary entry
-        this.diaryEntry = diaryEntry;
-      }
-    });
   }
 
   /**
