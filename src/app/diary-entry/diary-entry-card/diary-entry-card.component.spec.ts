@@ -3,9 +3,11 @@
  * @packageDocumentation
  */
 
-import { Directive, Input } from '@angular/core';
-import { By } from '@angular/platform-browser';
+import { Directive, Input, LOCALE_ID } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { registerLocaleData, formatDate } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
 import { of, throwError } from 'rxjs';
 
 import {
@@ -28,6 +30,9 @@ import {
 import {
   ImageModalComponent
 } from '../../image/image-modal/image-modal.component';
+
+
+registerLocaleData(localeDe);
 
 
 /**
@@ -80,7 +85,8 @@ describe('DiaryEntryCardComponent', () => {
       providers: [
         {provide: NgbModal, useValue: modalServiceSpy},
         {provide: NgbModalRef, useValue: mockModal},
-        {provide: DiaryEntryService, useValue: diaryServiceSpy}
+        {provide: DiaryEntryService, useValue: diaryServiceSpy},
+        {provide: LOCALE_ID, useValue: 'de'}
       ],
       imports: [
         NgbAlertModule
@@ -107,12 +113,20 @@ describe('DiaryEntryCardComponent', () => {
         .toMatch(testDiaryEntry.locationName);
   });
 
-  it('should reander diary entry\'s brief body', () => {
+  it('should render diary entry\'s brief body', () => {
     const cardText = fixture.debugElement.queryAll(
         By.css('.card-body .card-text'))[0];
 
-    expect(cardText.nativeElement.textContent)
-        .toMatch((new DiaryEntryBriefPipe()).transform(testDiaryEntry, 150));
+    expect(cardText.nativeElement.textContent).toMatch(
+        (new DiaryEntryBriefPipe()).transform(testDiaryEntry, 150));
+  });
+
+  it('should render diary entry\'s creation date', () => {
+    const cardText = fixture.debugElement.queryAll(
+        By.css('.card-body .card-text'))[1];
+
+    expect(cardText.nativeElement.textContent).toContain(
+        formatDate(testDiaryEntry.createdAt, 'mediumDate', 'de'));
   });
 
   it('should not render empty alert message', () => {
@@ -160,11 +174,11 @@ describe('DiaryEntryCardComponent', () => {
 
     component.openUpdateEntryModal();
 
-    expect(modal.componentInstance.modalTitle)
-        .toMatch('Bearbeite Tagebucheintrag');
+    expect(modal.componentInstance.modalTitle).toMatch(
+        'Bearbeite Tagebucheintrag');
 
-    expect(modal.componentInstance.diaryEntry)
-        .toEqual(testDiaryEntry);
+    expect(modal.componentInstance.diaryEntry).toEqual(
+        testDiaryEntry);
 
     expect(service.open).toHaveBeenCalledWith(
         DiaryEntryFormComponent, {backdrop: 'static', keyboard: false});
@@ -258,5 +272,45 @@ describe('DiaryEntryCardComponent', () => {
     fixture.detectChanges();
     const spinner = fixture.debugElement.query(By.css('.spinner-border'));
     expect(spinner).not.toBeNull();
+  });
+
+  it('edit button should be disabled when spinner is active', () => {
+    component.showSpinner = true;
+    fixture.detectChanges();
+
+    const editButton = fixture.debugElement.query(
+        By.css('.card-header .btn-primary'));
+
+    expect(editButton.nativeElement.disabled).toBeTrue();
+  });
+
+  it('image button should be disabled when spinner is active', () => {
+    component.showSpinner = true;
+    fixture.detectChanges();
+
+    const imageButton = fixture.debugElement.query(
+        By.css('.card-header .btn-secondary'));
+
+    expect(imageButton.nativeElement.disabled).toBeTrue();
+  });
+
+  it('delete button should be hidden when spinner is active', () => {
+    component.showSpinner = true;
+    fixture.detectChanges();
+
+    const deleteButton = fixture.debugElement.query(
+        By.css('.card-header .btn-danger'));
+
+    expect(deleteButton.nativeElement.hidden).toBeTrue();
+  });
+
+  it('read more button should be disabled when spinner is active', () => {
+    component.showSpinner = true;
+    fixture.detectChanges();
+
+    const readMoreButton = fixture.debugElement.query(
+        By.css('.card-body .btn-primary'));
+
+    expect(readMoreButton.nativeElement.disabled).toBeTrue();
   });
 });
