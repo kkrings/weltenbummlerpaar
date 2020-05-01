@@ -7,9 +7,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { of } from 'rxjs';
 
 import { DiaryEntryFormComponent } from './diary-entry-form.component';
 import { DiaryEntryService } from '../diary-entry.service';
+import { DIARY_ENTRIES } from '../diary-entries';
 
 
 /**
@@ -26,6 +28,8 @@ class MockNgbActiveModal {
 describe('DiaryEntryFormComponent', () => {
   let component: DiaryEntryFormComponent;
   let fixture: ComponentFixture<DiaryEntryFormComponent>;
+
+  const testEntry = DIARY_ENTRIES[0];
 
   beforeEach(async(() => {
     const diaryEntryServiceSpy = jasmine.createSpyObj(
@@ -139,5 +143,68 @@ describe('DiaryEntryFormComponent', () => {
     tagsInput.nativeElement.dispatchEvent(new Event('input'));
 
     expect(component.tags.value).toMatch(testTags);
+  });
+
+  it('#moveImageDown should move image down in image list', () => {
+    component.imageList = testEntry.images;
+    const testImage = component.imageList[0];
+    component.moveImageDown(0);
+    expect(component.imageList.indexOf(testImage)).toEqual(1);
+  });
+
+  it('#moveImageDown should wrap around last entry in image list', () => {
+    component.imageList = testEntry.images;
+    const testIndex = component.imageList.length - 1;
+    const testImage = component.imageList[testIndex];
+    component.moveImageDown(testIndex);
+    expect(component.imageList.indexOf(testImage)).toEqual(0);
+  });
+
+  it('#moveImageUp should move image up in image list', () => {
+    component.imageList = testEntry.images;
+    const testImage = component.imageList[1];
+    component.moveImageUp(1);
+    expect(component.imageList.indexOf(testImage)).toEqual(0);
+  });
+
+  it('#moveImageUp should wrap around first entry in image list', () => {
+    component.imageList = testEntry.images;
+
+    const testImage = component.imageList[0];
+    component.moveImageUp(0);
+
+    expect(component.imageList.indexOf(testImage)).toEqual(
+        component.imageList.length - 1);
+  });
+
+  it('#onSubmit should create new diary entry', () => {
+    const titleInput = fixture.debugElement.query(By.css('#title'));
+    titleInput.nativeElement.value = testEntry.title;
+    titleInput.nativeElement.dispatchEvent(new Event('input'));
+
+    const locationInput = fixture.debugElement.query(By.css('#location'));
+    locationInput.nativeElement.value = testEntry.locationName;
+    locationInput.nativeElement.dispatchEvent(new Event('input'));
+
+    const bodyInput = fixture.debugElement.query(By.css('#body'));
+    bodyInput.nativeElement.value = testEntry.body;
+    bodyInput.nativeElement.dispatchEvent(new Event('input'));
+
+    const tagsInput = fixture.debugElement.query(By.css('#tags'));
+    tagsInput.nativeElement.value = testEntry.tags.join(', ');
+    tagsInput.nativeElement.dispatchEvent(new Event('input'));
+
+    const service = TestBed.inject(DiaryEntryService) as
+        jasmine.SpyObj<DiaryEntryService>;
+
+    service.saveEntry.and.returnValue(of(testEntry));
+
+    const modal: NgbActiveModal = TestBed.inject(NgbActiveModal);
+    spyOn(modal, 'close');
+
+    component.onSubmit();
+
+    expect(component.diaryEntry).toEqual(testEntry);
+    expect(modal.close).toHaveBeenCalledWith(testEntry);
   });
 });
