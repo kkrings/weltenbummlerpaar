@@ -81,9 +81,9 @@
              placeholder="Stichwort, noch ein Stichwort, ..."
              value="{{tags.value}}">
     </div>
-    <div *ngIf="diaryEntry.images.length > 0">
+    <div *ngIf="imageList.length > 0">
       <h5 class="text-secondary">Fotoreihenfolge</h5>
-      <div *ngFor="let image of diaryEntry.images; let imageIndex = index">
+      <div *ngFor="let image of imageList; let imageIndex = index">
         <div class="mb-1">
           <button type="button"
                   class="btn btn-primary btn-sm"

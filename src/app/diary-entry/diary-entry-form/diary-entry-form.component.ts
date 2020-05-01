@@ -13,6 +13,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntry } from '../diary-entry.model';
+import { Image } from '../../image/image.model';
 
 
 /**
@@ -45,6 +46,11 @@ export class DiaryEntryFormComponent implements OnInit {
     createdAt: '',
     updatedAt: ''
   };
+
+  /**
+   * Shown vertical list of injected diary entry's images
+   */
+  imageList: Image[] = [];
 
   /**
    * Reactive form for creating/updating a diary entry
@@ -88,6 +94,8 @@ export class DiaryEntryFormComponent implements OnInit {
       body: [this.diaryEntry.body, Validators.required],
       tags: [this.diaryEntry.tags.join(', ')]
     });
+
+    this.imageList = [...this.diaryEntry.images];
   }
 
   /**
@@ -138,9 +146,9 @@ export class DiaryEntryFormComponent implements OnInit {
    *   Image's index
    */
   moveImageDown(index: number): void {
-    const next = (index + 1) % this.diaryEntry.images.length;
-    const image = this.diaryEntry.images.splice(index, 1)[0];
-    this.diaryEntry.images.splice(next, 0, image);
+    const next = (index + 1) % this.imageList.length;
+    const image = this.imageList.splice(index, 1)[0];
+    this.imageList.splice(next, 0, image);
   }
 
   /**
@@ -150,9 +158,9 @@ export class DiaryEntryFormComponent implements OnInit {
    *   Image's index
    */
   moveImageUp(index: number): void {
-    const prev = ((index > 0) ? index : this.diaryEntry.images.length) - 1;
-    const image = this.diaryEntry.images.splice(index, 1)[0];
-    this.diaryEntry.images.splice(prev, 0, image);
+    const prev = ((index > 0) ? index : this.imageList.length) - 1;
+    const image = this.imageList.splice(index, 1)[0];
+    this.imageList.splice(prev, 0, image);
   }
 
   /**
@@ -171,14 +179,20 @@ export class DiaryEntryFormComponent implements OnInit {
   onSubmit(): void {
     const formValue = this.diaryEntryForm.value;
 
-    this.diaryEntry.title = formValue.title;
-    this.diaryEntry.locationName = formValue.locationName;
-    this.diaryEntry.body = formValue.body;
-    this.diaryEntry.tags = formValue.tags.split(', ');
+    const entryFromForm: DiaryEntry = {
+      _id: this.diaryEntry._id,
+      title: formValue.title,
+      locationName: formValue.locationName,
+      body: formValue.body,
+      images: this.imageList,
+      tags: formValue.tags.split(', '),
+      createdAt: this.diaryEntry.createdAt,
+      updatedAt: this.diaryEntry.updatedAt
+    };
 
     const request = (this.diaryEntry._id)
-        ? this.diaryEntryService.updateEntry(this.diaryEntry)
-        : this.diaryEntryService.saveEntry(this.diaryEntry);
+        ? this.diaryEntryService.updateEntry(entryFromForm)
+        : this.diaryEntryService.saveEntry(entryFromForm);
 
     // reset alert message
     this.alertMessage = '';
@@ -190,7 +204,9 @@ export class DiaryEntryFormComponent implements OnInit {
     request.subscribe(
       (diaryEntry: DiaryEntry) => {
         this.processRequest = false;
-        this.modal.close(diaryEntry);
+        // update view of existing diary; give newly created diary
+        // entry to parent component
+        this.modal.close(Object.assign(this.diaryEntry, diaryEntry));
       },
       (error: string) => {
         this.processRequest = false;
