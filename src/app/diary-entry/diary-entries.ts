@@ -51,7 +51,10 @@ export const DIARY_ENTRIES: DiaryEntry[] = [
         updatedAt: (new Date()).toISOString(),
       },
     ],
-    tags: [],
+    tags: [
+      'First tag',
+      'Second tag'
+    ],
     createdAt: (new Date()).toISOString(),
     updatedAt: (new Date()).toISOString(),
   },
