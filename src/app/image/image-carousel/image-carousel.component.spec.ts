@@ -55,14 +55,16 @@ describe('ImageCarouselComponent', () => {
   });
 
   it('should render image\'s index', () => {
-    const index = fixture.debugElement.query(By.css('small.text-muted'));
+    const index = fixture.debugElement.query(
+        By.css('.carousel-item.active small.text-muted'));
 
     expect(index.nativeElement.textContent).toMatch(
       `1/${component.imageList.length}`);
   });
 
   it('should render image\'s description', () => {
-    const caption = fixture.debugElement.query(By.css('.figure-caption'));
+    const caption = fixture.debugElement.query(
+        By.css('.carousel-item.active .figure-caption'));
 
     expect(caption.nativeElement.textContent).toEqual(
         component.imageList[0].description); });
