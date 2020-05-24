@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { Image } from '../image.model';
 
@@ -19,19 +19,9 @@ import { Image } from '../image.model';
   templateUrl: './image-carousel.component.html',
   styleUrls: ['./image-carousel.component.scss']
 })
-export class ImageCarouselComponent implements OnInit {
+export class ImageCarouselComponent {
   /**
    * List of images to show in carousel
    */
   @Input() imageList: Image[];
-
-  /**
-   * Construct the image carousel component.
-   */
-  constructor() { }
-
-  /**
-   * Initialize the image carousel component.
-   */
-  ngOnInit(): void { }
 }
