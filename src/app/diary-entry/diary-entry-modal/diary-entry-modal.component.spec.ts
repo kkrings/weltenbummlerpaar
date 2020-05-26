@@ -37,7 +37,7 @@ class MockImageCarouselComponent {
  */
 class MockNgbActiveModal {
   /**
-   * Mock the close the active modal's close method.
+   * Mock the active modal's close method.
    */
   close(): void { }
 }
