@@ -47,7 +47,7 @@ describe('DiaryEntryFormComponent', () => {
 
   beforeEach(async(() => {
     const diaryEntryServiceSpy = jasmine.createSpyObj(
-      'DiaryEntryService', ['saveEntry', 'updateEntry']);
+        'DiaryEntryService', ['saveEntry', 'updateEntry']);
 
     TestBed.configureTestingModule({
       imports: [
