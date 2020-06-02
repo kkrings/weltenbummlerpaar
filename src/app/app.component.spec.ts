@@ -134,6 +134,7 @@ describe('AppComponent', () => {
   it('images\' alt attribute should match #welcomeMessage', () => {
     const images = fixture.debugElement.queryAll(By.css('img'));
     expect(images[0].nativeElement.alt).toEqual(app.welcomeMessage);
+    expect(images[1].nativeElement.alt).toEqual(app.welcomeMessage);
   });
 
   it('should render spinner', () => {
