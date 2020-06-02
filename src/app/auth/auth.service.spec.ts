@@ -80,5 +80,18 @@ describe('AuthService', () => {
     testRequest.flush({success: true, token: 'mockJWT'});
   });
 
+  it('test unsuccessfl login of admin user', () => {
+    authService.login('username', 'password')
+        .subscribe((success: boolean) => {
+          expect(success).toBeFalse();
+          expect(authService.isLoggedIn).toBeFalse();
+        }, fail);
+
+    const testRequest = httpTestingController.expectOne(
+        `${environment.baseurl}/db/admins/login`);
+
+    testRequest.flush({success: false});
+  });
+
   afterEach(() => httpTestingController.verify());
 });
