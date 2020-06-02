@@ -4,7 +4,7 @@
     <button type="button"
             class="close"
             [disabled]="showSpinner"
-            (click)="dismiss()">
+            (click)="close()">
       <span>&times;</span>
     </button>
   </div>
@@ -43,7 +43,7 @@
     <button type="button"
             class="btn btn-danger"
             [disabled]="showSpinner"
-            (click)="dismiss()">
+            (click)="close()">
       Abbrechen
     </button>
     <button type="submit"

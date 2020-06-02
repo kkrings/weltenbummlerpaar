@@ -4,7 +4,11 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import {
+  FormBuilder, FormControl, FormGroup, Validators
+} from '@angular/forms';
+
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthService } from '../auth.service';
@@ -65,6 +69,20 @@ export class AuthModalComponent implements OnInit {
   }
 
   /**
+   * Username form control
+   */
+  get username(): FormControl {
+    return this.adminLoginForm.get('username') as FormControl;
+  }
+
+  /**
+   * Password form control
+   */
+  get password(): FormControl {
+    return this.adminLoginForm.get('password') as FormControl;
+  }
+
+  /**
    * Show validation errors for the given form control.
    *
    * @param formControlName
@@ -86,10 +104,10 @@ export class AuthModalComponent implements OnInit {
   }
 
   /**
-   * Dismiss the admin login modal.
+   * Close the admin login modal.
    */
-  dismiss(): void {
-    this.modal.dismiss();
+  close(): void {
+    this.modal.close();
   }
 
   /**
