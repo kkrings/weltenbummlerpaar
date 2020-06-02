@@ -13,6 +13,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DiaryEntryModalComponent } from './diary-entry-modal.component';
 import { DIARY_ENTRIES } from '../diary-entries';
 import { Image } from '../../image/image.model';
+import { MockNgbActiveModal } from '../../shared/test-utils';
 
 
 registerLocaleData(localeDe);
@@ -30,16 +31,6 @@ class MockImageCarouselComponent {
    * Mock list of diary entry's images
    */
   @Input() imageList: Image[];
-}
-
-/**
- * Mock active modal
- */
-class MockNgbActiveModal {
-  /**
-   * Mock the active modal's close method.
-   */
-  close(): void { }
 }
 
 

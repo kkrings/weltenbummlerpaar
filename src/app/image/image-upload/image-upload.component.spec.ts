@@ -7,49 +7,14 @@ import { By } from '@angular/platform-browser';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
-import { defer, of } from 'rxjs';
+import { of } from 'rxjs';
 import { first, last } from 'rxjs/operators';
 
 import { ImageUploadComponent } from './image-upload.component';
 import { ImageService } from '../image.service';
 import { Image } from '../image.model';
 
-
-/**
- * Data observable
- *
- * Create an observable that emits the given data once and completes after a JS
- * engine turn.
- *
- * @typeParam T
- *   Data's type
- * @param data
- *   Data
- *
- * @returns
- *   Data observable
- */
-function asyncData<T>(data: T) {
-  return defer(() => Promise.resolve(data));
-}
-
-/**
- * Error observale
- *
- * Create an observable that emit the given error once and completes after a JS
- * engine turn.
- *
- * @typeParam T
- *   Error's type
- * @param error
- *   Error
- *
- * @returns
- *   Error observable
- */
-function asyncError<T>(error: T) {
-  return defer(() => Promise.reject(error));
-}
+import { asyncData, asyncError } from '../../shared/test-utils';
 
 
 describe('ImageUploadComponent', () => {

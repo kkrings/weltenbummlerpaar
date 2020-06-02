@@ -3,27 +3,13 @@
  * @packageDocumentation
  */
 
-import { Directive, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ImageCarouselComponent } from './image-carousel.component';
 import { DIARY_ENTRIES } from '../../diary-entry/diary-entries';
-
-
-/**
- * Mock image directive
- */
-@Directive({
-  selector: '[appImage]'
-})
-class MockImageDirective {
-  /**
-   * Mock image
-   */
-  @Input('appImage') mockImage = null;
-}
+import { MockImageDirective } from '../../shared/test-utils';
 
 
 describe('ImageCarouselComponent', () => {

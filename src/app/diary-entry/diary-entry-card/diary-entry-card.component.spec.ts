@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { Directive, Input, LOCALE_ID } from '@angular/core';
+import { Directive, LOCALE_ID } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { registerLocaleData, formatDate } from '@angular/common';
@@ -31,6 +31,8 @@ import {
   ImageModalComponent
 } from '../../image/image-modal/image-modal.component';
 
+import { MockImageDirective } from '../../shared/test-utils';
+
 
 registerLocaleData(localeDe);
 
@@ -42,19 +44,6 @@ registerLocaleData(localeDe);
   selector: '[appAuth]'
 })
 class MockAuthDirective {}
-
-/**
- * Mock image directive
- */
-@Directive({
-  selector: '[appImage]'
-})
-class MockImageDirective {
-  /**
-   * Mock image
-   */
-  @Input('appImage') mockImage = null;
-}
 
 
 describe('DiaryEntryCardComponent', () => {

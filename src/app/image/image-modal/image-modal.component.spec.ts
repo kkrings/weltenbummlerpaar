@@ -3,10 +3,7 @@
  * @packageDocumentation
  */
 
-import {
-  Component, Directive, Input, Output, EventEmitter
-} from '@angular/core';
-
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,29 +11,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ImageModalComponent } from './image-modal.component';
 import { Image } from '../image.model';
 
+import {
+  MockNgbActiveModal, MockImageDirective
+} from '../../shared/test-utils';
 
-/**
- * Mock active modal
- */
-class MockNgbActiveModal {
-  /**
-   * Mock the active modal's close method.
-   */
-  close(): void { }
-}
-
-/**
- * Mock image directive
- */
-@Directive({
-  selector: '[appImage]'
-})
-class MockImageDirective {
-  /**
-   * Mock image
-   */
-  @Input('appImage') mockImage = null;
-}
 
 /**
  * Mock image upload component
@@ -69,7 +47,7 @@ class MockImageUploadComponent {
    * Mock back-end server's processing status
    */
   @Output() processing = new EventEmitter<boolean>();
-}
+  }
 
 
 describe('ImageModalComponent', () => {

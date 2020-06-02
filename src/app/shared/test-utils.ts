@@ -3,6 +3,7 @@
  * @packageDocumentation
  */
 
+import { Directive, Input } from '@angular/core';
 import { defer } from 'rxjs';
 
 
@@ -16,6 +17,18 @@ export class MockNgbActiveModal {
   close(): void { }
 }
 
+/**
+ * Mock image directive
+ */
+@Directive({
+  selector: '[appImage]'
+})
+export class MockImageDirective {
+  /**
+   * Mock image
+   */
+  @Input('appImage') mockImage = null;
+}
 
 /**
  * Data observable

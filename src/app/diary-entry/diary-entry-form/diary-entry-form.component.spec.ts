@@ -3,7 +3,6 @@
  * @packageDocumentation
  */
 
-import { Directive, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -14,29 +13,9 @@ import { DiaryEntryFormComponent } from './diary-entry-form.component';
 import { DiaryEntryService } from '../diary-entry.service';
 import { DIARY_ENTRIES } from '../diary-entries';
 
-
-/**
- * Mock active modal
- */
-class MockNgbActiveModal {
-  /**
-   * Mock the close the active modal's close method.
-   */
-  close(): void { }
-}
-
-/**
- * Mock image directive
- */
-@Directive({
-  selector: '[appImage]'
-})
-class MockImageDirective {
-  /**
-   * Mock image
-   */
-  @Input('appImage') mockImage = null;
-}
+import {
+  MockNgbActiveModal, MockImageDirective
+} from '../../shared/test-utils';
 
 
 describe('DiaryEntryFormComponent', () => {
