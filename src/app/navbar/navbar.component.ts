@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthService } from '../auth/auth.service';
@@ -31,7 +31,7 @@ import {
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   /**
    * Send new diary entries back the parent component
    */
@@ -48,11 +48,6 @@ export class NavbarComponent implements OnInit {
   constructor(
       private authService: AuthService,
       private modalService: NgbModal) { }
-
-  /**
-   * Initialize the navigation bar component.
-   */
-  ngOnInit(): void { }
 
   /**
    * Admin login modal
