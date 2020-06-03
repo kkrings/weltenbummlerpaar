@@ -11,7 +11,8 @@ import { of, throwError } from 'rxjs';
 
 import { DiaryEntryFormComponent } from './diary-entry-form.component';
 import { DiaryEntryService } from '../diary-entry.service';
-import { DIARY_ENTRIES } from '../diary-entries';
+import { DiaryEntry } from '../diary-entry.model';
+import { Image } from '../../image/image.model';
 
 import {
   MockNgbActiveModal, MockImageDirective
@@ -22,7 +23,38 @@ describe('DiaryEntryFormComponent', () => {
   let component: DiaryEntryFormComponent;
   let fixture: ComponentFixture<DiaryEntryFormComponent>;
 
-  const testEntry = DIARY_ENTRIES[0];
+  const testEntry: DiaryEntry = {
+    _id: '0',
+    title: 'some title',
+    locationName: 'some location',
+    body: 'some body',
+    images: [],
+    tags: ['some tag', 'some other tag'],
+    createdAt: (new Date()).toISOString(),
+    updatedAt: (new Date()).toISOString()
+  };
+
+  const testImages: Image[] = [{
+    _id: '0',
+    description: 'some description',
+    createdAt: (new Date()).toISOString(),
+    updatedAt: (new Date()).toISOString()
+  }, {
+    _id: '1',
+    description: 'some description',
+    createdAt: (new Date()).toISOString(),
+    updatedAt: (new Date()).toISOString()
+  }, {
+    _id: '2',
+    description: 'some description',
+    createdAt: (new Date()).toISOString(),
+    updatedAt: (new Date()).toISOString()
+  }, {
+    _id: '3',
+    description: 'some description',
+    createdAt: (new Date()).toISOString(),
+    updatedAt: (new Date()).toISOString()
+  }];
 
   beforeEach(async(() => {
     const diaryEntryServiceSpy = jasmine.createSpyObj(
@@ -309,33 +341,33 @@ describe('DiaryEntryFormComponent', () => {
   });
 
   it('should render diary entry\'s images', () => {
-    component.imageList = testEntry.images;
+    component.imageList = testImages;
     fixture.detectChanges();
     const figures = fixture.debugElement.queryAll(By.css('figure'));
-    expect(figures.length).toEqual(testEntry.images.length);
+    expect(figures.length).toEqual(testImages.length);
   });
 
   it('should render diary entry\'s image descriptions', () => {
-    component.imageList = testEntry.images;
+    component.imageList = testImages;
     fixture.detectChanges();
 
     const captions = fixture.debugElement.queryAll(By.css('figcaption'));
 
     captions.forEach((caption, index) => {
-      const image = testEntry.images[index];
+      const image = testImages[index];
       expect(caption.nativeElement.textContent).toEqual(image.description);
     });
   });
 
   it('#moveImageDown should move image down in image list', () => {
-    component.imageList = testEntry.images;
+    component.imageList = [...testImages];
     const testImage = component.imageList[0];
     component.moveImageDown(0);
     expect(component.imageList.indexOf(testImage)).toEqual(1);
   });
 
   it('#moveImageDown should wrap around last entry in image list', () => {
-    component.imageList = testEntry.images;
+    component.imageList = [...testImages];
     const testIndex = component.imageList.length - 1;
     const testImage = component.imageList[testIndex];
     component.moveImageDown(testIndex);
@@ -343,11 +375,11 @@ describe('DiaryEntryFormComponent', () => {
   });
 
   it('move down buttons should trigger #moveImageDown', () => {
-    component.imageList = testEntry.images;
+    component.imageList = [...testImages];
     fixture.detectChanges();
 
     const buttons = fixture.debugElement.queryAll(By.css('.fa-arrow-down'));
-    expect(buttons.length).toEqual(testEntry.images.length);
+    expect(buttons.length).toEqual(testImages.length);
 
     spyOn(component, 'moveImageDown');
 
@@ -360,14 +392,14 @@ describe('DiaryEntryFormComponent', () => {
   });
 
   it('#moveImageUp should move image up in image list', () => {
-    component.imageList = testEntry.images;
+    component.imageList = [...testImages];
     const testImage = component.imageList[1];
     component.moveImageUp(1);
     expect(component.imageList.indexOf(testImage)).toEqual(0);
   });
 
   it('#moveImageUp should wrap around first entry in image list', () => {
-    component.imageList = testEntry.images;
+    component.imageList = [...testImages];
 
     const testImage = component.imageList[0];
     component.moveImageUp(0);
@@ -377,11 +409,11 @@ describe('DiaryEntryFormComponent', () => {
   });
 
   it('move up buttons should trigger #moveImageUp', () => {
-    component.imageList = testEntry.images;
+    component.imageList = [...testImages];
     fixture.detectChanges();
 
     const buttons = fixture.debugElement.queryAll(By.css('.fa-arrow-up'));
-    expect(buttons.length).toEqual(testEntry.images.length);
+    expect(buttons.length).toEqual(testImages.length);
 
     spyOn(component, 'moveImageUp');
 
