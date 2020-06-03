@@ -11,7 +11,7 @@ import localeDe from '@angular/common/locales/de';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryModalComponent } from './diary-entry-modal.component';
-import { DIARY_ENTRIES } from '../diary-entries';
+import { DiaryEntry } from '../diary-entry.model';
 import { Image } from '../../image/image.model';
 import { MockNgbActiveModal } from '../../shared/test-utils';
 
@@ -38,7 +38,26 @@ describe('DiaryEntryModalComponent', () => {
   let component: DiaryEntryModalComponent;
   let fixture: ComponentFixture<DiaryEntryModalComponent>;
 
-  const testDiaryEntry = DIARY_ENTRIES[0];
+  const testDiaryEntry: DiaryEntry = {
+    _id: '0',
+    title: 'some title',
+    locationName: 'some location',
+    body: 'some body',
+    images: [{
+      _id: '0',
+      description: 'some description',
+      createdAt: (new Date()).toISOString(),
+      updatedAt: (new Date()).toISOString()
+    }, {
+      _id: '1',
+      description: 'some description',
+      createdAt: (new Date()).toISOString(),
+      updatedAt: (new Date()).toISOString()
+    }],
+    tags: [],
+    createdAt: (new Date()).toISOString(),
+    updatedAt: (new Date()).toISOString()
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -56,7 +75,7 @@ describe('DiaryEntryModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DiaryEntryModalComponent);
     component = fixture.componentInstance;
-    component.diaryEntry = testDiaryEntry;
+    component.diaryEntry = {...testDiaryEntry};
     fixture.detectChanges();
   });
 
@@ -93,10 +112,30 @@ describe('DiaryEntryModalComponent', () => {
     expect(modalTitle.textContent).toMatch(testDiaryEntry.title);
   });
 
+  it('modal\'s body should show diary entry\'s images', () => {
+    const imageCarousel = fixture.debugElement.query(
+        By.directive(MockImageCarouselComponent));
+
+    const imageCarouselComponent = imageCarousel.injector.get(
+        MockImageCarouselComponent);
+
+    expect(imageCarouselComponent.imageList).toEqual(
+        component.diaryEntry.images);
+  });
+
+  it('modal\'s body should not show empty list of images', () => {
+    component.diaryEntry.images = [];
+    fixture.detectChanges();
+
+    const imageCarousel = fixture.debugElement.query(
+        By.directive(MockImageCarouselComponent));
+
+    expect(imageCarousel).toBeNull();
+  });
+
   it('modal\'s body should show diary entry\'s location name', () => {
     const locationName = fixture.debugElement
-        .query(By.css('.modal-body'))
-        .children[1]
+        .query(By.css('.modal-body > h6.text-secondary'))
         .nativeElement;
 
     expect(locationName.textContent).toMatch(testDiaryEntry.locationName);
@@ -104,8 +143,7 @@ describe('DiaryEntryModalComponent', () => {
 
   it('modal\'s body should show diary entry\'s body', () => {
     const body = fixture.debugElement
-        .query(By.css('.modal-body'))
-        .children[2]
+        .query(By.css('.modal-body > p.text-pre-line'))
         .nativeElement;
 
     expect(body.textContent).toMatch(testDiaryEntry.body);
@@ -113,8 +151,7 @@ describe('DiaryEntryModalComponent', () => {
 
   it('modal\'s body should show diary entry\'s creation date', () => {
     const createdAt = fixture.debugElement
-        .query(By.css('.modal-body'))
-        .children[3]
+        .query(By.css('.modal-body > p > small.text-muted'))
         .nativeElement;
 
     expect(createdAt.textContent).toContain(formatDate(
