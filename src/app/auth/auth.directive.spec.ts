@@ -4,8 +4,8 @@
  */
 
 import { Component } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import { async, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
 import { AuthDirective } from './auth.directive';
 import { AuthService } from './auth.service';
