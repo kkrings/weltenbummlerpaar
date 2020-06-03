@@ -8,7 +8,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { registerLocaleData, formatDate } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
-import { of, throwError } from 'rxjs';
 
 import {
   NgbAlertModule, NgbModal, NgbModalRef
@@ -17,7 +16,7 @@ import {
 import { DiaryEntryCardComponent } from './diary-entry-card.component';
 import { DiaryEntryBriefPipe } from '../diary-entry-brief.pipe';
 import { DiaryEntryService } from '../diary-entry.service';
-import { DIARY_ENTRIES } from '../diary-entries';
+import { DiaryEntry } from '../diary-entry.model';
 
 import {
   DiaryEntryModalComponent
@@ -31,7 +30,9 @@ import {
   ImageModalComponent
 } from '../../image/image-modal/image-modal.component';
 
-import { MockImageDirective } from '../../shared/test-utils';
+import {
+  MockImageDirective, asyncData, asyncError
+} from '../../shared/test-utils';
 
 
 registerLocaleData(localeDe);
@@ -50,7 +51,16 @@ describe('DiaryEntryCardComponent', () => {
   let component: DiaryEntryCardComponent;
   let fixture: ComponentFixture<DiaryEntryCardComponent>;
 
-  const testDiaryEntry = DIARY_ENTRIES[0];
+  const testDiaryEntry: DiaryEntry = {
+    _id: '0',
+    title: 'some title',
+    locationName: 'some location',
+    body: 'some body',
+    images: [],
+    tags: [],
+    createdAt: (new Date()).toISOString(),
+    updatedAt: (new Date()).toISOString()
+  };
 
   beforeEach(async(() => {
     const modalServiceSpy = jasmine.createSpyObj('NgbModal', ['open']);
@@ -61,8 +71,6 @@ describe('DiaryEntryCardComponent', () => {
 
     const diaryServiceSpy = jasmine.createSpyObj(
         'DiaryEntryService', ['deleteEntry']);
-
-    diaryServiceSpy.deleteEntry.and.returnValue(of(testDiaryEntry));
 
     TestBed.configureTestingModule({
       declarations: [
@@ -86,8 +94,26 @@ describe('DiaryEntryCardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DiaryEntryCardComponent);
     component = fixture.componentInstance;
-    component.diaryEntry = testDiaryEntry;
+    component.diaryEntry = {...testDiaryEntry};
     fixture.detectChanges();
+  });
+
+  it('should not render diary entry\'s first image', () => {
+    const cardImage = fixture.debugElement.query(By.css('.card-img-top'));
+    expect(cardImage).toBeNull();
+  });
+
+  it('should render diary entry\'s first image', () => {
+    component.diaryEntry.images = [{
+      _id: '0',
+      description: 'some description',
+      createdAt: (new Date()).toISOString(),
+      updatedAt: (new Date()).toISOString()
+    }];
+
+    fixture.detectChanges();
+    const cardImage = fixture.debugElement.query(By.css('.card-img-top'));
+    expect(cardImage).not.toBeNull();
   });
 
   it('should render diary entry\'s title', () => {
@@ -98,8 +124,8 @@ describe('DiaryEntryCardComponent', () => {
   it('should render diary entry\'s location name', () => {
     const cardSubtitle = fixture.debugElement.query(By.css('.card-subtitle'));
 
-    expect(cardSubtitle.nativeElement.textContent)
-        .toMatch(testDiaryEntry.locationName);
+    expect(cardSubtitle.nativeElement.textContent).toMatch(
+        testDiaryEntry.locationName);
   });
 
   it('should render diary entry\'s brief body', () => {
@@ -207,9 +233,13 @@ describe('DiaryEntryCardComponent', () => {
     expect(component.openImageModal).toHaveBeenCalled();
   });
 
-  it('#deleteEntry should emit deleted entry', () => {
+  it('#deleteEntry should emit deleted entry', async(() => {
+    component.alertMessage = 'This is mock alert message.';
+
     const service = TestBed.inject(DiaryEntryService) as
         jasmine.SpyObj<DiaryEntryService>;
+
+    service.deleteEntry.and.returnValue(asyncData(testDiaryEntry));
 
     let deletedEntryId = '';
 
@@ -218,28 +248,32 @@ describe('DiaryEntryCardComponent', () => {
     });
 
     component.deleteEntry();
-    expect(deletedEntryId).toMatch(testDiaryEntry._id);
-    expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry._id);
-  });
 
-  it('#deleteEntry should reset alert message', () => {
-    component.alertMessage = 'This is mock alert message.';
-    component.deleteEntry();
-    expect(component.alertMessage).toMatch('');
-  });
+    expect(component.showSpinner).toBeTrue();
+    expect(component.alertMessage).toEqual('');
 
-  it('#deleteEntry should set alert message', () => {
+    fixture.whenStable().then(() => {
+      expect(deletedEntryId).toEqual(testDiaryEntry._id);
+      expect(component.showSpinner).toBeFalse();
+      expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry._id);
+    });
+  }));
+
+  it('#deleteEntry should set alert message', async(() => {
     const service = TestBed.inject(DiaryEntryService) as
         jasmine.SpyObj<DiaryEntryService>;
 
     const alertMessage = 'This is a mock error observable.';
-    service.deleteEntry.and.returnValue(throwError(alertMessage));
+    service.deleteEntry.and.returnValue(asyncError(alertMessage));
 
     component.deleteEntry();
 
-    expect(component.alertMessage).toMatch(alertMessage);
-    expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry._id);
-  });
+    fixture.whenStable().then(() => {
+      expect(component.alertMessage).toEqual(alertMessage);
+      expect(component.showSpinner).toBeFalse();
+      expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry._id);
+    });
+  }));
 
   it('delete button should trigger #deletedEntry', () => {
     spyOn(component, 'deleteEntry');
@@ -251,7 +285,7 @@ describe('DiaryEntryCardComponent', () => {
     expect(component.deleteEntry).toHaveBeenCalled();
   });
 
-  it('should not initially render spinner', () => {
+  it('should not render spinner', () => {
     const spinner = fixture.debugElement.query(By.css('.spinner-border'));
     expect(spinner).toBeNull();
   });
