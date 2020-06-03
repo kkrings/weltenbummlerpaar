@@ -21,6 +21,10 @@
       "dom"
     ]
   },
+  "typedocOptions": {
+      "inputFiles": ["./src/app/app.module.ts"],
+      "out": "./docs"
+  },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
