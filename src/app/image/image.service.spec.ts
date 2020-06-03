@@ -138,7 +138,7 @@ describe('ImageService', () => {
     testRequest.flush(testImage);
   });
 
-  it('#updateImage without file should return image', async () => {
+  it('#updateImage without file should return image', () => {
     const testImage: Image = {
       _id: '0',
       description: 'This is a test image.',
@@ -158,7 +158,7 @@ describe('ImageService', () => {
     testRequest.flush(testImage);
   });
 
-  it('#updateImage should return alert message', async () => {
+  it('#updateImage should return alert message', () => {
     const testImage: Image = {
       _id: '0',
       description: 'This is a test image.',
