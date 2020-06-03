@@ -10,7 +10,6 @@ import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryGridComponent } from './diary-entry-grid.component';
 import { DiaryEntry } from '../diary-entry.model';
-import { DIARY_ENTRIES } from '../diary-entries';
 
 
 /**
@@ -52,7 +51,27 @@ describe('DiaryEntryGridComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DiaryEntryGridComponent);
     component = fixture.componentInstance;
-    component.diaryEntries = [...DIARY_ENTRIES];
+
+    component.diaryEntries = [{
+      _id: '0',
+      title: 'some title',
+      locationName: 'some location',
+      body: 'some body',
+      images: [],
+      tags: [],
+      createdAt: (new Date()).toISOString(),
+      updatedAt: (new Date()).toISOString()
+    }, {
+      _id: '1',
+      title: 'some title',
+      locationName: 'some location',
+      body: 'some body',
+      images: [],
+      tags: [],
+      createdAt: (new Date()).toISOString(),
+      updatedAt: (new Date()).toISOString()
+    }];
+
     fixture.detectChanges();
   });
 
