@@ -8,7 +8,6 @@ import { By } from '@angular/platform-browser';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ImageCarouselComponent } from './image-carousel.component';
-import { DIARY_ENTRIES } from '../../diary-entry/diary-entries';
 import { MockImageDirective } from '../../shared/test-utils';
 
 
@@ -31,7 +30,19 @@ describe('ImageCarouselComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ImageCarouselComponent);
     component = fixture.componentInstance;
-    component.imageList = [...DIARY_ENTRIES[0].images];
+
+    component.imageList = [{
+      _id: '0',
+      description: 'some description',
+      createdAt: (new Date()).toISOString(),
+      updatedAt: (new Date()).toISOString()
+    }, {
+      _id: '1',
+      description: 'some description',
+      createdAt: (new Date()).toISOString(),
+      updatedAt: (new Date()).toISOString()
+    }];
+
     fixture.detectChanges();
   });
 
