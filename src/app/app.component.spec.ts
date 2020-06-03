@@ -1,5 +1,6 @@
 /**
  * Unit tests for root component
+ * @packageDocumentation
  */
 
 import { Component, Input, Output, EventEmitter } from '@angular/core';
