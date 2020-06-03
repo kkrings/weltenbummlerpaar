@@ -71,7 +71,7 @@ describe('DiaryEntryFormComponent', () => {
     expect(alert.nativeElement.textContent).toMatch(alertMessage);
   });
 
-  it('should not initially render spinner', () => {
+  it('should not render spinner', () => {
     const spinner = fixture.debugElement.query(By.css('.spinner-border'));
     expect(spinner).toBeNull();
   });
@@ -83,38 +83,35 @@ describe('DiaryEntryFormComponent', () => {
     expect(spinner).not.toBeNull();
   });
 
-  it('header\'s dismiss button should be disabled when spinner is active',
-      () => {
-        component.processRequest = true;
-        fixture.detectChanges();
+  it('header\'s dismiss button should be disabled', () => {
+    component.processRequest = true;
+    fixture.detectChanges();
 
-        const closeButton = fixture.debugElement.query(
-            By.css('.modal-header button.close'));
+    const closeButton = fixture.debugElement.query(
+        By.css('.modal-header button.close'));
 
-        expect(closeButton.nativeElement.disabled).toBeTrue();
-      });
+    expect(closeButton.nativeElement.disabled).toBeTrue();
+  });
 
-  it('footer\'s abort button should be disabled when spinner is active',
-      () => {
-        component.processRequest = true;
-        fixture.detectChanges();
+  it('footer\'s abort button should be disabled', () => {
+    component.processRequest = true;
+    fixture.detectChanges();
 
-        const abortButton = fixture.debugElement.query(
-            By.css('.modal-footer button.btn.btn-danger'));
+    const abortButton = fixture.debugElement.query(
+        By.css('.modal-footer button.btn.btn-danger'));
 
-        expect(abortButton.nativeElement.disabled).toBeTrue();
-      });
+    expect(abortButton.nativeElement.disabled).toBeTrue();
+  });
 
-  it('footer\'s submit button should be hidden when spinner is active',
-      () => {
-        component.processRequest = true;
-        fixture.detectChanges();
+  it('footer\'s submit button should be hidden', () => {
+    component.processRequest = true;
+    fixture.detectChanges();
 
-        const submitButton = fixture.debugElement.query(
-            By.css('.modal-footer button.btn.btn-primary'));
+    const submitButton = fixture.debugElement.query(
+        By.css('.modal-footer button.btn.btn-primary'));
 
-        expect(submitButton.nativeElement.hidden).toBeTrue();
-      });
+    expect(submitButton.nativeElement.hidden).toBeTrue();
+  });
 
   it('#closeModal should close modal', () => {
     const modal: NgbActiveModal = TestBed.inject(NgbActiveModal);
@@ -141,20 +138,20 @@ describe('DiaryEntryFormComponent', () => {
     expect(component.closeModal).toHaveBeenCalled();
   });
 
-  it('value of form control title should be empty', () => {
+  it('title form control should be empty', () => {
     const titleInput = fixture.debugElement.query(By.css('#title'));
     expect(titleInput.nativeElement.value).toEqual('');
   });
 
   it('#title.value should match entered title', () => {
-    const testTitle = 'Some title';
+    const testTitle = 'some title';
     const titleInput = fixture.debugElement.query(By.css('#title'));
     titleInput.nativeElement.value = testTitle;
     titleInput.nativeElement.dispatchEvent(new Event('input'));
     expect(component.title.value).toEqual(testTitle);
   });
 
-  it('value of form control title should match diary entry\'s title', () => {
+  it('title form control should match diary entry\'s title', () => {
     component.diaryEntry = testEntry;
     component.ngOnInit();
     fixture.detectChanges();
@@ -175,43 +172,35 @@ describe('DiaryEntryFormComponent', () => {
     expect(errorMessage).toBeNull();
   });
 
-  it('should render title\'s validation error when invalid and touched',
-      () => {
-        component.title.markAsTouched();
-        fixture.detectChanges();
+  it('should render title\'s validation error', () => {
+    component.title.markAsTouched();
+    fixture.detectChanges();
+    const errorMessage = fixture.debugElement.query(By.css('#title + div'));
+    expect(errorMessage).not.toBeNull();
+  });
 
-        const errorMessage = fixture.debugElement.query(
-            By.css('#title + div'));
-
-        expect(errorMessage).not.toBeNull();
-      });
-
-  it('should render title\'s validation error when invalid and dirty', () => {
+  it('should render title\'s validation error', () => {
     component.title.markAsDirty();
     fixture.detectChanges();
     const errorMessage = fixture.debugElement.query(By.css('#title + div'));
     expect(errorMessage).not.toBeNull();
   });
 
-  it('value of form control location should be empty', () => {
+  it('location form control should be empty', () => {
     const locationInput = fixture.debugElement.query(By.css('#location'));
     expect(locationInput.nativeElement.value).toEqual('');
   });
 
-  it('value of form control location should match diary entry\'s location',
-      () => {
-        component.diaryEntry = testEntry;
-        component.ngOnInit();
-        fixture.detectChanges();
-
-        const locationInput = fixture.debugElement.query(By.css('#location'));
-
-        expect(locationInput.nativeElement.value).toEqual(
-            testEntry.locationName);
-      });
+  it('location form control should match diary entry\'s location', () => {
+    component.diaryEntry = testEntry;
+    component.ngOnInit();
+    fixture.detectChanges();
+    const locationInput = fixture.debugElement.query(By.css('#location'));
+    expect(locationInput.nativeElement.value).toEqual(testEntry.locationName);
+  });
 
   it('#location.value should match location entered by user', () => {
-    const testLocation = 'Some location';
+    const testLocation = 'some location';
     const locationInput = fixture.debugElement.query(By.css('#location'));
     locationInput.nativeElement.value = testLocation;
     locationInput.nativeElement.dispatchEvent(new Event('input'));
@@ -223,7 +212,7 @@ describe('DiaryEntryFormComponent', () => {
     expect(errorMessage).toBeNull();
   });
 
-  it('should not render location\'s validation error when valid', () => {
+  it('should not render location\'s validation error', () => {
     const locationInput = fixture.debugElement.query(By.css('#location'));
     locationInput.nativeElement.value = testEntry.locationName;
     locationInput.nativeElement.dispatchEvent(new Event('input'));
@@ -231,34 +220,26 @@ describe('DiaryEntryFormComponent', () => {
     expect(errorMessage).toBeNull();
   });
 
-  it('should render location\'s validation error when invalid and touched',
-      () => {
-        component.locationName.markAsTouched();
-        fixture.detectChanges();
-
-        const errorMessage = fixture.debugElement.query(
-            By.css('#location + div'));
-
-        expect(errorMessage).not.toBeNull();
-      });
-
-  it('should render location\'s validation error when invalid and dirty',
-      () => {
-        component.locationName.markAsDirty();
-        fixture.detectChanges();
-
-        const errorMessage = fixture.debugElement.query(
-            By.css('#location + div'));
-
-        expect(errorMessage).not.toBeNull();
+  it('should render location\'s validation error', () => {
+    component.locationName.markAsTouched();
+    fixture.detectChanges();
+    const errorMessage = fixture.debugElement.query(By.css('#location + div'));
+    expect(errorMessage).not.toBeNull();
   });
 
-  it('value of form control body should be empty', () => {
+  it('should render location\'s validation error', () => {
+    component.locationName.markAsDirty();
+    fixture.detectChanges();
+    const errorMessage = fixture.debugElement.query(By.css('#location + div'));
+    expect(errorMessage).not.toBeNull();
+  });
+
+  it('body form control should be empty', () => {
     const bodyInput = fixture.debugElement.query(By.css('#body'));
     expect(bodyInput.nativeElement.value).toEqual('');
   });
 
-  it('value of form control body should match diary entry\'s body', () => {
+  it('body form control should match diary entry\'s body', () => {
     component.diaryEntry = testEntry;
     component.ngOnInit();
     fixture.detectChanges();
@@ -267,7 +248,7 @@ describe('DiaryEntryFormComponent', () => {
   });
 
   it('#body.value should match body entered by user', () => {
-    const testBody = 'Some body';
+    const testBody = 'some body';
     const bodyInput = fixture.debugElement.query(By.css('#body'));
     bodyInput.nativeElement.value = testBody;
     bodyInput.nativeElement.dispatchEvent(new Event('input'));
@@ -279,7 +260,7 @@ describe('DiaryEntryFormComponent', () => {
     expect(errorMessage).toBeNull();
   });
 
-  it('should not render body\'s validation error when valid', () => {
+  it('should not render body\'s validation error', () => {
     const bodyInput = fixture.debugElement.query(By.css('#body'));
     bodyInput.nativeElement.value = testEntry.locationName;
     bodyInput.nativeElement.dispatchEvent(new Event('input'));
@@ -287,14 +268,14 @@ describe('DiaryEntryFormComponent', () => {
     expect(errorMessage).toBeNull();
   });
 
-  it('should render body\'s validation error when invalid and touched', () => {
+  it('should render body\'s validation error', () => {
     component.body.markAsTouched();
     fixture.detectChanges();
     const errorMessage = fixture.debugElement.query(By.css('#body + div'));
     expect(errorMessage).not.toBeNull();
   });
 
-  it('should render body\'s validation error when invalid and dirty', () => {
+  it('should render body\'s validation error', () => {
     component.body.markAsDirty();
     fixture.detectChanges();
     const errorMessage = fixture.debugElement.query(By.css('#body + div'));
@@ -302,24 +283,48 @@ describe('DiaryEntryFormComponent', () => {
   });
 
   it('#tags.value should match tags entered by user', () => {
-    const testTags = 'Some tag, some other tag';
+    const testTags = 'some tag, some other tag';
     const tagsInput = fixture.debugElement.query(By.css('#tags'));
     tagsInput.nativeElement.value = testTags;
     tagsInput.nativeElement.dispatchEvent(new Event('input'));
     expect(component.tags.value).toEqual(testTags);
   });
 
-  it('value of form control tags should be empty', () => {
+  it('tags form control should be empty', () => {
     const tagsInput = fixture.debugElement.query(By.css('#tags'));
     expect(tagsInput.nativeElement.value).toEqual('');
   });
 
-  it('value of form control tags should match diary entry\'s tags', () => {
+  it('tags form control should match diary entry\'s tags', () => {
     component.diaryEntry = testEntry;
     component.ngOnInit();
     fixture.detectChanges();
     const tagsInput = fixture.debugElement.query(By.css('#tags'));
     expect(tagsInput.nativeElement.value).toEqual(testEntry.tags.join(', '));
+  });
+
+  it('should not render diary entry\'s images', () => {
+    const figures = fixture.debugElement.queryAll(By.css('figure'));
+    expect(figures.length).toEqual(0);
+  });
+
+  it('should render diary entry\'s images', () => {
+    component.imageList = testEntry.images;
+    fixture.detectChanges();
+    const figures = fixture.debugElement.queryAll(By.css('figure'));
+    expect(figures.length).toEqual(testEntry.images.length);
+  });
+
+  it('should render diary entry\'s image descriptions', () => {
+    component.imageList = testEntry.images;
+    fixture.detectChanges();
+
+    const captions = fixture.debugElement.queryAll(By.css('figcaption'));
+
+    captions.forEach((caption, index) => {
+      const image = testEntry.images[index];
+      expect(caption.nativeElement.textContent).toEqual(image.description);
+    });
   });
 
   it('#moveImageDown should move image down in image list', () => {
@@ -337,6 +342,23 @@ describe('DiaryEntryFormComponent', () => {
     expect(component.imageList.indexOf(testImage)).toEqual(0);
   });
 
+  it('move down buttons should trigger #moveImageDown', () => {
+    component.imageList = testEntry.images;
+    fixture.detectChanges();
+
+    const buttons = fixture.debugElement.queryAll(By.css('.fa-arrow-down'));
+    expect(buttons.length).toEqual(testEntry.images.length);
+
+    spyOn(component, 'moveImageDown');
+
+    buttons.forEach((button, index) => {
+      if (button.parent) {
+        button.parent.triggerEventHandler('click', null);
+        expect(component.moveImageDown).toHaveBeenCalledWith(index);
+      }
+    });
+  });
+
   it('#moveImageUp should move image up in image list', () => {
     component.imageList = testEntry.images;
     const testImage = component.imageList[1];
@@ -352,6 +374,23 @@ describe('DiaryEntryFormComponent', () => {
 
     expect(component.imageList.indexOf(testImage)).toEqual(
         component.imageList.length - 1);
+  });
+
+  it('move up buttons should trigger #moveImageUp', () => {
+    component.imageList = testEntry.images;
+    fixture.detectChanges();
+
+    const buttons = fixture.debugElement.queryAll(By.css('.fa-arrow-up'));
+    expect(buttons.length).toEqual(testEntry.images.length);
+
+    spyOn(component, 'moveImageUp');
+
+    buttons.forEach((button, index) => {
+      if (button.parent) {
+        button.parent.triggerEventHandler('click', null);
+        expect(component.moveImageUp).toHaveBeenCalledWith(index);
+      }
+    });
   });
 
   it('#onSubmit should create new diary entry', () => {
