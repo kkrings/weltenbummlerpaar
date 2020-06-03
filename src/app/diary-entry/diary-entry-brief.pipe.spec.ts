@@ -10,9 +10,9 @@ import { DiaryEntry } from './diary-entry.model';
 describe('DiaryEntryBriefPipe', () => {
   const diaryEntry: DiaryEntry = {
     _id: '0',
-    title: 'Some title',
-    locationName: 'Some location',
-    body: 'Some body',
+    title: 'some title',
+    locationName: 'some location',
+    body: 'some body',
     images: [],
     tags: [],
     createdAt: (new Date()).toISOString(),
