@@ -7,7 +7,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgbAlertModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { of, throwError } from 'rxjs';
 
 import { DiaryEntryFormComponent } from './diary-entry-form.component';
 import { DiaryEntryService } from '../diary-entry.service';
@@ -15,7 +14,7 @@ import { DiaryEntry } from '../diary-entry.model';
 import { Image } from '../../image/image.model';
 
 import {
-  MockNgbActiveModal, MockImageDirective
+  MockNgbActiveModal, MockImageDirective, asyncData, asyncError
 } from '../../shared/test-utils';
 
 
@@ -425,45 +424,49 @@ describe('DiaryEntryFormComponent', () => {
     });
   });
 
-  it('#onSubmit should create new diary entry', () => {
-    const diaryEntry = {...component.diaryEntry};
+  it('#onSubmit should create new diary entry', async(() => {
+    component.alertMessage = 'This is a mock alert message.';
 
-    diaryEntry.title = testEntry.title;
-    const titleInput = fixture.debugElement.query(By.css('#title'));
-    titleInput.nativeElement.value = testEntry.title;
-    titleInput.nativeElement.dispatchEvent(new Event('input'));
+    const diaryEntry: DiaryEntry = {
+      _id: component.diaryEntry._id,
+      title: testEntry.title,
+      locationName: testEntry.locationName,
+      body: testEntry.body,
+      images: component.diaryEntry.images,
+      tags: testEntry.tags,
+      createdAt: component.diaryEntry.createdAt,
+      updatedAt: component.diaryEntry.updatedAt
+    };
 
-    diaryEntry.locationName = testEntry.locationName;
-    const locationInput = fixture.debugElement.query(By.css('#location'));
-    locationInput.nativeElement.value = testEntry.locationName;
-    locationInput.nativeElement.dispatchEvent(new Event('input'));
-
-    diaryEntry.body = testEntry.body;
-    const bodyInput = fixture.debugElement.query(By.css('#body'));
-    bodyInput.nativeElement.value = testEntry.body;
-    bodyInput.nativeElement.dispatchEvent(new Event('input'));
-
-    diaryEntry.tags = testEntry.tags;
-    const tagsInput = fixture.debugElement.query(By.css('#tags'));
-    tagsInput.nativeElement.value = testEntry.tags.join(', ');
-    tagsInput.nativeElement.dispatchEvent(new Event('input'));
+    component.diaryEntryForm.setValue({
+      title: testEntry.title,
+      locationName: testEntry.locationName,
+      body: testEntry.body,
+      tags: testEntry.tags.join(', ')
+    });
 
     const service = TestBed.inject(DiaryEntryService) as
         jasmine.SpyObj<DiaryEntryService>;
 
-    service.saveEntry.and.returnValue(of(testEntry));
+    service.saveEntry.and.returnValue(asyncData(testEntry));
 
     const modal: NgbActiveModal = TestBed.inject(NgbActiveModal);
     spyOn(modal, 'close');
 
     component.onSubmit();
 
-    expect(service.saveEntry).toHaveBeenCalledWith(diaryEntry);
-    expect(component.diaryEntry).toEqual(testEntry);
-    expect(modal.close).toHaveBeenCalledWith(testEntry);
-  });
+    expect(component.alertMessage).toEqual('');
+    expect(component.processRequest).toBeTrue();
 
-  it('#onSubmit should update injected diary entry', () => {
+    fixture.whenStable().then(() => {
+      expect(component.processRequest).toBeFalse();
+      expect(component.diaryEntry).toEqual(testEntry);
+      expect(service.saveEntry).toHaveBeenCalledWith(diaryEntry);
+      expect(modal.close).toHaveBeenCalledWith(testEntry);
+    });
+  }));
+
+  it('#onSubmit should update injected diary entry', async(() => {
     component.diaryEntry = {...testEntry};
     component.ngOnInit();
 
@@ -471,35 +474,22 @@ describe('DiaryEntryFormComponent', () => {
 
     const updatedEntry = {...testEntry};
     updatedEntry.title = 'updated title';
-
-    const titleInput = fixture.debugElement.query(By.css('#title'));
-    titleInput.nativeElement.value = updatedEntry.title;
-    titleInput.nativeElement.dispatchEvent(new Event('input'));
+    component.title.setValue(updatedEntry.title);
 
     const service = TestBed.inject(DiaryEntryService) as
         jasmine.SpyObj<DiaryEntryService>;
 
-    service.updateEntry.and.returnValue(of(updatedEntry));
+    service.updateEntry.and.returnValue(asyncData(updatedEntry));
 
     component.onSubmit();
 
-    expect(service.updateEntry).toHaveBeenCalledWith(updatedEntry);
-    expect(component.diaryEntry).toEqual(updatedEntry);
-  });
+    fixture.whenStable().then(() => {
+      expect(service.updateEntry).toHaveBeenCalledWith(updatedEntry);
+      expect(component.diaryEntry).toEqual(updatedEntry);
+    });
+  }));
 
-  it('#onSubmit should reset alert message', () => {
-    const service = TestBed.inject(DiaryEntryService) as
-        jasmine.SpyObj<DiaryEntryService>;
-
-    service.saveEntry.and.returnValue(of(testEntry));
-
-    component.alertMessage = 'This is mock alert message.';
-    component.onSubmit();
-
-    expect(component.alertMessage).toEqual('');
-  });
-
-  it('#onSubmit should set alert message', () => {
+  it('#onSubmit should set alert message', async(() => {
     component.diaryEntry = {...testEntry};
     component.ngOnInit();
 
@@ -508,12 +498,14 @@ describe('DiaryEntryFormComponent', () => {
     const service = TestBed.inject(DiaryEntryService) as
         jasmine.SpyObj<DiaryEntryService>;
 
-    const alertMessage = 'This is a mock error observable.';
-    service.updateEntry.and.returnValue(throwError(alertMessage));
+    const alertMessage = 'This is a mock alert message.';
+    service.updateEntry.and.returnValue(asyncError(alertMessage));
 
     component.onSubmit();
 
-    expect(service.updateEntry).toHaveBeenCalledWith(testEntry);
-    expect(component.alertMessage).toEqual(alertMessage);
-  });
+    fixture.whenStable().then(() => {
+      expect(component.processRequest).toBeFalse();
+      expect(component.alertMessage).toEqual(alertMessage);
+    });
+  }));
 });
