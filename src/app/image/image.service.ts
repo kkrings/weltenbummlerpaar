@@ -102,50 +102,6 @@ export class ImageService {
   }
 
   /**
-   * Compress the given image inside a web worker.
-   *
-   * @param image
-   *   Image file
-   *
-   * @returns
-   *   The compressed image file
-   */
-  compressImage(image: File): Observable<File> {
-    const compImage = new Subject<File>();
-
-    if (typeof Worker !== 'undefined') {
-      const compWorker = new Worker('./image.worker', {type: 'module'});
-
-      compWorker.onmessage = ({data}) => {
-        const file = new File([data], image.name);
-        compImage.next(file);
-      };
-
-      compWorker.onerror = (error) => {
-        compImage.error(error);
-      };
-
-      const imageReader = new FileReader();
-
-      imageReader.onload = () => {
-        compWorker.postMessage(imageReader.result);
-      };
-
-      imageReader.onerror = () => {
-        compImage.error(imageReader.error);
-      };
-
-      imageReader.readAsDataURL(image);
-    } else {
-      compImage.error(
-          `Cannot compress ${image} because web workers are not ` +
-          'supported in this environment.');
-    }
-
-    return compImage;
-  }
-
-  /**
    * Delete an image from the back-end server given its ID.
    *
    * @param entryId

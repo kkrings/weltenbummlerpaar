@@ -28,7 +28,6 @@ describe('ImageUploadComponent', () => {
       'uploadImage',
       'updateImage',
       'deleteImage',
-      'compressImage'
     ]);
 
     TestBed.configureTestingModule({
@@ -294,10 +293,19 @@ describe('ImageUploadComponent', () => {
     filesInput.nativeElement.files = dataTransfer.files;
     filesInput.nativeElement.dispatchEvent(new Event('input'));
 
+    const formValue = component.imageForm.value;
+
+    const uploadedImage: Image = {
+      _id: component.image._id,
+      description: testImage.description,
+      createdAt: component.image.createdAt,
+      updatedAt: component.image.updatedAt,
+      file: formValue.files[0]
+    };
+
     const imageService = TestBed.inject(ImageService) as
         jasmine.SpyObj<ImageService>;
 
-    imageService.compressImage.and.returnValue(of(testFile));
     imageService.uploadImage.and.returnValue(asyncData(testImage));
 
     component.imageChange.subscribe((image: Image) => {
@@ -316,16 +324,13 @@ describe('ImageUploadComponent', () => {
 
     expect(component.alertMessage).toEqual('');
     expect(component.processUploadRequest).toBeTrue();
-    expect(component.image.description).toEqual(testImage.description);
-
-    expect(imageService.compressImage).toHaveBeenCalled();
-
-    expect(imageService.uploadImage).toHaveBeenCalledWith(
-        component.entryId, component.image);
 
     fixture.whenStable().then(() => {
-      expect(component.image.file).toEqual(testFile);
+      expect(imageService.uploadImage).toHaveBeenCalledWith(
+          component.entryId, uploadedImage);
+
       expect(component.processUploadRequest).toBeFalse();
+      expect(component.image).toEqual(testImage);
     });
   }));
 

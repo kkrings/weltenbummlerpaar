@@ -10,7 +10,6 @@ import {
   FormControl, FormGroup, FormBuilder, Validators
 } from '@angular/forms';
 
-import { concatMap } from 'rxjs/operators';
 import bsCustomFileInput from 'bs-custom-file-input';
 
 import { ImageService } from '../image.service';
@@ -153,26 +152,20 @@ export class ImageUploadComponent implements OnInit {
    * Submit an image upload/update request to the back-end server.
    */
   onSubmit(): void {
+    const uploadImage: Image = {...this.image};
     const formValue = this.imageForm.value;
+
+    if (formValue.files) {
+      uploadImage.file = formValue.files[0];
+    }
+
+    uploadImage.description = formValue.description;
 
     const request = (image: Image): Observable<Image> => {
       if (image._id.length > 0) {
         return this.imageService.updateImage(image);
       } else {
         return this.imageService.uploadImage(this.entryId, image);
-      }
-    };
-
-    const submit = (image: Image): Observable<Image> => {
-      if (formValue.files) {
-        return this.imageService
-          .compressImage(formValue.files[0])
-          .pipe(concatMap((file: File) => {
-            image.file = file;
-            return request(image);
-          }));
-      } else {
-        return request(image);
       }
     };
 
@@ -183,13 +176,12 @@ export class ImageUploadComponent implements OnInit {
     this.processUploadRequest = true;
     this.processing.emit(true);
 
-    this.image.description = formValue.description;
-
-    submit(this.image).subscribe(
+    // submit(this.image).subscribe(
+    request(uploadImage).subscribe(
       (image: Image) => {
         this.processUploadRequest = false;
         this.processing.emit(false);
-        this.imageChange.emit(image);
+        this.imageChange.emit(Object.assign(this.image, image));
         this.imageForm.reset();
       },
       (error: string) => {
