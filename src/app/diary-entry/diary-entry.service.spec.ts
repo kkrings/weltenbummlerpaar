@@ -6,13 +6,11 @@
 import { TestBed } from '@angular/core/testing';
 
 import {
-  HttpClientTestingModule,
-  HttpTestingController
+  HttpClientTestingModule, HttpTestingController
 } from '@angular/common/http/testing';
 
 import { DiaryEntryService } from './diary-entry.service';
 import { DiaryEntry } from './diary-entry.model';
-import { DIARY_ENTRIES } from './diary-entries';
 import { HttpAlertService } from '../shared/http-alert.service';
 import { environment } from '../../environments/environment';
 
@@ -20,6 +18,26 @@ import { environment } from '../../environments/environment';
 describe('DiaryEntryService', () => {
   let service: DiaryEntryService;
   let httpTestingController: HttpTestingController;
+
+  const testDiaryEntries: DiaryEntry[] = [{
+    _id: '0',
+    title: 'some title',
+    locationName: 'some location',
+    body: 'some body',
+    images: [],
+    tags: [],
+    createdAt: (new Date()).toISOString(),
+    updatedAt: (new Date()).toISOString()
+  }, {
+    _id: '1',
+    title: 'some title',
+    locationName: 'some location',
+    body: 'some body',
+    images: [],
+    tags: [],
+    createdAt: (new Date()).toISOString(),
+    updatedAt: (new Date()).toISOString()
+  }];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -39,7 +57,7 @@ describe('DiaryEntryService', () => {
   it('#getEntries should return diary entries', () => {
     service.getEntries().subscribe(
         (diaryEntries: DiaryEntry[]) => {
-          expect(diaryEntries).toEqual(DIARY_ENTRIES);
+          expect(diaryEntries).toEqual(testDiaryEntries);
         },
         fail);
 
@@ -48,7 +66,7 @@ describe('DiaryEntryService', () => {
 
     expect(testRequest.request.method).toMatch('GET');
 
-    testRequest.flush(DIARY_ENTRIES);
+    testRequest.flush(testDiaryEntries);
   });
 
   it('#getEntries should return alert message', () => {
@@ -67,7 +85,7 @@ describe('DiaryEntryService', () => {
   });
 
   it('#getEntry should return diary entry', () => {
-    const testDiaryEntry = DIARY_ENTRIES[0];
+    const testDiaryEntry = testDiaryEntries[0];
 
     service.getEntry(testDiaryEntry._id).subscribe(
         (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
@@ -82,7 +100,7 @@ describe('DiaryEntryService', () => {
   });
 
   it('#getEntry should return alert message', () => {
-    const testDiaryEntry = DIARY_ENTRIES[0];
+    const testDiaryEntry = testDiaryEntries[0];
 
     service.getEntry(testDiaryEntry._id).subscribe(
         fail, (message: string) => expect(message).toBeDefined());
@@ -99,7 +117,7 @@ describe('DiaryEntryService', () => {
   });
 
   it('#saveEntry should return diary entry', () => {
-    const testDiaryEntry = DIARY_ENTRIES[0];
+    const testDiaryEntry = testDiaryEntries[0];
 
     service.saveEntry(testDiaryEntry).subscribe(
         (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
@@ -114,7 +132,7 @@ describe('DiaryEntryService', () => {
   });
 
   it('#saveEntry should return alert message', () => {
-    const testDiaryEntry = DIARY_ENTRIES[0];
+    const testDiaryEntry = testDiaryEntries[0];
 
     service.saveEntry(testDiaryEntry).subscribe(
         fail, (message: string) => expect(message).toBeDefined());
@@ -131,7 +149,7 @@ describe('DiaryEntryService', () => {
   });
 
   it('#updateEntry should return diary entry', () => {
-    const testDiaryEntry = DIARY_ENTRIES[0];
+    const testDiaryEntry = testDiaryEntries[0];
 
     service.updateEntry(testDiaryEntry).subscribe(
         (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
@@ -146,7 +164,7 @@ describe('DiaryEntryService', () => {
   });
 
   it('#updateEntry should return alert message', () => {
-    const testDiaryEntry = DIARY_ENTRIES[0];
+    const testDiaryEntry = testDiaryEntries[0];
 
     service.updateEntry(testDiaryEntry).subscribe(
         fail, (message: string) => expect(message).toBeDefined());
@@ -163,7 +181,7 @@ describe('DiaryEntryService', () => {
   });
 
   it('#deleteEntry should return diary entry', () => {
-    const testDiaryEntry = DIARY_ENTRIES[0];
+    const testDiaryEntry = testDiaryEntries[0];
 
     service.deleteEntry(testDiaryEntry._id).subscribe(
         (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
@@ -178,7 +196,7 @@ describe('DiaryEntryService', () => {
   });
 
   it('#deleteEntry should return alert message', () => {
-    const testDiaryEntry = DIARY_ENTRIES[0];
+    const testDiaryEntry = testDiaryEntries[0];
 
     service.deleteEntry(testDiaryEntry._id).subscribe(
         fail, (message: string) => expect(message).toBeDefined());
