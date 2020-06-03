@@ -10,8 +10,6 @@ import {
   HttpTestingController
 } from '@angular/common/http/testing';
 
-import * as Jimp from 'jimp';
-
 import { ImageService } from './image.service';
 import { Image } from './image.model';
 import { HttpAlertService } from '../shared/http-alert.service';
@@ -49,13 +47,11 @@ describe('ImageService', () => {
         .toBe(`${environment.baseurl}/images/${image._id}.jpg`);
   });
 
-  it('#uploadImage should return image', async () => {
+  it('#uploadImage should return image', () => {
     const testEntryId = '0';
 
-    const buffer = await (new Jimp(16, 16)).getBufferAsync(Jimp.MIME_JPEG);
-
     const testImage: Image = {
-      file: new File([buffer], 'testImage.jpg'),
+      file: new File([], 'testImage.jpg', {type: 'image/jpeg'}),
       _id: '0',
       description: 'This is a test image.',
       createdAt: (new Date()).toISOString(),
@@ -88,13 +84,11 @@ describe('ImageService', () => {
         fail, (error: string) => expect(error).toBeDefined());
   });
 
-  it('#uploadImage should return alert message', async () => {
+  it('#uploadImage should return alert message', () => {
     const testEntryId = '0';
 
-    const buffer = await (new Jimp(16, 16)).getBufferAsync(Jimp.MIME_JPEG);
-
     const testImage: Image = {
-      file: new File([buffer], 'testImage.jpg'),
+      file: new File([], 'testImage.jpg', {type: 'image/jpeg'}),
       _id: '0',
       description: 'This is a test image.',
       createdAt: (new Date()).toISOString(),
@@ -115,11 +109,9 @@ describe('ImageService', () => {
     });
   });
 
-  it('#updateImage should return image', async () => {
-    const buffer = await (new Jimp(16, 16)).getBufferAsync(Jimp.MIME_JPEG);
-
+  it('#updateImage should return image', () => {
     const testImage: Image = {
-      file: new File([buffer], 'testImage.jpg'),
+      file: new File([], 'testImage.jpg', {type: 'image/jpeq'}),
       _id: '0',
       description: 'This is a test image.',
       createdAt: (new Date()).toISOString(),
