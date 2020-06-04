@@ -3,8 +3,10 @@
  * @packageDocumentation
  */
 
-import { AppPage } from './app.po';
 import { browser, logging } from 'protractor';
+
+import { AppPage } from './app.po';
+import { AuthModal } from './auth-modal.po';
 
 
 describe('weltenbummlerpaar', () => {
@@ -14,10 +16,25 @@ describe('weltenbummlerpaar', () => {
     page = new AppPage();
   });
 
-  it('should open login modal', () => {
+  beforeEach(() => {
+    // open authentication modal
     page.navigateTo();
-    page.getElement('nav button').click();
-    expect(page.getElement('ngb-modal-window').isDisplayed()).toBe(true);
+    page.loginButton.click();
+  });
+
+  beforeEach(() => {
+    // login admin user
+    const authModal = new AuthModal();
+    authModal.loginAdmin('admin', 'admin');
+  });
+
+  it('create diary entry button should be displayed', () => {
+    expect(page.createDiaryEntryButton.isDisplayed()).toBe(true);
+  });
+
+  afterEach(() => {
+    // logout admin user
+    page.logoutButton.click();
   });
 
   afterEach(async () => {

@@ -1,19 +1,22 @@
 <nav class="navbar navbar-light">
   <div class="navbar-brand"></div>
   <div class="d-inline mr-0">
-    <button class="btn btn-primary"
+    <button id="login-button"
+            class="btn btn-primary"
             type="button"
             [hidden]="isLoggedIn"
             (click)="openLoginModal()">
       <i class="fas fa-sign-in-alt"></i> Login
     </button>
     <div *ngIf="isLoggedIn">
-      <button class="btn btn-secondary"
+      <button id="create-diary-entry-button"
+              class="btn btn-secondary"
               type="button"
               (click)="openDiaryEntryModal()">
         <i class="fas fa-plus"></i> Eintrag
       </button>
-      <button class="btn btn-primary ml-2"
+      <button id="logout-button"
+              class="btn btn-primary ml-2"
               type="button"
               (click)="logout()">
         <i class="fas fa-sign-out-alt"></i> Logout
