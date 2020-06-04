@@ -1,23 +1,30 @@
+/**
+ * Full integration tests
+ * @packageDocumentation
+ */
+
 import { AppPage } from './app.po';
 import { browser, logging } from 'protractor';
 
-describe('workspace-project App', () => {
+
+describe('weltenbummlerpaar', () => {
   let page: AppPage;
 
   beforeEach(() => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should open login modal', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('weltenbummlerpaar app is running!');
+    page.getElement('nav button').click();
+    expect(page.getElement('ngb-modal-window').isDisplayed()).toBe(true);
   });
 
   afterEach(async () => {
-    // Assert that there are no errors emitted from the browser
+    // assert that there are no errors emitted from the browser
     const logs = await browser.manage().logs().get(logging.Type.BROWSER);
-    expect(logs).not.toContain(jasmine.objectContaining({
-      level: logging.Level.SEVERE,
-    } as logging.Entry));
+
+    expect(logs).not.toContain(jasmine.objectContaining(
+      {level: logging.Level.SEVERE} as logging.Entry));
   });
 });
