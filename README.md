@@ -14,7 +14,7 @@ project.
 [weltenbummlerpaar-backend]: https://github.com/kkrings/weltenbummlerpaar-backend/
 
 
-## Installation
+## Deployment
 
 First, the application's latest
 [release](https://github.com/kkrings/weltenbummlerpaar/releases) has to be
@@ -30,7 +30,7 @@ Second, the application's dependencies have to be installed:
 Last, the application's build process in **production** mode is initiated as
 follows:
 
-    ng build --prod
+    ./node_modules/.bin/ng build --prod
 
 The output files are written to `dist/weltenbummlerpaar` and can be copied to
 the remote server. This server then has to be configured in a way that it
