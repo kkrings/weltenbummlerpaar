@@ -4,19 +4,36 @@
 https://travis-ci.org/kkrings/weltenbummlerpaar.svg?branch=master)](
 https://travis-ci.org/kkrings/weltenbummlerpaar)
 
-This project contains the [Angular][]-based front end of
-the *Weltenbummlerpaar* travel diary web application. The
-corresponding [Express][]-based back end can be found in
-the [weltenbummlerpaar-backend][] project.
+This project contains the [Angular][]-based front end of the
+*Weltenbummlerpaar* travel diary web application. The corresponding
+[Express][]-based back end can be found in the [weltenbummlerpaar-backend][]
+project.
 
 [Angular]: https://angular.io/
 [Express]: https://expressjs.com/
 [weltenbummlerpaar-backend]: https://github.com/kkrings/weltenbummlerpaar-backend/
 
-## Development status
 
-Note that this application is still under active development and has not
-reached a stable release yet. I'm currently working on implementing both unit
-and full integration tests, as well as on better documenting the code. Once
-this is done, I will publish a first release and afterwards focus again on
-implementing new features.
+## Installation
+
+First, the application's latest
+[release](https://github.com/kkrings/weltenbummlerpaar/releases) has to be
+downloaded and extracted:
+
+    tar -xzvf weltenbummlerpaar-vx.x.x.tar.gz
+    cd weltenbummlerpaar-vx.x.x
+
+Second, the application's dependencies have to be installed:
+
+    npm install
+
+Last, the application's build process in **production** mode is initiated as
+follows:
+
+    ng build --prod
+
+The output files are written to `dist/weltenbummlerpaar` and can be copied to
+the remote server. This server then has to be configured in a way that it
+serves static content from this location and redirects requests for missing
+files to `index.html`; see [here](https://angular.io/guide/deployment) for more
+details.
