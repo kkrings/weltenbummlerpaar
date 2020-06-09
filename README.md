@@ -27,9 +27,10 @@ The second step is to install the application's dependencies:
 
     npm install
 
-The third step is to configure the `baseurl` and the `domain` name of the
-remote server that hosts the [back-end application][weltenbummlerpaar-backend]
-in the **production** environment `src/environments/environment.prod.ts`.
+The third step is to configure in the **production** environment
+`src/environments/environment.prod.ts` the `baseurl` and the `domain` name of
+the remote server that hosts the [back-end
+application][weltenbummlerpaar-backend].
 
 The last step is to initiated the application's build process in **production**
 mode:
