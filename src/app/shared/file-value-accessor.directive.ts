@@ -1,10 +1,20 @@
+/**
+ * File value accessor directive
+ * @packageDocumentation
+ */
+
 import {
   Directive, ElementRef, forwardRef, HostListener, Renderer2
 } from '@angular/core';
 
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
-
+/**
+ * File value accessor directive
+ *
+ * This directive implements the form control value accessor interface and
+ * allows to access the file list of an input tag of type 'file'.
+ */
 @Directive({
   // tslint:disable-next-line:directive-selector
   selector: 'input[type=file]',
@@ -17,25 +27,59 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
   ]
 })
 export class FileValueAccessorDirective implements ControlValueAccessor {
-
+  /**
+   * Holds a reference to the function that should be called when an event of
+   * type 'change' occurs. The file list is passed as an argument to this
+   * function.
+   */
   @HostListener('change', ['$event.target.files'])
   onChange: (_: any) => void;
 
+  /**
+   * Holds a reference to the function that should be called when an event of
+   * type 'blur' occurs.
+   */
   @HostListener('blur')
   onTouched: () => void;
 
+  /**
+   * Construct the file accessor directive.
+   *
+   * @param renderer
+   *   Used to set element's value attribute.
+   * @param element
+   *   Holds a reference to the input tag of type 'file'.
+   */
   constructor(
     private renderer: Renderer2,
     private element: ElementRef) { }
 
+  /**
+   * Write the given value to the input tag.
+   *
+   * @param value
+   *   A new value for the input's value attribute
+   */
   writeValue(value: any): void {
     this.renderer.setProperty(this.element.nativeElement, 'value', value);
   }
 
+  /**
+   * Register the on-change callback function.
+   *
+   * @param fn
+   *   The callback function that is assigned to 'onChange' property.
+   */
   registerOnChange(fn: (_: any) => void): void {
     this.onChange = fn;
   }
 
+  /**
+   * Register the on-touched callback function.
+   *
+   * @param fn
+   *   The callback function that is assigned to 'onTouched' property.
+   */
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
