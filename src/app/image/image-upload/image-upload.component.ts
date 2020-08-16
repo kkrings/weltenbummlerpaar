@@ -86,6 +86,9 @@ export class ImageUploadComponent implements OnInit {
    *
    * @param formBuilder
    *   Builds the reactive form for uploading/updating an image.
+   * @param imageService
+   *   Service for uploading or deleting an image to or from the back-end
+   *   server, respectively
    */
   constructor(
       private formBuilder: FormBuilder,
@@ -176,7 +179,6 @@ export class ImageUploadComponent implements OnInit {
     this.processUploadRequest = true;
     this.processing.emit(true);
 
-    // submit(this.image).subscribe(
     request(uploadImage).subscribe(
       (image: Image) => {
         this.processUploadRequest = false;
