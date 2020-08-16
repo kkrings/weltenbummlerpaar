@@ -17,8 +17,6 @@ import {
   NgbModalModule
 } from '@ng-bootstrap/ng-bootstrap';
 
-import { FileInputAccessorModule } from 'file-input-accessor';
-
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -61,6 +59,10 @@ import {
 
 import { ImageDirective } from './image/image.directive';
 
+import {
+  FileValueAccessorDirective
+} from './shared/file-value-accessor.directive';
+
 
 // application expects German-speaking users
 registerLocaleData(localeDe);
@@ -85,7 +87,8 @@ registerLocaleData(localeDe);
     ImageCarouselComponent,
     ImageModalComponent,
     ImageUploadComponent,
-    ImageDirective
+    ImageDirective,
+    FileValueAccessorDirective
   ],
   imports: [
     BrowserModule,
@@ -93,12 +96,11 @@ registerLocaleData(localeDe);
     JwtModule.forRoot({
       config: {
         tokenGetter: () => localStorage.getItem('JWT'),
-        whitelistedDomains: [environment.domain],
-        blacklistedRoutes: [`${environment.domain}/db/admins/login`]
+        allowedDomains: [environment.domain],
+        disallowedRoutes: [`${environment.domain}/db/admins/login`]
       }
     }),
     ReactiveFormsModule,
-    FileInputAccessorModule,
     NgbAlertModule,
     NgbCarouselModule,
     NgbModalModule
