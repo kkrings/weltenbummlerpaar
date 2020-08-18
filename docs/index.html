@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>weltenbummlerpaar</title>
-	<meta name="description" content="">
+	<meta name="description" content="Documentation for weltenbummlerpaar">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -13,7 +13,7 @@
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -86,7 +86,7 @@
 				application</a>.</p>
 				<p>The last step is to initiated the application&#39;s build process in <strong>production</strong>
 				mode:</p>
-				<pre><code>./node_modules/.<span class="hljs-keyword">bin/ng </span><span class="hljs-keyword">build </span>--prod</code></pre><p>The output files are written to <code>dist/weltenbummlerpaar</code> and can be copied to a
+				<pre><code>.<span class="hljs-regexp">/node_modules/</span>.bin/ng build --prod</code></pre><p>The output files are written to <code>dist/weltenbummlerpaar</code> and can be copied to a
 					remote server. This is usually the same server that hosts the <a href="https://github.com/kkrings/weltenbummlerpaar-backend/">back-end
 					application</a>, because it does not support
 					cross-origin resource sharing (CORS). The server has to be configured in a way
@@ -97,16 +97,16 @@
 					<h2>Development</h2>
 				</a>
 				<p>The application&#39;s source code is hosted on <a href="https://github.com/kkrings/weltenbummlerpaar/">GitHub</a>:</p>
-				<pre><code>git <span class="hljs-keyword">clone</span> <span class="hljs-title">https</span>://github.com/kkrings/weltenbummlerpaar.git
+				<pre><code>git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/kkrings/</span>weltenbummlerpaar.git
 cd weltenbummlerpaar
 npm install</code></pre><p>Unit tests as well as full integration tests are provided based on <a href="https://jasmine.github.io/">Jasmine</a>,
 				<a href="http://karma-runner.github.io/">Karma</a>, and <a href="https://www.protractortest.org/">Protractor</a>. All unit tests are executed via:</p>
-				<pre><code> ./node_modules/.<span class="hljs-keyword">bin/ng </span>test</code></pre><p>A code coverage report is created at <code>coverage/weltenbummlerpaar</code> via:</p>
+				<pre><code> .<span class="hljs-regexp">/node_modules/</span>.bin/ng test</code></pre><p>A code coverage report is created at <code>coverage/weltenbummlerpaar</code> via:</p>
 				<pre><code> <span class="hljs-string">./node_modules/.bin/ng</span> test <span class="hljs-params">--code-coverage</span> <span class="hljs-params">--no-watch</span></code></pre><p>The full integration tests need a local installation of the <a href="https://github.com/kkrings/weltenbummlerpaar-backend/">back-end
 					application</a> up and running before they are executed
 				via:</p>
-				<pre><code> ./node_modules/.<span class="hljs-keyword">bin/ng </span>e2e</code></pre><p>The application&#39;s documentation can be build locally at <code>docs</code> via <a href="https://typedoc.org/">TypeDoc</a>:</p>
-				<pre><code>.<span class="hljs-regexp">/node_modules/</span>.bin<span class="hljs-regexp">/typedoc</span></code></pre>
+				<pre><code> .<span class="hljs-regexp">/node_modules/</span>.bin/ng e2e</code></pre><p>The application&#39;s documentation can be build locally at <code>docs</code> via <a href="https://typedoc.org/">TypeDoc</a>:</p>
+				<pre><code>.<span class="hljs-regexp">/node_modules/</span>.bin/typedoc</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -118,68 +118,77 @@ npm install</code></pre><p>Unit tests as well as full integration tests are prov
 					<li class="label tsd-is-external">
 						<span>Internals</span>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_app_module_.html">&quot;app.module&quot;</a>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_main_.html">&quot;src/main&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_polyfills_.html">&quot;src/polyfills&quot;</a>
 					</li>
 					<li class="label tsd-is-external">
 						<span>Externals</span>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_app_component_.html">&quot;app.component&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_app_component_.html">&quot;src/app/app.component&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_auth_auth_modal_auth_modal_component_.html">&quot;auth/auth-<wbr>modal/auth-<wbr>modal.component&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_app_module_.html">&quot;src/app/app.module&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_auth_auth_directive_.html">&quot;auth/auth.directive&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_auth_auth_modal_auth_modal_component_.html">&quot;src/app/auth/auth-<wbr>modal/auth-<wbr>modal.component&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_auth_auth_service_.html">&quot;auth/auth.service&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_auth_auth_directive_.html">&quot;src/app/auth/auth.directive&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_diary_entry_diary_entry_brief_pipe_.html">&quot;diary-<wbr>entry/diary-<wbr>entry-<wbr>brief.pipe&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_auth_auth_service_.html">&quot;src/app/auth/auth.service&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_diary_entry_diary_entry_card_diary_entry_card_component_.html">&quot;diary-<wbr>entry/diary-<wbr>entry-<wbr>card/diary-<wbr>entry-<wbr>card.component&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_diary_entry_diary_entry_brief_pipe_.html">&quot;src/app/diary-<wbr>entry/diary-<wbr>entry-<wbr>brief.pipe&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_diary_entry_diary_entry_form_diary_entry_form_component_.html">&quot;diary-<wbr>entry/diary-<wbr>entry-<wbr>form/diary-<wbr>entry-<wbr>form.component&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_diary_entry_diary_entry_card_diary_entry_card_component_.html">&quot;src/app/diary-<wbr>entry/diary-<wbr>entry-<wbr>card/diary-<wbr>entry-<wbr>card.component&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_diary_entry_diary_entry_grid_diary_entry_grid_component_.html">&quot;diary-<wbr>entry/diary-<wbr>entry-<wbr>grid/diary-<wbr>entry-<wbr>grid.component&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_diary_entry_diary_entry_form_diary_entry_form_component_.html">&quot;src/app/diary-<wbr>entry/diary-<wbr>entry-<wbr>form/diary-<wbr>entry-<wbr>form.component&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_diary_entry_diary_entry_modal_diary_entry_modal_component_.html">&quot;diary-<wbr>entry/diary-<wbr>entry-<wbr>modal/diary-<wbr>entry-<wbr>modal.component&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_diary_entry_diary_entry_grid_diary_entry_grid_component_.html">&quot;src/app/diary-<wbr>entry/diary-<wbr>entry-<wbr>grid/diary-<wbr>entry-<wbr>grid.component&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_diary_entry_diary_entry_model_.html">&quot;diary-<wbr>entry/diary-<wbr>entry.model&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_diary_entry_diary_entry_modal_diary_entry_modal_component_.html">&quot;src/app/diary-<wbr>entry/diary-<wbr>entry-<wbr>modal/diary-<wbr>entry-<wbr>modal.component&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_diary_entry_diary_entry_service_.html">&quot;diary-<wbr>entry/diary-<wbr>entry.service&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_diary_entry_diary_entry_model_.html">&quot;src/app/diary-<wbr>entry/diary-<wbr>entry.model&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_image_image_carousel_image_carousel_component_.html">&quot;image/image-<wbr>carousel/image-<wbr>carousel.component&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_diary_entry_diary_entry_service_.html">&quot;src/app/diary-<wbr>entry/diary-<wbr>entry.service&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_image_image_modal_image_modal_component_.html">&quot;image/image-<wbr>modal/image-<wbr>modal.component&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_image_image_carousel_image_carousel_component_.html">&quot;src/app/image/image-<wbr>carousel/image-<wbr>carousel.component&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_image_image_upload_image_upload_component_.html">&quot;image/image-<wbr>upload/image-<wbr>upload.component&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_image_image_modal_image_modal_component_.html">&quot;src/app/image/image-<wbr>modal/image-<wbr>modal.component&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_image_image_directive_.html">&quot;image/image.directive&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_image_image_upload_image_upload_component_.html">&quot;src/app/image/image-<wbr>upload/image-<wbr>upload.component&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_image_image_model_.html">&quot;image/image.model&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_image_image_directive_.html">&quot;src/app/image/image.directive&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_image_image_service_.html">&quot;image/image.service&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_image_image_model_.html">&quot;src/app/image/image.model&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_navbar_navbar_component_.html">&quot;navbar/navbar.component&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_image_image_service_.html">&quot;src/app/image/image.service&quot;</a>
 					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_shared_http_alert_service_.html">&quot;shared/http-<wbr>alert.service&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_navbar_navbar_component_.html">&quot;src/app/navbar/navbar.component&quot;</a>
+					</li>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_shared_file_value_accessor_directive_.html">&quot;src/app/shared/file-<wbr>value-<wbr>accessor.directive&quot;</a>
+					</li>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_app_shared_http_alert_service_.html">&quot;src/app/shared/http-<wbr>alert.service&quot;</a>
 					</li>
 				</ul>
 			</nav>
@@ -194,59 +203,6 @@ npm install</code></pre><p>Unit tests as well as full integration tests are prov
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
-			<ul class="tsd-legend">
-				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
-				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
-				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
-				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
-				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
-				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
-				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
-			</ul>
 		</div>
 	</div>
 </footer>
@@ -255,6 +211,5 @@ npm install</code></pre><p>Unit tests as well as full integration tests are prov
 </div>
 <div class="overlay"></div>
 <script src="assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>

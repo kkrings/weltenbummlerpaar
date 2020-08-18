@@ -1,3 +1,0 @@
-var typedoc = typedoc || {};
-            typedoc.search = typedoc.search || {};
-            typedoc.search.data = {"kinds":{"1":"External module","128":"Class"},"rows":[{"id":0,"kind":1,"name":"\"app.module\"","url":"modules/_app_module_.html","classes":"tsd-kind-external-module"},{"id":1,"kind":128,"name":"AppModule","url":"classes/_app_module_.appmodule.html","classes":"tsd-kind-class tsd-parent-kind-external-module","parent":"\"app.module\""}]};
