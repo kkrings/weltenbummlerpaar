@@ -21,11 +21,6 @@
       "dom"
     ]
   },
-  "typedocOptions": {
-      "inputFiles": ["./src/app/app.module.ts"],
-      "exclude": ["./src/environments/*.ts"],
-      "out": "./docs"
-  },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
