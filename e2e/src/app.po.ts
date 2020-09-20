@@ -28,9 +28,40 @@ export class AppPage {
   createDiaryEntryButton = element(by.id('create-diary-entry-button'));
 
   /**
+   * List of diary entry cards
+   */
+  diaryEntryCards = element.all(by.tagName('app-diary-entry-card'));
+
+  /**
    * Navigate to the application's root page.
    */
-  navigateTo(): Promise<unknown> {
+  navigateToRoot(): Promise<unknown> {
     return browser.get(browser.baseUrl) as Promise<unknown>;
+  }
+
+  /**
+   * Refresh the application's root page.
+   */
+  refresh(): void {
+    browser.refresh();
+  }
+
+  /**
+   * Get the number of diary entries.
+   *
+   * @returns
+   *   Number of diary entries
+   */
+  getNumDiaryEntries(): Promise<number> {
+    return this.diaryEntryCards.count() as Promise<number>;
+  }
+
+  /**
+   * Delete the newest diary entry.
+   */
+  deleteNewestDiaryEntry(): void {
+    const diaryEntryCard = this.diaryEntryCards.first();
+    const deleteButton = diaryEntryCard.element(by.className('btn-danger'));
+    deleteButton.click();
   }
 }

@@ -5,6 +5,7 @@
 
 import { by, element } from 'protractor';
 
+
 /**
  * Authentication modal
  *
