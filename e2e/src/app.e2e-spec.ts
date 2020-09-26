@@ -13,6 +13,13 @@ import { DiaryEntryFormModal } from './diary-entry-form-modal.po';
 describe('weltenbummlerpaar', () => {
   let page: AppPage;
 
+  const diaryEntry = {
+    title: 'some title',
+    locationName: 'some location',
+    body: 'some body',
+    tags: 'some tag, some other tag'
+  };
+
   beforeAll(() => {
     page = new AppPage();
   });
@@ -27,6 +34,8 @@ describe('weltenbummlerpaar', () => {
 
     createDiaryEntry();
     expect(page.getNumDiaryEntries()).toBeGreaterThan(numDiaryEntries);
+
+    checkDiaryEntry();
 
     deleteNewestDiaryEntry();
     expect(page.getNumDiaryEntries()).toEqual(numDiaryEntries);
@@ -50,16 +59,24 @@ describe('weltenbummlerpaar', () => {
 
   function createDiaryEntry(): void {
     page.createDiaryEntryButton.click();
-
     const diaryEntryFormModal = new DiaryEntryFormModal();
-
-    diaryEntryFormModal.createDiaryEntry(
-      'some title',
-      'some location',
-      'some body',
-      'some tag, some other tag');
-
+    diaryEntryFormModal.createDiaryEntry(diaryEntry);
     page.refresh();
+  }
+
+  function checkDiaryEntry(): void {
+    const diaryEntryModal = page.openNewestDiaryEntry();
+
+    expect(diaryEntryModal.diaryEntryTitle.getText())
+      .toEqual(diaryEntry.title);
+
+    expect(diaryEntryModal.diaryEntryLocationName.getText())
+      .toEqual(diaryEntry.locationName);
+
+    expect(diaryEntryModal.diaryEntryBody.getText())
+      .toEqual(diaryEntry.body);
+
+    diaryEntryModal.closeModal();
   }
 
   function deleteNewestDiaryEntry(): void {

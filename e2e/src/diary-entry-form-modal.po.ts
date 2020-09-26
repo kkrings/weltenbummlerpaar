@@ -51,16 +51,16 @@ export class DiaryEntryFormModal {
    * @param tags
    *   Diary entry's comma-separated list of tags
    */
-  createDiaryEntry(
-    title: string = 'some title',
-    locationName: string = 'some location',
-    body: string = 'some body',
-    tags: string = 'some tag, some other tag'
-  ): void {
-    this.titleInput.sendKeys(title);
-    this.locationInput.sendKeys(locationName);
-    this.bodyInput.sendKeys(body);
-    this.tagsInput.sendKeys(tags);
+  createDiaryEntry(diaryEntry: {
+    title: string,
+    locationName: string,
+    body: string,
+    tags: string
+  }): void {
+    this.titleInput.sendKeys(diaryEntry.title);
+    this.locationInput.sendKeys(diaryEntry.locationName);
+    this.bodyInput.sendKeys(diaryEntry.body);
+    this.tagsInput.sendKeys(diaryEntry.tags);
     this.submitButton.click();
   }
 }

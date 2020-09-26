@@ -5,6 +5,9 @@
 
 import { browser, by, element } from 'protractor';
 
+import { DiaryEntryModal } from './diary-entry-modal.po';
+
+
 /**
  * Application's root page
  *
@@ -54,6 +57,24 @@ export class AppPage {
    */
   getNumDiaryEntries(): Promise<number> {
     return this.diaryEntryCards.count() as Promise<number>;
+  }
+
+  /**
+   * Open the modal that shows the newest diary entry
+   *
+   * @returns
+   *   The modal that shows the newest diary entry
+   */
+  openNewestDiaryEntry(): DiaryEntryModal {
+    const diaryEntryCard = this.diaryEntryCards.first();
+
+    const openModalButton = diaryEntryCard
+      .element(by.className('card-body'))
+      .element(by.tagName('button'));
+
+    openModalButton.click();
+
+    return new DiaryEntryModal(element(by.tagName('app-diary-entry-modal')));
   }
 
   /**
