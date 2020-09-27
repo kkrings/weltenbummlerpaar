@@ -22,7 +22,16 @@ class MockDiaryEntryCardComponent {
   /**
    * Mock injected diary entry
    */
-  @Input() diaryEntry: DiaryEntry;
+  @Input() diaryEntry: DiaryEntry = {
+    _id: '',
+    title: '',
+    locationName: '',
+    body: '',
+    images: [],
+    tags: [],
+    createdAt: '',
+    updatedAt: ''
+  };
 
   /**
    * ID of mock diary entry that should be removed from list of shown diary

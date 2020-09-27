@@ -30,7 +30,7 @@ class MockImageCarouselComponent {
   /**
    * Mock list of diary entry's images
    */
-  @Input() imageList: Image[];
+  @Input() imageList: Image[] = [];
 }
 
 

@@ -37,7 +37,16 @@ export class DiaryEntryCardComponent {
   /**
    * Injected diary entry
    */
-  @Input() diaryEntry: DiaryEntry;
+  @Input() diaryEntry: DiaryEntry = {
+    _id: '',
+    title: '',
+    locationName: '',
+    body: '',
+    images: [],
+    tags: [],
+    createdAt: '',
+    updatedAt: ''
+  };
 
   /**
    * If the admin user clicks the delete button, notify the parent comment that

@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
   /**
    * List of shown diary entries
    */
-  diaryEntries: DiaryEntry[];
+  diaryEntries: DiaryEntry[] = [];
 
   /**
    * Show a spinner while the list of diary entries is requested from the

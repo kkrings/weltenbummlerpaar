@@ -26,7 +26,16 @@ export class ImageModalComponent {
   /**
    * Injected diary entry; update diary entry's images or add new images to it.
    */
-  @Input() diaryEntry: DiaryEntry;
+  @Input() diaryEntry: DiaryEntry = {
+    _id: '',
+    title: '',
+    locationName: '',
+    body: '',
+    images: [],
+    tags: [],
+    createdAt: '',
+    updatedAt: ''
+  };
 
   /**
    * Disable the modal's close buttons when talking to the back-end server.

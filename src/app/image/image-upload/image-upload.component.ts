@@ -31,7 +31,7 @@ export class ImageUploadComponent implements OnInit {
   /**
    * Diary entry's ID the new/injected image is linked to
    */
-  @Input() entryId: string;
+  @Input() entryId = '';
 
   /**
    * Optional: inject an existing image that should be updated/deleted.
@@ -92,7 +92,14 @@ export class ImageUploadComponent implements OnInit {
    */
   constructor(
       private formBuilder: FormBuilder,
-      private imageService: ImageService) { }
+      private imageService: ImageService
+  ) {
+    // build the image form
+    this.imageForm = this.formBuilder.group({
+      files: [null, Validators.required],
+      description: ['', Validators.required]
+    });
+  }
 
   /**
    * Initialize the image upload component.
@@ -101,11 +108,7 @@ export class ImageUploadComponent implements OnInit {
     // style file input tag
     bsCustomFileInput.init();
 
-    // build the image form
-    this.imageForm = this.formBuilder.group({
-      files: [null, Validators.required],
-      description: [this.image.description, Validators.required]
-    });
+    this.description.setValue(this.image.description);
 
     if (this.image._id.length > 0) {
       this.files.clearValidators();

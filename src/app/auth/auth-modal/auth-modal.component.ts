@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import {
   FormBuilder, FormControl, FormGroup, Validators
@@ -25,7 +25,7 @@ import { AuthService } from '../auth.service';
   templateUrl: './auth-modal.component.html',
   styleUrls: ['./auth-modal.component.scss']
 })
-export class AuthModalComponent implements OnInit {
+export class AuthModalComponent {
   /**
    * Reactive form for admin login
    */
@@ -55,12 +55,8 @@ export class AuthModalComponent implements OnInit {
   constructor(
       private formBuilder: FormBuilder,
       private modal: NgbActiveModal,
-      private authService: AuthService) { }
-
-  /**
-   * Initialize the admin login modal component.
-   */
-  ngOnInit(): void {
+      private authService: AuthService
+  ) {
     // build the admin login form
     this.adminLoginForm = this.formBuilder.group({
       username: ['', Validators.required],

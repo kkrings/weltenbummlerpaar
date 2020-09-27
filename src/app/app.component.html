@@ -25,7 +25,7 @@
     </ngb-alert>
   </div>
 </div>
-<div *ngIf="diaryEntries">
+<div *ngIf="diaryEntries.length > 0">
   <app-diary-entry-grid [diaryEntries]="diaryEntries"></app-diary-entry-grid>
 </div>
 <div class="bg-primary text-white">

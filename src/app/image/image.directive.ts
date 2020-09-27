@@ -26,7 +26,12 @@ export class ImageDirective implements OnInit {
   /**
    * Image object
    */
-  @Input('appImage') image: Image;
+  @Input('appImage') image: Image = {
+    _id: '',
+    description: '',
+    createdAt: '',
+    updatedAt: ''
+  };
 
   /**
    * Construct the image directive.

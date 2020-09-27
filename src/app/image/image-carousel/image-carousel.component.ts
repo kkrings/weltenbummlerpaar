@@ -23,5 +23,18 @@ export class ImageCarouselComponent {
   /**
    * List of images to show in carousel
    */
-  @Input() imageList: Image[];
+  @Input() imageList: Image[] = [];
+
+  /**
+   * Convert carousel's active ID to image number.
+   *
+   * @param activeId
+   *   Carousel's active ID
+   *
+   * @returns
+   *   Image number
+   */
+  getImageNumber(activeId: string): string {
+    return `${parseInt(activeId, 10) + 1}`;
+  }
 }

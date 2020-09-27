@@ -26,12 +26,17 @@ class MockImageUploadComponent {
   /**
    * Mock injected ID of diary entry the image modal is attached to
    */
-  @Input() entryId: string;
+  @Input() entryId = '';
 
   /**
    * Mock created/updated image (two-way data binding)
    */
-  @Input() image: Image;
+  @Input() image: Image = {
+    _id: '',
+    description: '',
+    createdAt: '',
+    updatedAt: ''
+  };
 
   /**
    * Mock created/updated image (two-way data binding)

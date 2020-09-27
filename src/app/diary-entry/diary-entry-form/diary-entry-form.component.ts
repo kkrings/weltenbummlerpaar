@@ -81,20 +81,25 @@ export class DiaryEntryFormComponent implements OnInit {
   constructor(
       private formBuilder: FormBuilder,
       private diaryEntryService: DiaryEntryService,
-      private modal: NgbActiveModal) {}
+      private modal: NgbActiveModal
+  ) {
+    // build the diary entry form
+    this.diaryEntryForm = this.formBuilder.group({
+      title: ['', Validators.required],
+      locationName: ['', Validators.required],
+      body: ['', Validators.required],
+      tags: ['']
+    });
+  }
 
   /**
    * Initialize the diary entry form component.
    */
   ngOnInit(): void {
-    // build the diary entry form
-    this.diaryEntryForm = this.formBuilder.group({
-      title: [this.diaryEntry.title, Validators.required],
-      locationName: [this.diaryEntry.locationName, Validators.required],
-      body: [this.diaryEntry.body, Validators.required],
-      tags: [this.diaryEntry.tags.join(', ')]
-    });
-
+    this.title.setValue(this.diaryEntry.title);
+    this.locationName.setValue(this.diaryEntry.locationName);
+    this.body.setValue(this.diaryEntry.body);
+    this.tags.setValue(this.diaryEntry.tags.join(', '));
     this.imageList = [...this.diaryEntry.images];
   }
 

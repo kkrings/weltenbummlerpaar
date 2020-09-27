@@ -22,7 +22,7 @@ export class DiaryEntryGridComponent {
   /**
    * List of shown diary entries
    */
-  @Input() diaryEntries: DiaryEntry[];
+  @Input() diaryEntries: DiaryEntry[] = [];
 
   /**
    * Delete diary entry given its ID.
@@ -32,7 +32,7 @@ export class DiaryEntryGridComponent {
    * @param entryId
    *   Diary entry's ID
    */
-  deleteDiaryEntry(entryId: string) {
+  deleteDiaryEntry(entryId: string): void {
     this.diaryEntries = this.diaryEntries.filter((diaryEntry: DiaryEntry) => {
       return diaryEntry._id !== entryId;
     });

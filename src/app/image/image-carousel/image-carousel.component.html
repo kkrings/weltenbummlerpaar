@@ -1,10 +1,10 @@
 <ngb-carousel #carousel [interval]="-1" [showNavigationIndicators]="false">
   <ng-template ngbSlide
                *ngFor="let image of imageList; let imageIndex = index"
-               [id]="imageIndex">
+               id="{{imageIndex}}">
     <div class="d-flex justify-content-end">
       <small class="text-muted">
-        {{carousel.activeId + 1}}/{{imageList.length}}
+        {{getImageNumber(carousel.activeId)}}/{{imageList.length}}
       </small>
     </div>
     <figure class="figure">

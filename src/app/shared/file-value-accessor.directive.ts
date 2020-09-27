@@ -33,14 +33,14 @@ export class FileValueAccessorDirective implements ControlValueAccessor {
    * function.
    */
   @HostListener('change', ['$event.target.files'])
-  onChange: (_: any) => void;
+  onChange = (_: FileList): void => {}
 
   /**
    * Holds a reference to the function that should be called when an event of
    * type 'blur' occurs.
    */
   @HostListener('blur')
-  onTouched: () => void;
+  onTouched = () => {}
 
   /**
    * Construct the file accessor directive.
@@ -60,7 +60,7 @@ export class FileValueAccessorDirective implements ControlValueAccessor {
    * @param value
    *   A new value for the input's value attribute
    */
-  writeValue(value: any): void {
+  writeValue(value: string): void {
     this.renderer.setProperty(this.element.nativeElement, 'value', value);
   }
 
@@ -70,7 +70,7 @@ export class FileValueAccessorDirective implements ControlValueAccessor {
    * @param fn
    *   The callback function that is assigned to 'onChange' property.
    */
-  registerOnChange(fn: (_: any) => void): void {
+  registerOnChange(fn: (_: FileList) => void): void {
     this.onChange = fn;
   }
 

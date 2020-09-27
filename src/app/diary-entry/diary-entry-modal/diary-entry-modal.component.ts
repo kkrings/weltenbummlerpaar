@@ -24,7 +24,16 @@ export class DiaryEntryModalComponent {
   /**
    * Input diary entry
    */
-  @Input() diaryEntry: DiaryEntry;
+  @Input() diaryEntry: DiaryEntry = {
+    _id: '',
+    title: '',
+    locationName: '',
+    body: '',
+    images: [],
+    tags: [],
+    createdAt: '',
+    updatedAt: ''
+  };
 
   /**
    * Construct the diary entry modal component.
