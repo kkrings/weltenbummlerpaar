@@ -29,7 +29,7 @@ export class HttpAlertService {
    * @returns
    *   User-friendly error message
    */
-  handleError(error: HttpErrorResponse): Observable<string> {
+  handleError(error: HttpErrorResponse): Observable<never> {
     // will hold user-friendly error message
     let reason = '';
 

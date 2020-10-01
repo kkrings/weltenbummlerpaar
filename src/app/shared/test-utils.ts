@@ -62,6 +62,6 @@ export function asyncData<T>(data: T): Observable<T> {
  * @returns
  *   Error observable
  */
-export function asyncError<T>(error: T): Observable<T> {
+export function asyncError<T>(error: T): Observable<never> {
   return defer(() => Promise.reject(error));
 }
