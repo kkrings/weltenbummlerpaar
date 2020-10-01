@@ -4,7 +4,7 @@
  */
 
 import { Directive, Input } from '@angular/core';
-import { defer } from 'rxjs';
+import { Observable, defer } from 'rxjs';
 
 
 /**
@@ -44,7 +44,7 @@ export class MockImageDirective {
  * @returns
  *   Data observable
  */
-export function asyncData<T>(data: T) {
+export function asyncData<T>(data: T): Observable<T> {
   return defer(() => Promise.resolve(data));
 }
 
@@ -62,6 +62,6 @@ export function asyncData<T>(data: T) {
  * @returns
  *   Error observable
  */
-export function asyncError<T>(error: T) {
+export function asyncError<T>(error: T): Observable<T> {
   return defer(() => Promise.reject(error));
 }

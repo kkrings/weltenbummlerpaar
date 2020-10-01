@@ -5,7 +5,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
 
 /**
@@ -29,7 +29,7 @@ export class HttpAlertService {
    * @returns
    *   User-friendly error message
    */
-  handleError(error: HttpErrorResponse) {
+  handleError(error: HttpErrorResponse): Observable<string> {
     // will hold user-friendly error message
     let reason = '';
 
