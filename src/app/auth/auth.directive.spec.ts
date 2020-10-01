@@ -4,7 +4,7 @@
  */
 
 import { Component } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { AuthDirective } from './auth.directive';
@@ -21,13 +21,13 @@ class AuthComponent {}
 
 
 describe('AuthDirective', () => {
-  it('should hide element if no admin user is logged in', async(() => {
+  it('should hide element if no admin user is logged in', async () => {
     // no admin user is logged in
     const mockAuthService: Partial<AuthService> = {
       isLoggedIn: false
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         AuthComponent,
         AuthDirective
@@ -42,15 +42,15 @@ describe('AuthDirective', () => {
 
     const div = fixture.debugElement.query(By.css('div'));
     expect(div.nativeElement.classList).toContain('d-none');
-  }));
+  });
 
-  it('should show element if admin user is logged in', async(() => {
+  it('should show element if admin user is logged in', async () => {
     // admin user is logged in
     const mockAuthService: Partial<AuthService> = {
       isLoggedIn: true
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         AuthComponent,
         AuthDirective
@@ -65,5 +65,5 @@ describe('AuthDirective', () => {
 
     const div = fixture.debugElement.query(By.css('div'));
     expect(div.nativeElement.classList).not.toContain('d-none');
-  }));
+  });
 });

@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -15,8 +15,8 @@ describe('ImageCarouselComponent', () => {
   let component: ImageCarouselComponent;
   let fixture: ComponentFixture<ImageCarouselComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [
         NgbCarouselModule
       ],
@@ -25,7 +25,7 @@ describe('ImageCarouselComponent', () => {
         MockImageDirective
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ImageCarouselComponent);

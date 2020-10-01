@@ -4,7 +4,7 @@
  */
 
 import { Component, Input, LOCALE_ID } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { registerLocaleData, formatDate } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
@@ -59,7 +59,7 @@ describe('DiaryEntryModalComponent', () => {
     updatedAt: (new Date()).toISOString()
   };
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [
         DiaryEntryModalComponent,
@@ -70,7 +70,7 @@ describe('DiaryEntryModalComponent', () => {
         {provide: LOCALE_ID, useValue: 'de'}
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DiaryEntryModalComponent);

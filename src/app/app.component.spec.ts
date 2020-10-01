@@ -4,7 +4,11 @@
  */
 
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import {
+  ComponentFixture, TestBed, waitForAsync
+} from '@angular/core/testing';
+
 import { By } from '@angular/platform-browser';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -56,13 +60,13 @@ describe('AppComponent', () => {
     updatedAt: (new Date()).toISOString()
   }];
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const diaryEntryServiceSpy = jasmine.createSpyObj(
         'DiaryEntryService', ['getEntries']);
 
     diaryEntryServiceSpy.getEntries.and.returnValue(asyncData(diaryEntries));
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         NgbAlertModule
       ],
@@ -75,7 +79,7 @@ describe('AppComponent', () => {
         {provide: DiaryEntryService, useValue: diaryEntryServiceSpy}
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
@@ -83,7 +87,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should retrieve list of diary entries', async(() => {
+  it('should retrieve list of diary entries', waitForAsync(() => {
     app.showSpinner = true;
     app.ngOnInit();
 
@@ -93,7 +97,7 @@ describe('AppComponent', () => {
     });
   }));
 
-  it('should set alert message', async(() => {
+  it('should set alert message', waitForAsync(() => {
     const diaryEntryService = TestBed.inject(DiaryEntryService) as
         jasmine.SpyObj<DiaryEntryService>;
 
@@ -116,7 +120,7 @@ describe('AppComponent', () => {
     expect(diaryEntryGrid).toBeNull();
   });
 
-  it('should render list of diary entries', async(() => {
+  it('should render list of diary entries', waitForAsync(() => {
     app.ngOnInit();
 
     fixture.whenStable().then(() => {

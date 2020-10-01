@@ -4,7 +4,11 @@
  */
 
 import { Directive, LOCALE_ID } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import {
+  ComponentFixture, TestBed, waitForAsync
+} from '@angular/core/testing';
+
 import { By } from '@angular/platform-browser';
 import { registerLocaleData, formatDate } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
@@ -62,7 +66,7 @@ describe('DiaryEntryCardComponent', () => {
     updatedAt: (new Date()).toISOString()
   };
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const modalServiceSpy = jasmine.createSpyObj('NgbModal', ['open']);
 
     const mockModal: Partial<NgbModalRef> = {
@@ -72,7 +76,7 @@ describe('DiaryEntryCardComponent', () => {
     const diaryServiceSpy = jasmine.createSpyObj(
         'DiaryEntryService', ['deleteEntry']);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         DiaryEntryCardComponent,
         DiaryEntryBriefPipe,
@@ -89,7 +93,7 @@ describe('DiaryEntryCardComponent', () => {
         NgbAlertModule
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DiaryEntryCardComponent);
@@ -233,7 +237,7 @@ describe('DiaryEntryCardComponent', () => {
     expect(component.openImageModal).toHaveBeenCalled();
   });
 
-  it('#deleteEntry should emit deleted entry', async(() => {
+  it('#deleteEntry should emit deleted entry', waitForAsync(() => {
     component.alertMessage = 'This is mock alert message.';
 
     const service = TestBed.inject(DiaryEntryService) as
@@ -259,7 +263,7 @@ describe('DiaryEntryCardComponent', () => {
     });
   }));
 
-  it('#deleteEntry should set alert message', async(() => {
+  it('#deleteEntry should set alert message', waitForAsync(() => {
     const service = TestBed.inject(DiaryEntryService) as
         jasmine.SpyObj<DiaryEntryService>;
 

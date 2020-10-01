@@ -3,7 +3,10 @@
  * @packageDocumentation
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture, TestBed, waitForAsync
+} from '@angular/core/testing';
+
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgbAlertModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -20,10 +23,10 @@ describe('AuthModalComponent', () => {
   let component: AuthModalComponent;
   let fixture: ComponentFixture<AuthModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const authServiceSpy = jasmine.createSpyObj('AuthService', ['login']);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         NgbAlertModule
@@ -36,7 +39,7 @@ describe('AuthModalComponent', () => {
         {provide: AuthService, useValue: authServiceSpy}
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AuthModalComponent);
@@ -138,7 +141,7 @@ describe('AuthModalComponent', () => {
     expect(error).not.toBeNull();
   });
 
-  it('#onSubmit should login user and close modal', async(() => {
+  it('#onSubmit should login user and close modal', waitForAsync(() => {
     component.loginFailedMessage = 'This is a mock alert message.';
     component.adminLoginForm.setValue({username: 'admin', password: 'admin'});
 
@@ -161,7 +164,7 @@ describe('AuthModalComponent', () => {
     });
   }));
 
-  it('#onSubmit should set alert message', async(() => {
+  it('#onSubmit should set alert message', waitForAsync(() => {
     component.adminLoginForm.setValue({username: 'admin', password: 'admin'});
 
     const authService = TestBed.inject(AuthService) as
@@ -176,7 +179,7 @@ describe('AuthModalComponent', () => {
     });
   }));
 
-  it('#onSubmit should set alert message', async(() => {
+  it('#onSubmit should set alert message', waitForAsync(() => {
     component.adminLoginForm.setValue({username: 'admin', password: 'admin'});
 
     const authService = TestBed.inject(AuthService) as

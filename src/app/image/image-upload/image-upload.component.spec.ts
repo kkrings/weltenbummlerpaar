@@ -4,7 +4,11 @@
  */
 
 import { By } from '@angular/platform-browser';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import {
+  ComponentFixture, TestBed, waitForAsync
+} from '@angular/core/testing';
+
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
@@ -23,14 +27,14 @@ describe('ImageUploadComponent', () => {
 
   const testEntryId = '0';
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const imageServiceSpy = jasmine.createSpyObj('ImageService', [
       'uploadImage',
       'updateImage',
       'deleteImage',
     ]);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         NgbAlertModule
@@ -42,7 +46,7 @@ describe('ImageUploadComponent', () => {
         {provide: ImageService, useValue: imageServiceSpy}
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ImageUploadComponent);
@@ -135,7 +139,7 @@ describe('ImageUploadComponent', () => {
     expect(error).not.toBeNull();
   });
 
-  it('#deleteImage should delete image', async(() => {
+  it('#deleteImage should delete image', waitForAsync(() => {
     component.alertMessage = 'This is a mock alert message';
 
     const testImage: Image = {
@@ -177,7 +181,7 @@ describe('ImageUploadComponent', () => {
     });
   }));
 
-  it('#deleteImage should set alert message', async(() => {
+  it('#deleteImage should set alert message', waitForAsync(() => {
     component.image._id = '0';
 
     const imageService = TestBed.inject(ImageService) as
@@ -271,7 +275,7 @@ describe('ImageUploadComponent', () => {
     expect(spinner).not.toBeNull();
   });
 
-  it('#onSubmit should upload image', async(() => {
+  it('#onSubmit should upload image', waitForAsync(() => {
     component.alertMessage = 'This is a mock alert message';
 
     const testImage: Image = {
@@ -346,7 +350,7 @@ describe('ImageUploadComponent', () => {
     expect(imageService.updateImage).toHaveBeenCalledWith(component.image);
   });
 
-  it('#onSubmit should set alert message', async(() => {
+  it('#onSubmit should set alert message', waitForAsync(() => {
     component.image._id = '0';
 
     const imageService = TestBed.inject(ImageService) as

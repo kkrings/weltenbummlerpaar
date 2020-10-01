@@ -3,7 +3,10 @@
  * @packageDocumentation
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture, TestBed, waitForAsync
+} from '@angular/core/testing';
+
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgbAlertModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -55,11 +58,11 @@ describe('DiaryEntryFormComponent', () => {
     updatedAt: (new Date()).toISOString()
   }];
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const diaryEntryServiceSpy = jasmine.createSpyObj(
         'DiaryEntryService', ['saveEntry', 'updateEntry']);
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         NgbAlertModule
@@ -73,7 +76,7 @@ describe('DiaryEntryFormComponent', () => {
         {provide: NgbActiveModal, useClass: MockNgbActiveModal}
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DiaryEntryFormComponent);
@@ -424,7 +427,7 @@ describe('DiaryEntryFormComponent', () => {
     });
   });
 
-  it('#onSubmit should create new diary entry', async(() => {
+  it('#onSubmit should create new diary entry', waitForAsync(() => {
     component.alertMessage = 'This is a mock alert message.';
 
     const diaryEntry: DiaryEntry = {
@@ -466,7 +469,7 @@ describe('DiaryEntryFormComponent', () => {
     });
   }));
 
-  it('#onSubmit should update injected diary entry', async(() => {
+  it('#onSubmit should update injected diary entry', waitForAsync(() => {
     component.diaryEntry = {...testEntry};
     component.ngOnInit();
 
@@ -489,7 +492,7 @@ describe('DiaryEntryFormComponent', () => {
     });
   }));
 
-  it('#onSubmit should set alert message', async(() => {
+  it('#onSubmit should set alert message', waitForAsync(() => {
     component.diaryEntry = {...testEntry};
     component.ngOnInit();
 

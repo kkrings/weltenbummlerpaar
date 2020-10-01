@@ -4,7 +4,7 @@
  */
 
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -45,7 +45,7 @@ describe('DiaryEntryGridComponent', () => {
   let component: DiaryEntryGridComponent;
   let fixture: ComponentFixture<DiaryEntryGridComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [
         NgbAlertModule
@@ -55,7 +55,7 @@ describe('DiaryEntryGridComponent', () => {
         MockDiaryEntryCardComponent
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DiaryEntryGridComponent);

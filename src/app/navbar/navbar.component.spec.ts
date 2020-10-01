@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { By } from '@angular/platform-browser';
 
@@ -16,6 +16,25 @@ import { AuthModalComponent } from '../auth/auth-modal/auth-modal.component';
 import {
   DiaryEntryFormComponent
 } from '../diary-entry/diary-entry-form/diary-entry-form.component';
+
+
+/**
+ * Mock authentication service
+ */
+class MockAuthService {
+  /**
+   * Mock logout method
+   */
+  logout(): void {}
+
+  /**
+   * Mock isLoggedIn property
+   */
+  get isLoggedIn(): boolean
+  {
+    return false;
+  }
+}
 
 
 describe('NavbarComponent', () => {
@@ -33,27 +52,24 @@ describe('NavbarComponent', () => {
       updatedAt: (new Date()).toISOString()
     };
 
-  beforeEach(async(() => {
-    const authServiceSpy = jasmine.createSpyObj(
-        'AuthService', ['logout', 'isLoggedIn']);
-
+  beforeEach(async () => {
     const modalServiceSpy = jasmine.createSpyObj('NgbModal', ['open']);
 
     const mockModal: Partial<NgbModalRef> = {
       result: Promise.resolve(testDiaryEntry)
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [
         NavbarComponent
       ],
       providers: [
-        {provide: AuthService, useValue: authServiceSpy},
+        {provide: AuthService, useClass: MockAuthService},
         {provide: NgbModal, useValue: modalServiceSpy},
         {provide: NgbModalRef, useValue: mockModal}
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NavbarComponent);
@@ -74,62 +90,46 @@ describe('NavbarComponent', () => {
   });
 
   it('login button should trigger #openLoginModal', () => {
-    const button = fixture.debugElement.query(
-        By.css('button.btn.btn-primary'));
-
+    const button = fixture.debugElement.query(By.css('#login-button'));
     spyOn(component, 'openLoginModal');
     button.triggerEventHandler('click', null);
     expect(component.openLoginModal).toHaveBeenCalled();
   });
 
   it('login button should be hidden', () => {
-    const authService = TestBed.inject(AuthService) as
-        jasmine.SpyObj<AuthService>;
-
-    // spyOnProperty does not work, apparently due to a bug in jasmine
-    // use this workaround until the bug is fixed
-    (authService.isLoggedIn as any) = true;
-
-    const button = fixture.debugElement.query(
-        By.css('button.btn.btn-primary'));
-
+    const authService = TestBed.inject(AuthService);
+    spyOnProperty(authService, 'isLoggedIn', 'get').and.returnValue(true);
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('#login-button'));
     expect(button.nativeElement.hidden).toBeTrue();
   });
 
   it('#logout should logout user', () => {
-    const authService = TestBed.inject(AuthService) as
-        jasmine.SpyObj<AuthService>;
-
+    const authService = TestBed.inject(AuthService);
+    spyOn(authService, 'logout');
     component.logout();
     expect(authService.logout).toHaveBeenCalled();
   });
 
   it('logout button should trigger #logout', () => {
-    const button = fixture.debugElement.query(
-        By.css('button.btn.btn-primary.ml-2'));
-
+    const authService = TestBed.inject(AuthService);
+    spyOnProperty(authService, 'isLoggedIn', 'get').and.returnValue(true);
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('#logout-button'));
     spyOn(component, 'logout');
     button.triggerEventHandler('click', null);
     expect(component.logout).toHaveBeenCalled();
   });
 
   it('should not render logout button', () => {
-    const authService = TestBed.inject(AuthService) as
-        jasmine.SpyObj<AuthService>;
-
-    // spyOnProperty does not work, apparently due to a bug in jasmine
-    // use this workaround until the bug is fixed
-    (authService.isLoggedIn as any) = false;
-
+    const authService = TestBed.inject(AuthService);
+    spyOnProperty(authService, 'isLoggedIn', 'get').and.returnValue(false);
     fixture.detectChanges();
-
-    const button = fixture.debugElement.query(
-        By.css('button.btn.btn-primary.ml-2'));
-
+    const button = fixture.debugElement.query(By.css('#logout-button'));
     expect(button).toBeNull();
   });
 
-  it('#openDiaryEntryModal should open diary entry modal', async(() => {
+  it('#openDiaryEntryModal should open diary entry modal', waitForAsync(() => {
     const modalService = TestBed.inject(NgbModal) as
         jasmine.SpyObj<NgbModal>;
 
@@ -158,26 +158,28 @@ describe('NavbarComponent', () => {
   }));
 
   it('new diary entry button should trigger #openDiaryEntryModal', () => {
+    const authService = TestBed.inject(AuthService);
+
+    spyOnProperty(authService, 'isLoggedIn', 'get').and.returnValue(true);
+    fixture.detectChanges();
+
     const button = fixture.debugElement.query(
-        By.css('button.btn.btn-secondary'));
+      By.css('#create-diary-entry-button'));
 
     spyOn(component, 'openDiaryEntryModal');
     button.triggerEventHandler('click', null);
+
     expect(component.openDiaryEntryModal).toHaveBeenCalled();
   });
 
   it('should not render new diary entry button', () => {
-    const authService = TestBed.inject(AuthService) as
-        jasmine.SpyObj<AuthService>;
+    const authService = TestBed.inject(AuthService);
 
-    // spyOnProperty does not work, apparently due to a bug in jasmine
-    // use this workaround until the bug is fixed
-    (authService.isLoggedIn as any) = false;
-
+    spyOnProperty(authService, 'isLoggedIn', 'get').and.returnValue(false);
     fixture.detectChanges();
 
     const button = fixture.debugElement.query(
-        By.css('button.btn.btn-secondary'));
+      By.css('#create-diary-entry-button'));
 
     expect(button).toBeNull();
   });

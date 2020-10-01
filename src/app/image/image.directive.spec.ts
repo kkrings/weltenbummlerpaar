@@ -5,7 +5,7 @@
 
 import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ImageDirective } from './image.directive';
 import { Image } from './image.model';
@@ -34,14 +34,14 @@ class ImageComponent {
 describe('ImageDirective', () => {
   let fixture: ComponentFixture<ImageComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [
         ImageComponent,
         ImageDirective
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ImageComponent);
