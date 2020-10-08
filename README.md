@@ -1,5 +1,8 @@
 # Weltenbummlerpaar
 
+[![Build Status](https://travis-ci.com/kkrings/weltenbummlerpaar.svg?branch=master)](
+https://travis-ci.com/kkrings/weltenbummlerpaar)
+
 This project contains the [Angular][]-based front end of the
 *Weltenbummlerpaar* travel diary web application. The corresponding
 [Express][]-based back end can be found in the [weltenbummlerpaar-backend][]
