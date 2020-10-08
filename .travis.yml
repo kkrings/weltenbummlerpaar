@@ -1,12 +1,13 @@
-dist: bionic
-addons:
-    apt:
-        sources:
-            - google-chrome
-        packages:
-            - google-chrome-stable
 language: node_js
+
 node_js:
-    - lts/*
+  - lts/*
+
+os: linux
+dist: focal
+
+addons:
+  chrome: stable
+
 script:
-    - npm run test -- --no-watch --no-progress --browsers=ChromeHeadless
+  - npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
