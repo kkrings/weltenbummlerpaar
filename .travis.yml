@@ -9,5 +9,15 @@ dist: focal
 addons:
   chrome: stable
 
+services:
+  - mongodb
+
+install:
+  - npm install
+  - npm install github:kkrings/weltenbummlerpaar-backend
+
+before_script:
+  - node bin/create.js admin --username admin --password admin
+
 script:
   - npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
