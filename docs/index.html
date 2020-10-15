@@ -67,44 +67,40 @@
 				<a href="#weltenbummlerpaar" id="weltenbummlerpaar" style="color: inherit; text-decoration: none;">
 					<h1>Weltenbummlerpaar</h1>
 				</a>
-				<p><a href="https://travis-ci.org/kkrings/weltenbummlerpaar"><img src="https://travis-ci.org/kkrings/weltenbummlerpaar.svg?branch=master" alt="Build Status"></a></p>
+				<p><a href="https://travis-ci.com/kkrings/weltenbummlerpaar"><img src="https://travis-ci.com/kkrings/weltenbummlerpaar.svg?branch=master" alt="Build Status"></a></p>
 				<p>This project contains the <a href="https://angular.io/">Angular</a>-based front end of the
 					<em>Weltenbummlerpaar</em> travel diary web application. The corresponding
-					<a href="https://expressjs.com/">Express</a>-based back end can be found in the <a href="https://github.com/kkrings/weltenbummlerpaar-backend/">weltenbummlerpaar-backend</a>
-				project.</p>
+				<a href="https://expressjs.com/">Express</a>-based back-end application can be found <a href="https://kkrings.github.io/weltenbummlerpaar-backend/">here</a>.</p>
 				<a href="#deployment" id="deployment" style="color: inherit; text-decoration: none;">
 					<h2>Deployment</h2>
 				</a>
-				<p>The first step is to download the application&#39;s latest
-					<a href="https://github.com/kkrings/weltenbummlerpaar/releases">release</a> and to extract
-				it:</p>
+				<p>The first step is to download the application&#39;s latest <a href="https://github.com/kkrings/weltenbummlerpaar/releases">release</a> and
+				to extract it:</p>
 				<pre><code><span class="hljs-selector-tag">tar</span> <span class="hljs-selector-tag">-xzvf</span> <span class="hljs-selector-tag">weltenbummlerpaar-vx</span><span class="hljs-selector-class">.x</span><span class="hljs-selector-class">.x</span><span class="hljs-selector-class">.tar</span><span class="hljs-selector-class">.gz</span>
 <span class="hljs-selector-tag">cd</span> <span class="hljs-selector-tag">weltenbummlerpaar-vx</span><span class="hljs-selector-class">.x</span><span class="hljs-selector-class">.x</span></code></pre><p>The second step is to install the application&#39;s dependencies:</p>
-				<pre><code>npm <span class="hljs-keyword">install</span></code></pre><p>The third step is to configure in the <strong>production</strong> environment
-					<code>src/environments/environment.prod.ts</code> the <code>baseurl</code> and the <code>domain</code> name of
-					the remote server that hosts the <a href="https://github.com/kkrings/weltenbummlerpaar-backend/">back-end
-				application</a>.</p>
-				<p>The last step is to initiated the application&#39;s build process in <strong>production</strong>
+				<pre><code>npm <span class="hljs-keyword">install</span> <span class="hljs-comment">--production</span></code></pre><p>The third step is to configure in the <strong>production</strong> environment</p>
+				<pre><code>src<span class="hljs-regexp">/environments/</span>environment.prod.ts</code></pre><p>the <code>baseurl</code> and the <code>domain</code> name of the remote server that hosts the
+				back-end application.</p>
+				<p>The last step is to initiate the application&#39;s build process in <strong>production</strong>
 				mode:</p>
 				<pre><code>.<span class="hljs-regexp">/node_modules/</span>.bin/ng build --prod</code></pre><p>The output files are written to <code>dist/weltenbummlerpaar</code> and can be copied to a
-					remote server. This is usually the same server that hosts the <a href="https://github.com/kkrings/weltenbummlerpaar-backend/">back-end
-					application</a>, because it does not support
-					cross-origin resource sharing (CORS). The server has to be configured in a way
-					that it serves static content from the location where the dist-files were
-					copied to and redirects requests for missing files to <code>index.html</code>; see
-				<a href="https://angular.io/guide/deployment">here</a> for more details.</p>
+					remote server. This is usually the same server that hosts the back-end
+					application, because it does not support cross-origin resource sharing (CORS).
+					The server has to be configured in a way that it serves static content from the
+					location where the dist-files were copied to and redirects requests for missing
+					files to <code>index.html</code>; see <a href="https://angular.io/guide/deployment">here</a> for more
+				details.</p>
 				<a href="#development" id="development" style="color: inherit; text-decoration: none;">
 					<h2>Development</h2>
 				</a>
 				<p>The application&#39;s source code is hosted on <a href="https://github.com/kkrings/weltenbummlerpaar/">GitHub</a>:</p>
 				<pre><code>git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/kkrings/</span>weltenbummlerpaar.git
 cd weltenbummlerpaar
-npm install</code></pre><p>Unit tests as well as full integration tests are provided based on <a href="https://jasmine.github.io/">Jasmine</a>,
+npm install</code></pre><p>Unit tests as well as end-to-end tests are provided based on <a href="https://jasmine.github.io/">Jasmine</a>,
 				<a href="http://karma-runner.github.io/">Karma</a>, and <a href="https://www.protractortest.org/">Protractor</a>. All unit tests are executed via:</p>
 				<pre><code> .<span class="hljs-regexp">/node_modules/</span>.bin/ng test</code></pre><p>A code coverage report is created at <code>coverage/weltenbummlerpaar</code> via:</p>
-				<pre><code> <span class="hljs-string">./node_modules/.bin/ng</span> test <span class="hljs-params">--code-coverage</span> <span class="hljs-params">--no-watch</span></code></pre><p>The full integration tests need a local installation of the <a href="https://github.com/kkrings/weltenbummlerpaar-backend/">back-end
-					application</a> up and running before they are executed
-				via:</p>
+				<pre><code> <span class="hljs-string">./node_modules/.bin/ng</span> test <span class="hljs-params">--code-coverage</span> <span class="hljs-params">--no-watch</span></code></pre><p>The end-to-end tests need a local installation of the back-end application up
+				and running before they are executed via:</p>
 				<pre><code> .<span class="hljs-regexp">/node_modules/</span>.bin/ng e2e</code></pre><p>The application&#39;s documentation can be build locally at <code>docs</code> via <a href="https://typedoc.org/">TypeDoc</a>:</p>
 				<pre><code>.<span class="hljs-regexp">/node_modules/</span>.bin/typedoc</code></pre>
 			</div>
