@@ -5,7 +5,7 @@ https://travis-ci.com/kkrings/weltenbummlerpaar)
 
 This project contains the [Angular][]-based front end of the
 *Weltenbummlerpaar* travel diary web application. The corresponding
-[Express][]-based back-end application can be found [Backend][here].
+[Express][]-based back-end application can be found [here][Backend].
 
 [Angular]: https://angular.io/
 [Express]: https://expressjs.com/
