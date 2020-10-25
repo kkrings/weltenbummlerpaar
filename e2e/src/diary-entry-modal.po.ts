@@ -9,11 +9,11 @@ import { by, ElementFinder } from 'protractor';
 /**
  * Diary entry modal
  *
- * This class represents the application's modal that shows a diary entry.
+ * This class represents a modal that shows a diary entry.
  */
 export class DiaryEntryModal {
   /**
-   * Create a new DiaryEntryModal instance.
+   * Create a new instance.
    *
    * @param modal
    *   The modal that shows a diary entry
@@ -24,7 +24,7 @@ export class DiaryEntryModal {
    * Diary entry's title
    */
   get diaryEntryTitle(): ElementFinder {
-    return this.modal.element(by.className('modal-title'));
+    return this.modal.element(by.css('.modal-title'));
   }
 
   /**
@@ -32,8 +32,8 @@ export class DiaryEntryModal {
    */
   get diaryEntryLocationName(): ElementFinder {
     return this.modal
-      .element(by.className('modal-body'))
-      .element(by.tagName('h6'));
+      .element(by.css('.modal-body'))
+      .element(by.css('h6'));
   }
 
   /**
@@ -41,8 +41,8 @@ export class DiaryEntryModal {
    */
   get diaryEntryBody(): ElementFinder {
     return this.modal
-      .element(by.className('modal-body'))
-      .all(by.tagName('p'))
+      .element(by.css('.modal-body'))
+      .all(by.css('p'))
       .first();
   }
 
@@ -51,8 +51,8 @@ export class DiaryEntryModal {
    */
   closeModal(): void {
     const closeButton = this.modal
-      .element(by.className('modal-footer'))
-      .element(by.tagName('button'));
+      .element(by.css('.modal-footer'))
+      .element(by.css('button'));
 
     closeButton.click();
   }

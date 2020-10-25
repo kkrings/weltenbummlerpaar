@@ -28,7 +28,7 @@ describe('weltenbummlerpaar', () => {
     const numDiaryEntries = page.getNumDiaryEntries();
 
     loginAdmin();
-    expect(page.createDiaryEntryButton.isDisplayed()).toBe(true);
+    expect(page.openDiaryEntryFormButton.isDisplayed()).toBe(true);
 
     createDiaryEntry();
     expect(page.getNumDiaryEntries()).toBeGreaterThan(numDiaryEntries);
@@ -50,18 +50,18 @@ describe('weltenbummlerpaar', () => {
   });
 
   function loginAdmin(): void {
-    const authModal = page.openLoginModal();
+    const authModal = page.openAuthModal();
     authModal.loginAdmin('admin', 'admin');
   }
 
   function createDiaryEntry(): void {
-    const diaryEntryFormModal = page.openModalForCreatingNewDiaryEntry();
-    diaryEntryFormModal.createDiaryEntry(diaryEntry);
+    const diaryEntryForm = page.openDiaryEntryForm();
+    diaryEntryForm.createDiaryEntry(diaryEntry);
     page.refresh();
   }
 
   function checkDiaryEntry(): void {
-    const diaryEntryModal = page.openNewestDiaryEntry();
+    const diaryEntryModal = page.getFirstDiaryEntry().openDiaryEntryModal();
 
     expect(diaryEntryModal.diaryEntryTitle.getText())
       .toEqual(diaryEntry.title);
@@ -76,7 +76,7 @@ describe('weltenbummlerpaar', () => {
   }
 
   function deleteNewestDiaryEntry(): void {
-    page.deleteNewestDiaryEntry();
+    page.getFirstDiaryEntry().deleteDiaryEntry();
     page.refresh();
   }
 

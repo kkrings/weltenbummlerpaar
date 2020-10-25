@@ -3,41 +3,54 @@
  * @packageDocumentation
  */
 
-import { by, element } from 'protractor';
+import { by, ElementFinder } from 'protractor';
 
 
 /**
  * Diary entry form modal
  *
- * This class represents the application's modal for creating or editing a
- * diary entry.
+ * This class represents a modal for creating/updating a diary entry.
  */
 export class DiaryEntryFormModal {
   /**
    * Input field for entering the entry's title
    */
-  titleInput = element(by.id('title'));
+  private titleInput: ElementFinder;
 
   /**
    * Input field for entering the entry's location name
    */
-  locationInput = element(by.id('location'));
+  private locationInput: ElementFinder;
 
   /**
    * Input field for entering the entry's body
    */
-  bodyInput = element(by.id('body'));
+  private bodyInput: ElementFinder;
 
   /**
    * Input field for entering the entry's tags
    */
-  tagsInput = element(by.id('tags'));
+  private tagsInput: ElementFinder;
 
   /**
    * This button submits the created or edited diary entry to the back-end
    * server.
    */
-  submitButton = element(by.css('button[type="submit"]'));
+  private submitButton: ElementFinder;
+
+  /**
+   * Create a new instance.
+   *
+   * @param:
+   *   The modal for creating/updating a diary entry
+   */
+  constructor(modal: ElementFinder) {
+    this.titleInput = modal.element(by.id('title'));
+    this.locationInput = modal.element(by.id('location'));
+    this.bodyInput = modal.element(by.id('body'));
+    this.tagsInput = modal.element(by.id('tags'));
+    this.submitButton = modal.element(by.css('button[type="submit"]'));
+  }
 
   /**
    * Create a diary entry.

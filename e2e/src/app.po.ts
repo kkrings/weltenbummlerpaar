@@ -6,8 +6,8 @@
 import { browser, by, element } from 'protractor';
 
 import { AuthModal } from './auth-modal.po';
+import { DiaryEntryCard } from './diary-entry-card.po';
 import { DiaryEntryFormModal } from './diary-entry-form-modal.po';
-import { DiaryEntryModal } from './diary-entry-modal.po';
 
 
 /**
@@ -30,12 +30,12 @@ export class AppPage {
    * This button in the navigation bar opens the modal that allows the admin
    * user to create a new diary entry.
    */
-  createDiaryEntryButton = element(by.id('create-diary-entry-button'));
+  openDiaryEntryFormButton = element(by.id('create-diary-entry-button'));
 
   /**
    * List of diary entry cards
    */
-  diaryEntryCards = element.all(by.tagName('app-diary-entry-card'));
+  diaryEntryCards = element.all(by.css('app-diary-entry-card'));
 
   /**
    * Navigate to the application's root page.
@@ -57,9 +57,9 @@ export class AppPage {
    * @returns
    *   Login modal
    */
-  openLoginModal(): AuthModal {
+  openAuthModal(): AuthModal {
     this.loginButton.click();
-    return new AuthModal();
+    return new AuthModal(element(by.css('app-auth-modal')));
   }
 
   /**
@@ -68,9 +68,9 @@ export class AppPage {
    * @returns
    *   Diary entry form modal
    */
-  openModalForCreatingNewDiaryEntry(): DiaryEntryFormModal {
-    this.createDiaryEntryButton.click();
-    return new DiaryEntryFormModal();
+  openDiaryEntryForm(): DiaryEntryFormModal {
+    this.openDiaryEntryFormButton.click();
+    return new DiaryEntryFormModal(element(by.css('app-diary-entry-form')));
   }
 
   /**
@@ -84,29 +84,12 @@ export class AppPage {
   }
 
   /**
-   * Open the modal that shows the newest diary entry
+   * Get the first diary entry.
    *
    * @returns
-   *   The modal that shows the newest diary entry
+   *   The first diary entry
    */
-  openNewestDiaryEntry(): DiaryEntryModal {
-    const diaryEntryCard = this.diaryEntryCards.first();
-
-    const openModalButton = diaryEntryCard
-      .element(by.className('card-body'))
-      .element(by.tagName('button'));
-
-    openModalButton.click();
-
-    return new DiaryEntryModal(element(by.tagName('app-diary-entry-modal')));
-  }
-
-  /**
-   * Delete the newest diary entry.
-   */
-  deleteNewestDiaryEntry(): void {
-    const diaryEntryCard = this.diaryEntryCards.first();
-    const deleteButton = diaryEntryCard.element(by.className('btn-danger'));
-    deleteButton.click();
+  getFirstDiaryEntry(): DiaryEntryCard {
+    return new DiaryEntryCard(this.diaryEntryCards.first());
   }
 }
