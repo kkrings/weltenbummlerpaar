@@ -7,7 +7,7 @@ import { browser, by, element } from 'protractor';
 
 import { AuthModal } from './auth-modal.po';
 import { DiaryEntryCard } from './diary-entry-card.po';
-import { DiaryEntryFormModal } from './diary-entry-form-modal.po';
+import { DiaryEntryForm } from './diary-entry-form.po';
 
 
 /**
@@ -68,9 +68,9 @@ export class AppPage {
    * @returns
    *   Diary entry form modal
    */
-  openDiaryEntryForm(): DiaryEntryFormModal {
+  openDiaryEntryForm(): DiaryEntryForm {
     this.openDiaryEntryFormButton.click();
-    return new DiaryEntryFormModal(element(by.css('app-diary-entry-form')));
+    return new DiaryEntryForm(element(by.css('app-diary-entry-form')));
   }
 
   /**

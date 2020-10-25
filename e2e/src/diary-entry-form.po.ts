@@ -1,5 +1,5 @@
 /**
- * Diary entry form modal
+ * Diary entry form
  * @packageDocumentation
  */
 
@@ -7,11 +7,11 @@ import { by, ElementFinder } from 'protractor';
 
 
 /**
- * Diary entry form modal
+ * Diary entry form
  *
  * This class represents a modal for creating/updating a diary entry.
  */
-export class DiaryEntryFormModal {
+export class DiaryEntryForm {
   /**
    * Input field for entering the entry's title
    */
