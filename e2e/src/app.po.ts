@@ -5,6 +5,8 @@
 
 import { browser, by, element } from 'protractor';
 
+import { AuthModal } from './auth-modal.po';
+import { DiaryEntryFormModal } from './diary-entry-form-modal.po';
 import { DiaryEntryModal } from './diary-entry-modal.po';
 
 
@@ -47,6 +49,28 @@ export class AppPage {
    */
   refresh(): void {
     browser.refresh();
+  }
+
+  /**
+   * Open modal for logging in as an administrator.
+   *
+   * @returns
+   *   Login modal
+   */
+  openLoginModal(): AuthModal {
+    this.loginButton.click();
+    return new AuthModal();
+  }
+
+  /**
+   * Open modal for creating a new diary entry.
+   *
+   * @returns
+   *   Diary entry form modal
+   */
+  openModalForCreatingNewDiaryEntry(): DiaryEntryFormModal {
+    this.createDiaryEntryButton.click();
+    return new DiaryEntryFormModal();
   }
 
   /**

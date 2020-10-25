@@ -6,8 +6,6 @@
 import { browser, logging } from 'protractor';
 
 import { AppPage } from './app.po';
-import { AuthModal } from './auth-modal.po';
-import { DiaryEntryFormModal } from './diary-entry-form-modal.po';
 
 
 describe('weltenbummlerpaar', () => {
@@ -52,14 +50,12 @@ describe('weltenbummlerpaar', () => {
   });
 
   function loginAdmin(): void {
-    page.loginButton.click();
-    const authModal = new AuthModal();
+    const authModal = page.openLoginModal();
     authModal.loginAdmin('admin', 'admin');
   }
 
   function createDiaryEntry(): void {
-    page.createDiaryEntryButton.click();
-    const diaryEntryFormModal = new DiaryEntryFormModal();
+    const diaryEntryFormModal = page.openModalForCreatingNewDiaryEntry();
     diaryEntryFormModal.createDiaryEntry(diaryEntry);
     page.refresh();
   }
