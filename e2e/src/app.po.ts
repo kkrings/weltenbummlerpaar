@@ -5,9 +5,9 @@
 
 import { browser, by, element } from 'protractor';
 
-import { AuthModal } from './auth-modal.po';
-import { DiaryEntryCard } from './diary-entry-card.po';
-import { DiaryEntryForm } from './diary-entry-form.po';
+import { AuthModal } from './auth/auth-modal.po';
+import { DiaryEntryCard } from './diary-entry/diary-entry-card.po';
+import { DiaryEntryForm } from './diary-entry/diary-entry-form.po';
 
 
 /**

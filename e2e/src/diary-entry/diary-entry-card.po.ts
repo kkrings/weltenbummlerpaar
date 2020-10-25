@@ -6,7 +6,7 @@
 import { element, by, ElementFinder } from 'protractor';
 
 import { DiaryEntryModal } from './diary-entry-modal.po';
-import { ImageModal } from './image-modal.po';
+import { ImageModal } from '../image/image-modal.po';
 
 
 /**
