@@ -52,7 +52,7 @@ export class AppPage {
   }
 
   /**
-   * Open modal for logging in as an administrator.
+   * Open modal for logging in as the administrator.
    *
    * @returns
    *   Login modal
@@ -60,6 +60,13 @@ export class AppPage {
   openAuthModal(): AuthModal {
     this.loginButton.click();
     return new AuthModal(element(by.css('app-auth-modal')));
+  }
+
+  /**
+   * Logout the administrator.
+   */
+  logoutAdmin(): void {
+    this.logoutButton.click();
   }
 
   /**

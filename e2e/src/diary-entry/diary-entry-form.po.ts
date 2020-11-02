@@ -5,6 +5,8 @@
 
 import { by, ElementFinder } from 'protractor';
 
+import { DiaryEntry } from '../app-utils.po';
+
 
 /**
  * Diary entry form
@@ -64,12 +66,7 @@ export class DiaryEntryForm {
    * @param tags
    *   Diary entry's comma-separated list of tags
    */
-  createDiaryEntry(diaryEntry: {
-    title: string,
-    locationName: string,
-    body: string,
-    tags: string
-  }): void {
+  createDiaryEntry(diaryEntry: DiaryEntry): void {
     this.titleInput.sendKeys(diaryEntry.title);
     this.locationInput.sendKeys(diaryEntry.locationName);
     this.bodyInput.sendKeys(diaryEntry.body);
