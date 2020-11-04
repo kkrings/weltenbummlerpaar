@@ -1,19 +1,9 @@
-<div *ngIf="diaryEntries.length > 0">
-  <div class="container">
-    <div class="row row-cols-1 row-cols-md-2">
-      <div class="col mb-4" *ngFor="let diaryEntry of diaryEntries">
-        <app-diary-entry-card [diaryEntry]="diaryEntry"
-                              (deletedEntryId)="deleteDiaryEntry($event)">
-        </app-diary-entry-card>
-      </div>
+<div class="container">
+  <div class="row row-cols-1 row-cols-md-2">
+    <div class="col mb-4" *ngFor="let diaryEntry of diaryEntries">
+      <app-diary-entry-card [diaryEntry]="diaryEntry"
+                            (deletedEntryId)="deleteDiaryEntry($event)">
+      </app-diary-entry-card>
     </div>
-  </div>
-</div>
-<div *ngIf="diaryEntries.length === 0">
-  <div class="container">
-    <ngb-alert [dismissible]="false" [type]="'secondary'">
-      Sorry, es sind leider noch keine Tagebucheinträge vorhanden. Wir hoffen,
-      ihr habt noch etwas Geduld mit uns.
-    </ngb-alert>
   </div>
 </div>
