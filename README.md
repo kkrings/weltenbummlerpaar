@@ -24,7 +24,7 @@ to extract it:
 
 The second step is to install the application's dependencies:
 
-    npm install --production
+    npm install
 
 The third step is to configure in the **production** environment
 

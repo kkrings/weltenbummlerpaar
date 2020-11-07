@@ -77,13 +77,17 @@
 				<p>The first step is to download the application&#39;s latest <a href="https://github.com/kkrings/weltenbummlerpaar/releases">release</a> and
 				to extract it:</p>
 				<pre><code><span class="hljs-selector-tag">tar</span> <span class="hljs-selector-tag">-xzvf</span> <span class="hljs-selector-tag">weltenbummlerpaar-vx</span><span class="hljs-selector-class">.x</span><span class="hljs-selector-class">.x</span><span class="hljs-selector-class">.tar</span><span class="hljs-selector-class">.gz</span>
-<span class="hljs-selector-tag">cd</span> <span class="hljs-selector-tag">weltenbummlerpaar-vx</span><span class="hljs-selector-class">.x</span><span class="hljs-selector-class">.x</span></code></pre><p>The second step is to install the application&#39;s dependencies:</p>
-				<pre><code>npm <span class="hljs-keyword">install</span> <span class="hljs-comment">--production</span></code></pre><p>The third step is to configure in the <strong>production</strong> environment</p>
-				<pre><code>src<span class="hljs-regexp">/environments/</span>environment.prod.ts</code></pre><p>the <code>baseurl</code> and the <code>domain</code> name of the remote server that hosts the
+<span class="hljs-selector-tag">cd</span> <span class="hljs-selector-tag">weltenbummlerpaar-vx</span><span class="hljs-selector-class">.x</span><span class="hljs-selector-class">.x</span></code></pre>
+				<p>The second step is to install the application&#39;s dependencies:</p>
+				<pre><code>npm <span class="hljs-keyword">install</span></code></pre>
+				<p>The third step is to configure in the <strong>production</strong> environment</p>
+				<pre><code>src<span class="hljs-regexp">/environments/</span>environment.prod.ts</code></pre>
+				<p>the <code>baseurl</code> and the <code>domain</code> name of the remote server that hosts the
 				back-end application.</p>
 				<p>The last step is to initiate the application&#39;s build process in <strong>production</strong>
 				mode:</p>
-				<pre><code>.<span class="hljs-regexp">/node_modules/</span>.bin/ng build --prod</code></pre><p>The output files are written to <code>dist/weltenbummlerpaar</code> and can be copied to a
+				<pre><code>.<span class="hljs-regexp">/node_modules/</span>.bin/ng build --prod</code></pre>
+				<p>The output files are written to <code>dist/weltenbummlerpaar</code> and can be copied to a
 					remote server. This is usually the same server that hosts the back-end
 					application, because it does not support cross-origin resource sharing (CORS).
 					The server has to be configured in a way that it serves static content from the
@@ -96,12 +100,16 @@
 				<p>The application&#39;s source code is hosted on <a href="https://github.com/kkrings/weltenbummlerpaar/">GitHub</a>:</p>
 				<pre><code>git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/kkrings/</span>weltenbummlerpaar.git
 cd weltenbummlerpaar
-npm install</code></pre><p>Unit tests as well as end-to-end tests are provided based on <a href="https://jasmine.github.io/">Jasmine</a>,
+npm install</code></pre>
+				<p>Unit tests as well as end-to-end tests are provided based on <a href="https://jasmine.github.io/">Jasmine</a>,
 				<a href="http://karma-runner.github.io/">Karma</a>, and <a href="https://www.protractortest.org/">Protractor</a>. All unit tests are executed via:</p>
-				<pre><code> .<span class="hljs-regexp">/node_modules/</span>.bin/ng test</code></pre><p>A code coverage report is created at <code>coverage/weltenbummlerpaar</code> via:</p>
-				<pre><code> <span class="hljs-string">./node_modules/.bin/ng</span> test <span class="hljs-params">--code-coverage</span> <span class="hljs-params">--no-watch</span></code></pre><p>The end-to-end tests need a local installation of the back-end application up
+				<pre><code> .<span class="hljs-regexp">/node_modules/</span>.bin/ng test</code></pre>
+				<p>A code coverage report is created at <code>coverage/weltenbummlerpaar</code> via:</p>
+				<pre><code> <span class="hljs-string">./node_modules/.bin/ng</span> test <span class="hljs-params">--code-coverage</span> <span class="hljs-params">--no-watch</span></code></pre>
+				<p>The end-to-end tests need a local installation of the back-end application up
 				and running before they are executed via:</p>
-				<pre><code> .<span class="hljs-regexp">/node_modules/</span>.bin/ng e2e</code></pre><p>The application&#39;s documentation can be build locally at <code>docs</code> via <a href="https://typedoc.org/">TypeDoc</a>:</p>
+				<pre><code> .<span class="hljs-regexp">/node_modules/</span>.bin/ng e2e</code></pre>
+				<p>The application&#39;s documentation can be build locally at <code>docs</code> via <a href="https://typedoc.org/">TypeDoc</a>:</p>
 				<pre><code>.<span class="hljs-regexp">/node_modules/</span>.bin/typedoc</code></pre>
 			</div>
 		</div>
@@ -115,19 +123,13 @@ npm install</code></pre><p>Unit tests as well as end-to-end tests are provided b
 						<span>Internals</span>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_src_main_.html">&quot;src/main&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_polyfills_.html">&quot;src/polyfills&quot;</a>
+						<a href="modules/_src_app_app_module_.html">&quot;src/app/app.module&quot;</a>
 					</li>
 					<li class="label tsd-is-external">
 						<span>Externals</span>
 					</li>
 					<li class=" tsd-kind-module tsd-is-external">
 						<a href="modules/_src_app_app_component_.html">&quot;src/app/app.component&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_app_module_.html">&quot;src/app/app.module&quot;</a>
 					</li>
 					<li class=" tsd-kind-module tsd-is-external">
 						<a href="modules/_src_app_auth_auth_modal_auth_modal_component_.html">&quot;src/app/auth/auth-<wbr>modal/auth-<wbr>modal.component&quot;</a>
@@ -199,6 +201,9 @@ npm install</code></pre><p>Unit tests as well as end-to-end tests are provided b
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
 		</div>
 	</div>
 </footer>
