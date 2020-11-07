@@ -25,7 +25,7 @@ export class ImageCarouselItem {
    * Figure's caption, which shows the image's description
    */
   get caption(): ElementFinder {
-    return this.figure.element(by.binding('image.description'));
+    return this.figure.element(by.css('.figure-caption'));
   }
 
   /**
@@ -55,6 +55,13 @@ export class ImageCarousel {
    */
   constructor(carousel: ElementFinder) {
     this.items = carousel.all(by.css('figure'));
+  }
+
+  /**
+   * Number of carousel items
+   */
+  get numItems(): Promise<number> {
+    return this.items.count() as Promise<number>;
   }
 
   /**

@@ -5,6 +5,8 @@
 
 import { by, ElementFinder } from 'protractor';
 
+import { ImageCarousel } from '../image/image-carousel.po';
+
 
 /**
  * Diary entry modal
@@ -13,12 +15,19 @@ import { by, ElementFinder } from 'protractor';
  */
 export class DiaryEntryModal {
   /**
+   * Image carousel
+   */
+  imageCarousel: ElementFinder;
+
+  /**
    * Create a new instance.
    *
    * @param modal
    *   The modal that shows a diary entry
    */
-  constructor(private modal: ElementFinder) { }
+  constructor(private modal: ElementFinder) {
+    this.imageCarousel = this.modal.element(by.css('app-image-carousel'));
+  }
 
   /**
    * Diary entry's title
@@ -44,6 +53,13 @@ export class DiaryEntryModal {
       .element(by.css('.modal-body'))
       .all(by.css('p'))
       .first();
+  }
+
+  /**
+   * Diary entrys' images
+   */
+  get diaryEntryImages(): ImageCarousel {
+    return new ImageCarousel(this.imageCarousel);
   }
 
   /**

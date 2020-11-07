@@ -20,6 +20,11 @@ export class ImageModal {
   private uploads: ElementArrayFinder;
 
   /**
+   * Button for closing the modal
+   */
+  private closeButton: ElementFinder;
+
+  /**
    * Create a new instance.
    *
    * @param modal
@@ -27,6 +32,10 @@ export class ImageModal {
    */
   constructor(modal: ElementFinder) {
     this.uploads = modal.all(by.css('app-image-upload'));
+
+    this.closeButton = modal
+      .element(by.css('.modal-footer'))
+      .element(by.css('button'));
   }
 
   /**
@@ -58,5 +67,12 @@ export class ImageModal {
     });
 
     return new ImageUpload(uploads.first());
+  }
+
+  /**
+   * Close the modal.
+   */
+  closeModal(): void {
+    this.closeButton.click();
   }
 }

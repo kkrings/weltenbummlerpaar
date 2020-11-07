@@ -16,12 +16,37 @@ import { ImageModal } from '../image/image-modal.po';
  */
 export class DiaryEntryCard {
   /**
+   * Button for opening the diary entry's modal
+   */
+  openModalButton: ElementFinder;
+
+  /**
+   * Button for opening the diary entry's image modal
+   */
+  openImageModalButton: ElementFinder;
+
+  /**
+   * Button for deleting the diary entry
+   */
+  deleteButton: ElementFinder;
+
+  /**
    * Create a new instance.
    *
    * @param card
    *   The card that shows a diary entry
    */
-  constructor(private card: ElementFinder) { }
+  constructor(card: ElementFinder) {
+    this.openModalButton = card
+      .element(by.css('.card-body'))
+      .element(by.css('.btn-primary'));
+
+    this.openImageModalButton = card
+      .element(by.css('.card-header'))
+      .element(by.css('.btn-secondary'));
+
+    this.deleteButton = card.element(by.css('.btn-danger'));
+  }
 
   /**
    * Open the modal that shows the diary entry
@@ -30,12 +55,7 @@ export class DiaryEntryCard {
    *   The modal that shows the diary entry
    */
   openDiaryEntryModal(): DiaryEntryModal {
-    const openModalButton = this.card
-      .element(by.css('.card-body'))
-      .element(by.css('.btn-primary'));
-
-    openModalButton.click();
-
+    this.openModalButton.click();
     return new DiaryEntryModal(element(by.css('app-diary-entry-modal')));
   }
 
@@ -46,12 +66,7 @@ export class DiaryEntryCard {
    *   The modal for uploading/updating images
    */
   openImageModal(): ImageModal {
-    const openModalButton = this.card
-      .element(by.css('.card-header'))
-      .element(by.css('.btn-secondary'));
-
-    openModalButton.click();
-
+    this.openImageModalButton.click();
     return new ImageModal(element(by.css('app-image-modal')));
   }
 
@@ -59,7 +74,6 @@ export class DiaryEntryCard {
    * Delete the diary entry.
    */
   deleteDiaryEntry(): void {
-    const deleteButton = this.card.element(by.css('.btn-danger'));
-    deleteButton.click();
+    this.deleteButton.click();
   }
 }
