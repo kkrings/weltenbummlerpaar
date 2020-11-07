@@ -1,5 +1,5 @@
 <app-navbar (newDiaryEntry)="addDiaryEntry($event)"></app-navbar>
-<div class="pt-2 pb-4">
+<div class="pb-4">
   <div class="d-none d-sm-block">
     <img class="img-fluid"
          src="/assets/welcome_sm.jpg"
@@ -18,16 +18,8 @@
     </div>
   </div>
 </div>
-<div *ngIf="diaryEntries.length > 0">
+<div *ngIf="!showSpinner && !alertMessage">
   <app-diary-entry-grid [diaryEntries]="diaryEntries"></app-diary-entry-grid>
-</div>
-<div *ngIf="showNoDiaryEntriesMessage">
-  <div class="container mb-4">
-    <ngb-alert [dismissible]="false" [type]="'secondary'">
-      Sorry, es sind leider noch keine Tagebucheinträge vorhanden. Wir hoffen,
-      ihr habt noch etwas Geduld mit uns.
-    </ngb-alert>
-  </div>
 </div>
 <div *ngIf="alertMessage">
   <div class="container mb-4">

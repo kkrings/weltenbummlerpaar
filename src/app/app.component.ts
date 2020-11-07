@@ -35,11 +35,6 @@ export class AppComponent implements OnInit {
   showSpinner = true;
 
   /**
-   * Show message that no diary entries have been added yet.
-   */
-  showNoDiaryEntriesMessage = false;
-
-  /**
    * Alert message that is shown in case of HTTP errors
    */
   alertMessage = '';
@@ -63,7 +58,6 @@ export class AppComponent implements OnInit {
         (diaryEntries: DiaryEntry[]) => {
           this.showSpinner = false;
           this.diaryEntries = diaryEntries;
-          this.showNoDiaryEntriesMessage = diaryEntries.length === 0;
         },
         (error: string) => {
           this.showSpinner = false;
