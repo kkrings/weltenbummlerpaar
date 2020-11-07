@@ -276,6 +276,8 @@ describe('ImageUploadComponent', () => {
   });
 
   it('#onSubmit should upload image', waitForAsync(() => {
+    const componentImageBeforeUpload = {...component.image};
+
     component.alertMessage = 'This is a mock alert message';
 
     const testImage: Image = {
@@ -313,7 +315,7 @@ describe('ImageUploadComponent', () => {
     imageService.uploadImage.and.returnValue(asyncData(testImage));
 
     component.imageChange.subscribe((image: Image) => {
-      expect(image._id).toEqual(testImage._id);
+      expect(image).toEqual(testImage);
     });
 
     component.processing.pipe(first()).subscribe((processing: boolean) => {
@@ -334,20 +336,31 @@ describe('ImageUploadComponent', () => {
           component.entryId, uploadedImage);
 
       expect(component.processUploadRequest).toBeFalse();
-      expect(component.image).toEqual(testImage);
+      expect(component.image).toEqual(componentImageBeforeUpload);
     });
   }));
 
   it('#onSubmit should update image', () => {
-    component.image._id = '0';
+    const testImage: Image = {
+      _id: '0',
+      description: 'some description',
+      createdAt: (new Date()).toISOString(),
+      updatedAt: (new Date()).toISOString()
+    };
+
+    component.image = testImage;
+    component.ngOnInit();
+
+    fixture.detectChanges();
 
     const imageService = TestBed.inject(ImageService) as
         jasmine.SpyObj<ImageService>;
 
-    imageService.updateImage.and.returnValue(of(component.image));
+    imageService.updateImage.and.returnValue(of(testImage));
 
     component.onSubmit();
-    expect(imageService.updateImage).toHaveBeenCalledWith(component.image);
+    expect(imageService.updateImage).toHaveBeenCalledWith(testImage);
+    expect(component.image).toEqual(testImage);
   });
 
   it('#onSubmit should set alert message', waitForAsync(() => {

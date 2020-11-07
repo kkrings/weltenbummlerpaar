@@ -158,21 +158,21 @@ export class ImageUploadComponent implements OnInit {
    * Submit an image upload/update request to the back-end server.
    */
   onSubmit(): void {
-    const uploadImage: Image = {...this.image};
+    const upload: Image = {...this.image};
     const formValue = this.imageForm.value;
 
     if (formValue.files) {
-      uploadImage.file = formValue.files[0];
+      upload.file = formValue.files[0];
     }
 
-    uploadImage.description = formValue.description;
+    upload.description = formValue.description;
+
+    const update = this.image._id.length > 0;
 
     const request = (image: Image): Observable<Image> => {
-      if (image._id.length > 0) {
-        return this.imageService.updateImage(image);
-      } else {
-        return this.imageService.uploadImage(this.entryId, image);
-      }
+      return update
+        ? this.imageService.updateImage(image)
+        : this.imageService.uploadImage(this.entryId, image);
     };
 
     // reset alert message
@@ -182,12 +182,17 @@ export class ImageUploadComponent implements OnInit {
     this.processUploadRequest = true;
     this.processing.emit(true);
 
-    request(uploadImage).subscribe(
+    request(upload).subscribe(
       (image: Image) => {
         this.processUploadRequest = false;
         this.processing.emit(false);
-        this.imageChange.emit(Object.assign(this.image, image));
-        this.imageForm.reset();
+
+        if (update) {
+          this.imageChange.emit(Object.assign(this.image, image));
+        } else {
+          this.imageChange.emit(image);
+          this.imageForm.reset();
+        }
       },
       (error: string) => {
         this.processUploadRequest = false;
