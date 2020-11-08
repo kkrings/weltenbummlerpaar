@@ -4,9 +4,7 @@
  */
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID } from '@angular/core';
-import { registerLocaleData } from '@angular/common';
-import localeDe from '@angular/common/locales/de';
+import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -64,10 +62,6 @@ import {
 } from './shared/file-value-accessor.directive';
 
 
-// application expects German-speaking users
-registerLocaleData(localeDe);
-
-
 /**
  * Application's root module
  *
@@ -106,8 +100,6 @@ registerLocaleData(localeDe);
     NgbModalModule
   ],
   providers: [
-    // application's default language is German
-    {provide: LOCALE_ID, useValue: 'de'}
   ],
   bootstrap: [AppComponent]
 })
