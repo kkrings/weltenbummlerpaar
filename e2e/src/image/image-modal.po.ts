@@ -52,21 +52,16 @@ export class ImageModal {
   }
 
   /**
-   * Find an image's corresponding image upload element.
+   * Get the image's corresponding image upload element.
    *
-   * @param description
-   *   Image's description
+   * @param index
+   *   Image's index
    *
    * @returns
    *   Image
    */
-  findImageUpload(description: string): ImageUpload {
-    const uploads = this.uploads.filter(async form => {
-      const upload = new ImageUpload(form);
-      return await upload.description === description;
-    });
-
-    return new ImageUpload(uploads.first());
+  getImageUpload(index: number): ImageUpload {
+    return new ImageUpload(this.uploads.get(1 + index));
   }
 
   /**

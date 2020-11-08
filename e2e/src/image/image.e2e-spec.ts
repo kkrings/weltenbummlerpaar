@@ -97,16 +97,39 @@ describe('image:', () => {
       });
     });
 
-    // this is a workaround for deleting the diary entry
-    // it does not in an 'afterAll'
-    describe('after diary entry is deleted', () => {
+    describe('after image is deleted', () => {
+      let diaryEntryModal: DiaryEntryModal;
+
       beforeAll(() => {
-        diaryEntryCard.deleteDiaryEntry();
+        const imageModal = diaryEntryCard.openImageModal();
+        const imageUpload = imageModal.getImageUpload(0);
+        imageUpload.deleteImage();
+        imageModal.closeModal();
       });
 
-      it('dummy test', () => {
-        expect(true).toBeTruthy();
+      beforeAll(() => {
+        diaryEntryModal = diaryEntryCard.openDiaryEntryModal();
       });
+
+      it('image carousel should not be present', () => {
+        expect(diaryEntryModal.imageCarousel.isPresent()).toBeFalsy();
+      });
+
+      afterAll(() => {
+        diaryEntryModal.closeModal();
+      });
+    });
+  });
+
+  // this is a workaround for deleting the diary entry
+  // it does not in an 'afterAll'
+  describe('after diary entry is deleted', () => {
+    beforeAll(() => {
+      diaryEntryCard.deleteDiaryEntry();
+    });
+
+    it('dummy test', () => {
+      expect(true).toBeTruthy();
     });
   });
 
