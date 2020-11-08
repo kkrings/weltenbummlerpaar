@@ -38,8 +38,8 @@ mode:
 
     ./node_modules/.bin/ng build --prod
 
-The output files are written to `dist/weltenbummlerpaar` and can be copied to a
-remote server. This is usually the same server that hosts the back-end
+The output files are written to `dist/weltenbummlerpaar/de` and can be copied
+to a remote server. This is usually the same server that hosts the back-end
 application, because it does not support cross-origin resource sharing (CORS).
 The server has to be configured in a way that it serves static content from the
 location where the dist-files were copied to and redirects requests for missing

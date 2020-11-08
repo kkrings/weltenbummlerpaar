@@ -1,4 +1,5 @@
 {
+    "name": "Weltenbummlerpaar Documentation",
     "mode": "modules",
     "inputFiles": ["./src/app/app.module.ts"],
     "exclude": ["./src/environments/*.ts"],
