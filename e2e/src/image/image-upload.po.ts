@@ -5,6 +5,8 @@
 
 import { by, ElementFinder } from 'protractor';
 
+import { Image } from './image-model.po';
+
 
 /**
  * Image upload
@@ -15,22 +17,22 @@ export class ImageUpload {
   /**
    * Input for choosing the image that should be uploaded
    */
-  private fileInput: ElementFinder;
+  fileInput: ElementFinder;
 
   /**
    * Input for entering the image's description
    */
-  private descriptionInput: ElementFinder;
+  descriptionInput: ElementFinder;
 
   /**
    * This button submits the image to the back-end server.
    */
-  private submitButton: ElementFinder;
+  submitButton: ElementFinder;
 
   /**
    * This button requests the image's deletion from the back-end server.
    */
-  private deleteButton: ElementFinder;
+  deleteButton: ElementFinder;
 
   /**
    * Construct a new instance
@@ -47,29 +49,34 @@ export class ImageUpload {
 
   /**
    * Image's description
+   *
+   * @returns
+   *   Image's description
    */
-  get description(): Promise<string> {
-    return this.descriptionInput.getAttribute('value') as Promise<string>;
+  async getDescriptionAsync(): Promise<string> {
+    return await this.descriptionInput.getAttribute('value');
   }
 
   /**
    * Upload/update the image.
    *
-   * @param filePath
+   * @param image
+   *   Image
+   * @param file
    *   Path to image
-   * @param description
-   *   Image's description
    */
-  uploadOrUpdateImage(image: { filePath: string, description: string }): void {
-    this.fileInput.sendKeys(image.filePath);
-    this.descriptionInput.sendKeys(image.description);
-    this.submitButton.click();
+  async uploadOrUpdateImageAsync(image: Image, file?: string): Promise<void> {
+    if (file) {
+      await this.fileInput.sendKeys(file);
+    }
+    await this.descriptionInput.sendKeys(image.description);
+    await this.submitButton.click();
   }
 
   /**
    * Delete the image.
    */
-  deleteImage(): void {
-    this.deleteButton.click();
+  async deleteImageAsync(): Promise<void> {
+    await this.deleteButton.click();
   }
 }

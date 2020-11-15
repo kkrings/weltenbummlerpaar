@@ -6,6 +6,7 @@
 import { element, by, ElementFinder } from 'protractor';
 
 import { DiaryEntryModal } from './diary-entry-modal.po';
+import { Image } from '../image/image-model.po';
 import { ImageModal } from '../image/image-modal.po';
 
 
@@ -18,7 +19,7 @@ export class DiaryEntryCard {
   /**
    * Button for opening the diary entry's modal
    */
-  openModalButton: ElementFinder;
+  openEntryModalButton: ElementFinder;
 
   /**
    * Button for opening the diary entry's image modal
@@ -37,7 +38,7 @@ export class DiaryEntryCard {
    *   The card that shows a diary entry
    */
   constructor(card: ElementFinder) {
-    this.openModalButton = card
+    this.openEntryModalButton = card
       .element(by.css('.card-body'))
       .element(by.css('.btn-primary'));
 
@@ -54,8 +55,8 @@ export class DiaryEntryCard {
    * @returns
    *   The modal that shows the diary entry
    */
-  openDiaryEntryModal(): DiaryEntryModal {
-    this.openModalButton.click();
+  async openEntryModalAsync(): Promise<DiaryEntryModal> {
+    await this.openEntryModalButton.click();
     return new DiaryEntryModal(element(by.css('app-diary-entry-modal')));
   }
 
@@ -65,15 +66,33 @@ export class DiaryEntryCard {
    * @returns
    *   The modal for uploading/updating images
    */
-  openImageModal(): ImageModal {
-    this.openImageModalButton.click();
+  async openImageModalAsync(): Promise<ImageModal> {
+    await this.openImageModalButton.click();
     return new ImageModal(element(by.css('app-image-modal')));
+  }
+
+  /**
+   * Upload images.
+   *
+   * @param images
+   *   List of images
+   * @param files
+   *   Corresponding paths to images
+   */
+  async uploadImagesAsync(images: Image[], files: string[]): Promise<void> {
+    const modal = await this.openImageModalAsync();
+
+    for (let i = 0; i < images.length; ++i) {
+      await modal.uploadImageAsync(images[i], files[i]);
+    }
+
+    await modal.closeModalAsync();
   }
 
   /**
    * Delete the diary entry.
    */
-  deleteDiaryEntry(): void {
-    this.deleteButton.click();
+  async deleteDiaryEntryAsync(): Promise<void> {
+    await this.deleteButton.click();
   }
 }

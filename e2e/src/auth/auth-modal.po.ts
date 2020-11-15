@@ -15,18 +15,18 @@ export class AuthModal {
   /**
    * Input field for entering the admin's username
    */
-  private usernameInput: ElementFinder;
+  usernameInput: ElementFinder;
 
   /**
    * Input field for entering the admin's password
    */
-  private passwordInput: ElementFinder;
+  passwordInput: ElementFinder;
 
   /**
    * This button submits the entered username and password to the back-end
    * server.
    */
-  private submitButton: ElementFinder;
+  submitButton: ElementFinder;
 
   /**
    * Create a new instance.
@@ -41,16 +41,16 @@ export class AuthModal {
   }
 
   /**
-   * Login the admin user.
+   * Login as admin.
    *
    * @param username
    *   Admin's username
    * @param password
    *   Admin's password
    */
-  loginAdmin(username: string = 'admin', password: string = 'admin'): void {
-    this.usernameInput.sendKeys(username);
-    this.passwordInput.sendKeys(password);
-    this.submitButton.click();
+  async loginAdminAsync(username: string, password: string): Promise<void> {
+    await this.usernameInput.sendKeys(username);
+    await this.passwordInput.sendKeys(password);
+    await this.submitButton.click();
   }
 }

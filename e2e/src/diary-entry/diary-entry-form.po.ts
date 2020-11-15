@@ -5,7 +5,7 @@
 
 import { by, ElementFinder } from 'protractor';
 
-import { DiaryEntry } from '../app-utils.po';
+import { DiaryEntry } from './diary-entry-model.po';
 
 
 /**
@@ -17,28 +17,28 @@ export class DiaryEntryForm {
   /**
    * Input field for entering the entry's title
    */
-  private titleInput: ElementFinder;
+  titleInput: ElementFinder;
 
   /**
    * Input field for entering the entry's location name
    */
-  private locationInput: ElementFinder;
+  locationInput: ElementFinder;
 
   /**
    * Input field for entering the entry's body
    */
-  private bodyInput: ElementFinder;
+  bodyInput: ElementFinder;
 
   /**
    * Input field for entering the entry's tags
    */
-  private tagsInput: ElementFinder;
+  tagsInput: ElementFinder;
 
   /**
    * This button submits the created or edited diary entry to the back-end
    * server.
    */
-  private submitButton: ElementFinder;
+  submitButton: ElementFinder;
 
   /**
    * Create a new instance.
@@ -57,20 +57,14 @@ export class DiaryEntryForm {
   /**
    * Create a diary entry.
    *
-   * @param title
-   *   Diary entry's title
-   * @param locationName
-   *   Diary entry's location name
-   * @param body
-   *   Diary entry's body
-   * @param tags
-   *   Diary entry's comma-separated list of tags
+   * @param diaryEntry
+   *   Diary entry
    */
-  createDiaryEntry(diaryEntry: DiaryEntry): void {
-    this.titleInput.sendKeys(diaryEntry.title);
-    this.locationInput.sendKeys(diaryEntry.locationName);
-    this.bodyInput.sendKeys(diaryEntry.body);
-    this.tagsInput.sendKeys(diaryEntry.tags);
-    this.submitButton.click();
+  async createDiaryEntryAsync(diaryEntry: DiaryEntry): Promise<void> {
+    await this.titleInput.sendKeys(diaryEntry.title);
+    await this.locationInput.sendKeys(diaryEntry.locationName);
+    await this.bodyInput.sendKeys(diaryEntry.body);
+    // await this.tagsInput.sendKeys(diaryEntry.tags);
+    await this.submitButton.click();
   }
 }

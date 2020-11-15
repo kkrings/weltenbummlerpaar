@@ -5,6 +5,7 @@
 
 import { by, ElementArrayFinder, ElementFinder } from 'protractor';
 
+import { Image } from './image-model.po';
 import { ImageUpload } from './image-upload.po';
 
 
@@ -17,12 +18,12 @@ export class ImageModal {
   /**
    * Image upload elements
    */
-  private uploads: ElementArrayFinder;
+  uploads: ElementArrayFinder;
 
   /**
    * Button for closing the modal
    */
-  private closeButton: ElementFinder;
+  closeButton: ElementFinder;
 
   /**
    * Create a new instance.
@@ -41,14 +42,14 @@ export class ImageModal {
   /**
    * Upload an image.
    *
-   * @param filePath
+   * @param image
+   *   Image
+   * @param file
    *   Path to image
-   * @param description
-   *   Image's description
    */
-  uploadImage(image: { filePath: string, description: string }): void {
+  async uploadImageAsync(image: Image, file: string): Promise<void> {
     const upload = new ImageUpload(this.uploads.first());
-    upload.uploadOrUpdateImage(image);
+    await upload.uploadOrUpdateImageAsync(image, file);
   }
 
   /**
@@ -67,7 +68,7 @@ export class ImageModal {
   /**
    * Close the modal.
    */
-  closeModal(): void {
-    this.closeButton.click();
+  async closeModalAsync(): Promise<void> {
+    await this.closeButton.click();
   }
 }

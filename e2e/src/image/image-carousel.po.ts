@@ -5,6 +5,8 @@
 
 import { by, ElementFinder, ElementArrayFinder } from 'protractor';
 
+import { Image, RemoteImage } from './image-model.po';
+
 
 /**
  * Image carousel item
@@ -14,25 +16,48 @@ import { by, ElementFinder, ElementArrayFinder } from 'protractor';
  */
 export class ImageCarouselItem {
   /**
+   * Figure's caption
+   */
+  caption: ElementFinder;
+
+   /**
+    * Figure's image
+    */
+  image: ElementFinder;
+
+  /**
    * Create a new instance
    *
    * @param figure
    *   The figure element that contains the image
    */
-  constructor(private figure: ElementFinder) { }
+  constructor(figure: ElementFinder) {
+    this.caption = figure.element(by.css('.figure-caption'));
+    this.image = figure.element(by.css('.figure-img'));
+  }
 
   /**
-   * Figure's caption, which shows the image's description
+   * Figure's caption
+   *
+   * @returns
+   *   Figure's caption
    */
-  get caption(): ElementFinder {
-    return this.figure.element(by.css('.figure-caption'));
+  async getCaptionAsync(): Promise<string> {
+    return await this.caption.getText();
   }
 
   /**
    * Figure's image
+   *
+   * @returns
+   *   Figure's image
    */
-  get image(): ElementFinder {
-    return this.figure.element(by.css('.figure-img'));
+  async getImageAsync(): Promise<RemoteImage> {
+    return {
+      url: await this.image.getAttribute('src'),
+      width: parseFloat(await this.image.getAttribute('naturalWidth')),
+      height: parseFloat(await this.image.getAttribute('naturalHeight'))
+    };
   }
 }
 
@@ -45,7 +70,7 @@ export class ImageCarousel {
   /**
    * Image carousel's items
    */
-  private items: ElementArrayFinder;
+  items: ElementArrayFinder;
 
   /**
    * Create a new instance.
@@ -55,13 +80,6 @@ export class ImageCarousel {
    */
   constructor(carousel: ElementFinder) {
     this.items = carousel.all(by.css('figure'));
-  }
-
-  /**
-   * Number of carousel items
-   */
-  get numItems(): Promise<number> {
-    return this.items.count() as Promise<number>;
   }
 
   /**
@@ -75,5 +93,25 @@ export class ImageCarousel {
    */
   getItem(index: number): ImageCarouselItem {
     return new ImageCarouselItem(this.items.get(index));
+  }
+
+  /**
+   * Images
+   *
+   * @returns
+   *   List of images
+   */
+  async getImagesAsync(): Promise<Image[]> {
+    const length = await this.items.count();
+
+    const images: Image[] = [];
+
+    for (let i = 0; i < length; ++i) {
+      const figure = this.getItem(i);
+      const description = await figure.getCaptionAsync();
+      images.push({ description });
     }
+
+    return images;
+  }
 }

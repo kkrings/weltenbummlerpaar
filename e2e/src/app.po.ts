@@ -8,6 +8,7 @@ import { browser, by, element } from 'protractor';
 import { AuthModal } from './auth/auth-modal.po';
 import { DiaryEntryCard } from './diary-entry/diary-entry-card.po';
 import { DiaryEntryForm } from './diary-entry/diary-entry-form.po';
+import { DiaryEntry } from './diary-entry/diary-entry-model.po';
 
 
 /**
@@ -40,33 +41,46 @@ export class AppPage {
   /**
    * Navigate to the application's root page.
    */
-  navigateToRoot(): Promise<unknown> {
-    return browser.get(browser.baseUrl) as Promise<unknown>;
+  async navigateToRootAsync(): Promise<void> {
+    await browser.get(browser.baseUrl);
   }
 
   /**
    * Refresh the application's root page.
    */
-  refresh(): void {
-    browser.refresh();
+  async refreshAsync(): Promise<void> {
+    await browser.refresh();
   }
 
   /**
-   * Open modal for logging in as the administrator.
+   * Open modal for logging in as admin.
    *
    * @returns
    *   Login modal
    */
-  openAuthModal(): AuthModal {
-    this.loginButton.click();
+  async openAuthModalAsync(): Promise<AuthModal> {
+    await this.loginButton.click();
     return new AuthModal(element(by.css('app-auth-modal')));
   }
 
   /**
-   * Logout the administrator.
+   * Login as admin.
+   *
+   * @param username
+   *   Admin's username
+   * @param password
+   *   Admin's password
    */
-  logoutAdmin(): void {
-    this.logoutButton.click();
+  async loginAdminAsync(username: string, password: string): Promise<void> {
+    const modal = await this.openAuthModalAsync();
+    await modal.loginAdminAsync(username, password);
+  }
+
+  /**
+   * Logout as admin.
+   */
+  async logoutAdminAsync(): Promise<void> {
+    await this.logoutButton.click();
   }
 
   /**
@@ -75,9 +89,20 @@ export class AppPage {
    * @returns
    *   Diary entry form modal
    */
-  openDiaryEntryForm(): DiaryEntryForm {
-    this.openDiaryEntryFormButton.click();
+  async openDiaryEntryFormAsync(): Promise<DiaryEntryForm> {
+    await this.openDiaryEntryFormButton.click();
     return new DiaryEntryForm(element(by.css('app-diary-entry-form')));
+  }
+
+  /**
+   * Create a new diary entry.
+   *
+   * @param entry
+   *   Diary entry
+   */
+  async createDiaryEntryAsync(entry: DiaryEntry): Promise<void> {
+    const form = await this.openDiaryEntryFormAsync();
+    await form.createDiaryEntryAsync(entry);
   }
 
   /**
@@ -86,8 +111,8 @@ export class AppPage {
    * @returns
    *   Number of diary entries
    */
-  getNumDiaryEntries(): Promise<number> {
-    return this.diaryEntryCards.count() as Promise<number>;
+  async getNumDiaryEntryCardsAsync(): Promise<number> {
+    return await this.diaryEntryCards.count();
   }
 
   /**
