@@ -31,7 +31,8 @@ export class ImageCarouselItem {
    * @param figure
    *   The figure element that contains the image
    */
-  constructor(figure: ElementFinder) {
+  constructor(item: ElementFinder) {
+    const figure = item.element(by.css('figure'));
     this.caption = figure.element(by.css('.figure-caption'));
     this.image = figure.element(by.css('.figure-img'));
   }
@@ -73,26 +74,29 @@ export class ImageCarousel {
   items: ElementArrayFinder;
 
   /**
+   * Button for showing the next item
+   */
+  nextButton: ElementFinder;
+
+  /**
    * Create a new instance.
    *
    * @param carousel
    *   The image carousel
    */
-  constructor(carousel: ElementFinder) {
-    this.items = carousel.all(by.css('figure'));
+  constructor(private carousel: ElementFinder) {
+    this.items = this.carousel.all(by.css('.carousel-item'));
+    this.nextButton = this.carousel.element(by.css('.carousel-control-next'));
   }
 
   /**
-   * Get a carousel item by index.
-   *
-   * @param caption
-   *   Item's index
+   * Get the active carousel item.
    *
    * @returns
    *   Carousel item
    */
-  getItem(index: number): ImageCarouselItem {
-    return new ImageCarouselItem(this.items.get(index));
+  getActiveItem(): ImageCarouselItem {
+    return new ImageCarouselItem(this.carousel.element(by.css('.active')));
   }
 
   /**
@@ -107,9 +111,31 @@ export class ImageCarousel {
     const images: Image[] = [];
 
     for (let i = 0; i < length; ++i) {
-      const figure = this.getItem(i);
+      const figure = this.getActiveItem();
+
       const description = await figure.getCaptionAsync();
       images.push({ description });
+
+      await this.nextButton.click();
+    }
+
+    return images;
+  }
+
+  /**
+   * Remote images
+   *
+   * @returns
+   *   List of remote images
+   */
+  async getRemoteImagesAsync(): Promise<RemoteImage[]> {
+    const length = await this.items.count();
+
+    const images: RemoteImage[] = [];
+
+    for (let i = 0; i < length; ++i) {
+      images.push(await this.getActiveItem().getImageAsync());
+      await this.nextButton.click();
     }
 
     return images;

@@ -16,28 +16,34 @@ describe('weltenbummlerpaar', () => {
     locationName: 'some location',
     body: 'some body',
     images: [
-      { description: 'some description' }
+      { description: 'some description' },
+      { description: 'some other description' }
     ],
     // tags: 'some tag, some other tag'
   };
 
   const testLocalImages = [
-    utils.getResource('lorem_picsum_1015.jpg')
+    utils.getResource('lorem_picsum_1015.jpg'),
+    utils.getResource('lorem_picsum_1016.jpg')
   ];
 
   const testDiaryEntryAfterUpdate: DiaryEntry = {
     title: 'some title',
     locationName: 'some location',
     body: 'some body',
-    images: [],
+    images: [
+      { description: 'some other description' }
+    ]
     // tags: 'some tag, some other tag'
   };
 
   let page: AppPage;
   let diaryEntryCard: DiaryEntryCard;
   let diaryEntry: DiaryEntry;
-  let diaryEntryFirstImage: RemoteImage;
+  let diaryEntryImages: RemoteImage[];
   let diaryEntryAfterUpdate: DiaryEntry;
+
+  let firstImageIsDeleted = false;
 
   beforeAll(() => {
     page = new AppPage();
@@ -62,7 +68,9 @@ describe('weltenbummlerpaar', () => {
   });
 
   beforeAll(async () => {
-    await diaryEntryCard.uploadImagesAsync(testDiaryEntry.images, testLocalImages);
+    await diaryEntryCard.uploadImagesAsync(
+      testDiaryEntry.images,
+      testLocalImages);
   });
 
   beforeAll(async () => {
@@ -72,7 +80,7 @@ describe('weltenbummlerpaar', () => {
   beforeAll(async () => {
     const modal = await diaryEntryCard.openEntryModalAsync();
     diaryEntry = await modal.getEntryAsync();
-    diaryEntryFirstImage = await modal.imageCarousel.getItem(0).getImageAsync();
+    diaryEntryImages = await modal.imageCarousel.getRemoteImagesAsync();
     await modal.closeModalAsync();
   });
 
@@ -84,6 +92,11 @@ describe('weltenbummlerpaar', () => {
 
   beforeAll(async () => {
     await page.refreshAsync();
+  });
+
+  beforeAll(async () => {
+    firstImageIsDeleted = !(await utils.remoteImageExistsAsync(
+      diaryEntryImages[0].url));
   });
 
   beforeAll(async () => {
@@ -109,7 +122,11 @@ describe('weltenbummlerpaar', () => {
   });
 
   it('check the width of the created diary entry\'s first image', () => {
-    expect(diaryEntryFirstImage.width).toEqual(2500);
+    expect(diaryEntryImages[0].width).toEqual(2500);
+  });
+
+  it('check if the diary entry\'s first image is deleted', () => {
+    expect(firstImageIsDeleted).toEqual(true);
   });
 
   it('check the created diary entry after its update', () => {

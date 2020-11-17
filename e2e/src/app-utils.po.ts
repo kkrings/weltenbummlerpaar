@@ -3,6 +3,7 @@
  * @packageDocumentation
  */
 
+import * as http from 'http';
 import * as path from 'path';
 import { browser, logging } from 'protractor';
 
@@ -18,6 +19,22 @@ import { browser, logging } from 'protractor';
  */
 export function getResource(filename: string): string {
   return path.join(__dirname, 'resources', filename);
+}
+
+/**
+ * Check if image exists on back-end server
+ *
+ * @param url
+ *   Image URL
+ *
+ * @returns
+ *   If true, the image exists.
+ */
+export function remoteImageExistsAsync(url: string): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    const req = http.get(url, res => resolve(res.statusCode === 200));
+    req.on('error', reject);
+  });
 }
 
 /**
