@@ -32,5 +32,6 @@ exports.config = {
         displayStacktrace: StacktraceOption.PRETTY
       }
     }));
-  }
+  },
+  SELENIUM_PROMISE_MANAGER: false
 };
