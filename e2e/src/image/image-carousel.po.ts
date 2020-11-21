@@ -5,7 +5,7 @@
 
 import { by, ElementFinder, ElementArrayFinder } from 'protractor';
 
-import { Image, RemoteImage } from './image-model.po';
+import { RemoteImage } from './image-model.po';
 
 
 /**
@@ -57,7 +57,8 @@ export class ImageCarouselItem {
     return {
       url: await this.image.getAttribute('src'),
       width: parseFloat(await this.image.getAttribute('naturalWidth')),
-      height: parseFloat(await this.image.getAttribute('naturalHeight'))
+      height: parseFloat(await this.image.getAttribute('naturalHeight')),
+      description: await this.getCaptionAsync()
     };
   }
 }
@@ -105,30 +106,7 @@ export class ImageCarousel {
    * @returns
    *   List of images
    */
-  async getImagesAsync(): Promise<Image[]> {
-    const length = await this.items.count();
-
-    const images: Image[] = [];
-
-    for (let i = 0; i < length; ++i) {
-      const figure = this.getActiveItem();
-
-      const description = await figure.getCaptionAsync();
-      images.push({ description });
-
-      await this.nextButton.click();
-    }
-
-    return images;
-  }
-
-  /**
-   * Remote images
-   *
-   * @returns
-   *   List of remote images
-   */
-  async getRemoteImagesAsync(): Promise<RemoteImage[]> {
+  async getImagesAsync(): Promise<RemoteImage[]> {
     const length = await this.items.count();
 
     const images: RemoteImage[] = [];

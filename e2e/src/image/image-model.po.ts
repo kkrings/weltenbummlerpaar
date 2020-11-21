@@ -14,19 +14,41 @@ export interface Image {
 }
 
 /**
- * Remote image
+ * Local image on disk
  */
-export interface RemoteImage {
+export class LocalImage implements Image {
   /**
-   * Image's URL
+   * Create a new instance.
+   *
+   * @param description
+   *   Image's description
+   * @param file
+   *   Optional: path to JPEG file on disk
    */
-  url: string;
+  constructor(
+    public description: string,
+    public file?: string) { }
+}
+
+/**
+ * Remote image on back-end server
+ */
+export class RemoteImage implements Image {
   /**
-   * Image's width
+   * Create a new instance.
+   *
+   * @param description
+   *   Image's description
+   * @param url
+   *   Image's URL
+   * @param width
+   *   Image's width
+   * @param height
+   *   Image's height
    */
-  width: number;
-  /**
-   * Image's height
-   */
-  height: number;
+  constructor(
+    public description: string,
+    public url: string,
+    public width: number,
+    public height: number) {}
 }

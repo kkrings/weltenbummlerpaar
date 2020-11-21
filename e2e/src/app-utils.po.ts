@@ -7,6 +7,8 @@ import * as http from 'http';
 import * as path from 'path';
 import { browser, logging } from 'protractor';
 
+import { DiaryEntry } from './diary-entry/diary-entry-model.po';
+
 
 /**
  * Path to resource file
@@ -19,6 +21,28 @@ import { browser, logging } from 'protractor';
  */
 export function getResource(filename: string): string {
   return path.join(__dirname, 'resources', filename);
+}
+
+/**
+ * Convert instances of diary entry implementations to simply objects for
+ * equality comparisons.
+ *
+ * @param diaryEntry
+ *   Instance of some diary entry implementation
+ *
+ * @returns
+ *   Simplified diary entry
+ */
+export function asDiaryEntry(diaryEntry: DiaryEntry): DiaryEntry {
+  return {
+    title: diaryEntry.title,
+    location: diaryEntry.location,
+    body: diaryEntry.body,
+    images: diaryEntry.images.map(image => {
+      return { description: image.description };
+    }),
+    // tags: diaryEntry.tags
+  };
 }
 
 /**

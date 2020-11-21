@@ -6,7 +6,7 @@
 import { element, by, ElementFinder } from 'protractor';
 
 import { DiaryEntryModal } from './diary-entry-modal.po';
-import { Image } from '../image/image-model.po';
+import { LocalImage } from '../image/image-model.po';
 import { ImageModal } from '../image/image-modal.po';
 
 
@@ -76,14 +76,12 @@ export class DiaryEntryCard {
    *
    * @param images
    *   List of images
-   * @param files
-   *   Corresponding paths to images
    */
-  async uploadImagesAsync(images: Image[], files: string[]): Promise<void> {
+  async uploadImagesAsync(images: LocalImage[]): Promise<void> {
     const modal = await this.openImageModalAsync();
 
-    for (let i = 0; i < images.length; ++i) {
-      await modal.uploadImageAsync(images[i], files[i]);
+    for (const image of images) {
+      await modal.uploadImageAsync(image);
     }
 
     await modal.closeModalAsync();

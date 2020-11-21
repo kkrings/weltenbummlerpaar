@@ -62,7 +62,7 @@ export class DiaryEntryForm {
    */
   async createDiaryEntryAsync(diaryEntry: DiaryEntry): Promise<void> {
     await this.titleInput.sendKeys(diaryEntry.title);
-    await this.locationInput.sendKeys(diaryEntry.locationName);
+    await this.locationInput.sendKeys(diaryEntry.location);
     await this.bodyInput.sendKeys(diaryEntry.body);
     // await this.tagsInput.sendKeys(diaryEntry.tags);
     await this.submitButton.click();

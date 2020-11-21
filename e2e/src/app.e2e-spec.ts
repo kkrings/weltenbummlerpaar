@@ -5,31 +5,35 @@
 
 import * as utils from './app-utils.po';
 import { AppPage } from './app.po';
-import { DiaryEntry } from './diary-entry/diary-entry-model.po';
+
+import {
+  DiaryEntry, WriteDiaryEntry, ReadDiaryEntry
+} from './diary-entry/diary-entry-model.po';
+
 import { DiaryEntryCard } from './diary-entry/diary-entry-card.po';
-import { RemoteImage } from './image/image-model.po';
 
 
 describe('weltenbummlerpaar', () => {
-  const testDiaryEntry: DiaryEntry = {
+  const testDiaryEntry: WriteDiaryEntry = {
     title: 'some title',
-    locationName: 'some location',
+    location: 'some location',
     body: 'some body',
     images: [
-      { description: 'some description' },
-      { description: 'some other description' }
+      {
+        description: 'some description',
+        file: utils.getResource('lorem_picsum_1015.jpg')
+      },
+      {
+        description: 'some other description',
+        file: utils.getResource('lorem_picsum_1016.jpg')
+      }
     ],
     // tags: 'some tag, some other tag'
   };
 
-  const testLocalImages = [
-    utils.getResource('lorem_picsum_1015.jpg'),
-    utils.getResource('lorem_picsum_1016.jpg')
-  ];
-
   const testDiaryEntryAfterUpdate: DiaryEntry = {
     title: 'some title',
-    locationName: 'some location',
+    location: 'some location',
     body: 'some body',
     images: [
       { description: 'some other description' }
@@ -39,9 +43,8 @@ describe('weltenbummlerpaar', () => {
 
   let page: AppPage;
   let diaryEntryCard: DiaryEntryCard;
-  let diaryEntry: DiaryEntry;
-  let diaryEntryImages: RemoteImage[];
-  let diaryEntryAfterUpdate: DiaryEntry;
+  let diaryEntry: ReadDiaryEntry;
+  let diaryEntryAfterUpdate: ReadDiaryEntry;
 
   let firstImageIsDeleted = false;
 
@@ -68,9 +71,7 @@ describe('weltenbummlerpaar', () => {
   });
 
   beforeAll(async () => {
-    await diaryEntryCard.uploadImagesAsync(
-      testDiaryEntry.images,
-      testLocalImages);
+    await diaryEntryCard.uploadImagesAsync(testDiaryEntry.images);
   });
 
   beforeAll(async () => {
@@ -80,7 +81,6 @@ describe('weltenbummlerpaar', () => {
   beforeAll(async () => {
     const modal = await diaryEntryCard.openEntryModalAsync();
     diaryEntry = await modal.getEntryAsync();
-    diaryEntryImages = await modal.imageCarousel.getRemoteImagesAsync();
     await modal.closeModalAsync();
   });
 
@@ -95,8 +95,8 @@ describe('weltenbummlerpaar', () => {
   });
 
   beforeAll(async () => {
-    firstImageIsDeleted = !(await utils.remoteImageExistsAsync(
-      diaryEntryImages[0].url));
+    const image = diaryEntry.images[0].url;
+    firstImageIsDeleted = !(await utils.remoteImageExistsAsync(image));
   });
 
   beforeAll(async () => {
@@ -118,11 +118,13 @@ describe('weltenbummlerpaar', () => {
   });
 
   it('check the created diary entry before its update', () => {
-    expect(diaryEntry).toEqual(testDiaryEntry);
+    const entry = utils.asDiaryEntry(diaryEntry);
+    const reference = utils.asDiaryEntry(testDiaryEntry);
+    expect(entry).toEqual(reference);
   });
 
   it('check the width of the created diary entry\'s first image', () => {
-    expect(diaryEntryImages[0].width).toEqual(2500);
+    expect(diaryEntry.images[0].width).toEqual(2500);
   });
 
   it('check if the diary entry\'s first image is deleted', () => {
@@ -130,10 +132,12 @@ describe('weltenbummlerpaar', () => {
   });
 
   it('check the created diary entry after its update', () => {
-    expect(diaryEntryAfterUpdate).toEqual(testDiaryEntryAfterUpdate);
+    const entry = utils.asDiaryEntry(diaryEntryAfterUpdate);
+    const reference = utils.asDiaryEntry(testDiaryEntryAfterUpdate);
+    expect(entry).toEqual(reference);
   });
 
-  it('page does not contain the created diary entry after its deletion', async () => {
+  it('check if created diary entry is deleted', async () => {
     expect(await page.getNumDiaryEntryCardsAsync()).toEqual(0);
   });
 

@@ -5,7 +5,7 @@
 
 import { by, ElementArrayFinder, ElementFinder } from 'protractor';
 
-import { Image } from './image-model.po';
+import { LocalImage } from './image-model.po';
 import { ImageUpload } from './image-upload.po';
 
 
@@ -44,12 +44,10 @@ export class ImageModal {
    *
    * @param image
    *   Image
-   * @param file
-   *   Path to image
    */
-  async uploadImageAsync(image: Image, file: string): Promise<void> {
+  async uploadImageAsync(image: LocalImage): Promise<void> {
     const upload = new ImageUpload(this.uploads.first());
-    await upload.uploadOrUpdateImageAsync(image, file);
+    await upload.uploadOrUpdateImageAsync(image);
   }
 
   /**

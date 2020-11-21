@@ -5,7 +5,7 @@
 
 import { by, ElementFinder } from 'protractor';
 
-import { Image } from './image-model.po';
+import { LocalImage } from './image-model.po';
 
 
 /**
@@ -62,13 +62,12 @@ export class ImageUpload {
    *
    * @param image
    *   Image
-   * @param file
-   *   Path to image
    */
-  async uploadOrUpdateImageAsync(image: Image, file?: string): Promise<void> {
-    if (file) {
-      await this.fileInput.sendKeys(file);
+  async uploadOrUpdateImageAsync(image: LocalImage): Promise<void> {
+    if (image.file) {
+      await this.fileInput.sendKeys(image.file);
     }
+
     await this.descriptionInput.sendKeys(image.description);
     await this.submitButton.click();
   }

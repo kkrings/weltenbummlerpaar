@@ -5,9 +5,9 @@
 
 import { by, ElementFinder } from 'protractor';
 
-import { Image } from '../image/image-model.po';
+import { RemoteImage } from '../image/image-model.po';
 import { ImageCarousel } from '../image/image-carousel.po';
-import { DiaryEntry } from '../diary-entry/diary-entry-model.po';
+import { ReadDiaryEntry } from '../diary-entry/diary-entry-model.po';
 
 
 /**
@@ -97,7 +97,7 @@ export class DiaryEntryModal {
    *  @returns
    *    Diary entry's images
    */
-  async getEntryImagesAsync(): Promise<Image[]> {
+  async getEntryImagesAsync(): Promise<RemoteImage[]> {
     return await this.imageCarousel.getImagesAsync();
   }
 
@@ -107,10 +107,10 @@ export class DiaryEntryModal {
    * @returns
    *   Diary entry
    */
-  async getEntryAsync(): Promise<DiaryEntry> {
+  async getEntryAsync(): Promise<ReadDiaryEntry> {
     return {
       title: await this.getEntryTitleAsync(),
-      locationName: await this.getEntryLocationAsync(),
+      location: await this.getEntryLocationAsync(),
       body: await this.getEntryBodyAsync(),
       images: await this.getEntryImagesAsync(),
     };
