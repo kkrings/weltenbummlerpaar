@@ -48,16 +48,6 @@ export class ImageUpload {
   }
 
   /**
-   * Image's description
-   *
-   * @returns
-   *   Image's description
-   */
-  async getDescriptionAsync(): Promise<string> {
-    return await this.descriptionInput.getAttribute('value');
-  }
-
-  /**
    * Upload/update the image.
    *
    * @param image
@@ -68,6 +58,7 @@ export class ImageUpload {
       await this.fileInput.sendKeys(image.file);
     }
 
+    await this.descriptionInput.clear();
     await this.descriptionInput.sendKeys(image.description);
     await this.submitButton.click();
   }

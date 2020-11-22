@@ -102,7 +102,8 @@ export class AppPage {
    */
   async createDiaryEntryAsync(entry: DiaryEntry): Promise<void> {
     const form = await this.openDiaryEntryFormAsync();
-    await form.createDiaryEntryAsync(entry);
+    await form.fillFormAsync(entry);
+    await form.submitFormAsync();
   }
 
   /**

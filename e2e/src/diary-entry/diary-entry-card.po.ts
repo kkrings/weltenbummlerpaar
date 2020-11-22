@@ -6,6 +6,7 @@
 import { element, by, ElementFinder } from 'protractor';
 
 import { DiaryEntryModal } from './diary-entry-modal.po';
+import { DiaryEntryForm } from './diary-entry-form.po';
 import { LocalImage } from '../image/image-model.po';
 import { ImageModal } from '../image/image-modal.po';
 
@@ -19,17 +20,22 @@ export class DiaryEntryCard {
   /**
    * Button for opening the diary entry's modal
    */
-  openEntryModalButton: ElementFinder;
+  private openEntryModalButton: ElementFinder;
+
+  /**
+   * Button for opening the modal for updating the diary entry
+   */
+   private openUpdateEntryModalButton: ElementFinder;
 
   /**
    * Button for opening the diary entry's image modal
    */
-  openImageModalButton: ElementFinder;
+  private openImageModalButton: ElementFinder;
 
   /**
    * Button for deleting the diary entry
    */
-  deleteButton: ElementFinder;
+  private deleteButton: ElementFinder;
 
   /**
    * Create a new instance.
@@ -42,11 +48,10 @@ export class DiaryEntryCard {
       .element(by.css('.card-body'))
       .element(by.css('.btn-primary'));
 
-    this.openImageModalButton = card
-      .element(by.css('.card-header'))
-      .element(by.css('.btn-secondary'));
-
-    this.deleteButton = card.element(by.css('.btn-danger'));
+    const header = card.element(by.css('.card-header'));
+    this.openUpdateEntryModalButton = header.element(by.css('.btn-primary'));
+    this.openImageModalButton = header.element(by.css('.btn-secondary'));
+    this.deleteButton = header.element(by.css('.btn-danger'));
   }
 
   /**
@@ -58,6 +63,17 @@ export class DiaryEntryCard {
   async openEntryModalAsync(): Promise<DiaryEntryModal> {
     await this.openEntryModalButton.click();
     return new DiaryEntryModal(element(by.css('app-diary-entry-modal')));
+  }
+
+  /**
+   * Open the modal that for updating the diary entry
+   *
+   * @returns
+   *   The modal for updating the diary entry
+   */
+  async openUpdateEntryModalAsync(): Promise<DiaryEntryForm> {
+    await this.openUpdateEntryModalButton.click();
+    return new DiaryEntryForm(element(by.css('app-diary-entry-form')));
   }
 
   /**

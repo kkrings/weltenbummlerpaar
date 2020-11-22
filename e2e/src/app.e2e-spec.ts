@@ -7,7 +7,7 @@ import * as utils from './app-utils.po';
 import { AppPage } from './app.po';
 
 import {
-  DiaryEntry, WriteDiaryEntry, ReadDiaryEntry
+  WriteDiaryEntry, ReadDiaryEntry
 } from './diary-entry/diary-entry-model.po';
 
 import { DiaryEntryCard } from './diary-entry/diary-entry-card.po';
@@ -15,38 +15,48 @@ import { DiaryEntryCard } from './diary-entry/diary-entry-card.po';
 
 describe('weltenbummlerpaar', () => {
   const testDiaryEntry: WriteDiaryEntry = {
-    title: 'some title',
-    location: 'some location',
-    body: 'some body',
+    title: 'title before update',
+    location: 'location before update',
+    body: 'body before update',
     images: [
       {
-        description: 'some description',
+        description: 'image: moved down',
         file: utils.getResource('lorem_picsum_1015.jpg')
       },
       {
-        description: 'some other description',
+        description: 'image: moved up, updated (before update)',
         file: utils.getResource('lorem_picsum_1016.jpg')
+      },
+      {
+        description: 'image: deleted',
+        file: utils.getResource('lorem_picsum_1018.jpg')
       }
     ],
     // tags: 'some tag, some other tag'
   };
 
-  const testDiaryEntryAfterUpdate: DiaryEntry = {
-    title: 'some title',
-    location: 'some location',
-    body: 'some body',
+  let imagesExist = testDiaryEntry.images.map(_ => false);
+
+  const testDiaryEntryAfterUpdate: WriteDiaryEntry = {
+    title: 'title after update',
+    location: 'location after update',
+    body: 'body after update',
     images: [
-      { description: 'some other description' }
+      {
+        description: 'image: moved up, updated (after update)',
+        file: utils.getResource('lorem_picsum_1019.jpg')
+      },
+      { description: 'image: moved down' }
     ]
     // tags: 'some tag, some other tag'
   };
+
+  let imagesExistAfterUpdate = testDiaryEntry.images.map(_ => false);
 
   let page: AppPage;
   let diaryEntryCard: DiaryEntryCard;
   let diaryEntry: ReadDiaryEntry;
   let diaryEntryAfterUpdate: ReadDiaryEntry;
-
-  let firstImageIsDeleted = false;
 
   beforeAll(() => {
     page = new AppPage();
@@ -85,8 +95,15 @@ describe('weltenbummlerpaar', () => {
   });
 
   beforeAll(async () => {
+    imagesExist = await Promise.all(diaryEntry.images.map(
+      async image => await utils.remoteImageExistsAsync(image.url)));
+  });
+
+  beforeAll(async () => {
+    const update = testDiaryEntryAfterUpdate.images[0];
     const modal = await diaryEntryCard.openImageModalAsync();
-    await modal.getImageUpload(0).deleteImageAsync();
+    await modal.getImageUpload(1).uploadOrUpdateImageAsync(update);
+    await modal.getImageUpload(2).deleteImageAsync();
     await modal.closeModalAsync();
   });
 
@@ -95,14 +112,28 @@ describe('weltenbummlerpaar', () => {
   });
 
   beforeAll(async () => {
-    const image = diaryEntry.images[0].url;
-    firstImageIsDeleted = !(await utils.remoteImageExistsAsync(image));
+    const form = await diaryEntryCard.openUpdateEntryModalAsync();
+    await form.fillFormAsync(testDiaryEntryAfterUpdate);
+    await form.moveImageDownAsync(0);
+    await form.submitFormAsync();
+  });
+
+  beforeAll(async () => {
+    await page.refreshAsync();
   });
 
   beforeAll(async () => {
     const modal = await diaryEntryCard.openEntryModalAsync();
     diaryEntryAfterUpdate = await modal.getEntryAsync();
     await modal.closeModalAsync();
+  });
+
+  beforeAll(async () => {
+    imagesExistAfterUpdate = await Promise.all(diaryEntryAfterUpdate.images.map(
+      async image => await utils.remoteImageExistsAsync(image.url)));
+
+    imagesExistAfterUpdate.push(
+      await utils.remoteImageExistsAsync(diaryEntry.images[2].url));
   });
 
   beforeAll(async () => {
@@ -119,26 +150,50 @@ describe('weltenbummlerpaar', () => {
 
   it('check the created diary entry before its update', () => {
     const entry = utils.asDiaryEntry(diaryEntry);
-    const reference = utils.asDiaryEntry(testDiaryEntry);
-    expect(entry).toEqual(reference);
+    const expected = utils.asDiaryEntry(testDiaryEntry);
+    expect(entry).toEqual(expected);
   });
 
-  it('check the width of the created diary entry\'s first image', () => {
-    expect(diaryEntry.images[0].width).toEqual(2500);
+  it('check if the diary entry\'s images existence', () => {
+    const expected = testDiaryEntry.images.map(_ => true);
+    expect(imagesExist).toEqual(expected);
   });
 
-  it('check if the diary entry\'s first image is deleted', () => {
-    expect(firstImageIsDeleted).toEqual(true);
+  it('check the width of the created diary entry\'s images', () => {
+    const widths = diaryEntry.images.map(image => image.width);
+    const expected = testDiaryEntry.images.map(_ => 2500);
+    expect(widths).toEqual(expected);
   });
 
   it('check the created diary entry after its update', () => {
     const entry = utils.asDiaryEntry(diaryEntryAfterUpdate);
-    const reference = utils.asDiaryEntry(testDiaryEntryAfterUpdate);
-    expect(entry).toEqual(reference);
+    const expected = utils.asDiaryEntry(testDiaryEntryAfterUpdate);
+    expect(entry).toEqual(expected);
+  });
+
+  it('check if the diary entry\'s images existence after its update', () => {
+    const expected = testDiaryEntryAfterUpdate.images.map(_ => true);
+    expected.push(false);
+    expect(imagesExistAfterUpdate).toEqual(expected);
+  });
+
+  it('check the width of the created diary entry\'s images', () => {
+    const widths = diaryEntryAfterUpdate.images.map(image => image.width);
+    const expected = testDiaryEntryAfterUpdate.images.map(_ => 2500);
+    expect(widths).toEqual(expected);
   });
 
   it('check if created diary entry is deleted', async () => {
     expect(await page.getNumDiaryEntryCardsAsync()).toEqual(0);
+  });
+
+  it('check if the diary entry\'s images are deleted', async () => {
+    const status = await Promise.all(diaryEntryAfterUpdate.images.map(
+      async image => await utils.remoteImageExistsAsync(image.url)));
+
+    const expected = diaryEntryAfterUpdate.images.map(_ => false);
+
+    expect(status).toEqual(expected);
   });
 
   afterAll(utils.checkBrowserLogsForErrors);
