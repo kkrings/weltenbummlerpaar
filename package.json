@@ -1,6 +1,17 @@
 {
   "name": "weltenbummlerpaar",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Travel diary web application - Angular-based front end",
+  "keywords": [
+      "web-application",
+      "front-end",
+      "angular"
+  ],
+  "homepage": "https://github.com/kkrings/weltenbummlerpaar",
+  "bugs": "https://github.com/kkrings/weltenbummlerpaar/issues",
+  "license": "GPL-3.0-only",
+  "author": "Kai Krings <kai.krings@posteo.de>",
+  "repository": "github:kkrings/weltenbummlerpaar",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
