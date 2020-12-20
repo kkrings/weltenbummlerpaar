@@ -1,4 +1,4 @@
-<form [formGroup]="imageForm" (ngSubmit)="onSubmit()">
+<form #imageFormElement [formGroup]="imageForm" (ngSubmit)="onSubmit()">
   <div class="custom-file mb-2">
     <input formControlName="files"
            class="custom-file-input"

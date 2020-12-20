@@ -3,7 +3,10 @@
  * @packageDocumentation
  */
 
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef
+} from '@angular/core';
+
 import { Observable } from 'rxjs';
 
 import {
@@ -63,6 +66,17 @@ export class ImageUploadComponent implements OnInit {
    * Reactive form for uploading/updating an image
    */
   imageForm: FormGroup;
+
+  /**
+   * HTML form element corresponding to the reactive form
+   */
+  @ViewChild('imageFormElement')
+  imageFormElement = new ElementRef({
+    reset: () => {
+      // this mock native element with a mock reset method gets overriden after
+      // initalization with the actual form element
+    }
+  });
 
   /**
    * Show spinner instead of submit button and disable the delete button while
@@ -191,6 +205,7 @@ export class ImageUploadComponent implements OnInit {
           this.imageChange.emit(Object.assign(this.image, image));
         } else {
           this.imageChange.emit(image);
+          this.imageFormElement.nativeElement.reset();
           this.imageForm.reset();
         }
       },
