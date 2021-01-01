@@ -33,7 +33,7 @@ import {
 })
 export class NavbarComponent {
   /**
-   * Send new diary entries back the parent component
+   * Send new diary entries back to the parent component.
    */
   @Output() newDiaryEntry = new EventEmitter<DiaryEntry>();
 
