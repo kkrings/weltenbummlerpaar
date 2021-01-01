@@ -10,6 +10,12 @@
   </div>
   <h6 class="text-secondary">{{diaryEntry.locationName}}</h6>
   <p class="text-pre-line">{{diaryEntry.body}}</p>
+  <p *ngIf="diaryEntry.tags.length > 0">
+    <span *ngFor="let tag of diaryEntry.tags"
+          class="badge badge-pill badge-secondary mr-1">
+      {{tag}}
+    </span>
+  </p>
   <p><small class="text-muted">Erstellt am {{diaryEntry.createdAt | date}}.
   </small></p>
 </div>

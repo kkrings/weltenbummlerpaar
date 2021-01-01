@@ -33,6 +33,12 @@
       {{diaryEntry.locationName}}
     </h6>
     <p class="card-text">{{diaryEntry | diaryEntryBrief:150}}</p>
+    <p *ngIf="diaryEntry.tags.length > 0">
+      <span *ngFor="let tag of diaryEntry.tags"
+            class="badge badge-pill badge-secondary mr-1">
+        {{tag}}
+      </span>
+    </p>
     <p class="card-text"><small class="text-muted">
       Erstellt am {{diaryEntry.createdAt | date}}.
     </small></p>

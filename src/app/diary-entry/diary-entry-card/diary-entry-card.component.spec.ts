@@ -140,6 +140,19 @@ describe('DiaryEntryCardComponent', () => {
         (new DiaryEntryBriefPipe()).transform(testDiaryEntry, 150));
   });
 
+  it('should not render diary entry\'s tags', () => {
+    const badges = fixture.debugElement.queryAll(By.css('.card-body .badge'));
+    expect(badges.length).toEqual(0);
+  });
+
+  it('should render diary entry\'s tags', () => {
+    component.diaryEntry.tags = ['some tag', 'some other tag'];
+    fixture.detectChanges();
+    const badges = fixture.debugElement.queryAll(By.css('.card-body .badge'));
+    const tags = badges.map(badge => badge.nativeElement.textContent.trim());
+    expect(tags).toEqual(component.diaryEntry.tags);
+  });
+
   it('should render diary entry\'s creation date', () => {
     const cardText = fixture.debugElement.queryAll(
         By.css('.card-body .card-text'))[1];

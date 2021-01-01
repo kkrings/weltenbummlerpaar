@@ -149,6 +149,19 @@ describe('DiaryEntryModalComponent', () => {
     expect(body.textContent).toMatch(testDiaryEntry.body);
   });
 
+  it('should not render diary entry\'s tags', () => {
+    const badges = fixture.debugElement.queryAll(By.css('.modal-body .badge'));
+    expect(badges.length).toEqual(0);
+  });
+
+  it('should render diary entry\'s tags', () => {
+    component.diaryEntry.tags = ['some tag', 'some other tag'];
+    fixture.detectChanges();
+    const badges = fixture.debugElement.queryAll(By.css('.modal-body .badge'));
+    const tags = badges.map(badge => badge.nativeElement.textContent.trim());
+    expect(tags).toEqual(component.diaryEntry.tags);
+  });
+
   it('modal\'s body should show diary entry\'s creation date', () => {
     const createdAt = fixture.debugElement
         .query(By.css('.modal-body > p > small.text-muted'))
