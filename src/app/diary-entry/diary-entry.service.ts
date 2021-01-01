@@ -24,6 +24,12 @@ import { environment } from '../../environments/environment';
 })
 export class DiaryEntryService {
   /**
+   * Query for sorting diary entries in descending order based on their
+   * creation dates
+   */
+  private static sortDiaryEntriesQuery = 'options[sort][createdAt]=-1';
+
+  /**
    * Construct the diary entry service.
    *
    * @param http
@@ -43,9 +49,32 @@ export class DiaryEntryService {
    *   Diary entries
    */
   getEntries(): Observable<DiaryEntry[]> {
+    const query = DiaryEntryService.sortDiaryEntriesQuery;
+
     return this.http
-        .get<DiaryEntry[]>(
-            `${environment.baseurl}/db/entries?options[sort][createdAt]=-1`)
+        .get<DiaryEntry[]>(`${environment.baseurl}/db/entries?${query}`)
+        .pipe(catchError(this.httpAlertService.handleError));
+  }
+
+  /**
+   * Find diary entries on back-end server given a list of tags.
+   *
+   * @param tags
+   *   List of tags
+   *
+   * @returns
+   *   Found diary entries
+   */
+  findEntries(tags: string[]): Observable<DiaryEntry[]> {
+    let query = DiaryEntryService.sortDiaryEntriesQuery;
+
+    if (tags.length > 0) {
+      const filter = tags.map(tag => `filter[tags][$all][]=${tag}`).join('&');
+      query = `${filter}&${query}`;
+    }
+
+    return this.http
+        .get<DiaryEntry[]>(`${environment.baseurl}/db/entries?${query}`)
         .pipe(catchError(this.httpAlertService.handleError));
   }
 
