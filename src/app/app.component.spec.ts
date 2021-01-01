@@ -9,6 +9,7 @@ import {
   ComponentFixture, TestBed, waitForAsync
 } from '@angular/core/testing';
 
+import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -55,6 +56,15 @@ describe('AppComponent', () => {
     locationName: 'some location',
     body: 'some body',
     images: [],
+    tags: ['some tag', 'some other tag'],
+    createdAt: (new Date()).toISOString(),
+    updatedAt: (new Date()).toISOString()
+  }, {
+    _id: '1',
+    title: 'some title',
+    locationName: 'some location',
+    body: 'some body',
+    images: [],
     tags: [],
     createdAt: (new Date()).toISOString(),
     updatedAt: (new Date()).toISOString()
@@ -62,12 +72,13 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     const diaryEntryServiceSpy = jasmine.createSpyObj(
-        'DiaryEntryService', ['getEntries']);
+        'DiaryEntryService', ['getEntries', 'findEntries']);
 
     diaryEntryServiceSpy.getEntries.and.returnValue(asyncData(diaryEntries));
 
     await TestBed.configureTestingModule({
       imports: [
+        ReactiveFormsModule,
         NgbAlertModule
       ],
       declarations: [
@@ -133,6 +144,49 @@ describe('AppComponent', () => {
           MockDiaryEntryGridComponent);
 
       expect(component.diaryEntries).toEqual(app.diaryEntries);
+    });
+  }));
+
+  it('should find diary entry', waitForAsync(() => {
+    const diaryEntryService = TestBed.inject(DiaryEntryService) as
+        jasmine.SpyObj<DiaryEntryService>;
+
+    const testDiaryEntry = diaryEntries[0];
+
+    diaryEntryService.findEntries.and.returnValue(asyncData([testDiaryEntry]));
+
+    app.ngOnInit();
+    app.showSpinner = true;
+
+    const tagsInput = fixture.debugElement.query(By.css('#tags'));
+    tagsInput.nativeElement.value = testDiaryEntry.tags.join(', ');
+    tagsInput.nativeElement.dispatchEvent(new Event('input'));
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(app.showSpinner).toBeFalse();
+      expect(app.diaryEntries).toEqual([testDiaryEntry]);
+    });
+  }));
+
+  it('should set alert message', waitForAsync(() => {
+    const diaryEntryService = TestBed.inject(DiaryEntryService) as
+        jasmine.SpyObj<DiaryEntryService>;
+
+    const alertMessage = 'This is a mock alert message';
+    diaryEntryService.findEntries.and.returnValue(asyncError(alertMessage));
+
+    app.ngOnInit();
+    app.showSpinner = true;
+
+    const tagsInput = fixture.debugElement.query(By.css('#tags'));
+    tagsInput.nativeElement.value = 'some tag';
+    tagsInput.nativeElement.dispatchEvent(new Event('input'));
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(app.showSpinner).toBeFalse();
+      expect(app.alertMessage).toEqual(alertMessage);
     });
   }));
 

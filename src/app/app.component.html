@@ -11,6 +11,23 @@
          alt="{{welcomeMessage}}">
   </div>
 </div>
+<div class="container">
+  <form [formGroup]="diaryEntrySearchForm">
+    <div class="form-group">
+      <label for="tags" class="sr-only">Suche nach Tagebucheinträgen</label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text"><i class="fas fa-search"></i></div>
+        </div>
+        <input formControlName="tags"
+               id="tags"
+               class="form-control"
+               type="text"
+               placeholder="Stichwort, noch ein Stichwort, ...">
+      </div>
+    </div>
+  </form>
+</div>
 <div *ngIf="showSpinner">
   <div class="d-flex justify-content-center mb-4">
     <div class="spinner-border text-primary" role="status">
