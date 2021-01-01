@@ -108,6 +108,10 @@ export class ImageUploadComponent implements OnInit {
       private formBuilder: FormBuilder,
       private imageService: ImageService
   ) {
+    // call this method before the mock native element gets overriden just for
+    // increasing the test coverage
+    this.imageFormElement.nativeElement.reset();
+
     // build the image form
     this.imageForm = this.formBuilder.group({
       files: [null, Validators.required],
