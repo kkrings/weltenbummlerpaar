@@ -190,7 +190,10 @@ export class DiaryEntryFormComponent implements OnInit {
       locationName: formValue.locationName,
       body: formValue.body,
       images: this.imageList,
-      tags: formValue.tags.split(', '),
+      tags: formValue.tags
+          .split(',')
+          .map((tag: string) => tag.trim())
+          .filter((tag: string) => tag.length > 0),
       createdAt: this.diaryEntry.createdAt,
       updatedAt: this.diaryEntry.updatedAt
     };
