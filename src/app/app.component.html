@@ -1,15 +1,11 @@
 <app-navbar (newDiaryEntry)="addDiaryEntry($event)"></app-navbar>
-<div class="pb-4">
-  <div class="d-none d-sm-block">
-    <img class="img-fluid"
-         src="/assets/welcome_sm.jpg"
-         alt="{{welcomeMessage}}">
-  </div>
-  <div class="d-block d-sm-none">
-    <img class="img-fluid"
-         src="/assets/welcome_xs.jpg"
-         alt="{{welcomeMessage}}">
-  </div>
+<div class="my-4">
+  <img class="d-none d-sm-block mx-auto"
+       src="/assets/logo_sm.png"
+       alt="{{welcomeMessage}}">
+  <img class="d-block d-sm-none mx-auto"
+       src="/assets/logo_xs.png"
+       alt="{{welcomeMessage}}">
 </div>
 <div class="container">
   <form [formGroup]="diaryEntrySearchForm">

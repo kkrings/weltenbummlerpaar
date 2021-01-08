@@ -1,8 +1,8 @@
-<nav class="navbar navbar-light">
+<nav class="navbar navbar-dark bg-primary">
   <div class="navbar-brand"></div>
   <div class="d-inline mr-0">
     <button id="login-button"
-            class="btn btn-primary"
+            class="btn btn-outline-light"
             type="button"
             [hidden]="isLoggedIn"
             (click)="openLoginModal()">
@@ -10,13 +10,13 @@
     </button>
     <div *ngIf="isLoggedIn">
       <button id="create-diary-entry-button"
-              class="btn btn-secondary"
+              class="btn btn-outline-light"
               type="button"
               (click)="openDiaryEntryModal()">
         <i class="fas fa-plus"></i> Eintrag
       </button>
       <button id="logout-button"
-              class="btn btn-primary ml-2"
+              class="btn btn-outline-light ml-2"
               type="button"
               (click)="logout()">
         <i class="fas fa-sign-out-alt"></i> Logout
