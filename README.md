@@ -31,7 +31,12 @@ The third step is to configure in the **production** environment
     src/environments/environment.prod.ts
 
 the `baseurl` and the `domain` name of the remote server that hosts the
-back-end application.
+back-end application:
+
+| Front-end version | Requires the following back-end version. |
+| ----------------- | ---------------------------------------- |
+| 1.0.x             | 1.0.x                                    |
+| 1.1.x             | 1.1.x                                    |
 
 The last step is to initiate the application's build process in **production**
 mode:
