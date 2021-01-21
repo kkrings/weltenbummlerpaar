@@ -1,4 +1,7 @@
-<ngb-carousel #carousel [interval]="-1" [showNavigationIndicators]="false">
+<ngb-carousel #carousel
+              [interval]="-1"
+              [showNavigationIndicators]="false"
+              [animation]="false">
   <ng-template ngbSlide
                *ngFor="let image of imageList; let imageIndex = index"
                id="{{imageIndex}}">

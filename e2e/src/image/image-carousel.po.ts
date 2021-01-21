@@ -32,7 +32,7 @@ export class ImageCarouselItem {
    *   The figure element that contains the image
    */
   constructor(item: ElementFinder) {
-    const figure = item.element(by.css('figure'));
+    const figure = item.element(by.css('.figure'));
     this.caption = figure.element(by.css('.figure-caption'));
     this.image = figure.element(by.css('.figure-img'));
   }
@@ -91,13 +91,16 @@ export class ImageCarousel {
   }
 
   /**
-   * Get the active carousel item.
+   * Get carousel item.
+   *
+   * @param item
+   *   Carousel item's index
    *
    * @returns
    *   Carousel item
    */
-  getActiveItem(): ImageCarouselItem {
-    return new ImageCarouselItem(this.carousel.element(by.css('.active')));
+  getItem(index: number): ImageCarouselItem {
+    return new ImageCarouselItem(this.items.get(index));
   }
 
   /**
@@ -112,7 +115,7 @@ export class ImageCarousel {
     const images: RemoteImage[] = [];
 
     for (let i = 0; i < length; ++i) {
-      images.push(await this.getActiveItem().getImageAsync());
+      images.push(await this.getItem(i).getImageAsync());
       await this.nextButton.click();
     }
 
