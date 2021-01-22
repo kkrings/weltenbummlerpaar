@@ -16,7 +16,7 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
  * allows to access the file list of an input tag of type 'file'.
  */
 @Directive({
-  // tslint:disable-next-line:directive-selector
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'input[type=file]',
   providers: [
     {
@@ -28,21 +28,6 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 })
 export class FileValueAccessorDirective implements ControlValueAccessor {
   /**
-   * Holds a reference to the function that should be called when an event of
-   * type 'change' occurs. The file list is passed as an argument to this
-   * function.
-   */
-  @HostListener('change', ['$event.target.files'])
-  onChange = (_: FileList): void => {}
-
-  /**
-   * Holds a reference to the function that should be called when an event of
-   * type 'blur' occurs.
-   */
-  @HostListener('blur')
-  onTouched = () => {}
-
-  /**
    * Construct the file accessor directive.
    *
    * @param renderer
@@ -53,6 +38,21 @@ export class FileValueAccessorDirective implements ControlValueAccessor {
   constructor(
     private renderer: Renderer2,
     private element: ElementRef) { }
+
+  /**
+   * Holds a reference to the function that should be called when an event of
+   * type 'change' occurs. The file list is passed as an argument to this
+   * function.
+   */
+  @HostListener('change', ['$event.target.files'])
+  onChange = (_: FileList): void => {};
+
+  /**
+   * Holds a reference to the function that should be called when an event of
+   * type 'blur' occurs.
+   */
+  @HostListener('blur')
+  onTouched = () => {};
 
   /**
    * Write the given value to the input tag.

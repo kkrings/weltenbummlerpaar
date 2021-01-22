@@ -5,7 +5,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { Image } from './image.model';
@@ -24,6 +24,18 @@ import { environment } from '../../environments/environment';
 })
 export class ImageService {
   /**
+   * Construct the image service.
+   *
+   * @param http
+   *   Service for sending HTTP requests to the back-end server
+   * @param httpAlertService
+   *   Service for handling HTTP errors
+   */
+  constructor(
+      private http: HttpClient,
+      private httpAlertService: HttpAlertService) { }
+
+  /**
    * Get image's URL.
    *
    * @param image
@@ -35,18 +47,6 @@ export class ImageService {
   static getImageUrl(image: Image): string {
     return `${environment.baseurl}/images/${image._id}.jpg`;
   }
-
-  /**
-   * Construct the image service.
-   *
-   * @param http
-   *   Service for sending HTTP requests to the back-end server
-   * @param httpAlertService
-   *   Service for handling HTTP errors
-   */
-  constructor(
-      private http: HttpClient,
-      private httpAlertService: HttpAlertService) { }
 
   /**
    * Upload a new image to the back-end server.

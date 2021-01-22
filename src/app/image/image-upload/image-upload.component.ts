@@ -32,6 +32,17 @@ import { Image } from '../image.model';
 })
 export class ImageUploadComponent implements OnInit {
   /**
+   * HTML form element corresponding to the reactive form
+   */
+  @ViewChild('imageFormElement')
+  imageFormElement = new ElementRef({
+    reset: () => {
+      // this mock native element with a mock reset method gets overriden after
+      // initalization with the actual form element
+    }
+  });
+
+  /**
    * Diary entry's ID the new/injected image is linked to
    */
   @Input() entryId = '';
@@ -66,17 +77,6 @@ export class ImageUploadComponent implements OnInit {
    * Reactive form for uploading/updating an image
    */
   imageForm: FormGroup;
-
-  /**
-   * HTML form element corresponding to the reactive form
-   */
-  @ViewChild('imageFormElement')
-  imageFormElement = new ElementRef({
-    reset: () => {
-      // this mock native element with a mock reset method gets overriden after
-      // initalization with the actual form element
-    }
-  });
 
   /**
    * Show spinner instead of submit button and disable the delete button while
@@ -187,11 +187,9 @@ export class ImageUploadComponent implements OnInit {
 
     const update = this.image._id.length > 0;
 
-    const request = (image: Image): Observable<Image> => {
-      return update
+    const request = (image: Image): Observable<Image> => update
         ? this.imageService.updateImage(image)
         : this.imageService.uploadImage(this.entryId, image);
-    };
 
     // reset alert message
     this.alertMessage = '';

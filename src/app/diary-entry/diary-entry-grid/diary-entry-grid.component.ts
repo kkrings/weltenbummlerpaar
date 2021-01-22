@@ -33,8 +33,7 @@ export class DiaryEntryGridComponent {
    *   Diary entry's ID
    */
   deleteDiaryEntry(entryId: string): void {
-    this.diaryEntries = this.diaryEntries.filter((diaryEntry: DiaryEntry) => {
-      return diaryEntry._id !== entryId;
-    });
+    this.diaryEntries = this.diaryEntries.filter(
+      (diaryEntry: DiaryEntry) => diaryEntry._id !== entryId);
   }
 }

@@ -136,9 +136,8 @@ export class AppComponent implements OnInit, OnDestroy {
                   .split(',')
                   .map(tag => tag.trim())
                   .filter(tag => tag.length > 0)),
-            switchMap((tags: string[]) => {
-              return this.diaryEntryService.findEntries(tags);
-            }))
+            switchMap(
+              (tags: string[]) => this.diaryEntryService.findEntries(tags)))
         .subscribe(
             (diaryEntries: DiaryEntry[]) => {
               this.showSpinner = false;
