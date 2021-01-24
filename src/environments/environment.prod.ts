@@ -8,6 +8,7 @@
  */
 export const environment = {
   production: true,
+  animation: true,
   baseurl: 'https://weltenbummlerpaar.ddns.net',
   domain: 'weltenbummlerpaar.ddns.net'
 };

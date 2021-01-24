@@ -8,14 +8,14 @@ import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  switchMap
+  debounceTime, distinctUntilChanged, map, switchMap
 } from 'rxjs/operators';
+
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryService } from './diary-entry/diary-entry.service';
 import { DiaryEntry } from './diary-entry/diary-entry.model';
+import { environment } from '../environments/environment';
 
 
 /**
@@ -67,9 +67,11 @@ export class AppComponent implements OnInit, OnDestroy {
    *   server
    */
   constructor(
+      private ngbConfig: NgbConfig,
       private diaryEntryService: DiaryEntryService,
       private formBuilder: FormBuilder
   ) {
+    this.ngbConfig.animation = environment.animation;
     this.diaryEntrySearchForm = this.formBuilder.group({ tags: [''] });
   }
 

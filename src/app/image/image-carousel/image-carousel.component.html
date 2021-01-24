@@ -1,15 +1,10 @@
-<ngb-carousel #carousel
-              [interval]="-1"
-              [showNavigationIndicators]="false"
-              [animation]="false">
-  <ng-template ngbSlide
-               *ngFor="let image of imageList; let imageIndex = index"
-               id="{{imageIndex}}">
-    <div class="d-flex justify-content-end">
-      <small class="text-muted">
-        {{getImageNumber(carousel.activeId)}}/{{imageList.length}}
-      </small>
-    </div>
+<div class="d-flex justify-content-end">
+  <small class="text-muted">{{imageNum}}/{{imageList.length}}</small>
+</div>
+<ngb-carousel (slid)="setImageNum($event)">
+  <ng-template *ngFor="let image of imageList; let imageIndex = index"
+               id="{{imageIndex}}"
+               ngbSlide>
     <figure class="figure">
       <a [appImage]="image">
         <img [appImage]="image" class="figure-img img-fluid rounded">

@@ -3,12 +3,25 @@
  * @packageDocumentation
  */
 
+import {Injectable} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselConfig, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ImageCarouselComponent } from './image-carousel.component';
 import { MockImageDirective } from '../../shared/test-utils';
+
+
+/**
+ * Turn off image carousel's animations for testing.
+ */
+@Injectable()
+class NoAnimationsConfig extends NgbCarouselConfig
+{
+  public get animation() {
+    return false;
+  }
+}
 
 
 describe('ImageCarouselComponent', () => {
@@ -23,6 +36,9 @@ describe('ImageCarouselComponent', () => {
       declarations: [
         ImageCarouselComponent,
         MockImageDirective
+      ],
+      providers: [
+        {provide: NgbCarouselConfig, useClass: NoAnimationsConfig}
       ]
     }).compileComponents();
   });
@@ -51,12 +67,28 @@ describe('ImageCarouselComponent', () => {
     expect(slides.length).toEqual(component.imageList.length);
   });
 
-  it('should render image\'s index', () => {
-    const index = fixture.debugElement.query(
-        By.css('.carousel-item.active small.text-muted'));
+  it('should render first image\'s index', () => {
+    expect(component.imageNum).toEqual(1);
+
+    const index = fixture.debugElement.query(By.css('small.text-muted'));
 
     expect(index.nativeElement.textContent).toMatch(
-      `1/${component.imageList.length}`);
+      `${component.imageNum}/${component.imageList.length}`);
+  });
+
+  it('should render second image\'s index', () => {
+    const nextButton = fixture.debugElement.query(
+        By.css('.carousel-control-next'));
+
+    nextButton.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    expect(component.imageNum).toEqual(2);
+
+    const index = fixture.debugElement.query(By.css('small.text-muted'));
+
+    expect(index.nativeElement.textContent).toMatch(
+      `${component.imageNum}/${component.imageList.length}`);
   });
 
   it('should render image\'s description', () => {

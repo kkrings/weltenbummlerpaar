@@ -4,6 +4,7 @@
  */
 
 import { Component, Input } from '@angular/core';
+import { NgbCarouselConfig, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 
 import { Image } from '../image.model';
 
@@ -26,15 +27,22 @@ export class ImageCarouselComponent {
   @Input() imageList: Image[] = [];
 
   /**
+   * Number of currently shown image
+   */
+  imageNum = 1;
+
+  constructor(private config: NgbCarouselConfig) {
+    this.config.interval = -1;
+    this.config.showNavigationIndicators = false;
+  }
+
+  /**
    * Convert carousel's active ID to image number.
    *
-   * @param activeId
-   *   Carousel's active ID
-   *
-   * @returns
-   *   Image number
+   * @param slide
+   *   Currently shown carousel slide
    */
-  getImageNumber(activeId: string): string {
-    return `${parseInt(activeId, 10) + 1}`;
+  setImageNum(slide: NgbSlideEvent): void {
+    this.imageNum = parseInt(slide.current, 10) + 1;
   }
 }
