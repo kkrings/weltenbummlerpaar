@@ -1,28 +1,18 @@
 <app-navbar (newDiaryEntry)="addDiaryEntry($event)"></app-navbar>
-<div class="my-4">
+<!--<div class="my-4">
   <img class="d-none d-sm-block mx-auto"
        src="/assets/logo_sm.png"
        alt="{{welcomeMessage}}">
   <img class="d-block d-sm-none mx-auto"
        src="/assets/logo_xs.png"
        alt="{{welcomeMessage}}">
-</div>
+</div>-->
 <div class="container">
-  <form [formGroup]="diaryEntrySearchForm">
-    <div class="form-group">
-      <label for="tags" class="sr-only">Suche nach Tagebucheinträgen</label>
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text"><i class="fas fa-search"></i></div>
-        </div>
-        <input formControlName="tags"
-               id="tags"
-               class="form-control"
-               type="text"
-               placeholder="Stichwort, noch ein Stichwort, ...">
-      </div>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <app-diary-entry-search></app-diary-entry-search>
     </div>
-  </form>
+  </div>
 </div>
 <div *ngIf="showSpinner">
   <div class="d-flex justify-content-center mb-4">

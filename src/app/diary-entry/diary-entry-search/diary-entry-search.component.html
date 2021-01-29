@@ -1,0 +1,29 @@
+<form [formGroup]="diaryEntrySearchForm">
+  <div class="form-group">
+    <label for="tags" class="sr-only">Suche nach Tagebucheinträgen</label>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <div class="input-group-text bg-transparent">
+          <i class="fas fa-search"></i>
+        </div>
+      </div>
+      <input formControlName="tags"
+             id="tags"
+             class="form-control border-left-0 border-right-0"
+             type="text"
+             placeholder="Stichwort, ...">
+      <div class="input-group-append">
+        <div class="input-group-text bg-transparent">
+          <div *ngIf="processingSearch"
+               class="spinner-border spinner-border-sm"
+               role="status">
+            <span class="sr-only">Suche Tagebucheinträge...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<ngb-alert *ngIf="hasAlertMessage()" [type]="alertMessage.alertType">
+  {{alertMessage.message}}
+</ngb-alert>

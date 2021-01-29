@@ -30,6 +30,10 @@ import {
 } from './diary-entry/diary-entry-form/diary-entry-form.component';
 
 import {
+  DiaryEntrySearchComponent
+} from './diary-entry/diary-entry-search/diary-entry-search.component';
+
+import {
   DiaryEntryGridComponent
 } from './diary-entry/diary-entry-grid/diary-entry-grid.component';
 
@@ -74,6 +78,7 @@ import {
     AuthModalComponent,
     AuthDirective,
     DiaryEntryFormComponent,
+    DiaryEntrySearchComponent,
     DiaryEntryGridComponent,
     DiaryEntryCardComponent,
     DiaryEntryModalComponent,
