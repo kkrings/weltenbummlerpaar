@@ -1,15 +1,13 @@
-<app-navbar (newDiaryEntry)="addDiaryEntry($event)"></app-navbar>
-<!--<div class="my-4">
-  <img class="d-none d-sm-block mx-auto"
-       src="/assets/logo_sm.png"
-       alt="{{welcomeMessage}}">
-  <img class="d-block d-sm-none mx-auto"
-       src="/assets/logo_xs.png"
-       alt="{{welcomeMessage}}">
-</div>-->
+<div class="logo-container mt-2 mb-4">
+  <img class="logo" src="assets/logo.svg"/>
+  <div class="logo-background"></div>
+</div>
 <div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
+  <div class="row">
+    <div class="col-md-4 order-md-2 pb-4 pb-md-0">
+      <app-navbar (newDiaryEntry)="addDiaryEntry($event)"></app-navbar>
+    </div>
+    <div class="col-md-6 offset-md-2 order-md-1">
       <app-diary-entry-search></app-diary-entry-search>
     </div>
   </div>

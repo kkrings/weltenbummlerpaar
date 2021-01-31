@@ -21,9 +21,9 @@ import {
 /**
  * Navigation bar component
  *
- * This component represents the navigation bar at the top of the page, which
- * provides navigation links for logging in as an admin user, for logging out
- * again, and for creating new diary entries when logged in as an admin user,
+ * This component represents the application's navigation bar, which provides
+ * navigation links for logging in as an admin user, for logging out again,
+ * and for creating new diary entries when logged in as an admin user,
  * respectively.
  */
 @Component({
