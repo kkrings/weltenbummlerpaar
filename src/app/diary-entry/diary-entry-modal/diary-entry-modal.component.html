@@ -12,7 +12,7 @@
   <p class="text-pre-line">{{diaryEntry.body}}</p>
   <p *ngIf="diaryEntry.tags.length > 0">
     <span *ngFor="let tag of diaryEntry.tags"
-          class="badge badge-pill badge-secondary mr-1">
+          class="badge badge-pill badge-outline-primary mr-1">
       {{tag}}
     </span>
   </p>

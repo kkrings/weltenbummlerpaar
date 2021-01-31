@@ -8,23 +8,28 @@ $danger: #ff6f69;
 
 button.btn.btn-primary {
   border-radius: $rounded-pill;
-  color: #fff;
+  color: color("white");
 }
 
 button.btn.btn-secondary {
   border-radius: $rounded-pill;
-  color: #fff;
+  color: color("white");
 }
 
 button.btn.btn-danger {
   border-radius: $rounded-pill;
-  color: #fff;
+  color: color("white");
 }
 
 button.btn.btn-outline-light {
   border-radius: $rounded-pill;
 }
 
-.badge.badge-secondary {
-  color: #fff;
+.badge {
+  font-weight: normal;
+}
+
+.badge-outline-primary {
+  border: 1px solid theme-color("primary");
+  background-color: transparent;
 }
