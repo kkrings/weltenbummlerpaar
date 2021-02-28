@@ -44,14 +44,13 @@ export class AppComponent implements OnInit {
   /**
    * Construct the root component.
    *
+   * @param nbgConfig
+   *   Bootstrap configuration service
    * @param diaryEntryService
    *   Service for requesting the list of diary entries from the back-end
    *   server
    */
-  constructor(
-      ngbConfig: NgbConfig,
-      private diaryEntryService: DiaryEntryService
-  ) {
+  constructor(ngbConfig: NgbConfig, private diaryEntryService: DiaryEntryService) {
     ngbConfig.animation = environment.animation;
   }
 

@@ -4,11 +4,7 @@
  */
 
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-
-import {
-  ComponentFixture, TestBed, waitForAsync
-} from '@angular/core/testing';
-
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
