@@ -24,11 +24,11 @@ import { environment } from '../../environments/environment';
 })
 export class DiaryEntryService {
   /**
-   * Query for sorting diary entries in descending order based on their
-   * creation dates
+   * URL to entry end point
    */
-  private static sortDiaryEntriesQuery = 'options[sort][createdAt]=-1';
+  #entryUrl = `${environment.baseurl}/db/entries`;
 
+  /**
   /**
    * Construct the diary entry service.
    *
@@ -37,45 +37,49 @@ export class DiaryEntryService {
    * @param httpAlertService
    *   Handles failed HTTP requests.
    */
-  constructor(
-      private http: HttpClient,
-      private httpAlertService: HttpAlertService) { }
+  constructor(private http: HttpClient, private httpAlertService: HttpAlertService) { }
 
   /**
-   * Get a list of all diary entries in descending order from the back-end
-   * server.
+   * Count the number of diary entries available in total on the back-end
+   * server, given a list of search tags.
+   *
+   * @param tags
+   *   List of search tags
    *
    * @returns
-   *   Diary entries
+   *   Number of diary entries available in total
    */
-  getEntries(): Observable<DiaryEntry[]> {
-    const query = DiaryEntryService.sortDiaryEntriesQuery;
-
+  countEntries(tags: string[] = []): Observable<number> {
     return this.http
-        .get<DiaryEntry[]>(`${environment.baseurl}/db/entries?${query}`)
+        .get<number>(this.getSearchUrl(tags, true))
         .pipe(catchError(this.httpAlertService.handleError));
   }
 
   /**
-   * Find diary entries on back-end server given a list of tags.
+   * Search for diary entries on the back-end server given a list of search tags.
    *
    * @param tags
-   *   List of tags
+   *   List of search tags
+   * @param skip
+   *   Skip the given number of diary entries
+   * @param limit
+   *   If larger than zero, limit the number of diary entries
    *
    * @returns
    *   Found diary entries
    */
-  findEntries(tags: string[]): Observable<DiaryEntry[]> {
-    let query = DiaryEntryService.sortDiaryEntriesQuery;
+  getEntries(tags: string[] = [], skip = 0, limit = -1): Observable<DiaryEntry[]> {
+    let url = this.getSearchUrl(tags);
 
-    if (tags.length > 0) {
-      const filter = tags.map(tag => `filter[tags][$all][]=${tag}`).join('&');
-      query = `${filter}&${query}`;
+    if (skip > 0) {
+      url = `${url}&skip=${skip}`;
     }
 
-    return this.http
-        .get<DiaryEntry[]>(`${environment.baseurl}/db/entries?${query}`)
-        .pipe(catchError(this.httpAlertService.handleError));
+    if (limit > 0) {
+      url = `${url}&limit=${limit}`;
+    }
+
+    return this.http.get<DiaryEntry[]>(url).pipe(catchError(this.httpAlertService.handleError));
   }
 
   /**
@@ -89,7 +93,7 @@ export class DiaryEntryService {
    */
   getEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
-        .get<DiaryEntry>(`${environment.baseurl}/db/entries/${entryId}`)
+        .get<DiaryEntry>(`${this.#entryUrl}${entryId}`)
         .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -104,7 +108,7 @@ export class DiaryEntryService {
    */
   saveEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
     return this.http
-        .post<DiaryEntry>(`${environment.baseurl}/db/entries`, {
+        .post<DiaryEntry>(this.#entryUrl, {
           title: diaryEntry.title,
           locationName: diaryEntry.locationName,
           body: diaryEntry.body,
@@ -126,7 +130,7 @@ export class DiaryEntryService {
   updateEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
     return this.http
         .put<DiaryEntry>(
-            `${environment.baseurl}/db/entries/${diaryEntry._id}`, {
+            `${this.#entryUrl}${diaryEntry._id}`, {
               title: diaryEntry.title,
               locationName: diaryEntry.locationName,
               body: diaryEntry.body,
@@ -147,7 +151,26 @@ export class DiaryEntryService {
    */
   deleteEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
-        .delete<DiaryEntry>(`${environment.baseurl}/db/entries/${entryId}`)
+        .delete<DiaryEntry>(`${this.#entryUrl}/${entryId}`)
         .pipe(catchError(this.httpAlertService.handleError));
+  }
+
+  /**
+   * URL for searching for diary entries on the back-end server.
+   *
+   * @param tags
+   *   List of search tags
+   * @param count
+   *   If `true`, return the endpoint for getting the number of available diary
+   *   entries.
+   *
+   * @returns
+   *   Search URL
+   */
+  private getSearchUrl(tags: string[] = [], count = false): string {
+    const url = count ? `${this.#entryUrl}/count` : this.#entryUrl;
+    const query = tags.map(tag => `tags[$all][]=${tag}`).join('&');
+
+    return query.length > 0 ? `${url}?${query}` : url;
   }
 }

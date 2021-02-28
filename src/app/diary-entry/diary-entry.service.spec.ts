@@ -54,40 +54,10 @@ describe('DiaryEntryService', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
-  it('#getEntries should return diary entries', () => {
-    service.getEntries().subscribe(
-        (diaryEntries: DiaryEntry[]) => {
-          expect(diaryEntries).toEqual(testDiaryEntries);
-        },
-        fail);
-
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries?options[sort][createdAt]=-1`);
-
-    expect(testRequest.request.method).toMatch('GET');
-
-    testRequest.flush(testDiaryEntries);
-  });
-
-  it('#getEntries should return alert message', () => {
-    service.getEntries().subscribe(
-        fail, (message: string) => expect(message).toBeDefined());
-
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries?options[sort][createdAt]=-1`);
-
-    expect(testRequest.request.method).toMatch('GET');
-
-    testRequest.flush('mock HTTP error response', {
-      status: 500,
-      statusText: 'Mock error on back-end server'
-    });
-  });
-
-  it('#findEntries should find diary entries', () => {
+  it('#getEntries should find diary entries', () => {
     const testDiaryEntry = testDiaryEntries[0];
 
-    service.findEntries(testDiaryEntry.tags).subscribe(
+    service.getEntries(testDiaryEntry.tags).subscribe(
         (diaryEntries: DiaryEntry[]) => {
           expect(diaryEntries.length).toEqual(1);
           expect(diaryEntries[0]).toEqual(testDiaryEntry);
@@ -108,8 +78,8 @@ describe('DiaryEntryService', () => {
     testRequest.flush([testDiaryEntry]);
   });
 
-  it('#findEntries should return all diary entries', () => {
-    service.findEntries([]).subscribe(
+  it('#getEntries should return all diary entries', () => {
+    service.getEntries([]).subscribe(
         (diaryEntries: DiaryEntry[]) => {
           expect(diaryEntries).toEqual(testDiaryEntries);
         },
@@ -123,8 +93,8 @@ describe('DiaryEntryService', () => {
     testRequest.flush(testDiaryEntries);
   });
 
-  it('#findEntries should return alert message', () => {
-    service.findEntries([]).subscribe(
+  it('#getEntries should return alert message', () => {
+    service.getEntries([]).subscribe(
         fail, (message: string) => expect(message).toBeDefined());
 
     const testRequest = httpTestingController.expectOne(
