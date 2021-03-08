@@ -42,9 +42,7 @@ export class ImageDirective implements OnInit {
    *   Holds a reference to the HTML element this attribute directive is
    *   applied to.
    */
-  constructor(
-      private renderer: Renderer2,
-      private element: ElementRef) { }
+  constructor(private renderer: Renderer2, private element: ElementRef) { }
 
   /**
    * Initialize the image directive.
@@ -53,15 +51,8 @@ export class ImageDirective implements OnInit {
    * attribute directive is applied to.
    */
   ngOnInit(): void {
-    this.renderer.setProperty(
-        this.element.nativeElement, 'src',
-        ImageService.getImageUrl(this.image));
-
-    this.renderer.setProperty(
-        this.element.nativeElement, 'alt', `${this.image._id}.jpg`);
-
-    this.renderer.setProperty(
-        this.element.nativeElement, 'href',
-        ImageService.getImageUrl(this.image));
+    this.renderer.setProperty(this.element.nativeElement, 'src', ImageService.getImageUrl(this.image));
+    this.renderer.setProperty(this.element.nativeElement, 'alt', `${this.image._id}.jpg`);
+    this.renderer.setProperty(this.element.nativeElement, 'href', ImageService.getImageUrl(this.image));
   }
 }

@@ -74,8 +74,7 @@ describe('NavbarComponent', () => {
   });
 
   it('#openLoginModal should open login modal', () => {
-    const modalService = TestBed.inject(NgbModal) as
-        jasmine.SpyObj<NgbModal>;
+    const modalService = TestBed.inject(NgbModal) as jasmine.SpyObj<NgbModal>;
 
     component.openLoginModal();
 
@@ -126,8 +125,7 @@ describe('NavbarComponent', () => {
   });
 
   it('#openDiaryEntryModal should open diary entry modal', waitForAsync(() => {
-    const modalService = TestBed.inject(NgbModal) as
-        jasmine.SpyObj<NgbModal>;
+    const modalService = TestBed.inject(NgbModal) as jasmine.SpyObj<NgbModal>;
 
     const modal: NgbModalRef = TestBed.inject(NgbModalRef);
     modalService.open.and.returnValue(modal);
@@ -159,8 +157,7 @@ describe('NavbarComponent', () => {
     spyOnProperty(authService, 'isLoggedIn', 'get').and.returnValue(true);
     fixture.detectChanges();
 
-    const button = fixture.debugElement.query(
-      By.css('#create-diary-entry-button'));
+    const button = fixture.debugElement.query(By.css('#create-diary-entry-button'));
 
     spyOn(component, 'openDiaryEntryModal');
     button.triggerEventHandler('click', null);
@@ -174,8 +171,7 @@ describe('NavbarComponent', () => {
     spyOnProperty(authService, 'isLoggedIn', 'get').and.returnValue(false);
     fixture.detectChanges();
 
-    const button = fixture.debugElement.query(
-      By.css('#create-diary-entry-button'));
+    const button = fixture.debugElement.query(By.css('#create-diary-entry-button'));
 
     expect(button).toBeNull();
   });

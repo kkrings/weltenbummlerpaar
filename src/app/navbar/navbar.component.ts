@@ -6,16 +6,10 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { AuthModalComponent } from '../auth/auth-modal/auth-modal.component';
+import { DiaryEntryFormComponent } from '../diary-entry/diary-entry-form/diary-entry-form.component';
 import { AuthService } from '../auth/auth.service';
 import { DiaryEntry } from '../diary-entry/diary-entry.model';
-
-import {
-  AuthModalComponent
-} from '../auth/auth-modal/auth-modal.component';
-
-import {
-  DiaryEntryFormComponent
-} from '../diary-entry/diary-entry-form/diary-entry-form.component';
 
 
 /**
@@ -45,9 +39,7 @@ export class NavbarComponent {
    * @param modalService
    *   Service for showing the admin login form via Bootstrap's modal component
    */
-  constructor(
-      private authService: AuthService,
-      private modalService: NgbModal) { }
+  constructor(private authService: AuthService, private modalService: NgbModal) { }
 
   /**
    * Admin login modal

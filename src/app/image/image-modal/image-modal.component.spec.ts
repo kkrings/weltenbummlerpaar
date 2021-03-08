@@ -111,18 +111,14 @@ describe('ImageModalComponent', () => {
   });
 
   it('close button in modal\'s header should trigger #close', () => {
-    const closeButton = fixture.debugElement.query(
-        By.css('.modal-header button'));
-
+    const closeButton = fixture.debugElement.query(By.css('.modal-header button'));
     spyOn(component, 'close');
     closeButton.triggerEventHandler('click', null);
     expect(component.close).toHaveBeenCalled();
   });
 
   it('close button in modal\'s footer should trigger #close', () => {
-    const closeButton = fixture.debugElement.query(
-        By.css('.modal-footer button'));
-
+    const closeButton = fixture.debugElement.query(By.css('.modal-footer button'));
     spyOn(component, 'close');
     closeButton.triggerEventHandler('click', null);
     expect(component.close).toHaveBeenCalled();
@@ -131,20 +127,14 @@ describe('ImageModalComponent', () => {
   it('#disableClose should disable close button in modal\'s header', () => {
     component.disableClose = true;
     fixture.detectChanges();
-
-    const closeButton = fixture.debugElement.query(
-        By.css('.modal-header button'));
-
+    const closeButton = fixture.debugElement.query(By.css('.modal-header button'));
     expect(closeButton.nativeElement.disabled).toBeTrue();
   });
 
   it('#disableClose should disable close button in modal\'s footer', () => {
     component.disableClose = true;
     fixture.detectChanges();
-
-    const closeButton = fixture.debugElement.query(
-        By.css('.modal-footer button'));
-
+    const closeButton = fixture.debugElement.query(By.css('.modal-footer button'));
     expect(closeButton.nativeElement.disabled).toBeTrue();
   });
 
@@ -154,46 +144,33 @@ describe('ImageModalComponent', () => {
   });
 
   it('should render image uploads', () => {
-    const imageUploads = fixture.debugElement.queryAll(
-        By.css('app-image-upload'));
-
-    expect(imageUploads.length).toEqual(
-        component.diaryEntry.images.length + 1);
+    const imageUploads = fixture.debugElement.queryAll(By.directive(MockImageUploadComponent));
+    expect(imageUploads.length).toEqual(component.diaryEntry.images.length + 1);
   });
 
   it('ID of #diaryEntry should be injected into image uploads', () => {
-    const imageUploads = fixture.debugElement.queryAll(
-        By.directive(MockImageUploadComponent));
+    const imageUploads = fixture.debugElement.queryAll(By.directive(MockImageUploadComponent));
 
     for (const imageUpload of imageUploads) {
-      const imageUploadComponent = imageUpload.injector.get(
-          MockImageUploadComponent);
-
+      const imageUploadComponent = imageUpload.injector.get(MockImageUploadComponent);
       expect(imageUploadComponent.entryId).toEqual(component.diaryEntry._id);
     }
   });
 
   it('image uploads should set #disableClose to true', () => {
-    const imageUploads = fixture.debugElement.queryAll(
-        By.directive(MockImageUploadComponent));
+    const imageUploads = fixture.debugElement.queryAll(By.directive(MockImageUploadComponent));
 
     for (const imageUpload of imageUploads) {
-      const imageUploadComponent = imageUpload.injector.get(
-          MockImageUploadComponent);
-
+      const imageUploadComponent = imageUpload.injector.get(MockImageUploadComponent);
       imageUploadComponent.processing.emit(true);
       fixture.detectChanges();
-
       expect(component.disableClose).toBeTrue();
     }
   });
 
   it('first image upload should add image to #diaryEntry', () => {
-    const imageUpload = fixture.debugElement.queryAll(
-        By.directive(MockImageUploadComponent))[0];
-
-    const imageUploadComponent = imageUpload.injector.get(
-        MockImageUploadComponent);
+    const imageUpload = fixture.debugElement.queryAll(By.directive(MockImageUploadComponent))[0];
+    const imageUploadComponent = imageUpload.injector.get(MockImageUploadComponent);
 
     const uploadedImage: Image = {
       _id: '2',
@@ -210,14 +187,12 @@ describe('ImageModalComponent', () => {
   });
 
   it('other image uploads should change images', () => {
-    const imageUploads = fixture.debugElement.queryAll(
-        By.directive(MockImageUploadComponent));
+    const imageUploads = fixture.debugElement.queryAll(By.directive(MockImageUploadComponent));
 
     imageUploads.shift();
 
     imageUploads.forEach((imageUpload, imageIndex) => {
-      const imageUploadComponent = imageUpload.injector.get(
-          MockImageUploadComponent);
+      const imageUploadComponent = imageUpload.injector.get(MockImageUploadComponent);
 
       const changedImage = imageUploadComponent.image;
 
@@ -230,14 +205,12 @@ describe('ImageModalComponent', () => {
   });
 
   it('other image uploads should delete images', () => {
-    const imageUploads = fixture.debugElement.queryAll(
-        By.directive(MockImageUploadComponent));
+    const imageUploads = fixture.debugElement.queryAll(By.directive(MockImageUploadComponent));
 
     imageUploads.shift();
 
     for (const imageUpload of imageUploads) {
-      const imageUploadComponent = imageUpload.injector.get(
-          MockImageUploadComponent);
+      const imageUploadComponent = imageUpload.injector.get(MockImageUploadComponent);
 
       const deletedImage = imageUploadComponent.image;
 

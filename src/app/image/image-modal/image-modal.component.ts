@@ -64,7 +64,6 @@ export class ImageModalComponent {
    *   Image's ID
    */
   removeImageFromEntry(imageId: string): void {
-    this.diaryEntry.images = this.diaryEntry.images.filter(
-        (image: Image) => image._id !== imageId);
+    this.diaryEntry.images = this.diaryEntry.images.filter((image: Image) => image._id !== imageId);
   }
 }

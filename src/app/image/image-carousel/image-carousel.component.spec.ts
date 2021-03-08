@@ -69,32 +69,21 @@ describe('ImageCarouselComponent', () => {
 
   it('should render first image\'s index', () => {
     expect(component.imageNum).toEqual(1);
-
     const index = fixture.debugElement.query(By.css('small.text-muted'));
-
-    expect(index.nativeElement.textContent).toMatch(
-      `${component.imageNum}/${component.imageList.length}`);
+    expect(index.nativeElement.textContent).toMatch(`${component.imageNum}/${component.imageList.length}`);
   });
 
   it('should render second image\'s index', () => {
-    const nextButton = fixture.debugElement.query(
-        By.css('.carousel-control-next'));
-
+    const nextButton = fixture.debugElement.query(By.css('.carousel-control-next'));
     nextButton.triggerEventHandler('click', null);
     fixture.detectChanges();
-
     expect(component.imageNum).toEqual(2);
-
     const index = fixture.debugElement.query(By.css('small.text-muted'));
-
-    expect(index.nativeElement.textContent).toMatch(
-      `${component.imageNum}/${component.imageList.length}`);
+    expect(index.nativeElement.textContent).toMatch(`${component.imageNum}/${component.imageList.length}`);
   });
 
   it('should render image\'s description', () => {
-    const caption = fixture.debugElement.query(
-        By.css('.carousel-item.active .figure-caption'));
-
-    expect(caption.nativeElement.textContent).toEqual(
-        component.imageList[0].description); });
+    const caption = fixture.debugElement.query(By.css('.carousel-item.active .figure-caption'));
+    expect(caption.nativeElement.textContent).toEqual(component.imageList[0].description);
+  });
 });

@@ -3,10 +3,7 @@
  * @packageDocumentation
  */
 
-import {
-  Directive, ElementRef, forwardRef, HostListener, Renderer2
-} from '@angular/core';
-
+import { Directive, ElementRef, forwardRef, HostListener, Renderer2 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 /**
@@ -35,9 +32,7 @@ export class FileValueAccessorDirective implements ControlValueAccessor {
    * @param element
    *   Holds a reference to the input tag of type 'file'.
    */
-  constructor(
-    private renderer: Renderer2,
-    private element: ElementRef) { }
+  constructor(private renderer: Renderer2, private element: ElementRef) {}
 
   /**
    * Holds a reference to the function that should be called when an event of
