@@ -12,8 +12,7 @@ import { AuthModalComponent } from './auth-modal.component';
 import { AuthService } from '../auth.service';
 import { AlertType } from '../../http-alert/alert.model';
 
-import { MockNgbActiveModal, asyncData, asyncError } from '../../shared/test-utils';
-import { MockHttpAlertMessageComponent, TestUtilsModule } from '../../test-utils/test-utils.module';
+import * as testUtils from '../../test-utils/test-utils.module';
 
 
 describe('AuthModalComponent', () => {
@@ -27,13 +26,13 @@ describe('AuthModalComponent', () => {
       imports: [
         ReactiveFormsModule,
         NgbAlertModule,
-        TestUtilsModule
+        testUtils.TestUtilsModule
       ],
       declarations: [
         AuthModalComponent
       ],
       providers: [
-        {provide: NgbActiveModal, useClass: MockNgbActiveModal},
+        {provide: NgbActiveModal, useClass: testUtils.MockNgbActiveModal},
         {provide: AuthService, useValue: authServiceSpy}
       ]
     }).compileComponents();
@@ -140,7 +139,7 @@ describe('AuthModalComponent', () => {
     component.adminLoginForm.setValue({username: 'admin', password: 'admin'});
 
     const authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
-    authService.login.and.returnValue(asyncData(true));
+    authService.login.and.returnValue(testUtils.asyncData(true));
 
     const modal: NgbActiveModal = TestBed.inject(NgbActiveModal);
     spyOn(modal, 'close');
@@ -161,7 +160,7 @@ describe('AuthModalComponent', () => {
     component.adminLoginForm.setValue({username: 'admin', password: 'admin'});
 
     const authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
-    authService.login.and.returnValue(asyncData(false));
+    authService.login.and.returnValue(testUtils.asyncData(false));
 
     component.onSubmit();
 
@@ -174,7 +173,7 @@ describe('AuthModalComponent', () => {
     const authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
 
     const alertType = AlertType.server;
-    authService.login.and.returnValue(asyncError(alertType));
+    authService.login.and.returnValue(testUtils.asyncError(alertType));
 
     component.onSubmit();
 
@@ -236,14 +235,14 @@ describe('AuthModalComponent', () => {
   });
 
   it('should not render HTTP alert message', () => {
-    const httpAlert = fixture.debugElement.query(By.directive(MockHttpAlertMessageComponent));
+    const httpAlert = fixture.debugElement.query(By.directive(testUtils.MockHttpAlertMessageComponent));
     expect(httpAlert).toBeNull();
   });
 
   it('should render HTTP alert message', () => {
     component.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
-    const httpAlert = fixture.debugElement.query(By.directive(MockHttpAlertMessageComponent));
+    const httpAlert = fixture.debugElement.query(By.directive(testUtils.MockHttpAlertMessageComponent));
     expect(httpAlert).not.toBeNull();
   });
 });

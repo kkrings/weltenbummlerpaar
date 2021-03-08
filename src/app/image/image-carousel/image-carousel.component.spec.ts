@@ -3,13 +3,13 @@
  * @packageDocumentation
  */
 
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbCarouselConfig, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ImageCarouselComponent } from './image-carousel.component';
-import { MockImageDirective } from '../../shared/test-utils';
+import { TestUtilsModule } from '../../test-utils/test-utils.module';
 
 
 /**
@@ -31,11 +31,11 @@ describe('ImageCarouselComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        NgbCarouselModule
+        NgbCarouselModule,
+        TestUtilsModule
       ],
       declarations: [
-        ImageCarouselComponent,
-        MockImageDirective
+        ImageCarouselComponent
       ],
       providers: [
         {provide: NgbCarouselConfig, useClass: NoAnimationsConfig}

@@ -11,9 +11,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ImageModalComponent } from './image-modal.component';
 import { Image } from '../image.model';
 
-import {
-  MockNgbActiveModal, MockImageDirective
-} from '../../shared/test-utils';
+import { MockNgbActiveModal, TestUtilsModule } from '../../test-utils/test-utils.module';
 
 
 /**
@@ -61,9 +59,11 @@ describe('ImageModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        TestUtilsModule
+      ],
       declarations: [
         ImageModalComponent,
-        MockImageDirective,
         MockImageUploadComponent
       ],
       providers: [

@@ -14,8 +14,7 @@ import { DiaryEntry } from '../diary-entry.model';
 import { Image } from '../../image/image.model';
 import { AlertType } from 'src/app/http-alert/alert.model';
 
-import { MockNgbActiveModal, MockImageDirective, asyncData, asyncError } from '../../shared/test-utils';
-import { MockHttpAlertMessageComponent, TestUtilsModule } from '../../test-utils/test-utils.module';
+import * as testUtils from '../../test-utils/test-utils.module';
 
 
 describe('DiaryEntryFormComponent', () => {
@@ -61,15 +60,14 @@ describe('DiaryEntryFormComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
-        TestUtilsModule
+        testUtils.TestUtilsModule
       ],
       declarations: [
-        DiaryEntryFormComponent,
-        MockImageDirective
+        DiaryEntryFormComponent
       ],
       providers: [
         {provide: DiaryEntryService, useValue: diaryEntryServiceSpy},
-        {provide: NgbActiveModal, useClass: MockNgbActiveModal}
+        {provide: NgbActiveModal, useClass: testUtils.MockNgbActiveModal}
       ]
     }).compileComponents();
   });
@@ -89,14 +87,14 @@ describe('DiaryEntryFormComponent', () => {
   });
 
   it('should not render empty alert message', () => {
-    const httpAlert = fixture.debugElement.query(By.directive(MockHttpAlertMessageComponent));
+    const httpAlert = fixture.debugElement.query(By.directive(testUtils.MockHttpAlertMessageComponent));
     expect(httpAlert).toBeNull();
   });
 
   it('should render alert message', () => {
     component.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
-    const httpAlert = fixture.debugElement.query(By.directive(MockHttpAlertMessageComponent));
+    const httpAlert = fixture.debugElement.query(By.directive(testUtils.MockHttpAlertMessageComponent));
     expect(httpAlert).not.toBeNull();
   });
 
@@ -431,7 +429,7 @@ describe('DiaryEntryFormComponent', () => {
 
     const service = TestBed.inject(DiaryEntryService) as jasmine.SpyObj<DiaryEntryService>;
 
-    service.saveEntry.and.returnValue(asyncData(testEntry));
+    service.saveEntry.and.returnValue(testUtils.asyncData(testEntry));
 
     const modal: NgbActiveModal = TestBed.inject(NgbActiveModal);
     spyOn(modal, 'close');
@@ -460,7 +458,7 @@ describe('DiaryEntryFormComponent', () => {
     component.title.setValue(updatedEntry.title);
 
     const service = TestBed.inject(DiaryEntryService) as jasmine.SpyObj<DiaryEntryService>;
-    service.updateEntry.and.returnValue(asyncData(updatedEntry));
+    service.updateEntry.and.returnValue(testUtils.asyncData(updatedEntry));
 
     component.onSubmit();
 
@@ -479,7 +477,7 @@ describe('DiaryEntryFormComponent', () => {
     const service = TestBed.inject(DiaryEntryService) as jasmine.SpyObj<DiaryEntryService>;
 
     const alertType = AlertType.server;
-    service.updateEntry.and.returnValue(asyncError(alertType));
+    service.updateEntry.and.returnValue(testUtils.asyncError(alertType));
 
     component.onSubmit();
 

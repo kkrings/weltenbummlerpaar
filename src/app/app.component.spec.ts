@@ -14,7 +14,8 @@ import { AlertType } from './http-alert/alert.model';
 import { DiaryEntrySearchService } from './diary-entry/diary-entry-search/diary-entry-search.service';
 import { DiaryEntrySearchResult } from './diary-entry/diary-entry-search/diary-entry-search.model';
 import { DiaryEntry } from './diary-entry/diary-entry.model';
-import { asyncData, asyncError } from './shared/test-utils';
+
+import * as testUtils from './test-utils/test-utils.module';
 
 
 /**
@@ -83,20 +84,20 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     const mockDiaryEntrySearchService = {
-      diaryEntries$: asyncData(diaryEntrySearchResult),
-      searching$: asyncData(false)
+      diaryEntries$: testUtils.asyncData(diaryEntrySearchResult),
+      searching$: testUtils.asyncData(false)
     };
 
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
+        testUtils.TestUtilsModule
       ],
       declarations: [
         AppComponent,
         MockDiaryEntrySearchFormComponent,
         MockNavbarComponent,
-        MockDiaryEntryGridComponent,
-        HttpAlertMessageComponent
+        MockDiaryEntryGridComponent
       ],
       providers: [
         {provide: DiaryEntrySearchService, useValue: mockDiaryEntrySearchService}

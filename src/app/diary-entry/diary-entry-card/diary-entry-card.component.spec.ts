@@ -19,8 +19,7 @@ import { DiaryEntryFormComponent } from '../diary-entry-form/diary-entry-form.co
 import { ImageModalComponent } from '../../image/image-modal/image-modal.component';
 import { AlertType } from '../../http-alert/alert.model';
 
-import { MockImageDirective, asyncData, asyncError } from '../../shared/test-utils';
-import { TestUtilsModule, MockHttpAlertMessageComponent } from '../../test-utils/test-utils.module';
+import * as testUtils from '../../test-utils/test-utils.module';
 
 
 registerLocaleData(localeDe);
@@ -61,13 +60,12 @@ describe('DiaryEntryCardComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        TestUtilsModule
+        testUtils.TestUtilsModule
       ],
       declarations: [
         DiaryEntryCardComponent,
         DiaryEntryBriefPipe,
-        MockAuthDirective,
-        MockImageDirective
+        MockAuthDirective
       ],
       providers: [
         {provide: NgbModal, useValue: modalServiceSpy},
@@ -137,14 +135,14 @@ describe('DiaryEntryCardComponent', () => {
   });
 
   it('should not render empty alert message', () => {
-    const httpAlert = fixture.debugElement.query(By.directive(MockHttpAlertMessageComponent));
+    const httpAlert = fixture.debugElement.query(By.directive(testUtils.MockHttpAlertMessageComponent));
     expect(httpAlert).toBeNull();
   });
 
   it('should render alert message', () => {
     component.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
-    const httpAlert = fixture.debugElement.query(By.directive(MockHttpAlertMessageComponent));
+    const httpAlert = fixture.debugElement.query(By.directive(testUtils.MockHttpAlertMessageComponent));
     expect(httpAlert).not.toBeNull();
   });
 
@@ -210,7 +208,7 @@ describe('DiaryEntryCardComponent', () => {
     component.httpAlert.alertType = AlertType.server;
 
     const service = TestBed.inject(DiaryEntryService) as jasmine.SpyObj<DiaryEntryService>;
-    service.deleteEntry.and.returnValue(asyncData(testDiaryEntry));
+    service.deleteEntry.and.returnValue(testUtils.asyncData(testDiaryEntry));
 
     let deletedEntryId = '';
     component.deletedEntryId.subscribe((entryId: string) => deletedEntryId = entryId);
@@ -231,7 +229,7 @@ describe('DiaryEntryCardComponent', () => {
     const service = TestBed.inject(DiaryEntryService) as jasmine.SpyObj<DiaryEntryService>;
 
     const alertType = AlertType.server;
-    service.deleteEntry.and.returnValue(asyncError(alertType));
+    service.deleteEntry.and.returnValue(testUtils.asyncError(alertType));
 
     component.deleteEntry();
 

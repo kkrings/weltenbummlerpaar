@@ -8,14 +8,10 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { By } from '@angular/platform-browser';
 
 import { NavbarComponent } from './navbar.component';
+import { AuthModalComponent } from '../auth/auth-modal/auth-modal.component';
+import { DiaryEntryFormComponent } from '../diary-entry/diary-entry-form/diary-entry-form.component';
 import { AuthService } from '../auth/auth.service';
 import { DiaryEntry } from '../diary-entry/diary-entry.model';
-
-import { AuthModalComponent } from '../auth/auth-modal/auth-modal.component';
-
-import {
-  DiaryEntryFormComponent
-} from '../diary-entry/diary-entry-form/diary-entry-form.component';
 
 
 /**

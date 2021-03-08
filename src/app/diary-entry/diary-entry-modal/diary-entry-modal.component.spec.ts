@@ -13,7 +13,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DiaryEntryModalComponent } from './diary-entry-modal.component';
 import { DiaryEntry } from '../diary-entry.model';
 import { Image } from '../../image/image.model';
-import { MockNgbActiveModal } from '../../shared/test-utils';
+import { MockNgbActiveModal } from '../../test-utils/test-utils.module';
 
 
 registerLocaleData(localeDe);
