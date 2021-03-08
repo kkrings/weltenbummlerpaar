@@ -4,15 +4,12 @@
  */
 
 import { TestBed } from '@angular/core/testing';
-
-import {
-  HttpClientTestingModule,
-  HttpTestingController
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { ImageService } from './image.service';
 import { Image } from './image.model';
-import { HttpAlertService } from '../shared/http-alert.service';
+import { HttpAlertService } from '../http-alert/http-alert.service';
+import { AlertType } from '../http-alert/alert.model';
 import { environment } from '../../environments/environment';
 
 
@@ -43,8 +40,7 @@ describe('ImageService', () => {
       updatedAt: (new Date()).toISOString()
     };
 
-    expect(ImageService.getImageUrl(image))
-        .toBe(`${environment.baseurl}/images/${image._id}.jpg`);
+    expect(ImageService.getImageUrl(image)).toBe(`${environment.baseurl}/images/${image._id}.jpg`);
   });
 
   it('#uploadImage should return image', () => {
@@ -62,9 +58,7 @@ describe('ImageService', () => {
         (image: Image) => expect(image).toEqual(testImage),
         fail);
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries/${testEntryId}/images`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/entries/${testEntryId}/images`);
     expect(testRequest.request.method).toMatch('POST');
 
     testRequest.flush(testImage);
@@ -80,8 +74,7 @@ describe('ImageService', () => {
       updatedAt: (new Date()).toISOString()
     };
 
-    service.uploadImage(testEntryId, testImage).subscribe(
-        fail, (error: string) => expect(error).toBeDefined());
+    service.uploadImage(testEntryId, testImage).subscribe(fail, (error: string) => expect(error).toBeDefined());
   });
 
   it('#uploadImage should return alert message', () => {
@@ -96,11 +89,10 @@ describe('ImageService', () => {
     };
 
     service.uploadImage(testEntryId, testImage).subscribe(
-        fail, (message: string) => expect(message).toBeDefined());
+        fail,
+        (alertType: AlertType) => expect(alertType).toEqual(AlertType.server));
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries/${testEntryId}/images`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/entries/${testEntryId}/images`);
     expect(testRequest.request.method).toMatch('POST');
 
     testRequest.flush('mock HTTP error response', {
@@ -122,9 +114,7 @@ describe('ImageService', () => {
         (image: Image) => expect(image).toEqual(testImage),
         fail);
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/images/${testImage._id}`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/images/${testImage._id}`);
     expect(testRequest.request.method).toMatch('PUT');
 
     testRequest.flush(testImage);
@@ -142,9 +132,7 @@ describe('ImageService', () => {
         (image: Image) => expect(image).toEqual(testImage),
         fail);
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/images/${testImage._id}`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/images/${testImage._id}`);
     expect(testRequest.request.method).toMatch('PUT');
 
     testRequest.flush(testImage);
@@ -159,11 +147,10 @@ describe('ImageService', () => {
     };
 
     service.updateImage(testImage).subscribe(
-        fail, (message: string) => expect(message).toBeDefined());
+        fail,
+        (alertType: AlertType) => expect(alertType).toEqual(AlertType.server));
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/images/${testImage._id}`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/images/${testImage._id}`);
     expect(testRequest.request.method).toMatch('PUT');
 
     testRequest.flush('mock HTTP error response', {
@@ -187,8 +174,7 @@ describe('ImageService', () => {
         fail);
 
     const testRequest = httpTestingController.expectOne(
-        environment.baseurl +
-            `/db/entries/${testEntryId}/images/${testImage._id}`);
+        `${environment.baseurl}/db/entries/${testEntryId}/images/${testImage._id}`);
 
     expect(testRequest.request.method).toMatch('DELETE');
 
@@ -206,11 +192,11 @@ describe('ImageService', () => {
     };
 
     service.deleteImage(testEntryId, testImage._id).subscribe(
-        fail, (message: string) => expect(message).toBeDefined());
+        fail,
+        (alertType: AlertType) => expect(alertType).toEqual(AlertType.server));
 
     const testRequest = httpTestingController.expectOne(
-        environment.baseurl +
-            `/db/entries/${testEntryId}/images/${testImage._id}`);
+        `${environment.baseurl}/db/entries/${testEntryId}/images/${testImage._id}`);
 
     expect(testRequest.request.method).toMatch('DELETE');
 

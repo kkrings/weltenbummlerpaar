@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { DiaryEntry } from './diary-entry.model';
-import { HttpAlertService } from '../shared/http-alert.service';
+import { HttpAlertService } from '../http-alert/http-alert.service';
 import { environment } from '../../environments/environment';
 
 
@@ -51,7 +51,7 @@ export class DiaryEntryService {
    */
   countEntries(tags: string[] = []): Observable<number> {
     return this.http
-        .get<number>(this.getSearchUrl(tags, true))
+        .get<number>(this.getSearchUrl(tags, 0, -1, true))
         .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -69,17 +69,9 @@ export class DiaryEntryService {
    *   Found diary entries
    */
   getEntries(tags: string[] = [], skip = 0, limit = -1): Observable<DiaryEntry[]> {
-    let url = this.getSearchUrl(tags);
-
-    if (skip > 0) {
-      url = `${url}&skip=${skip}`;
-    }
-
-    if (limit > 0) {
-      url = `${url}&limit=${limit}`;
-    }
-
-    return this.http.get<DiaryEntry[]>(url).pipe(catchError(this.httpAlertService.handleError));
+    return this.http
+        .get<DiaryEntry[]>(this.getSearchUrl(tags, skip, limit))
+        .pipe(catchError(this.httpAlertService.handleError));
   }
 
   /**
@@ -93,7 +85,7 @@ export class DiaryEntryService {
    */
   getEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
-        .get<DiaryEntry>(`${this.#entryUrl}${entryId}`)
+        .get<DiaryEntry>(`${this.#entryUrl}/${entryId}`)
         .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -130,7 +122,7 @@ export class DiaryEntryService {
   updateEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
     return this.http
         .put<DiaryEntry>(
-            `${this.#entryUrl}${diaryEntry._id}`, {
+            `${this.#entryUrl}/${diaryEntry._id}`, {
               title: diaryEntry.title,
               locationName: diaryEntry.locationName,
               body: diaryEntry.body,
@@ -167,10 +159,19 @@ export class DiaryEntryService {
    * @returns
    *   Search URL
    */
-  private getSearchUrl(tags: string[] = [], count = false): string {
+  private getSearchUrl(tags: string[] = [], skip = 0, limit = -1, count = false): string {
     const url = count ? `${this.#entryUrl}/count` : this.#entryUrl;
-    const query = tags.map(tag => `tags[$all][]=${tag}`).join('&');
 
-    return query.length > 0 ? `${url}?${query}` : url;
+    const query = tags.map(tag => `tags[$all][]=${tag}`);
+
+    if (skip > 0) {
+      query.push(`skip=${skip}`);
+    }
+
+    if (limit > 0) {
+      query.push(`limit=${limit}`);
+    }
+
+    return query.length > 0 ? `${url}?${query.join('&')}` : url;
   }
 }

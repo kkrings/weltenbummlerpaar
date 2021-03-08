@@ -3,22 +3,19 @@
  * @packageDocumentation
  */
 
-import {
-  ComponentFixture, TestBed, waitForAsync
-} from '@angular/core/testing';
-
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NgbAlertModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryFormComponent } from './diary-entry-form.component';
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntry } from '../diary-entry.model';
 import { Image } from '../../image/image.model';
+import { AlertType } from 'src/app/http-alert/alert.model';
 
-import {
-  MockNgbActiveModal, MockImageDirective, asyncData, asyncError
-} from '../../shared/test-utils';
+import { MockNgbActiveModal, MockImageDirective, asyncData, asyncError } from '../../shared/test-utils';
+import { MockHttpAlertMessageComponent, TestUtilsModule } from '../../test-utils/test-utils.module';
 
 
 describe('DiaryEntryFormComponent', () => {
@@ -59,13 +56,12 @@ describe('DiaryEntryFormComponent', () => {
   }];
 
   beforeEach(async () => {
-    const diaryEntryServiceSpy = jasmine.createSpyObj(
-        'DiaryEntryService', ['saveEntry', 'updateEntry']);
+    const diaryEntryServiceSpy = jasmine.createSpyObj('DiaryEntryService', ['saveEntry', 'updateEntry']);
 
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
-        NgbAlertModule
+        TestUtilsModule
       ],
       declarations: [
         DiaryEntryFormComponent,
@@ -93,16 +89,15 @@ describe('DiaryEntryFormComponent', () => {
   });
 
   it('should not render empty alert message', () => {
-    const alert = fixture.debugElement.query(By.css('ngb-alert'));
-    expect(alert).toBeNull();
+    const httpAlert = fixture.debugElement.query(By.directive(MockHttpAlertMessageComponent));
+    expect(httpAlert).toBeNull();
   });
 
   it('should render alert message', () => {
-    const alertMessage = 'This is a mock alert message';
-    component.alertMessage = alertMessage;
+    component.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
-    const alert = fixture.debugElement.query(By.css('ngb-alert'));
-    expect(alert.nativeElement.textContent).toMatch(alertMessage);
+    const httpAlert = fixture.debugElement.query(By.directive(MockHttpAlertMessageComponent));
+    expect(httpAlert).not.toBeNull();
   });
 
   it('should not render spinner', () => {
@@ -120,30 +115,21 @@ describe('DiaryEntryFormComponent', () => {
   it('header\'s dismiss button should be disabled', () => {
     component.processRequest = true;
     fixture.detectChanges();
-
-    const closeButton = fixture.debugElement.query(
-        By.css('.modal-header button.close'));
-
+    const closeButton = fixture.debugElement.query(By.css('.modal-header button.close'));
     expect(closeButton.nativeElement.disabled).toBeTrue();
   });
 
   it('footer\'s abort button should be disabled', () => {
     component.processRequest = true;
     fixture.detectChanges();
-
-    const abortButton = fixture.debugElement.query(
-        By.css('.modal-footer button.btn.btn-danger'));
-
+    const abortButton = fixture.debugElement.query(By.css('.modal-footer button.btn.btn-danger'));
     expect(abortButton.nativeElement.disabled).toBeTrue();
   });
 
   it('footer\'s submit button should be hidden', () => {
     component.processRequest = true;
     fixture.detectChanges();
-
-    const submitButton = fixture.debugElement.query(
-        By.css('.modal-footer button.btn.btn-primary'));
-
+    const submitButton = fixture.debugElement.query(By.css('.modal-footer button.btn.btn-primary'));
     expect(submitButton.nativeElement.hidden).toBeTrue();
   });
 
@@ -155,18 +141,14 @@ describe('DiaryEntryFormComponent', () => {
   });
 
   it('header\'s dismiss button should trigger #closeModal', () => {
-    const closeButton = fixture.debugElement.query(
-        By.css('.modal-header button.close'));
-
+    const closeButton = fixture.debugElement.query(By.css('.modal-header button.close'));
     spyOn(component, 'closeModal');
     closeButton.triggerEventHandler('click', null);
     expect(component.closeModal).toHaveBeenCalled();
   });
 
   it('footer\'s abort button should trigger #closeModal', () => {
-    const abortButton = fixture.debugElement.query(
-        By.css('.modal-footer button.btn.btn-danger'));
-
+    const abortButton = fixture.debugElement.query(By.css('.modal-footer button.btn.btn-danger'));
     spyOn(component, 'closeModal');
     abortButton.triggerEventHandler('click', null);
     expect(component.closeModal).toHaveBeenCalled();
@@ -406,8 +388,7 @@ describe('DiaryEntryFormComponent', () => {
     const testImage = component.imageList[0];
     component.moveImageUp(0);
 
-    expect(component.imageList.indexOf(testImage)).toEqual(
-        component.imageList.length - 1);
+    expect(component.imageList.indexOf(testImage)).toEqual(component.imageList.length - 1);
   });
 
   it('move up buttons should trigger #moveImageUp', () => {
@@ -428,7 +409,7 @@ describe('DiaryEntryFormComponent', () => {
   });
 
   it('#onSubmit should create new diary entry', waitForAsync(() => {
-    component.alertMessage = 'This is a mock alert message.';
+    component.httpAlert.alertType = AlertType.server;
 
     const diaryEntry: DiaryEntry = {
       _id: component.diaryEntry._id,
@@ -448,8 +429,7 @@ describe('DiaryEntryFormComponent', () => {
       tags: testEntry.tags.join(', ')
     });
 
-    const service = TestBed.inject(DiaryEntryService) as
-        jasmine.SpyObj<DiaryEntryService>;
+    const service = TestBed.inject(DiaryEntryService) as jasmine.SpyObj<DiaryEntryService>;
 
     service.saveEntry.and.returnValue(asyncData(testEntry));
 
@@ -458,7 +438,7 @@ describe('DiaryEntryFormComponent', () => {
 
     component.onSubmit();
 
-    expect(component.alertMessage).toEqual('');
+    expect(component.httpAlert.alertType).toEqual(AlertType.none);
     expect(component.processRequest).toBeTrue();
 
     fixture.whenStable().then(() => {
@@ -479,9 +459,7 @@ describe('DiaryEntryFormComponent', () => {
     updatedEntry.title = 'updated title';
     component.title.setValue(updatedEntry.title);
 
-    const service = TestBed.inject(DiaryEntryService) as
-        jasmine.SpyObj<DiaryEntryService>;
-
+    const service = TestBed.inject(DiaryEntryService) as jasmine.SpyObj<DiaryEntryService>;
     service.updateEntry.and.returnValue(asyncData(updatedEntry));
 
     component.onSubmit();
@@ -498,17 +476,16 @@ describe('DiaryEntryFormComponent', () => {
 
     fixture.detectChanges();
 
-    const service = TestBed.inject(DiaryEntryService) as
-        jasmine.SpyObj<DiaryEntryService>;
+    const service = TestBed.inject(DiaryEntryService) as jasmine.SpyObj<DiaryEntryService>;
 
-    const alertMessage = 'This is a mock alert message.';
-    service.updateEntry.and.returnValue(asyncError(alertMessage));
+    const alertType = AlertType.server;
+    service.updateEntry.and.returnValue(asyncError(alertType));
 
     component.onSubmit();
 
     fixture.whenStable().then(() => {
       expect(component.processRequest).toBeFalse();
-      expect(component.alertMessage).toEqual(alertMessage);
+      expect(component.httpAlert.alertType).toEqual(alertType);
     });
   }));
 });

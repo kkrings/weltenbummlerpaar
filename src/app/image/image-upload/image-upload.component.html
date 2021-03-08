@@ -18,19 +18,16 @@
            id="description"
            placeholder="Beschreibung"
            required>
-    <div *ngIf="description.invalid &&
-                 (description.dirty || description.touched)">
-      <div *ngIf="description.errors && description.errors.required">
+    <div *ngIf="description.invalid && (description.dirty || description.touched)">
+      <div *ngIf="description.errors?.required">
         <small class="text-danger">
           Ohne Beschreibung kein Foto-Upload.
         </small>
       </div>
     </div>
   </div>
-  <div *ngIf="alertMessage" class="py-2">
-    <ngb-alert [dismissible]="false" type="danger">
-      {{alertMessage}}
-    </ngb-alert>
+  <div *ngIf="httpAlert.isShown" class="py-2">
+    <app-http-alert-message [alertType]="httpAlert.alertType"></app-http-alert-message>
   </div>
   <div class="d-flex">
     <button type="submit"

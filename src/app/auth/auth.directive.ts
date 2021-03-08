@@ -29,11 +29,7 @@ export class AuthDirective implements DoCheck {
    * @param authService
    *   Service for checking if an admin user is logged in
    */
-  constructor(
-    private renderer: Renderer2,
-    private element: ElementRef,
-    private authService: AuthService
-  ) {
+  constructor(private renderer: Renderer2, private element: ElementRef, private authService: AuthService) {
     // do not show element by default
     this.renderer.addClass(this.element.nativeElement, 'd-none');
   }

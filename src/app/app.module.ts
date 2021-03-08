@@ -31,6 +31,7 @@ import { ImageModalComponent } from './image/image-modal/image-modal.component';
 import { ImageUploadComponent } from './image/image-upload/image-upload.component';
 import { ImageDirective } from './image/image.directive';
 import { FileValueAccessorDirective } from './shared/file-value-accessor.directive';
+import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-alert-message.component';
 
 
 /**
@@ -54,7 +55,8 @@ import { FileValueAccessorDirective } from './shared/file-value-accessor.directi
     ImageModalComponent,
     ImageUploadComponent,
     ImageDirective,
-    FileValueAccessorDirective
+    FileValueAccessorDirective,
+    HttpAlertMessageComponent
   ],
   imports: [
     BrowserModule,

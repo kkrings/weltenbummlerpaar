@@ -9,21 +9,9 @@
       </div>
       <input formControlName="tags"
              id="tags"
-             class="form-control border-left-0 border-right-0"
+             class="form-control border-left-0"
              type="text"
              placeholder="Stichwort, ...">
-      <div class="input-group-append">
-        <div class="input-group-text bg-transparent">
-          <div *ngIf="processingSearch"
-               class="spinner-border spinner-border-sm"
-               role="status">
-            <span class="sr-only">Suche Tagebucheinträge...</span>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </form>
-<ngb-alert *ngIf="hasAlertMessage()" [type]="alertMessage.alertType">
-  {{alertMessage.message}}
-</ngb-alert>

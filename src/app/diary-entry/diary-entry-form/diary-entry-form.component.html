@@ -23,7 +23,7 @@
              value="{{title.value}}"
              required>
       <div *ngIf="isInvalid(title)">
-        <div *ngIf="title.errors && title.errors.required">
+        <div *ngIf="title.errors?.required">
           <small class="text-danger">
             Ohne Titel kein Tagebucheintrag.
           </small>
@@ -42,7 +42,7 @@
              value="{{locationName.value}}"
              required>
       <div *ngIf="isInvalid(locationName)">
-        <div *ngIf="locationName.errors && locationName.errors.required">
+        <div *ngIf="locationName.errors?.required">
           <small class="text-danger">
             Ohne Ortsangabe kein Tagebucheintrag.
           </small>
@@ -62,7 +62,7 @@
                 required>
       </textarea>
       <div *ngIf="isInvalid(body)">
-        <div *ngIf="body.errors && body.errors.required">
+        <div *ngIf="body.errors?.required">
           <small class="text-danger">
             Ohne Inhalt kein Tagebucheintrag.
           </small>
@@ -102,10 +102,8 @@
         </figure>
       </div>
     </div>
-    <div *ngIf="alertMessage" class="py-2">
-      <ngb-alert [dismissible]="false" type="danger">
-        {{alertMessage}}
-      </ngb-alert>
+    <div *ngIf="httpAlert.isShown" class="py-2">
+      <app-http-alert-message [alertType]="httpAlert.alertType"></app-http-alert-message>
     </div>
   </div>
   <div class="modal-footer">

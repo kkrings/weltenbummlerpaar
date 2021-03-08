@@ -4,21 +4,18 @@
  */
 
 import { By } from '@angular/platform-browser';
-
-import {
-  ComponentFixture, TestBed, waitForAsync
-} from '@angular/core/testing';
-
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { first, last } from 'rxjs/operators';
 
 import { ImageUploadComponent } from './image-upload.component';
 import { ImageService } from '../image.service';
 import { Image } from '../image.model';
+import { AlertType } from '../../http-alert/alert.model';
 
 import { asyncData, asyncError } from '../../shared/test-utils';
+import { MockHttpAlertMessageComponent, TestUtilsModule } from '../../test-utils/test-utils.module';
 
 
 describe('ImageUploadComponent', () => {
@@ -37,7 +34,7 @@ describe('ImageUploadComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
-        NgbAlertModule
+        TestUtilsModule
       ],
       declarations: [
         ImageUploadComponent
@@ -140,7 +137,7 @@ describe('ImageUploadComponent', () => {
   });
 
   it('#deleteImage should delete image', waitForAsync(() => {
-    component.alertMessage = 'This is a mock alert message';
+    component.httpAlert.alertType = AlertType.server;
 
     const testImage: Image = {
       _id: '0',
@@ -151,54 +148,37 @@ describe('ImageUploadComponent', () => {
 
     component.image = testImage;
 
-    const imageService = TestBed.inject(ImageService) as
-        jasmine.SpyObj<ImageService>;
-
+    const imageService = TestBed.inject(ImageService) as jasmine.SpyObj<ImageService>;
     imageService.deleteImage.and.returnValue(asyncData(testImage));
 
-    component.imageDelete.subscribe((image: Image) => {
-      expect(image._id).toEqual(testImage._id);
-    });
-
-    component.processing.pipe(first()).subscribe((processing: boolean) => {
-      expect(processing).toBeTrue();
-    });
-
-    component.processing.pipe(last()).subscribe((processing: boolean) => {
-      expect(processing).toBeFalse();
-    });
+    component.imageDelete.subscribe((image: Image) => expect(image._id).toEqual(testImage._id));
+    component.processing.pipe(first()).subscribe((processing: boolean) => expect(processing).toBeTrue());
+    component.processing.pipe(last()).subscribe((processing: boolean) => expect(processing).toBeFalse());
 
     component.deleteImage();
 
     expect(component.processDeleteRequest).toBeTrue();
-    expect(component.alertMessage).toEqual('');
+    expect(component.httpAlert.alertType).toEqual(AlertType.none);
+    expect(imageService.deleteImage).toHaveBeenCalledWith(testEntryId, testImage._id);
 
-    expect(imageService.deleteImage).toHaveBeenCalledWith(
-        testEntryId, testImage._id);
-
-    fixture.whenStable().then(() => {
-      expect(component.processDeleteRequest).toBeFalse();
-    });
+    fixture.whenStable().then(() => expect(component.processDeleteRequest).toBeFalse());
   }));
 
   it('#deleteImage should set alert message', waitForAsync(() => {
     component.image._id = '0';
 
-    const imageService = TestBed.inject(ImageService) as
-        jasmine.SpyObj<ImageService>;
+    const imageService = TestBed.inject(ImageService) as jasmine.SpyObj<ImageService>;
 
-    const alertMessage = 'This is a mock alert message.';
-    imageService.deleteImage.and.returnValue(asyncError(alertMessage));
+    const alertType = AlertType.server;
+    imageService.deleteImage.and.returnValue(asyncError(alertType));
 
-    component.processing.pipe(last()).subscribe((processing: boolean) => {
-      expect(processing).toBeFalse();
-    });
+    component.processing.pipe(last()).subscribe((processing: boolean) => expect(processing).toBeFalse());
 
     component.deleteImage();
 
     fixture.whenStable().then(() => {
       expect(component.processDeleteRequest).toBeFalse();
-      expect(component.alertMessage).toEqual(alertMessage);
+      expect(component.httpAlert.alertType).toEqual(alertType);
     });
   }));
 
@@ -221,64 +201,47 @@ describe('ImageUploadComponent', () => {
 
     spyOn(component, 'deleteImage');
 
-    const button = fixture.debugElement.query(
-        By.css('button.btn.btn-danger.btn-sm'));
-
+    const button = fixture.debugElement.query(By.css('button.btn.btn-danger.btn-sm'));
     button.triggerEventHandler('click', null);
+
     expect(component.deleteImage).toHaveBeenCalled();
   });
 
   it('delete button should be disabled when uploading image', () => {
     component.image._id = '0';
     component.processUploadRequest = true;
-
     fixture.detectChanges();
-
-    const button = fixture.debugElement.query(
-        By.css('button.btn.btn-danger.btn-sm'));
-
+    const button = fixture.debugElement.query(By.css('button.btn.btn-danger.btn-sm'));
     expect(button.nativeElement.disabled).toBeTrue();
   });
 
   it('delete button should be hidden when deleting image', () => {
     component.image._id = '0';
     component.processDeleteRequest = true;
-
     fixture.detectChanges();
-
-    const button = fixture.debugElement.query(
-        By.css('button.btn.btn-danger.btn-sm'));
-
+    const button = fixture.debugElement.query(By.css('button.btn.btn-danger.btn-sm'));
     expect(button.nativeElement.hidden).toBeTrue();
   });
 
   it('should not render delete spinner', () => {
     component.image._id = '0';
-
     fixture.detectChanges();
-
-    const spinner = fixture.debugElement.query(
-        By.css('div.spinner-border.text-danger'));
-
+    const spinner = fixture.debugElement.query(By.css('div.spinner-border.text-danger'));
     expect(spinner).toBeNull();
   });
 
   it('should render delete spinner', () => {
     component.image._id = '0';
     component.processDeleteRequest = true;
-
     fixture.detectChanges();
-
-    const spinner = fixture.debugElement.query(
-        By.css('div.spinner-border.text-danger'));
-
+    const spinner = fixture.debugElement.query(By.css('div.spinner-border.text-danger'));
     expect(spinner).not.toBeNull();
   });
 
   it('#onSubmit should upload image', waitForAsync(() => {
     const componentImageBeforeUpload = {...component.image};
 
-    component.alertMessage = 'This is a mock alert message';
+    component.httpAlert.alertType = AlertType.server;
 
     const testImage: Image = {
       _id: '0',
@@ -309,32 +272,20 @@ describe('ImageUploadComponent', () => {
       file: formValue.files[0]
     };
 
-    const imageService = TestBed.inject(ImageService) as
-        jasmine.SpyObj<ImageService>;
-
+    const imageService = TestBed.inject(ImageService) as jasmine.SpyObj<ImageService>;
     imageService.uploadImage.and.returnValue(asyncData(testImage));
 
-    component.imageChange.subscribe((image: Image) => {
-      expect(image).toEqual(testImage);
-    });
-
-    component.processing.pipe(first()).subscribe((processing: boolean) => {
-      expect(processing).toBeTrue();
-    });
-
-    component.processing.pipe(last()).subscribe((processing: boolean) => {
-      expect(processing).toBeFalse();
-    });
+    component.imageChange.subscribe((image: Image) => expect(image).toEqual(testImage));
+    component.processing.pipe(first()).subscribe((processing: boolean) => expect(processing).toBeTrue());
+    component.processing.pipe(last()).subscribe((processing: boolean) => expect(processing).toBeFalse());
 
     component.onSubmit();
 
-    expect(component.alertMessage).toEqual('');
+    expect(component.httpAlert.alertType).toEqual(AlertType.none);
     expect(component.processUploadRequest).toBeTrue();
 
     fixture.whenStable().then(() => {
-      expect(imageService.uploadImage).toHaveBeenCalledWith(
-          component.entryId, uploadedImage);
-
+      expect(imageService.uploadImage).toHaveBeenCalledWith(component.entryId, uploadedImage);
       expect(component.processUploadRequest).toBeFalse();
       expect(component.image).toEqual(componentImageBeforeUpload);
     });
@@ -353,9 +304,7 @@ describe('ImageUploadComponent', () => {
 
     fixture.detectChanges();
 
-    const imageService = TestBed.inject(ImageService) as
-        jasmine.SpyObj<ImageService>;
-
+    const imageService = TestBed.inject(ImageService) as jasmine.SpyObj<ImageService>;
     imageService.updateImage.and.returnValue(of(testImage));
 
     component.onSubmit();
@@ -366,28 +315,23 @@ describe('ImageUploadComponent', () => {
   it('#onSubmit should set alert message', waitForAsync(() => {
     component.image._id = '0';
 
-    const imageService = TestBed.inject(ImageService) as
-        jasmine.SpyObj<ImageService>;
+    const imageService = TestBed.inject(ImageService) as jasmine.SpyObj<ImageService>;
 
-    const alertMessage = 'This is a mock alert message.';
-    imageService.updateImage.and.returnValue(asyncError(alertMessage));
+    const alertType = AlertType.server;
+    imageService.updateImage.and.returnValue(asyncError(alertType));
 
-    component.processing.pipe(last()).subscribe((processing: boolean) => {
-      expect(processing).toBeFalse();
-    });
+    component.processing.pipe(last()).subscribe((processing: boolean) => expect(processing).toBeFalse());
 
     component.onSubmit();
 
     fixture.whenStable().then(() => {
       expect(component.processUploadRequest).toBeFalse();
-      expect(component.alertMessage).toEqual(alertMessage);
+      expect(component.httpAlert.alertType).toEqual(alertType);
     });
   }));
 
   it('submit button should be disabled', () => {
-    const button = fixture.debugElement.query(
-        By.css('button.btn.btn-primary.btn-sm'));
-
+    const button = fixture.debugElement.query(By.css('button.btn.btn-primary.btn-sm'));
     expect(button.nativeElement.disabled).toBeTrue();
   });
 
@@ -398,9 +342,7 @@ describe('ImageUploadComponent', () => {
 
     fixture.detectChanges();
 
-    const button = fixture.debugElement.query(
-        By.css('button.btn.btn-primary.btn-sm'));
-
+    const button = fixture.debugElement.query(By.css('button.btn.btn-primary.btn-sm'));
     expect(button.nativeElement.disabled).toBeFalse();
   });
 
@@ -412,9 +354,7 @@ describe('ImageUploadComponent', () => {
 
     fixture.detectChanges();
 
-    const button = fixture.debugElement.query(
-        By.css('button.btn.btn-primary.btn-sm'));
-
+    const button = fixture.debugElement.query(By.css('button.btn.btn-primary.btn-sm'));
     expect(button.nativeElement.disabled).toBeTrue();
   });
 
@@ -426,16 +366,12 @@ describe('ImageUploadComponent', () => {
 
     fixture.detectChanges();
 
-    const button = fixture.debugElement.query(
-        By.css('button.btn.btn-primary.btn-sm'));
-
+    const button = fixture.debugElement.query(By.css('button.btn.btn-primary.btn-sm'));
     expect(button.nativeElement.hidden).toBeTrue();
   });
 
   it('should not render upload spinner', () => {
-    const spinner = fixture.debugElement.query(
-        By.css('div.spinner-border.text-primary'));
-
+    const spinner = fixture.debugElement.query(By.css('div.spinner-border.text-primary'));
     expect(spinner).toBeNull();
   });
 
@@ -444,22 +380,19 @@ describe('ImageUploadComponent', () => {
 
     fixture.detectChanges();
 
-    const spinner = fixture.debugElement.query(
-        By.css('div.spinner-border.text-primary'));
-
+    const spinner = fixture.debugElement.query(By.css('div.spinner-border.text-primary'));
     expect(spinner).not.toBeNull();
   });
 
   it('should not render empty alert message', () => {
-    const ngbAlert = fixture.debugElement.query(By.css('ngb-alert'));
-    expect(ngbAlert).toBeNull();
+    const httpAlert = fixture.debugElement.query(By.directive(MockHttpAlertMessageComponent));
+    expect(httpAlert).toBeNull();
   });
 
   it('should render alert message', () => {
-    const alertMessage = 'This is a mock alert message';
-    component.alertMessage = alertMessage;
+    component.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
-    const ngbAlert = fixture.debugElement.query(By.css('ngb-alert'));
-    expect(ngbAlert.nativeElement.textContent).toMatch(alertMessage);
+    const httpAlert = fixture.debugElement.query(By.directive(MockHttpAlertMessageComponent));
+    expect(httpAlert).not.toBeNull();
   });
 });

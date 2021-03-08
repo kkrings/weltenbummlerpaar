@@ -19,15 +19,11 @@
     </div>
   </div>
 </div>
-<div *ngIf="!showSpinner && !alertMessage">
+<div *ngIf="!showSpinner && !httpAlert.isShown">
   <app-diary-entry-grid [diaryEntries]="diaryEntries"></app-diary-entry-grid>
 </div>
-<div *ngIf="alertMessage">
-  <div class="container mb-4">
-    <ngb-alert [dismissible]="false" [type]="'danger'">
-      {{alertMessage}}
-    </ngb-alert>
-  </div>
+<div *ngIf="!showSpinner && httpAlert.isShown" class="container mb-4">
+  <app-http-alert-message [alertType]="httpAlert.alertType"></app-http-alert-message>
 </div>
 <div class="bg-primary text-white">
   <div class="container-fluid p-4">

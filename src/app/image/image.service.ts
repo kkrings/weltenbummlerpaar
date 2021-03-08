@@ -9,7 +9,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { Image } from './image.model';
-import { HttpAlertService } from '../shared/http-alert.service';
+import { HttpAlertService } from '../http-alert/http-alert.service';
 import { environment } from '../../environments/environment';
 
 
@@ -31,9 +31,7 @@ export class ImageService {
    * @param httpAlertService
    *   Service for handling HTTP errors
    */
-  constructor(
-      private http: HttpClient,
-      private httpAlertService: HttpAlertService) { }
+  constructor(private http: HttpClient, private httpAlertService: HttpAlertService) { }
 
   /**
    * Get image's URL.
@@ -114,8 +112,7 @@ export class ImageService {
    */
   deleteImage(entryId: string, imageId: string): Observable<Image> {
     return this.http
-        .delete<Image>(
-            `${environment.baseurl}/db/entries/${entryId}/images/${imageId}`)
+        .delete<Image>(`${environment.baseurl}/db/entries/${entryId}/images/${imageId}`)
         .pipe(catchError(this.httpAlertService.handleError));
   }
 }

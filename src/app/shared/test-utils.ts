@@ -44,8 +44,7 @@ export class MockImageDirective {
  * @returns
  *   Data observable
  */
-export const asyncData = <T>(data: T): Observable<T> =>defer(
-    () => Promise.resolve(data));
+export const asyncData = <T>(data: T): Observable<T> => defer(() => Promise.resolve(data));
 
 /**
  * Error observale
@@ -61,5 +60,4 @@ export const asyncData = <T>(data: T): Observable<T> =>defer(
  * @returns
  *   Error observable
  */
-export const asyncError = <T>(error: T): Observable<never> => defer(
-    () => Promise.reject(error));
+export const asyncError = <T>(error: T): Observable<never> => defer(() => Promise.reject(error));

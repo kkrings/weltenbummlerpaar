@@ -6,7 +6,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlert, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryGridComponent } from './diary-entry-grid.component';
 import { DiaryEntry } from '../diary-entry.model';
@@ -85,21 +85,19 @@ describe('DiaryEntryGridComponent', () => {
   });
 
   it('should render diary entries on grid', () => {
-    const entryCards = fixture.debugElement.queryAll(
-        By.css('app-diary-entry-card'));
-
+    const entryCards = fixture.debugElement.queryAll(By.directive(MockDiaryEntryCardComponent));
     expect(entryCards.length).toEqual(component.diaryEntries.length);
   });
 
   it('should not render alert message', () => {
-    const message = fixture.debugElement.query(By.css('ngb-alert'));
+    const message = fixture.debugElement.query(By.directive(NgbAlert));
     expect(message).toBeNull();
   });
 
   it('should render alert message', () => {
     component.diaryEntries = [];
     fixture.detectChanges();
-    const message = fixture.debugElement.query(By.css('ngb-alert'));
+    const message = fixture.debugElement.query(By.directive(NgbAlert));
     expect(message).not.toBeNull();
   });
 

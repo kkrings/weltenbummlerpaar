@@ -4,14 +4,11 @@
  */
 
 import { Component } from '@angular/core';
-
-import {
-  FormBuilder, FormControl, FormGroup, Validators
-} from '@angular/forms';
-
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthService } from '../auth.service';
+import { Alert, AlertType } from '../../http-alert/alert.model';
 
 
 /**
@@ -37,10 +34,16 @@ export class AuthModalComponent {
   showSpinner = false;
 
   /**
-   * Alert message that is shown if login request has failed due to HTTP errors
-   * or wrong login credentials
+   * Alert type hat corresponds to the alert message that is shown if login
+   * request has failed due to HTTP errors
    */
-  loginFailedMessage = '';
+  httpAlert = new Alert();
+
+  /**
+   * An alert message is shown if login request has failed due to wrong login
+   * credentials
+   */
+  loginFailed = false;
 
   /**
    * Construct the admin login modal component.
@@ -52,13 +55,9 @@ export class AuthModalComponent {
    * @param authService
    *   Service for sending the login request to the back-end server
    */
-  constructor(
-      private formBuilder: FormBuilder,
-      private modal: NgbActiveModal,
-      private authService: AuthService
-  ) {
+  constructor(formBuilder: FormBuilder, private modal: NgbActiveModal, private authService: AuthService) {
     // build the admin login form
-    this.adminLoginForm = this.formBuilder.group({
+    this.adminLoginForm = formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
@@ -116,7 +115,10 @@ export class AuthModalComponent {
     const {username, password} = this.adminLoginForm.value;
 
     // reset failed login message
-    this.loginFailedMessage = '';
+    this.loginFailed = false;
+
+    // reset HTTP alert message
+    this.httpAlert.alertType = AlertType.none;
 
     // activate spinner; gets deactivated again when back-end server has
     // responded
@@ -129,14 +131,12 @@ export class AuthModalComponent {
         if (success) {
           this.modal.close();
         } else {
-          this.loginFailedMessage =
-              'Der Admin-Login ist fehl geschlagen, ' +
-              'da Username und/oder Passwort falsch sind.';
+          this.loginFailed = true;
         }
       },
-      (error: string) => {
+      (alertType: AlertType) => {
         this.showSpinner = false;
-        this.loginFailedMessage = error;
+        this.httpAlert.alertType = alertType;
       });
   }
 }

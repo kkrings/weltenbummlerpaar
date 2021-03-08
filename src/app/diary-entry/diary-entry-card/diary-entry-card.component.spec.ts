@@ -2,41 +2,25 @@
  * Unit tests for diary entry card component
  * @packageDocumentation
  */
-
-import { Directive, LOCALE_ID } from '@angular/core';
-
-import {
-  ComponentFixture, TestBed, waitForAsync
-} from '@angular/core/testing';
-
-import { By } from '@angular/platform-browser';
-import { registerLocaleData, formatDate } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 
-import {
-  NgbAlertModule, NgbModal, NgbModalRef
-} from '@ng-bootstrap/ng-bootstrap';
+import { Directive, LOCALE_ID } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { registerLocaleData, formatDate } from '@angular/common';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryCardComponent } from './diary-entry-card.component';
 import { DiaryEntryBriefPipe } from '../diary-entry-brief.pipe';
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntry } from '../diary-entry.model';
+import { DiaryEntryModalComponent } from '../diary-entry-modal/diary-entry-modal.component';
+import { DiaryEntryFormComponent } from '../diary-entry-form/diary-entry-form.component';
+import { ImageModalComponent } from '../../image/image-modal/image-modal.component';
+import { AlertType } from '../../http-alert/alert.model';
 
-import {
-  DiaryEntryModalComponent
-} from '../diary-entry-modal/diary-entry-modal.component';
-
-import {
-  DiaryEntryFormComponent
-} from '../diary-entry-form/diary-entry-form.component';
-
-import {
-  ImageModalComponent
-} from '../../image/image-modal/image-modal.component';
-
-import {
-  MockImageDirective, asyncData, asyncError
-} from '../../shared/test-utils';
+import { MockImageDirective, asyncData, asyncError } from '../../shared/test-utils';
+import { TestUtilsModule, MockHttpAlertMessageComponent } from '../../test-utils/test-utils.module';
 
 
 registerLocaleData(localeDe);
@@ -73,10 +57,12 @@ describe('DiaryEntryCardComponent', () => {
       componentInstance: {}
     };
 
-    const diaryServiceSpy = jasmine.createSpyObj(
-        'DiaryEntryService', ['deleteEntry']);
+    const diaryServiceSpy = jasmine.createSpyObj('DiaryEntryService', ['deleteEntry']);
 
     await TestBed.configureTestingModule({
+      imports: [
+        TestUtilsModule
+      ],
       declarations: [
         DiaryEntryCardComponent,
         DiaryEntryBriefPipe,
@@ -88,9 +74,6 @@ describe('DiaryEntryCardComponent', () => {
         {provide: NgbModalRef, useValue: mockModal},
         {provide: DiaryEntryService, useValue: diaryServiceSpy},
         {provide: LOCALE_ID, useValue: 'de'}
-      ],
-      imports: [
-        NgbAlertModule
       ]
     }).compileComponents();
   });
@@ -127,17 +110,12 @@ describe('DiaryEntryCardComponent', () => {
 
   it('should render diary entry\'s location name', () => {
     const cardSubtitle = fixture.debugElement.query(By.css('.card-subtitle'));
-
-    expect(cardSubtitle.nativeElement.textContent).toMatch(
-        testDiaryEntry.locationName);
+    expect(cardSubtitle.nativeElement.textContent).toMatch(testDiaryEntry.locationName);
   });
 
   it('should render diary entry\'s brief body', () => {
-    const cardText = fixture.debugElement.queryAll(
-        By.css('.card-body .card-text'))[0];
-
-    expect(cardText.nativeElement.textContent).toMatch(
-        (new DiaryEntryBriefPipe()).transform(testDiaryEntry, 150));
+    const cardText = fixture.debugElement.queryAll(By.css('.card-body .card-text'))[0];
+    expect(cardText.nativeElement.textContent).toMatch((new DiaryEntryBriefPipe()).transform(testDiaryEntry, 150));
   });
 
   it('should not render diary entry\'s tags', () => {
@@ -154,26 +132,20 @@ describe('DiaryEntryCardComponent', () => {
   });
 
   it('should render diary entry\'s creation date', () => {
-    const cardText = fixture.debugElement.queryAll(
-        By.css('.card-body .card-text'))[1];
-
-    expect(cardText.nativeElement.textContent).toContain(
-        formatDate(testDiaryEntry.createdAt, 'mediumDate', 'de'));
+    const cardText = fixture.debugElement.queryAll(By.css('.card-body .card-text'))[1];
+    expect(cardText.nativeElement.textContent).toContain(formatDate(testDiaryEntry.createdAt, 'mediumDate', 'de'));
   });
 
   it('should not render empty alert message', () => {
-    const alert = fixture.debugElement.query(By.css('ngb-alert'));
-    expect(alert).toBeNull();
+    const httpAlert = fixture.debugElement.query(By.directive(MockHttpAlertMessageComponent));
+    expect(httpAlert).toBeNull();
   });
 
   it('should render alert message', () => {
-    const alertMessage = 'This is a mock alert message';
-
-    component.alertMessage = alertMessage;
+    component.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
-
-    const alert = fixture.debugElement.query(By.css('ngb-alert'));
-    expect(alert.nativeElement.textContent).toMatch(alertMessage);
+    const httpAlert = fixture.debugElement.query(By.directive(MockHttpAlertMessageComponent));
+    expect(httpAlert).not.toBeNull();
   });
 
   it('#openEntryModal should open diary entry modal component', () => {
@@ -190,10 +162,7 @@ describe('DiaryEntryCardComponent', () => {
 
   it('read more button should trigger #openEntryModal', () => {
     spyOn(component, 'openEntryModal');
-
-    const readMoreButton = fixture.debugElement.query(
-        By.css('.card-body .btn-primary'));
-
+    const readMoreButton = fixture.debugElement.query(By.css('.card-body .btn-primary'));
     readMoreButton.triggerEventHandler('click', null);
     expect(component.openEntryModal).toHaveBeenCalled();
   });
@@ -206,22 +175,14 @@ describe('DiaryEntryCardComponent', () => {
 
     component.openUpdateEntryModal();
 
-    expect(modal.componentInstance.modalTitle).toMatch(
-        'Bearbeite Tagebucheintrag');
-
-    expect(modal.componentInstance.diaryEntry).toEqual(
-        testDiaryEntry);
-
-    expect(service.open).toHaveBeenCalledWith(
-        DiaryEntryFormComponent, {backdrop: 'static', keyboard: false});
+    expect(modal.componentInstance.modalTitle).toMatch('Bearbeite Tagebucheintrag');
+    expect(modal.componentInstance.diaryEntry).toEqual(testDiaryEntry);
+    expect(service.open).toHaveBeenCalledWith(DiaryEntryFormComponent, {backdrop: 'static', keyboard: false});
   });
 
   it('edit button should trigger #openUpdateEntryModal', () => {
     spyOn(component, 'openUpdateEntryModal');
-
-    const editButton = fixture.debugElement.query(
-        By.css('.card-header .btn-primary'));
-
+    const editButton = fixture.debugElement.query(By.css('.card-header .btn-primary'));
     editButton.triggerEventHandler('click', null);
     expect(component.openUpdateEntryModal).toHaveBeenCalled();
   });
@@ -235,39 +196,29 @@ describe('DiaryEntryCardComponent', () => {
     component.openImageModal();
 
     expect(modal.componentInstance.diaryEntry).toEqual(testDiaryEntry);
-
-    expect(service.open).toHaveBeenCalledWith(
-        ImageModalComponent, {backdrop: 'static', keyboard: false});
+    expect(service.open).toHaveBeenCalledWith(ImageModalComponent, {backdrop: 'static', keyboard: false});
   });
 
   it('image button should trigger #openImageModal', () => {
     spyOn(component, 'openImageModal');
-
-    const imageButton = fixture.debugElement.query(
-        By.css('.card-header .btn-secondary'));
-
+    const imageButton = fixture.debugElement.query(By.css('.card-header .btn-secondary'));
     imageButton.triggerEventHandler('click', null);
     expect(component.openImageModal).toHaveBeenCalled();
   });
 
   it('#deleteEntry should emit deleted entry', waitForAsync(() => {
-    component.alertMessage = 'This is mock alert message.';
+    component.httpAlert.alertType = AlertType.server;
 
-    const service = TestBed.inject(DiaryEntryService) as
-        jasmine.SpyObj<DiaryEntryService>;
-
+    const service = TestBed.inject(DiaryEntryService) as jasmine.SpyObj<DiaryEntryService>;
     service.deleteEntry.and.returnValue(asyncData(testDiaryEntry));
 
     let deletedEntryId = '';
-
-    component.deletedEntryId.subscribe((entryId: string) => {
-      deletedEntryId = entryId;
-    });
+    component.deletedEntryId.subscribe((entryId: string) => deletedEntryId = entryId);
 
     component.deleteEntry();
 
     expect(component.showSpinner).toBeTrue();
-    expect(component.alertMessage).toEqual('');
+    expect(component.httpAlert.alertType).toEqual(AlertType.none);
 
     fixture.whenStable().then(() => {
       expect(deletedEntryId).toEqual(testDiaryEntry._id);
@@ -277,16 +228,15 @@ describe('DiaryEntryCardComponent', () => {
   }));
 
   it('#deleteEntry should set alert message', waitForAsync(() => {
-    const service = TestBed.inject(DiaryEntryService) as
-        jasmine.SpyObj<DiaryEntryService>;
+    const service = TestBed.inject(DiaryEntryService) as jasmine.SpyObj<DiaryEntryService>;
 
-    const alertMessage = 'This is a mock error observable.';
-    service.deleteEntry.and.returnValue(asyncError(alertMessage));
+    const alertType = AlertType.server;
+    service.deleteEntry.and.returnValue(asyncError(alertType));
 
     component.deleteEntry();
 
     fixture.whenStable().then(() => {
-      expect(component.alertMessage).toEqual(alertMessage);
+      expect(component.httpAlert.alertType).toEqual(alertType);
       expect(component.showSpinner).toBeFalse();
       expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry._id);
     });
@@ -294,10 +244,7 @@ describe('DiaryEntryCardComponent', () => {
 
   it('delete button should trigger #deletedEntry', () => {
     spyOn(component, 'deleteEntry');
-
-    const deleteButton = fixture.debugElement.query(
-        By.css('.card-header .btn-danger'));
-
+    const deleteButton = fixture.debugElement.query(By.css('.card-header .btn-danger'));
     deleteButton.triggerEventHandler('click', null);
     expect(component.deleteEntry).toHaveBeenCalled();
   });
@@ -317,40 +264,28 @@ describe('DiaryEntryCardComponent', () => {
   it('edit button should be disabled when spinner is active', () => {
     component.showSpinner = true;
     fixture.detectChanges();
-
-    const editButton = fixture.debugElement.query(
-        By.css('.card-header .btn-primary'));
-
+    const editButton = fixture.debugElement.query(By.css('.card-header .btn-primary'));
     expect(editButton.nativeElement.disabled).toBeTrue();
   });
 
   it('image button should be disabled when spinner is active', () => {
     component.showSpinner = true;
     fixture.detectChanges();
-
-    const imageButton = fixture.debugElement.query(
-        By.css('.card-header .btn-secondary'));
-
+    const imageButton = fixture.debugElement.query(By.css('.card-header .btn-secondary'));
     expect(imageButton.nativeElement.disabled).toBeTrue();
   });
 
   it('delete button should be hidden when spinner is active', () => {
     component.showSpinner = true;
     fixture.detectChanges();
-
-    const deleteButton = fixture.debugElement.query(
-        By.css('.card-header .btn-danger'));
-
+    const deleteButton = fixture.debugElement.query(By.css('.card-header .btn-danger'));
     expect(deleteButton.nativeElement.hidden).toBeTrue();
   });
 
   it('read more button should be disabled when spinner is active', () => {
     component.showSpinner = true;
     fixture.detectChanges();
-
-    const readMoreButton = fixture.debugElement.query(
-        By.css('.card-body .btn-primary'));
-
+    const readMoreButton = fixture.debugElement.query(By.css('.card-body .btn-primary'));
     expect(readMoreButton.nativeElement.disabled).toBeTrue();
   });
 });

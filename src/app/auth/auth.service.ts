@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-import { HttpAlertService } from '../shared/http-alert.service';
+import { HttpAlertService } from '../http-alert/http-alert.service';
 import { environment } from '../../environments/environment';
 
 
@@ -67,16 +67,9 @@ export class AuthService {
    *   True if authentication was successful.
    */
   login(username: string, password: string): Observable<boolean> {
-    return this.http
-        .post<Token>(
-            `${environment.baseurl}/db/admins/login`, {username, password})
-        .pipe(map((res: Token) => {
-          if (res.success) {
-            localStorage.setItem('JWT', res.token);
-          }
-
-          return res.success;
-        }), catchError(this.httpAlertService.handleError));
+    return this.http.post<Token>(`${environment.baseurl}/db/admins/login`, {username, password}).pipe(
+        map((response: Token) => this.toSuccess(response)),
+        catchError(this.httpAlertService.handleError));
   }
 
   /**
@@ -100,5 +93,22 @@ export class AuthService {
     }
 
     return false;
+  }
+
+  /**
+   * Map authentication response to success.
+   *
+   * @param response
+   *   Authentication response
+   *
+   * @returns
+   *   If `true`, the admin login was successful.
+   */
+  private toSuccess(response: Token): boolean {
+    if (response.success) {
+      localStorage.setItem('JWT', response.token);
+    }
+
+    return response.success;
   }
 }

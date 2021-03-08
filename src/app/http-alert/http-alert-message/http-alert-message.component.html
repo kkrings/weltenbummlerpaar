@@ -1,0 +1,12 @@
+<ngb-alert *ngIf="showAlert" [dismissible]="alertIsDismissible" [type]="'danger'">
+  Ups, da ist etwas schief gegangen:
+  <span *ngIf="clientSideError">
+    Ich kann nicht mit dem Backendserver reden.
+  </span>
+  <span *ngIf="serverSideError">
+    Der Backendserver mag nicht mit mir reden.
+  </span>
+  <span *ngIf="permissionDenied">
+    Der Backendserver sagt, dass ich keine Erlaubnis habe dies zu tun.
+  </span>
+</ngb-alert>

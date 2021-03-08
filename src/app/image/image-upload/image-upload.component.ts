@@ -3,20 +3,15 @@
  * @packageDocumentation
  */
 
-import {
-  Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef
-} from '@angular/core';
-
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
-
-import {
-  FormControl, FormGroup, FormBuilder, Validators
-} from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import bsCustomFileInput from 'bs-custom-file-input';
 
 import { ImageService } from '../image.service';
 import { Image } from '../image.model';
+import { Alert, AlertType } from '../../http-alert/alert.model';
 
 
 /**
@@ -91,9 +86,9 @@ export class ImageUploadComponent implements OnInit {
   processDeleteRequest = false;
 
   /**
-   * Alert message that is shown in case of HTTP errors
+   * Corresponds to the alert message that is shown in case of HTTP errors
    */
-  alertMessage = '';
+  httpAlert = new Alert();
 
   /**
    * Construct the image upload component.
@@ -104,16 +99,13 @@ export class ImageUploadComponent implements OnInit {
    *   Service for uploading or deleting an image to or from the back-end
    *   server, respectively
    */
-  constructor(
-      private formBuilder: FormBuilder,
-      private imageService: ImageService
-  ) {
+  constructor(formBuilder: FormBuilder, private imageService: ImageService) {
     // call this method before the mock native element gets overriden just for
     // increasing the test coverage
     this.imageFormElement.nativeElement.reset();
 
     // build the image form
-    this.imageForm = this.formBuilder.group({
+    this.imageForm = formBuilder.group({
       files: [null, Validators.required],
       description: ['', Validators.required]
     });
@@ -157,7 +149,7 @@ export class ImageUploadComponent implements OnInit {
     this.processing.emit(true);
 
     // reset alert message
-    this.alertMessage = '';
+    this.httpAlert.alertType = AlertType.none;
 
     this.imageService.deleteImage(this.entryId, this.image._id).subscribe(
         (image: Image) => {
@@ -165,10 +157,10 @@ export class ImageUploadComponent implements OnInit {
           this.processing.emit(false);
           this.imageDelete.emit(image);
         },
-        (error: string) => {
+        (alertType: AlertType) => {
           this.processDeleteRequest = false;
           this.processing.emit(false);
-          this.alertMessage = error;
+          this.httpAlert.alertType = alertType;
         });
   }
 
@@ -192,7 +184,7 @@ export class ImageUploadComponent implements OnInit {
         : this.imageService.uploadImage(this.entryId, image);
 
     // reset alert message
-    this.alertMessage = '';
+    this.httpAlert.alertType = AlertType.none;
 
     // activate spinner; deactivated when server has responded
     this.processUploadRequest = true;
@@ -211,10 +203,10 @@ export class ImageUploadComponent implements OnInit {
           this.imageForm.reset();
         }
       },
-      (error: string) => {
+      (alertType: AlertType) => {
         this.processUploadRequest = false;
         this.processing.emit(false);
-        this.alertMessage = error;
+        this.httpAlert.alertType = alertType;
       });
   }
 }

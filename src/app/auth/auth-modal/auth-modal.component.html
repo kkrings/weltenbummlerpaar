@@ -33,10 +33,13 @@
         <small>Ohne Passwort ist kein Login möglich.</small>
       </div>
     </div>
-    <div *ngIf="loginFailedMessage">
+    <div *ngIf="loginFailed">
       <ngb-alert [dismissible]="false" [type]="'danger'">
-        {{loginFailedMessage}}
+        Der Admin-Login ist fehl geschlagen, da Username und/oder Passwort falsch sind.
       </ngb-alert>
+    </div>
+    <div *ngIf="httpAlert.isShown">
+      <app-http-alert-message [alertType]="httpAlert.alertType"></app-http-alert-message>
     </div>
   </div>
   <div class="modal-footer">

@@ -7,13 +7,23 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
-import { DiaryEntryService } from './diary-entry/diary-entry.service';
+import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-alert-message.component';
+import { AlertType } from './http-alert/alert.model';
+import { DiaryEntrySearchService } from './diary-entry/diary-entry-search/diary-entry-search.service';
+import { DiaryEntrySearchResult } from './diary-entry/diary-entry-search/diary-entry-search.model';
 import { DiaryEntry } from './diary-entry/diary-entry.model';
 import { asyncData, asyncError } from './shared/test-utils';
 
+
+/**
+ * Mock diary entry search form
+ */
+@Component({
+  selector: 'app-diary-entry-search-form'
+})
+class MockDiaryEntrySearchFormComponent { }
 
 /**
  * Mock navigation bar component
@@ -66,24 +76,30 @@ describe('AppComponent', () => {
     updatedAt: (new Date()).toISOString()
   }];
 
-  beforeEach(async () => {
-    const diaryEntryServiceSpy = jasmine.createSpyObj(
-        'DiaryEntryService', ['getEntries', 'findEntries']);
+  const diaryEntrySearchResult = new DiaryEntrySearchResult(
+      [],
+      diaryEntries,
+      {loaded: diaryEntries.length, total: diaryEntries.length});
 
-    diaryEntryServiceSpy.getEntries.and.returnValue(asyncData(diaryEntries));
+  beforeEach(async () => {
+    const mockDiaryEntrySearchService = {
+      diaryEntries$: asyncData(diaryEntrySearchResult),
+      searching$: asyncData(false)
+    };
 
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
-        NgbAlertModule
       ],
       declarations: [
         AppComponent,
+        MockDiaryEntrySearchFormComponent,
         MockNavbarComponent,
-        MockDiaryEntryGridComponent
+        MockDiaryEntryGridComponent,
+        HttpAlertMessageComponent
       ],
       providers: [
-        {provide: DiaryEntryService, useValue: diaryEntryServiceSpy}
+        {provide: DiaryEntrySearchService, useValue: mockDiaryEntrySearchService}
       ]
     }).compileComponents();
   });
@@ -95,7 +111,8 @@ describe('AppComponent', () => {
   });
 
   it('should retrieve list of diary entries', waitForAsync(() => {
-    app.showSpinner = true;
+    expect(app.showSpinner).toBeTrue();
+
     app.ngOnInit();
 
     fixture.whenStable().then(() => {
@@ -104,26 +121,23 @@ describe('AppComponent', () => {
     });
   }));
 
-  it('should set alert message', waitForAsync(() => {
-    const diaryEntryService = TestBed.inject(DiaryEntryService) as
-        jasmine.SpyObj<DiaryEntryService>;
+  /*it('should set alert message', waitForAsync(() => {
+    const diaryEntrySearchService = TestBed.inject(DiaryEntrySearchService) as jasmine.SpyObj<DiaryEntrySearchService>;
 
-    const alertMessage = 'This is a mock alert message';
-    diaryEntryService.getEntries.and.returnValue(asyncError(alertMessage));
+    diaryEntrySearchService.diaryEntries$ = asyncError(AlertType.server);
+    diaryEntrySearchService.searching$ = asyncData(false);
 
     app.showSpinner = true;
     app.ngOnInit();
 
     fixture.whenStable().then(() => {
       expect(app.showSpinner).toBeFalse();
-      expect(app.alertMessage).toEqual(alertMessage);
+      expect(app.httpAlert.isShown).toBeTrue();
     });
   }));
 
   it('should not render list of diary entries', () => {
-    const diaryEntryGrid = fixture.debugElement.query(
-        By.directive(MockDiaryEntryGridComponent));
-
+    const diaryEntryGrid = fixture.debugElement.query(By.directive(MockDiaryEntryGridComponent));
     expect(diaryEntryGrid).toBeNull();
   });
 
@@ -132,65 +146,11 @@ describe('AppComponent', () => {
 
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-
-      const diaryEntryGrid = fixture.debugElement.query(
-          By.directive(MockDiaryEntryGridComponent));
-
-      const component = diaryEntryGrid.injector.get(
-          MockDiaryEntryGridComponent);
-
+      const diaryEntryGrid = fixture.debugElement.query(By.directive(MockDiaryEntryGridComponent));
+      const component = diaryEntryGrid.injector.get(MockDiaryEntryGridComponent);
       expect(component.diaryEntries).toEqual(app.diaryEntries);
     });
   }));
-
-  it('should find diary entry', waitForAsync(() => {
-    const diaryEntryService = TestBed.inject(DiaryEntryService) as
-        jasmine.SpyObj<DiaryEntryService>;
-
-    const testDiaryEntry = diaryEntries[0];
-
-    diaryEntryService.findEntries.and.returnValue(asyncData([testDiaryEntry]));
-
-    app.ngOnInit();
-    app.showSpinner = true;
-
-    const tagsInput = fixture.debugElement.query(By.css('#tags'));
-    tagsInput.nativeElement.value = testDiaryEntry.tags.join(', ');
-    tagsInput.nativeElement.dispatchEvent(new Event('input'));
-
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(app.showSpinner).toBeFalse();
-      expect(app.diaryEntries).toEqual([testDiaryEntry]);
-    });
-  }));
-
-  it('should set alert message', waitForAsync(() => {
-    const diaryEntryService = TestBed.inject(DiaryEntryService) as
-        jasmine.SpyObj<DiaryEntryService>;
-
-    const alertMessage = 'This is a mock alert message';
-    diaryEntryService.findEntries.and.returnValue(asyncError(alertMessage));
-
-    app.ngOnInit();
-    app.showSpinner = true;
-
-    const tagsInput = fixture.debugElement.query(By.css('#tags'));
-    tagsInput.nativeElement.value = 'some tag';
-    tagsInput.nativeElement.dispatchEvent(new Event('input'));
-
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(app.showSpinner).toBeFalse();
-      expect(app.alertMessage).toEqual(alertMessage);
-    });
-  }));
-
-  it('images\' alt attribute should match #welcomeMessage', () => {
-    const images = fixture.debugElement.queryAll(By.css('img'));
-    expect(images[0].nativeElement.alt).toEqual(app.welcomeMessage);
-    expect(images[1].nativeElement.alt).toEqual(app.welcomeMessage);
-  });
 
   it('should render spinner', () => {
     app.showSpinner = true;
@@ -207,25 +167,22 @@ describe('AppComponent', () => {
   });
 
   it('should not render alert message', () => {
-    const ngbAlert = fixture.debugElement.query(By.css('ngb-alert'));
-    expect(ngbAlert).toBeNull();
+    const httpAlert = fixture.debugElement.query(By.directive(HttpAlertMessageComponent));
+    expect(httpAlert).toBeNull();
   });
 
   it('should render alert message', () => {
-    const alertMessage = 'This is a mock alert message';
-    app.alertMessage = alertMessage;
+    app.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
-    const ngbAlert = fixture.debugElement.query(By.css('ngb-alert'));
-    expect(ngbAlert.nativeElement.textContent).toMatch(alertMessage);
+    const httpAlert = fixture.debugElement.query(By.directive(HttpAlertMessageComponent));
+    expect(httpAlert).not.toBeNull();
   });
 
   it('should add diary entry', () => {
     app.diaryEntries = [];
     fixture.detectChanges();
 
-    const navbar = fixture.debugElement.query(
-        By.directive(MockNavbarComponent));
-
+    const navbar = fixture.debugElement.query(By.directive(MockNavbarComponent));
     const component = navbar.injector.get(MockNavbarComponent);
 
     const diaryEntry: DiaryEntry = {
@@ -243,5 +200,5 @@ describe('AppComponent', () => {
 
     fixture.detectChanges();
     expect(app.diaryEntries).toContain(diaryEntry);
-  });
+  });*/
 });

@@ -3,11 +3,14 @@
  * @packageDocumentation
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 
-import { DiaryEntryService } from './diary-entry/diary-entry.service';
+import { DiaryEntrySearchService } from './diary-entry/diary-entry-search/diary-entry-search.service';
+import { DiaryEntrySearchResult } from './diary-entry/diary-entry-search/diary-entry-search.model';
 import { DiaryEntry } from './diary-entry/diary-entry.model';
+import { Alert, AlertType } from './http-alert/alert.model';
 import { environment } from '../environments/environment';
 
 
@@ -19,12 +22,7 @@ import { environment } from '../environments/environment';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  /**
-   * Alternative welcome message if welcome image cannot be loaded
-   */
-  welcomeMessage = 'Willkommen in unserem Reisetagebuch';
-
+export class AppComponent implements OnInit, OnDestroy {
   /**
    * List of shown diary entries
    */
@@ -37,37 +35,50 @@ export class AppComponent implements OnInit {
   showSpinner = true;
 
   /**
-   * Alert message that is shown in case of HTTP errors
+   * Show an alert message in case HTTP errors.
    */
-  alertMessage = '';
+  httpAlert = new Alert();
+
+  /**
+   * Subscription to search state changes
+   */
+  #updateShowSpinner = Subscription.EMPTY;
+
+  /**
+   * Subscription to diary entry source
+   */
+  #updateDiaryEntries = Subscription.EMPTY;
 
   /**
    * Construct the root component.
    *
    * @param nbgConfig
    *   Bootstrap configuration service
-   * @param diaryEntryService
-   *   Service for requesting the list of diary entries from the back-end
-   *   server
+   * @param diaryEntrySearchService
+   *   Service for searching for diary entries on the back-end server
    */
-  constructor(ngbConfig: NgbConfig, private diaryEntryService: DiaryEntryService) {
+  constructor(ngbConfig: NgbConfig, private diaryEntrySearchService: DiaryEntrySearchService) {
     ngbConfig.animation = environment.animation;
   }
 
   /**
-   * On initialization, subscribe to the list of diary entries and listen for
-   * changes in the diary entry search form's tags input.
+   * On initialization, subscribe to diary entry search service.
    */
   ngOnInit(): void {
-    this.diaryEntryService.getEntries().subscribe(
-        (diaryEntries: DiaryEntry[]) => {
-          this.showSpinner = false;
-          this.diaryEntries = diaryEntries;
-        },
-        (error: string) => {
-          this.showSpinner = false;
-          this.alertMessage = error;
-        });
+    this.#updateShowSpinner = this.diaryEntrySearchService.searching$.subscribe(
+        (searching: boolean) => this.showSpinner = searching);
+
+    this.#updateDiaryEntries = this.diaryEntrySearchService.diaryEntries$.subscribe(
+        (result: DiaryEntrySearchResult) => this.diaryEntries = result.entries,
+        (alertType: AlertType) => this.httpAlert.alertType = alertType);
+  }
+
+  /**
+   * On destroy, unsubscribe from diary entry search service.
+   */
+  ngOnDestroy(): void {
+    this.#updateShowSpinner.unsubscribe();
+    this.#updateDiaryEntries.unsubscribe();
   }
 
   /**

@@ -4,16 +4,13 @@
  */
 
 import { Component, OnInit, Input } from '@angular/core';
-
-import {
-  FormBuilder, FormControl, FormGroup, Validators
-} from '@angular/forms';
-
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntry } from '../diary-entry.model';
 import { Image } from '../../image/image.model';
+import { Alert, AlertType } from 'src/app/http-alert/alert.model';
 
 
 /**
@@ -64,9 +61,9 @@ export class DiaryEntryFormComponent implements OnInit {
   processRequest = false;
 
   /**
-   * Alert message that is shown in case of HTTP errors
+   * Corresponds to the alert message that is shown in case of HTTP errors
    */
-  alertMessage = '';
+  httpAlert = new Alert();
 
   /**
    * Construct the diary entry form component.
@@ -78,13 +75,9 @@ export class DiaryEntryFormComponent implements OnInit {
    * @param modal
    *   Holds a reference to the modal.
    */
-  constructor(
-      private formBuilder: FormBuilder,
-      private diaryEntryService: DiaryEntryService,
-      private modal: NgbActiveModal
-  ) {
+  constructor(formBuilder: FormBuilder, private diaryEntryService: DiaryEntryService, private modal: NgbActiveModal) {
     // build the diary entry form
-    this.diaryEntryForm = this.formBuilder.group({
+    this.diaryEntryForm = formBuilder.group({
       title: ['', Validators.required],
       locationName: ['', Validators.required],
       body: ['', Validators.required],
@@ -190,10 +183,7 @@ export class DiaryEntryFormComponent implements OnInit {
       locationName: formValue.locationName,
       body: formValue.body,
       images: this.imageList,
-      tags: formValue.tags
-          .split(',')
-          .map((tag: string) => tag.trim())
-          .filter((tag: string) => tag.length > 0),
+      tags: formValue.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0),
       createdAt: this.diaryEntry.createdAt,
       updatedAt: this.diaryEntry.updatedAt
     };
@@ -203,7 +193,7 @@ export class DiaryEntryFormComponent implements OnInit {
         : this.diaryEntryService.saveEntry(entryFromForm);
 
     // reset alert message
-    this.alertMessage = '';
+    this.httpAlert.alertType = AlertType.none;
 
     // activate spinner; gets deactivated again when back-end server has
     // responded
@@ -216,9 +206,9 @@ export class DiaryEntryFormComponent implements OnInit {
         // entry to parent component
         this.modal.close(Object.assign(this.diaryEntry, diaryEntry));
       },
-      (error: string) => {
+      (alertType: AlertType) => {
         this.processRequest = false;
-        this.alertMessage = error;
+        this.httpAlert.alertType = alertType;
       });
   }
 }

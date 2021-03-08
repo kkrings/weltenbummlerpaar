@@ -6,10 +6,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { HttpAlertService } from './http-alert.service';
+import { AlertType } from './alert.model';
 
 
 describe('HttpAlertService', () => {
-  it('#handleError should return user-friendly client-side error', () => {
+  it('#handleError should return client-side alert', () => {
     const service = new HttpAlertService();
 
     const error = new HttpErrorResponse({
@@ -18,12 +19,10 @@ describe('HttpAlertService', () => {
         })
     });
 
-    service.handleError(error).subscribe(
-      fail, (message: string) => expect(message)
-          .toContain('Ich kann nicht mit dem Backendserver reden.'));
+    service.handleError(error).subscribe(fail, alertType => expect(alertType).toEqual(AlertType.client));
   });
 
-  it('#handleError should return user-friendly server-side error', () => {
+  it('#handleError should return server-side alert', () => {
     const service = new HttpAlertService();
 
     const error = new HttpErrorResponse({
@@ -31,12 +30,10 @@ describe('HttpAlertService', () => {
         status: 500
     });
 
-    service.handleError(error).subscribe(
-      fail, (message: string) => expect(message)
-          .toContain('Der Backendserver mag nicht mit mir reden.'));
+    service.handleError(error).subscribe(fail, alertType => expect(alertType).toEqual(AlertType.server));
   });
 
-  it('#handleError should return user-friendly authorization error', () => {
+  it('#handleError should return permission-denied alert', () => {
     const service = new HttpAlertService();
 
     const error = new HttpErrorResponse({
@@ -44,10 +41,6 @@ describe('HttpAlertService', () => {
         status: 401
     });
 
-    service.handleError(error).subscribe(
-      fail, (message: string) => expect(message).toContain(
-          'Der Backendserver sagt, dass ich keine Erlaubnis habe dies zu tun.'
-      )
-    );
+    service.handleError(error).subscribe(fail, alertType => expect(alertType).toEqual(AlertType.permission));
   });
 });

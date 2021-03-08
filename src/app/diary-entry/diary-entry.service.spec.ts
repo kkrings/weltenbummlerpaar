@@ -4,14 +4,12 @@
  */
 
 import { TestBed } from '@angular/core/testing';
-
-import {
-  HttpClientTestingModule, HttpTestingController
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { DiaryEntryService } from './diary-entry.service';
 import { DiaryEntry } from './diary-entry.model';
-import { HttpAlertService } from '../shared/http-alert.service';
+import { HttpAlertService } from '../http-alert/http-alert.service';
+import { AlertType } from '../http-alert/alert.model';
 import { environment } from '../../environments/environment';
 
 
@@ -64,14 +62,8 @@ describe('DiaryEntryService', () => {
         },
         fail);
 
-    const filter = testDiaryEntry.tags
-        .map(tag => `filter[tags][$all][]=${tag}`)
-        .join('&');
-
-    const options = 'options[sort][createdAt]=-1';
-
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries?${filter}&${options}`);
+    const query = testDiaryEntry.tags.map(tag => `tags[$all][]=${tag}`).join('&');
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/entries?${query}`);
 
     expect(testRequest.request.method).toMatch('GET');
 
@@ -85,9 +77,7 @@ describe('DiaryEntryService', () => {
         },
         fail);
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries?options[sort][createdAt]=-1`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/entries`);
     expect(testRequest.request.method).toMatch('GET');
 
     testRequest.flush(testDiaryEntries);
@@ -95,11 +85,10 @@ describe('DiaryEntryService', () => {
 
   it('#getEntries should return alert message', () => {
     service.getEntries([]).subscribe(
-        fail, (message: string) => expect(message).toBeDefined());
+        fail,
+        (alertType: AlertType) => expect(alertType).toEqual(AlertType.server));
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries?options[sort][createdAt]=-1`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/entries`);
     expect(testRequest.request.method).toMatch('GET');
 
     testRequest.flush('mock HTTP error response', {
@@ -115,9 +104,7 @@ describe('DiaryEntryService', () => {
         (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
         fail);
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
     expect(testRequest.request.method).toMatch('GET');
 
     testRequest.flush(testDiaryEntry);
@@ -127,11 +114,10 @@ describe('DiaryEntryService', () => {
     const testDiaryEntry = testDiaryEntries[0];
 
     service.getEntry(testDiaryEntry._id).subscribe(
-        fail, (message: string) => expect(message).toBeDefined());
+        fail,
+        (alertType: AlertType) => expect(alertType).toEqual(AlertType.server));
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
     expect(testRequest.request.method).toMatch('GET');
 
     testRequest.flush('mock HTTP error response', {
@@ -147,9 +133,7 @@ describe('DiaryEntryService', () => {
         (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
         fail);
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/entries`);
     expect(testRequest.request.method).toMatch('POST');
 
     testRequest.flush(testDiaryEntry);
@@ -159,11 +143,10 @@ describe('DiaryEntryService', () => {
     const testDiaryEntry = testDiaryEntries[0];
 
     service.saveEntry(testDiaryEntry).subscribe(
-        fail, (message: string) => expect(message).toBeDefined());
+        fail,
+        (alertType: AlertType) => expect(alertType).toEqual(alertType));
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/entries`);
     expect(testRequest.request.method).toMatch('POST');
 
     testRequest.flush('mock HTTP error response', {
@@ -179,9 +162,7 @@ describe('DiaryEntryService', () => {
         (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
         fail);
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
     expect(testRequest.request.method).toMatch('PUT');
 
     testRequest.flush(testDiaryEntry);
@@ -191,11 +172,10 @@ describe('DiaryEntryService', () => {
     const testDiaryEntry = testDiaryEntries[0];
 
     service.updateEntry(testDiaryEntry).subscribe(
-        fail, (message: string) => expect(message).toBeDefined());
+        fail,
+        (alertType: AlertType) => expect(alertType).toEqual(AlertType.server));
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
     expect(testRequest.request.method).toMatch('PUT');
 
     testRequest.flush('mock HTTP error response', {
@@ -211,9 +191,7 @@ describe('DiaryEntryService', () => {
         (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
         fail);
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
     expect(testRequest.request.method).toMatch('DELETE');
 
     testRequest.flush(testDiaryEntry);
@@ -223,11 +201,10 @@ describe('DiaryEntryService', () => {
     const testDiaryEntry = testDiaryEntries[0];
 
     service.deleteEntry(testDiaryEntry._id).subscribe(
-        fail, (message: string) => expect(message).toBeDefined());
+        fail,
+        (alertType: AlertType) => expect(alertType).toEqual(AlertType.server));
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
-
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/entries/${testDiaryEntry._id}`);
     expect(testRequest.request.method).toMatch('DELETE');
 
     testRequest.flush('mock HTTP error response', {

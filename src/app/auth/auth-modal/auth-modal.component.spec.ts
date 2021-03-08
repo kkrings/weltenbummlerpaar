@@ -3,20 +3,17 @@
  * @packageDocumentation
  */
 
-import {
-  ComponentFixture, TestBed, waitForAsync
-} from '@angular/core/testing';
-
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NgbAlertModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbAlert, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthModalComponent } from './auth-modal.component';
 import { AuthService } from '../auth.service';
+import { AlertType } from '../../http-alert/alert.model';
 
-import {
-  MockNgbActiveModal, asyncData, asyncError
-} from '../../shared/test-utils';
+import { MockNgbActiveModal, asyncData, asyncError } from '../../shared/test-utils';
+import { MockHttpAlertMessageComponent, TestUtilsModule } from '../../test-utils/test-utils.module';
 
 
 describe('AuthModalComponent', () => {
@@ -29,7 +26,8 @@ describe('AuthModalComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
-        NgbAlertModule
+        NgbAlertModule,
+        TestUtilsModule
       ],
       declarations: [
         AuthModalComponent
@@ -69,9 +67,7 @@ describe('AuthModalComponent', () => {
   });
 
   it('close button in modal\'s footer should trigger #close', () => {
-    const button = fixture.debugElement.query(
-        By.css('.modal-footer button.btn.btn-danger'));
-
+    const button = fixture.debugElement.query(By.css('.modal-footer button.btn.btn-danger'));
     spyOn(component, 'close');
     button.triggerEventHandler('click', null);
     expect(component.close).toHaveBeenCalled();
@@ -80,10 +76,7 @@ describe('AuthModalComponent', () => {
   it('close button in modal\'s footer should be disabled', () => {
     component.showSpinner = true;
     fixture.detectChanges();
-
-    const button = fixture.debugElement.query(
-        By.css('.modal-footer button.btn.btn-danger'));
-
+    const button = fixture.debugElement.query(By.css('.modal-footer button.btn.btn-danger'));
     expect(button.nativeElement.disabled).toBeTrue();
   });
 
@@ -142,12 +135,11 @@ describe('AuthModalComponent', () => {
   });
 
   it('#onSubmit should login user and close modal', waitForAsync(() => {
-    component.loginFailedMessage = 'This is a mock alert message.';
+    component.loginFailed = true;
+    component.httpAlert.alertType = AlertType.server;
     component.adminLoginForm.setValue({username: 'admin', password: 'admin'});
 
-    const authService = TestBed.inject(AuthService) as
-        jasmine.SpyObj<AuthService>;
-
+    const authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     authService.login.and.returnValue(asyncData(true));
 
     const modal: NgbActiveModal = TestBed.inject(NgbActiveModal);
@@ -155,8 +147,9 @@ describe('AuthModalComponent', () => {
 
     component.onSubmit();
 
-    expect(component.loginFailedMessage).toEqual('');
+    expect(component.loginFailed).toBeFalse();
     expect(component.showSpinner).toBeTrue();
+    expect(component.httpAlert.alertType).toEqual(AlertType.none);
 
     fixture.whenStable().then(() => {
       expect(component.showSpinner).toBeFalse();
@@ -164,42 +157,35 @@ describe('AuthModalComponent', () => {
     });
   }));
 
-  it('#onSubmit should set alert message', waitForAsync(() => {
+  it('#onSubmit should set login failed', waitForAsync(() => {
     component.adminLoginForm.setValue({username: 'admin', password: 'admin'});
 
-    const authService = TestBed.inject(AuthService) as
-        jasmine.SpyObj<AuthService>;
-
+    const authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     authService.login.and.returnValue(asyncData(false));
 
     component.onSubmit();
 
-    fixture.whenStable().then(() => {
-      expect(component.loginFailedMessage).not.toEqual('');
-    });
+    fixture.whenStable().then(() => expect(component.loginFailed).toBeTrue());
   }));
 
-  it('#onSubmit should set alert message', waitForAsync(() => {
+  it('#onSubmit should set HTTP alert', waitForAsync(() => {
     component.adminLoginForm.setValue({username: 'admin', password: 'admin'});
 
-    const authService = TestBed.inject(AuthService) as
-        jasmine.SpyObj<AuthService>;
+    const authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
 
-    const alertMessage = 'This is a mock alert message.';
-    authService.login.and.returnValue(asyncError(alertMessage));
+    const alertType = AlertType.server;
+    authService.login.and.returnValue(asyncError(alertType));
 
     component.onSubmit();
 
     fixture.whenStable().then(() => {
       expect(component.showSpinner).toBeFalse();
-      expect(component.loginFailedMessage).toEqual(alertMessage);
+      expect(component.httpAlert.alertType).toEqual(alertType);
     });
   }));
 
   it('submit button should be disabled', () => {
-    const button = fixture.debugElement.query(
-        By.css('.modal-footer button.btn.btn-primary'));
-
+    const button = fixture.debugElement.query(By.css('.modal-footer button.btn.btn-primary'));
     expect(button.nativeElement.disabled).toBeTrue();
   });
 
@@ -214,19 +200,14 @@ describe('AuthModalComponent', () => {
 
     fixture.detectChanges();
 
-    const button = fixture.debugElement.query(
-        By.css('.modal-footer button.btn.btn-primary'));
-
+    const button = fixture.debugElement.query(By.css('.modal-footer button.btn.btn-primary'));
     expect(button.nativeElement.disabled).toBeFalse();
   });
 
   it('submit button should be hidden', () => {
     component.showSpinner = true;
     fixture.detectChanges();
-
-    const button = fixture.debugElement.query(
-        By.css('.modal-footer button.btn.btn-primary'));
-
+    const button = fixture.debugElement.query(By.css('.modal-footer button.btn.btn-primary'));
     expect(button.nativeElement.hidden).toBeTrue();
   });
 
@@ -242,16 +223,27 @@ describe('AuthModalComponent', () => {
     expect(spinner).not.toBeNull();
   });
 
-  it('should not render alert message', () => {
-    const ngbAlert = fixture.debugElement.query(By.css('ngb-alert'));
+  it('should not render login failed message', () => {
+    const ngbAlert = fixture.debugElement.query(By.directive(NgbAlert));
     expect(ngbAlert).toBeNull();
   });
 
-  it('should render alert message', () => {
-    const alertMessage = 'This is a mock alert message';
-    component.loginFailedMessage = alertMessage;
+  it('should render login failed message', () => {
+    component.loginFailed = true;
     fixture.detectChanges();
-    const ngbAlert = fixture.debugElement.query(By.css('ngb-alert'));
-    expect(ngbAlert.nativeElement.textContent).toMatch(alertMessage);
+    const ngbAlert = fixture.debugElement.query(By.directive(NgbAlert));
+    expect(ngbAlert).not.toBeNull();
+  });
+
+  it('should not render HTTP alert message', () => {
+    const httpAlert = fixture.debugElement.query(By.directive(MockHttpAlertMessageComponent));
+    expect(httpAlert).toBeNull();
+  });
+
+  it('should render HTTP alert message', () => {
+    component.httpAlert.alertType = AlertType.server;
+    fixture.detectChanges();
+    const httpAlert = fixture.debugElement.query(By.directive(MockHttpAlertMessageComponent));
+    expect(httpAlert).not.toBeNull();
   });
 });

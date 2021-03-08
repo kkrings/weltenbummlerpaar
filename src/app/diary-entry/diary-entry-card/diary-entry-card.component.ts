@@ -8,18 +8,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntry } from '../diary-entry.model';
-
-import {
-  DiaryEntryFormComponent
-} from '../diary-entry-form/diary-entry-form.component';
-
-import {
-  DiaryEntryModalComponent
-} from '../diary-entry-modal/diary-entry-modal.component';
-
-import {
-  ImageModalComponent
-} from '../../image/image-modal/image-modal.component';
+import { DiaryEntryFormComponent } from '../diary-entry-form/diary-entry-form.component';
+import { DiaryEntryModalComponent } from '../diary-entry-modal/diary-entry-modal.component';
+import { ImageModalComponent } from '../../image/image-modal/image-modal.component';
+import { Alert, AlertType } from '../../http-alert/alert.model';
 
 
 /**
@@ -65,7 +57,7 @@ export class DiaryEntryCardComponent {
   /**
    * Alert message that is shown is case of HTTP errors
    */
-  alertMessage = '';
+  httpAlert = new Alert();
 
   /**
    * Construct the diary entry card component.
@@ -76,9 +68,7 @@ export class DiaryEntryCardComponent {
    * @param diaryEntryService
    *   Service for deleting the injected diary entry from the back-end server
    */
-  constructor(
-      private modalService: NgbModal,
-      private diaryEntryService: DiaryEntryService) { }
+  constructor(private modalService: NgbModal, private diaryEntryService: DiaryEntryService) { }
 
   /**
    * Show full diary entry.
@@ -132,16 +122,16 @@ export class DiaryEntryCardComponent {
     this.showSpinner = true;
 
     // reset alert message
-    this.alertMessage = '';
+    this.httpAlert.alertType = AlertType.none;
 
     this.diaryEntryService.deleteEntry(this.diaryEntry._id).subscribe(
       (diaryEntry: DiaryEntry) => {
         this.deletedEntryId.emit(diaryEntry._id);
         this.showSpinner = false;
       },
-      (error: string) => {
+      (alertType: AlertType) => {
         this.showSpinner = false;
-        this.alertMessage = error;
+        this.httpAlert.alertType = alertType;
       }
     );
   }

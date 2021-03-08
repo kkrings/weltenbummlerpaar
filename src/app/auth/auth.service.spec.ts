@@ -4,11 +4,7 @@
  */
 
 import { TestBed } from '@angular/core/testing';
-
-import {
-  HttpClientTestingModule, HttpTestingController
-} from '@angular/common/http/testing';
-
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { AuthService } from './auth.service';
@@ -59,18 +55,16 @@ describe('AuthService', () => {
   });
 
   it('test successful login and logout of admin user', () => {
-    authService.login('username', 'password')
-        .subscribe((success: boolean) => {
-          // test login
-          expect(success).toBeTrue();
-          expect(authService.isLoggedIn).toBeTrue();
-          // test logout
-          authService.logout();
-          expect(authService.isLoggedIn).toBeFalse();
-        }, fail);
+    authService.login('username', 'password').subscribe((success: boolean) => {
+      // test login
+      expect(success).toBeTrue();
+      expect(authService.isLoggedIn).toBeTrue();
+      // test logout
+      authService.logout();
+      expect(authService.isLoggedIn).toBeFalse();
+    }, fail);
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/admins/login`);
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/admins/login`);
 
     expect(testRequest.request.method).toMatch('POST');
     expect(testRequest.request.body.username).toMatch('username');
@@ -80,14 +74,12 @@ describe('AuthService', () => {
   });
 
   it('test unsuccessfl login of admin user', () => {
-    authService.login('username', 'password')
-        .subscribe((success: boolean) => {
-          expect(success).toBeFalse();
-          expect(authService.isLoggedIn).toBeFalse();
-        }, fail);
+    authService.login('username', 'password').subscribe((success: boolean) => {
+      expect(success).toBeFalse();
+      expect(authService.isLoggedIn).toBeFalse();
+    }, fail);
 
-    const testRequest = httpTestingController.expectOne(
-        `${environment.baseurl}/db/admins/login`);
+    const testRequest = httpTestingController.expectOne(`${environment.baseurl}/db/admins/login`);
 
     testRequest.flush({success: false});
   });
