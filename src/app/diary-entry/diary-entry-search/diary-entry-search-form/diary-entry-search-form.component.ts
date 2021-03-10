@@ -3,12 +3,9 @@
  * @packageDocumentation
  */
 
-import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { Subscription } from 'rxjs';
 
-import { DiaryEntry } from '../../diary-entry.model';
-import { DiaryEntrySearchResult } from '../diary-entry-search.model';
 import { DiaryEntrySearchService } from '../diary-entry-search.service';
 
 
