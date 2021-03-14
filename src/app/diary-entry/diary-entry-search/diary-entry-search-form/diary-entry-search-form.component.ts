@@ -44,6 +44,7 @@ export class DiaryEntrySearchFormComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     this.diaryEntrySearchService.subscribeToSearchTags(this.diaryEntrySearchTags.valueChanges);
+    this.diaryEntrySearchTags.setValue('');
   }
 
   /**

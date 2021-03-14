@@ -68,8 +68,6 @@ export class DiaryEntrySearchService {
   constructor(private diaryEntryService: DiaryEntryService, private config: DiaryEntrySearchConfig) {
     this.diaryEntries$ = this.#diaryEntrySource.asObservable();
     this.searching$ = this.#searchingSource.asObservable();
-    this.#searchingSource.next(true);
-    this.searchEntries().subscribe(result => this.emitResult(result), error => this.emitError(error));
   }
 
   /**
@@ -122,7 +120,7 @@ export class DiaryEntrySearchService {
     this.#diaryEntrySource.error(error);
   }
 
-  private searchEntries(tags: string[] = []): Observable<DiaryEntrySearchResult> {
+  private searchEntries(tags: string[]): Observable<DiaryEntrySearchResult> {
     const search = forkJoin({
       entries: this.diaryEntryService.getEntries(tags, 0, this.config.limitNumEntries),
       count: this.diaryEntryService.countEntries(tags)

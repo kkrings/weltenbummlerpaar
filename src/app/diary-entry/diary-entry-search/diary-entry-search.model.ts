@@ -52,7 +52,7 @@ export class DiaryEntrySearchResult {
    * Specified diary entry search tags.
    */
   get searchTags(): string[] {
-    return {...this.#searchTags};
+    return [...this.#searchTags];
   }
 
   /**
