@@ -1,7 +1,6 @@
 {
     "name": "Weltenbummlerpaar Documentation",
-    "mode": "modules",
-    "inputFiles": ["./src/app/app.module.ts"],
+    "entryPoints": ["./src/app/app.module.ts"],
     "exclude": ["./src/environments/*.ts"],
     "out": "docs",
     "tsconfig": "tsconfig.app.json"

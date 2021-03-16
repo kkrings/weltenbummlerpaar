@@ -7,6 +7,7 @@
 	<meta name="description" content="Documentation for Weltenbummlerpaar Documentation">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -40,8 +41,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -51,11 +50,6 @@
 	</div>
 	<div class="tsd-page-title">
 		<div class="container">
-			<ul class="tsd-breadcrumb">
-				<li>
-					<a href="globals.html">Globals</a>
-				</li>
-			</ul>
 			<h1>Weltenbummlerpaar Documentation</h1>
 		</div>
 	</div>
@@ -76,17 +70,37 @@
 				</a>
 				<p>The first step is to download the application&#39;s latest <a href="https://github.com/kkrings/weltenbummlerpaar/releases">release</a> and
 				to extract it:</p>
-				<pre><code><span class="hljs-selector-tag">tar</span> <span class="hljs-selector-tag">-xzvf</span> <span class="hljs-selector-tag">weltenbummlerpaar-vx</span><span class="hljs-selector-class">.x</span><span class="hljs-selector-class">.x</span><span class="hljs-selector-class">.tar</span><span class="hljs-selector-class">.gz</span>
-<span class="hljs-selector-tag">cd</span> <span class="hljs-selector-tag">weltenbummlerpaar-vx</span><span class="hljs-selector-class">.x</span><span class="hljs-selector-class">.x</span></code></pre>
+				<pre><code><span style="color: #001080">tar</span><span style="color: #000000"> -</span><span style="color: #001080">xzvf</span><span style="color: #000000"> </span><span style="color: #001080">weltenbummlerpaar</span><span style="color: #000000">-</span><span style="color: #001080">vx</span><span style="color: #000000">.</span><span style="color: #001080">x</span><span style="color: #000000">.</span><span style="color: #001080">x</span><span style="color: #000000">.</span><span style="color: #001080">tar</span><span style="color: #000000">.</span><span style="color: #001080">gz</span>
+<span style="color: #001080">cd</span><span style="color: #000000"> </span><span style="color: #001080">weltenbummlerpaar</span><span style="color: #000000">-</span><span style="color: #001080">vx</span><span style="color: #000000">.</span><span style="color: #001080">x</span><span style="color: #000000">.</span><span style="color: #001080">x</span>
+</code></pre>
 				<p>The second step is to install the application&#39;s dependencies:</p>
-				<pre><code>npm <span class="hljs-keyword">install</span></code></pre>
+				<pre><code><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">install</span>
+</code></pre>
 				<p>The third step is to configure in the <strong>production</strong> environment</p>
-				<pre><code>src<span class="hljs-regexp">/environments/</span>environment.prod.ts</code></pre>
+				<pre><code><span style="color: #001080">src</span><span style="color: #000000">/</span><span style="color: #001080">environments</span><span style="color: #000000">/</span><span style="color: #001080">environment</span><span style="color: #000000">.</span><span style="color: #001080">prod</span><span style="color: #000000">.</span><span style="color: #001080">ts</span>
+</code></pre>
 				<p>the <code>baseurl</code> and the <code>domain</code> name of the remote server that hosts the
-				back-end application.</p>
+				back-end application:</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Front-end version</th>
+							<th>Requires the following back-end version.</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>1.0.x</td>
+							<td>1.0.x</td>
+						</tr>
+						<tr>
+							<td>1.1.x</td>
+							<td>1.1.x</td>
+						</tr>
+				</tbody></table>
 				<p>The last step is to initiate the application&#39;s build process in <strong>production</strong>
 				mode:</p>
-				<pre><code>.<span class="hljs-regexp">/node_modules/</span>.bin/ng build --prod</code></pre>
+				<pre><code><span style="color: #000000">.</span><span style="color: #811F3F">/node_modules/</span><span style="color: #000000">.</span><span style="color: #001080">bin</span><span style="color: #000000">/</span><span style="color: #001080">ng</span><span style="color: #000000"> </span><span style="color: #001080">build</span><span style="color: #000000"> --</span><span style="color: #001080">prod</span>
+</code></pre>
 				<p>The output files are written to <code>dist/weltenbummlerpaar/de</code> and can be copied
 					to a remote server. This is usually the same server that hosts the back-end
 					application, because it does not support cross-origin resource sharing (CORS).
@@ -98,100 +112,39 @@
 					<h2>Development</h2>
 				</a>
 				<p>The application&#39;s source code is hosted on <a href="https://github.com/kkrings/weltenbummlerpaar/">GitHub</a>:</p>
-				<pre><code>git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/kkrings/</span>weltenbummlerpaar.git
-cd weltenbummlerpaar
-npm install</code></pre>
+				<pre><code><span style="color: #001080">git</span><span style="color: #000000"> </span><span style="color: #001080">clone</span><span style="color: #000000"> https:</span><span style="color: #008000">//github.com/kkrings/weltenbummlerpaar.git</span>
+<span style="color: #001080">cd</span><span style="color: #000000"> </span><span style="color: #001080">weltenbummlerpaar</span>
+<span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">install</span>
+</code></pre>
 				<p>Unit tests as well as end-to-end tests are provided based on <a href="https://jasmine.github.io/">Jasmine</a>,
 				<a href="http://karma-runner.github.io/">Karma</a>, and <a href="https://www.protractortest.org/">Protractor</a>. All unit tests are executed via:</p>
-				<pre><code> .<span class="hljs-regexp">/node_modules/</span>.bin/ng test</code></pre>
+				<pre><code><span style="color: #000000"> .</span><span style="color: #811F3F">/node_modules/</span><span style="color: #000000">.</span><span style="color: #001080">bin</span><span style="color: #000000">/</span><span style="color: #001080">ng</span><span style="color: #000000"> </span><span style="color: #001080">test</span>
+</code></pre>
 				<p>A code coverage report is created at <code>coverage/weltenbummlerpaar</code> via:</p>
-				<pre><code> <span class="hljs-string">./node_modules/.bin/ng</span> test <span class="hljs-params">--code-coverage</span> <span class="hljs-params">--no-watch</span></code></pre>
+				<pre><code><span style="color: #000000"> .</span><span style="color: #811F3F">/node_modules/</span><span style="color: #000000">.</span><span style="color: #001080">bin</span><span style="color: #000000">/</span><span style="color: #001080">ng</span><span style="color: #000000"> </span><span style="color: #001080">test</span><span style="color: #000000"> --</span><span style="color: #001080">code</span><span style="color: #000000">-</span><span style="color: #001080">coverage</span><span style="color: #000000"> --</span><span style="color: #001080">no</span><span style="color: #000000">-</span><span style="color: #001080">watch</span>
+</code></pre>
 				<p>The end-to-end tests need a local installation of the back-end application up
 				and running before they are executed via:</p>
-				<pre><code> .<span class="hljs-regexp">/node_modules/</span>.bin/ng e2e</code></pre>
+				<pre><code><span style="color: #000000"> .</span><span style="color: #811F3F">/node_modules/</span><span style="color: #000000">.</span><span style="color: #001080">bin</span><span style="color: #000000">/</span><span style="color: #001080">ng</span><span style="color: #000000"> </span><span style="color: #001080">e2e</span>
+</code></pre>
 				<p>The application&#39;s documentation can be build locally at <code>docs</code> via <a href="https://typedoc.org/">TypeDoc</a>:</p>
-				<pre><code>.<span class="hljs-regexp">/node_modules/</span>.bin/typedoc</code></pre>
+				<pre><code><span style="color: #000000">.</span><span style="color: #811F3F">/node_modules/</span><span style="color: #000000">.</span><span style="color: #001080">bin</span><span style="color: #000000">/</span><span style="color: #001080">typedoc</span>
+</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
-					</li>
-					<li class="label tsd-is-external">
-						<span>Internals</span>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_app_app_module_.html">&quot;src/app/app.module&quot;</a>
-					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_app_component_.html">&quot;src/app/app.component&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_auth_auth_modal_auth_modal_component_.html">&quot;src/app/auth/auth-<wbr>modal/auth-<wbr>modal.component&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_auth_auth_directive_.html">&quot;src/app/auth/auth.directive&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_auth_auth_service_.html">&quot;src/app/auth/auth.service&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_diary_entry_diary_entry_brief_pipe_.html">&quot;src/app/diary-<wbr>entry/diary-<wbr>entry-<wbr>brief.pipe&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_diary_entry_diary_entry_card_diary_entry_card_component_.html">&quot;src/app/diary-<wbr>entry/diary-<wbr>entry-<wbr>card/diary-<wbr>entry-<wbr>card.component&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_diary_entry_diary_entry_form_diary_entry_form_component_.html">&quot;src/app/diary-<wbr>entry/diary-<wbr>entry-<wbr>form/diary-<wbr>entry-<wbr>form.component&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_diary_entry_diary_entry_grid_diary_entry_grid_component_.html">&quot;src/app/diary-<wbr>entry/diary-<wbr>entry-<wbr>grid/diary-<wbr>entry-<wbr>grid.component&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_diary_entry_diary_entry_modal_diary_entry_modal_component_.html">&quot;src/app/diary-<wbr>entry/diary-<wbr>entry-<wbr>modal/diary-<wbr>entry-<wbr>modal.component&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_diary_entry_diary_entry_model_.html">&quot;src/app/diary-<wbr>entry/diary-<wbr>entry.model&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_diary_entry_diary_entry_service_.html">&quot;src/app/diary-<wbr>entry/diary-<wbr>entry.service&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_image_image_carousel_image_carousel_component_.html">&quot;src/app/image/image-<wbr>carousel/image-<wbr>carousel.component&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_image_image_modal_image_modal_component_.html">&quot;src/app/image/image-<wbr>modal/image-<wbr>modal.component&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_image_image_upload_image_upload_component_.html">&quot;src/app/image/image-<wbr>upload/image-<wbr>upload.component&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_image_image_directive_.html">&quot;src/app/image/image.directive&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_image_image_model_.html">&quot;src/app/image/image.model&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_image_image_service_.html">&quot;src/app/image/image.service&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_navbar_navbar_component_.html">&quot;src/app/navbar/navbar.component&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_shared_file_value_accessor_directive_.html">&quot;src/app/shared/file-<wbr>value-<wbr>accessor.directive&quot;</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_src_app_shared_http_alert_service_.html">&quot;src/app/shared/http-<wbr>alert.service&quot;</a>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/appmodule.html" class="tsd-kind-icon">App<wbr>Module</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
@@ -202,7 +155,7 @@ npm install</code></pre>
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 			</ul>
 		</div>
 	</div>
