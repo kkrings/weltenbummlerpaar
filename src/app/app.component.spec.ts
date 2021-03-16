@@ -7,9 +7,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { Observable } from 'rxjs';
 
 import { AppComponent } from './app.component';
-import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-alert-message.component';
 import { AlertType } from './http-alert/alert.model';
 import { DiaryEntrySearchService } from './diary-entry/diary-entry-search/diary-entry-search.service';
 import { DiaryEntrySearchResult } from './diary-entry/diary-entry-search/diary-entry-search.model';
@@ -52,10 +52,26 @@ class MockDiaryEntryGridComponent {
   @Input() diaryEntries: DiaryEntry[] = [];
 }
 
+/**
+ * Mock diary entry search service
+ */
+interface MockDiaryEntrySearchService {
+  /**
+   * Mock source of diary entry search results
+   */
+  diaryEntries$: Observable<DiaryEntrySearchResult>;
+  /**
+   * Mock searching status
+   */
+  searching$: Observable<boolean>;
+}
+
 
 describe('AppComponent', () => {
   let app: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
+
+  let mockDiaryEntrySearchService: MockDiaryEntrySearchService;
 
   const diaryEntries: DiaryEntry[] = [{
     _id: '0',
@@ -83,7 +99,7 @@ describe('AppComponent', () => {
       {loaded: diaryEntries.length, total: diaryEntries.length});
 
   beforeEach(async () => {
-    const mockDiaryEntrySearchService = {
+    mockDiaryEntrySearchService = {
       diaryEntries$: testUtils.asyncData(diaryEntrySearchResult),
       searching$: testUtils.asyncData(false)
     };
@@ -114,24 +130,21 @@ describe('AppComponent', () => {
   it('should retrieve list of diary entries', waitForAsync(() => {
     expect(app.showSpinner).toBeTrue();
 
-    app.ngOnInit();
-
     fixture.whenStable().then(() => {
+      fixture.detectChanges();
       expect(app.showSpinner).toBeFalse();
       expect(app.diaryEntries).toEqual(diaryEntries);
     });
   }));
 
-  /*it('should set alert message', waitForAsync(() => {
-    const diaryEntrySearchService = TestBed.inject(DiaryEntrySearchService) as jasmine.SpyObj<DiaryEntrySearchService>;
-
-    diaryEntrySearchService.diaryEntries$ = asyncError(AlertType.server);
-    diaryEntrySearchService.searching$ = asyncData(false);
-
+  it('should set alert message', waitForAsync(() => {
     app.showSpinner = true;
+
+    mockDiaryEntrySearchService.diaryEntries$ = testUtils.asyncError(AlertType.server);
     app.ngOnInit();
 
     fixture.whenStable().then(() => {
+      fixture.detectChanges();
       expect(app.showSpinner).toBeFalse();
       expect(app.httpAlert.isShown).toBeTrue();
     });
@@ -143,8 +156,6 @@ describe('AppComponent', () => {
   });
 
   it('should render list of diary entries', waitForAsync(() => {
-    app.ngOnInit();
-
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       const diaryEntryGrid = fixture.debugElement.query(By.directive(MockDiaryEntryGridComponent));
@@ -168,14 +179,15 @@ describe('AppComponent', () => {
   });
 
   it('should not render alert message', () => {
-    const httpAlert = fixture.debugElement.query(By.directive(HttpAlertMessageComponent));
+    const httpAlert = fixture.debugElement.query(By.directive(testUtils.MockHttpAlertMessageComponent));
     expect(httpAlert).toBeNull();
   });
 
   it('should render alert message', () => {
+    app.showSpinner = false;
     app.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
-    const httpAlert = fixture.debugElement.query(By.directive(HttpAlertMessageComponent));
+    const httpAlert = fixture.debugElement.query(By.directive(testUtils.MockHttpAlertMessageComponent));
     expect(httpAlert).not.toBeNull();
   });
 
@@ -201,5 +213,5 @@ describe('AppComponent', () => {
 
     fixture.detectChanges();
     expect(app.diaryEntries).toContain(diaryEntry);
-  });*/
+  });
 });
