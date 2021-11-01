@@ -5,6 +5,7 @@
 
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { faEdit, faImage, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntry } from '../diary-entry.model';
@@ -26,6 +27,21 @@ import { Alert, AlertType } from '../../http-alert/alert.model';
   styleUrls: ['./diary-entry-card.component.scss']
 })
 export class DiaryEntryCardComponent {
+  /**
+   * Diary entry edit icon
+   */
+  diaryEntryEditIcon = faEdit;
+
+  /**
+   * Diary entry images icon
+   */
+  diaryEntryImagesIcon = faImage;
+
+  /**
+   * Diary entry delete icon
+   */
+  diaryEntryDeleteIcon = faTrash;
+
   /**
    * Injected diary entry
    */

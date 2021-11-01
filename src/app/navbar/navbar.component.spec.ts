@@ -6,6 +6,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { By } from '@angular/platform-browser';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { NavbarComponent } from './navbar.component';
 import { AuthModalComponent } from '../auth/auth-modal/auth-modal.component';
@@ -56,6 +57,9 @@ describe('NavbarComponent', () => {
     };
 
     await TestBed.configureTestingModule({
+      imports: [
+        FontAwesomeModule
+      ],
       declarations: [
         NavbarComponent
       ],

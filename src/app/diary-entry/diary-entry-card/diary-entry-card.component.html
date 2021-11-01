@@ -4,19 +4,19 @@
             class="btn btn-primary btn-sm"
             (click)="openUpdateEntryModal()"
             [disabled]="showSpinner">
-      <i class="fas fa-edit"></i> Bearb.
+      <fa-icon [icon]="diaryEntryEditIcon"></fa-icon> Bearb.
     </button>
     <button type="button"
             class="btn btn-secondary btn-sm ml-1"
             (click)="openImageModal()"
             [disabled]="showSpinner">
-      <i class="fas fa-image"></i> Fotos
+      <fa-icon [icon]="diaryEntryImagesIcon"></fa-icon> Fotos
     </button>
     <button type="button"
             class="btn btn-danger btn-sm ml-1"
             [hidden]="showSpinner"
             (click)="deleteEntry()">
-      <i class="fas fa-trash"></i> Entf.
+      <fa-icon [icon]="diaryEntryDeleteIcon"></fa-icon> Entf.
     </button>
     <div *ngIf="showSpinner"
          class="spinner-border text-danger"

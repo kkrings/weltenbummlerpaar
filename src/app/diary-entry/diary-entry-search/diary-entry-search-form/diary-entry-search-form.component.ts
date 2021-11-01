@@ -5,6 +5,7 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import { DiaryEntrySearchService } from '../diary-entry-search.service';
 
@@ -21,6 +22,11 @@ import { DiaryEntrySearchService } from '../diary-entry-search.service';
   styleUrls: ['./diary-entry-search-form.component.scss']
 })
 export class DiaryEntrySearchFormComponent implements OnInit, OnDestroy {
+  /**
+   * Diary entry search icon
+   */
+  diaryEntrySearchIcon = faSearch;
+
   /**
    * Reactive form for searching for diary entries given a list of tags
    */

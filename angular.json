@@ -32,37 +32,18 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              "src/styles.scss"
             ],
-            "scripts": [],
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+            "scripts": []
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -74,32 +55,37 @@
                   "maximumWarning": "2kb",
                   "maximumError": "4kb"
                 }
-              ]
-            },
-            "testing": {
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.test.ts"
+                  "with": "src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
-          "defaultConfiguration": ""
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "weltenbummlerpaar:build"
-          },
           "configurations": {
             "production": {
               "browserTarget": "weltenbummlerpaar:build:production"
             },
-            "testing": {
-              "browserTarget": "weltenbummlerpaar:build:testing"
+            "development": {
+              "browserTarget": "weltenbummlerpaar:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -114,13 +100,13 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
+            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -133,24 +119,12 @@
               "src/**/*.html"
             ]
           }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "weltenbummlerpaar:serve:testing"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "weltenbummlerpaar:serve:production"
-            },
-            "testing": {
-              "devServerTarget": "weltenbummlerpaar:serve:testing"
-            }
-          }
         }
       }
     }
   },
-  "defaultProject": "weltenbummlerpaar"
+  "defaultProject": "weltenbummlerpaar",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

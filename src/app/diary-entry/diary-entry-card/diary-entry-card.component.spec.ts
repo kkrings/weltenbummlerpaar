@@ -9,6 +9,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { registerLocaleData, formatDate } from '@angular/common';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DiaryEntryCardComponent } from './diary-entry-card.component';
 import { DiaryEntryBriefPipe } from '../diary-entry-brief.pipe';
@@ -60,6 +61,7 @@ describe('DiaryEntryCardComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
+        FontAwesomeModule,
         testUtils.TestUtilsModule
       ],
       declarations: [

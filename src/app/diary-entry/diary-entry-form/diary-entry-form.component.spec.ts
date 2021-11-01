@@ -7,6 +7,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DiaryEntryFormComponent } from './diary-entry-form.component';
 import { DiaryEntryService } from '../diary-entry.service';
@@ -60,6 +61,7 @@ describe('DiaryEntryFormComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
+        FontAwesomeModule,
         testUtils.TestUtilsModule
       ],
       declarations: [
@@ -360,16 +362,14 @@ describe('DiaryEntryFormComponent', () => {
     component.imageList = [...testImages];
     fixture.detectChanges();
 
-    const buttons = fixture.debugElement.queryAll(By.css('.fa-arrow-down'));
+    const buttons = fixture.debugElement.queryAll(By.css('button .fa-arrow-down'));
     expect(buttons.length).toEqual(testImages.length);
 
     spyOn(component, 'moveImageDown');
 
     buttons.forEach((button, index) => {
-      if (button.parent) {
-        button.parent.triggerEventHandler('click', null);
-        expect(component.moveImageDown).toHaveBeenCalledWith(index);
-      }
+      button.parent?.parent?.triggerEventHandler('click', null);
+      expect(component.moveImageDown).toHaveBeenCalledWith(index);
     });
   });
 
@@ -393,16 +393,14 @@ describe('DiaryEntryFormComponent', () => {
     component.imageList = [...testImages];
     fixture.detectChanges();
 
-    const buttons = fixture.debugElement.queryAll(By.css('.fa-arrow-up'));
+    const buttons = fixture.debugElement.queryAll(By.css('button .fa-arrow-up'));
     expect(buttons.length).toEqual(testImages.length);
 
     spyOn(component, 'moveImageUp');
 
     buttons.forEach((button, index) => {
-      if (button.parent) {
-        button.parent.triggerEventHandler('click', null);
-        expect(component.moveImageUp).toHaveBeenCalledWith(index);
-      }
+      button.parent?.parent?.triggerEventHandler('click', null);
+      expect(component.moveImageUp).toHaveBeenCalledWith(index);
     });
   });
 

@@ -5,6 +5,7 @@
 
 import { Component, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { faPlus, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthModalComponent } from '../auth/auth-modal/auth-modal.component';
 import { DiaryEntryFormComponent } from '../diary-entry/diary-entry-form/diary-entry-form.component';
@@ -26,6 +27,21 @@ import { DiaryEntry } from '../diary-entry/diary-entry.model';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
+  /**
+   * Login icon
+   */
+  loginIcon = faSignInAlt;
+
+  /**
+   * Logout icon
+   */
+  logoutIcon = faSignOutAlt;
+
+  /**
+   * Add new diary entry icon
+   */
+  addDiaryEntryIcon = faPlus;
+
   /**
    * Send new diary entries back to the parent component.
    */

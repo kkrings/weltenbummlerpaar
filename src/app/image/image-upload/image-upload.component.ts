@@ -6,6 +6,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import bsCustomFileInput from 'bs-custom-file-input';
 
@@ -26,6 +27,11 @@ import { Alert, AlertType } from '../../http-alert/alert.model';
   styleUrls: ['./image-upload.component.scss']
 })
 export class ImageUploadComponent implements OnInit {
+  /**
+   * Image delete icon
+   */
+  imageDeleteIcon = faTrash;
+
   /**
    * HTML form element corresponding to the reactive form
    */

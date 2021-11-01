@@ -6,6 +6,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntry } from '../diary-entry.model';
@@ -25,6 +26,16 @@ import { Alert, AlertType } from 'src/app/http-alert/alert.model';
   styleUrls: ['./diary-entry-form.component.scss']
 })
 export class DiaryEntryFormComponent implements OnInit {
+  /**
+   * Move image down icon
+   */
+  moveImageDownIcon = faArrowDown;
+
+  /**
+   * Move image up icon
+   */
+  moveImageUpIcon = faArrowUp;
+
   /**
    * Modal's title
    */

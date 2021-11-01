@@ -6,6 +6,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DiaryEntrySearchFormComponent } from './diary-entry-search-form.component';
 import { DiaryEntrySearchService } from '../diary-entry-search.service';
@@ -23,7 +24,8 @@ describe('DiaryEntrySearchFormComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        FontAwesomeModule
       ],
       declarations: [
         DiaryEntrySearchFormComponent

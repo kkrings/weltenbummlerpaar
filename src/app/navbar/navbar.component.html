@@ -4,20 +4,20 @@
           type="button"
           [hidden]="isLoggedIn"
           (click)="openLoginModal()">
-    <i class="fas fa-sign-in-alt"></i> Login
+    <fa-icon [icon]="loginIcon"></fa-icon> Login
   </button>
   <div *ngIf="isLoggedIn">
     <button id="create-diary-entry-button"
             class="btn btn-primary"
             type="button"
             (click)="openDiaryEntryModal()">
-      <i class="fas fa-plus"></i> Eintrag
+      <fa-icon [icon]="addDiaryEntryIcon"></fa-icon> Eintrag
     </button>
     <button id="logout-button"
             class="btn btn-primary ml-2"
             type="button"
             (click)="logout()">
-      <i class="fas fa-sign-out-alt"></i> Logout
+      <fa-icon [icon]="logoutIcon"></fa-icon> Logout
     </button>
   </div>
 </div>

@@ -6,6 +6,7 @@
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { of } from 'rxjs';
 import { first, last } from 'rxjs/operators';
 
@@ -33,6 +34,7 @@ describe('ImageUploadComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
+        FontAwesomeModule,
         testUtils.TestUtilsModule
       ],
       declarations: [

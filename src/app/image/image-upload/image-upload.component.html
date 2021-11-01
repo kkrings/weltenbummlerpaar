@@ -47,7 +47,7 @@
               (click)="deleteImage()"
               [disabled]="processUploadRequest"
               [hidden]="processDeleteRequest">
-        <i class="fas fa-trash"></i> Entfernen
+        <fa-icon [icon]="imageDeleteIcon"></fa-icon> Entfernen
       </button>
       <div *ngIf="processDeleteRequest"
            class="spinner-border text-danger"

@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbAlertModule, NgbCarouselModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
@@ -71,7 +72,8 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
     ReactiveFormsModule,
     NgbAlertModule,
     NgbCarouselModule,
-    NgbModalModule
+    NgbModalModule,
+    FontAwesomeModule
   ],
   providers: [
   ],
