@@ -26,12 +26,12 @@ export class ImageModalComponent {
    * Injected diary entry; update diary entry's images or add new images to it.
    */
   @Input() diaryEntry: DiaryEntry = {
-    _id: '',
+    id: '',
     title: '',
-    locationName: '',
+    location: '',
     body: '',
     images: [],
-    tags: [],
+    searchTags: [],
     createdAt: '',
     updatedAt: '',
   };
@@ -64,7 +64,7 @@ export class ImageModalComponent {
    */
   removeImageFromEntry(imageId: string): void {
     this.diaryEntry.images = this.diaryEntry.images.filter(
-      (image: Image) => image._id !== imageId
+      (image: Image) => image.id !== imageId
     );
   }
 }

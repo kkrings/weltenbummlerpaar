@@ -22,12 +22,12 @@ class MockDiaryEntryCardComponent {
    * Mock injected diary entry
    */
   @Input() diaryEntry: DiaryEntry = {
-    _id: '',
+    id: '',
     title: '',
-    locationName: '',
+    location: '',
     body: '',
     images: [],
-    tags: [],
+    searchTags: [],
     createdAt: '',
     updatedAt: '',
   };
@@ -56,22 +56,22 @@ describe('DiaryEntryGridComponent', () => {
 
     component.diaryEntries = [
       {
-        _id: '0',
+        id: '0',
         title: 'some title',
-        locationName: 'some location',
+        location: 'some location',
         body: 'some body',
         images: [],
-        tags: [],
+        searchTags: [],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
       {
-        _id: '1',
+        id: '1',
         title: 'some title',
-        locationName: 'some location',
+        location: 'some location',
         body: 'some body',
         images: [],
-        tags: [],
+        searchTags: [],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
@@ -100,9 +100,9 @@ describe('DiaryEntryGridComponent', () => {
   });
 
   it('#deleteDiaryEntry should remove diary entry from view', () => {
-    const testId = component.diaryEntries[0]._id;
+    const testId = component.diaryEntries[0].id;
     component.deleteDiaryEntry(testId);
-    const entryIds = component.diaryEntries.map((diaryEntry) => diaryEntry._id);
+    const entryIds = component.diaryEntries.map((diaryEntry) => diaryEntry.id);
     expect(entryIds).not.toContain(testId);
   });
 });

@@ -24,7 +24,7 @@ export class ImageDirective implements OnInit {
    * Image object
    */
   @Input('appImage') image: Image = {
-    _id: '',
+    id: '',
     description: '',
     createdAt: '',
     updatedAt: '',
@@ -56,7 +56,7 @@ export class ImageDirective implements OnInit {
     this.renderer.setProperty(
       this.element.nativeElement,
       'alt',
-      `${this.image._id}.jpg`
+      `${this.image.id}.jpg`
     );
     this.renderer.setProperty(
       this.element.nativeElement,

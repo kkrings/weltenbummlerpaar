@@ -24,12 +24,12 @@ export class DiaryEntryModalComponent {
    * Input diary entry
    */
   @Input() diaryEntry: DiaryEntry = {
-    _id: '',
+    id: '',
     title: '',
-    locationName: '',
+    location: '',
     body: '',
     images: [],
-    tags: [],
+    searchTags: [],
     createdAt: '',
     updatedAt: '',
   };

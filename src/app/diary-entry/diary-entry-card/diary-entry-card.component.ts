@@ -45,12 +45,12 @@ export class DiaryEntryCardComponent {
    * Injected diary entry
    */
   @Input() diaryEntry: DiaryEntry = {
-    _id: '',
+    id: '',
     title: '',
-    locationName: '',
+    location: '',
     body: '',
     images: [],
-    tags: [],
+    searchTags: [],
     createdAt: '',
     updatedAt: '',
   };
@@ -142,9 +142,9 @@ export class DiaryEntryCardComponent {
     // reset alert message
     this.httpAlert.alertType = AlertType.none;
 
-    this.diaryEntryService.deleteEntry(this.diaryEntry._id).subscribe(
+    this.diaryEntryService.deleteEntry(this.diaryEntry.id).subscribe(
       (diaryEntry: DiaryEntry) => {
-        this.deletedEntryId.emit(diaryEntry._id);
+        this.deletedEntryId.emit(diaryEntry.id);
         this.showSpinner = false;
       },
       (alertType: AlertType) => {

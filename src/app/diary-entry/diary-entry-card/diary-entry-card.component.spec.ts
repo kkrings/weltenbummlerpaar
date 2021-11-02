@@ -17,6 +17,7 @@ import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntry } from '../diary-entry.model';
 import { DiaryEntryModalComponent } from '../diary-entry-modal/diary-entry-modal.component';
 import { DiaryEntryFormComponent } from '../diary-entry-form/diary-entry-form.component';
+import { Image } from '../../image/image.model';
 import { ImageModalComponent } from '../../image/image-modal/image-modal.component';
 import { AlertType } from '../../http-alert/alert.model';
 
@@ -37,12 +38,12 @@ describe('DiaryEntryCardComponent', () => {
   let fixture: ComponentFixture<DiaryEntryCardComponent>;
 
   const testDiaryEntry: DiaryEntry = {
-    _id: '0',
+    id: '0',
     title: 'some title',
-    locationName: 'some location',
+    location: 'some location',
     body: 'some body',
     images: [],
-    tags: [],
+    searchTags: [],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -87,14 +88,15 @@ describe('DiaryEntryCardComponent', () => {
   });
 
   it("should render diary entry's first image", () => {
-    component.diaryEntry.images = [
-      {
-        _id: '0',
-        description: 'some description',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-    ];
+    const image: Image = {
+      id: '0',
+      description: 'some description',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    component.diaryEntry.images = [image];
+    component.diaryEntry.previewImage = image;
 
     fixture.detectChanges();
     const cardImage = fixture.debugElement.query(By.css('.card-img-top'));
@@ -109,7 +111,7 @@ describe('DiaryEntryCardComponent', () => {
   it("should render diary entry's location name", () => {
     const cardSubtitle = fixture.debugElement.query(By.css('.card-subtitle'));
     expect(cardSubtitle.nativeElement.textContent).toMatch(
-      testDiaryEntry.locationName
+      testDiaryEntry.location
     );
   });
 
@@ -128,11 +130,11 @@ describe('DiaryEntryCardComponent', () => {
   });
 
   it("should render diary entry's tags", () => {
-    component.diaryEntry.tags = ['some tag', 'some other tag'];
+    component.diaryEntry.searchTags = ['some tag', 'some other tag'];
     fixture.detectChanges();
     const badges = fixture.debugElement.queryAll(By.css('.card-body .badge'));
     const tags = badges.map((badge) => badge.nativeElement.textContent.trim());
-    expect(tags).toEqual(component.diaryEntry.tags);
+    expect(tags).toEqual(component.diaryEntry.searchTags);
   });
 
   it("should render diary entry's creation date", () => {
@@ -253,9 +255,9 @@ describe('DiaryEntryCardComponent', () => {
       expect(component.httpAlert.alertType).toEqual(AlertType.none);
 
       fixture.whenStable().then(() => {
-        expect(deletedEntryId).toEqual(testDiaryEntry._id);
+        expect(deletedEntryId).toEqual(testDiaryEntry.id);
         expect(component.showSpinner).toBeFalse();
-        expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry._id);
+        expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry.id);
       });
     })
   );
@@ -275,7 +277,7 @@ describe('DiaryEntryCardComponent', () => {
       fixture.whenStable().then(() => {
         expect(component.httpAlert.alertType).toEqual(alertType);
         expect(component.showSpinner).toBeFalse();
-        expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry._id);
+        expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry.id);
       });
     })
   );

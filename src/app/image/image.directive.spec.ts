@@ -22,7 +22,7 @@ class ImageComponent {
    * Mock image
    */
   image: Image = {
-    _id: '0',
+    id: '0',
     description: 'This is a mock image.',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),

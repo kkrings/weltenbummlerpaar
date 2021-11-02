@@ -13,7 +13,7 @@
   <div class="form-group">
     <h6 class="text-secondary">Foto hinzufügen</h6>
     <app-image-upload
-      [entryId]="diaryEntry._id"
+      [entryId]="diaryEntry.id"
       (imageChange)="diaryEntry.images.push($event)"
       (processing)="disableClose = $event"
     >
@@ -24,9 +24,9 @@
       <h6 class="text-secondary">Foto bearbeiten</h6>
       <img [appImage]="image" class="img img-fluid rounded mb-2" />
       <app-image-upload
-        [entryId]="diaryEntry._id"
+        [entryId]="diaryEntry.id"
         [(image)]="diaryEntry.images[imageIndex]"
-        (imageDelete)="removeImageFromEntry($event._id)"
+        (imageDelete)="removeImageFromEntry($event.id)"
         (processing)="disableClose = $event"
       >
       </app-image-upload>

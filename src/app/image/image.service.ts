@@ -45,7 +45,7 @@ export class ImageService {
    *   Image's URL
    */
   static getImageUrl(image: Image): string {
-    return `${environment.baseurl}/images/${image._id}.jpg`;
+    return `${environment.baseurl}/images/${image.id}.jpg`;
   }
 
   /**
@@ -97,7 +97,7 @@ export class ImageService {
     formData.set('description', image.description);
 
     return this.http
-      .put<Image>(`${environment.baseurl}/db/images/${image._id}`, formData)
+      .put<Image>(`${environment.baseurl}/db/images/${image.id}`, formData)
       .pipe(catchError(this.httpAlertService.handleError));
   }
 

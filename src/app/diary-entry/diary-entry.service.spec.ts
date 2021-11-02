@@ -21,22 +21,22 @@ describe('DiaryEntryService', () => {
 
   const testDiaryEntries: DiaryEntry[] = [
     {
-      _id: '0',
+      id: '0',
       title: 'some title',
-      locationName: 'some location',
+      location: 'some location',
       body: 'some body',
       images: [],
-      tags: ['some tag'],
+      searchTags: ['some tag'],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
     {
-      _id: '1',
+      id: '1',
       title: 'some title',
-      locationName: 'some location',
+      location: 'some location',
       body: 'some body',
       images: [],
-      tags: [],
+      searchTags: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
@@ -56,13 +56,13 @@ describe('DiaryEntryService', () => {
     const testDiaryEntry = testDiaryEntries[0];
 
     service
-      .getEntries(testDiaryEntry.tags)
+      .getEntries(testDiaryEntry.searchTags)
       .subscribe((diaryEntries: DiaryEntry[]) => {
         expect(diaryEntries.length).toEqual(1);
         expect(diaryEntries[0]).toEqual(testDiaryEntry);
       }, fail);
 
-    const query = testDiaryEntry.tags
+    const query = testDiaryEntry.searchTags
       .map((tag) => `tags[$all][]=${tag}`)
       .join('&');
     const testRequest = httpTestingController.expectOne(
@@ -109,14 +109,14 @@ describe('DiaryEntryService', () => {
     const testDiaryEntry = testDiaryEntries[0];
 
     service
-      .getEntry(testDiaryEntry._id)
+      .getEntry(testDiaryEntry.id)
       .subscribe(
         (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
         fail
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testDiaryEntry._id}`
+      `${environment.baseurl}/db/entries/${testDiaryEntry.id}`
     );
     expect(testRequest.request.method).toMatch('GET');
 
@@ -127,13 +127,13 @@ describe('DiaryEntryService', () => {
     const testDiaryEntry = testDiaryEntries[0];
 
     service
-      .getEntry(testDiaryEntry._id)
+      .getEntry(testDiaryEntry.id)
       .subscribe(fail, (alertType: AlertType) =>
         expect(alertType).toEqual(AlertType.server)
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testDiaryEntry._id}`
+      `${environment.baseurl}/db/entries/${testDiaryEntry.id}`
     );
     expect(testRequest.request.method).toMatch('GET');
 
@@ -192,7 +192,7 @@ describe('DiaryEntryService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testDiaryEntry._id}`
+      `${environment.baseurl}/db/entries/${testDiaryEntry.id}`
     );
     expect(testRequest.request.method).toMatch('PUT');
 
@@ -209,7 +209,7 @@ describe('DiaryEntryService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testDiaryEntry._id}`
+      `${environment.baseurl}/db/entries/${testDiaryEntry.id}`
     );
     expect(testRequest.request.method).toMatch('PUT');
 
@@ -223,14 +223,14 @@ describe('DiaryEntryService', () => {
     const testDiaryEntry = testDiaryEntries[0];
 
     service
-      .deleteEntry(testDiaryEntry._id)
+      .deleteEntry(testDiaryEntry.id)
       .subscribe(
         (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
         fail
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testDiaryEntry._id}`
+      `${environment.baseurl}/db/entries/${testDiaryEntry.id}`
     );
     expect(testRequest.request.method).toMatch('DELETE');
 
@@ -241,13 +241,13 @@ describe('DiaryEntryService', () => {
     const testDiaryEntry = testDiaryEntries[0];
 
     service
-      .deleteEntry(testDiaryEntry._id)
+      .deleteEntry(testDiaryEntry.id)
       .subscribe(fail, (alertType: AlertType) =>
         expect(alertType).toEqual(AlertType.server)
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testDiaryEntry._id}`
+      `${environment.baseurl}/db/entries/${testDiaryEntry.id}`
     );
     expect(testRequest.request.method).toMatch('DELETE');
 

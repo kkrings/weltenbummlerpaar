@@ -33,16 +33,16 @@
     <div class="form-group">
       <label for="location"> Über welchen Ort schreibst du? </label>
       <input
-        formControlName="locationName"
+        formControlName="location"
         class="form-control"
         type="text"
         id="location"
         placeholder="Stadt, Region, Land, ..."
-        value="{{ locationName.value }}"
+        value="{{ location.value }}"
         required
       />
-      <div *ngIf="isInvalid(locationName)">
-        <div *ngIf="locationName.errors?.required">
+      <div *ngIf="isInvalid(location)">
+        <div *ngIf="location.errors?.required">
           <small class="text-danger">
             Ohne Ortsangabe kein Tagebucheintrag.
           </small>
@@ -75,12 +75,12 @@
         können?
       </label>
       <input
-        formControlName="tags"
+        formControlName="searchTags"
         class="form-control"
         id="tags"
         type="text"
         placeholder="Stichwort, noch ein Stichwort, ..."
-        value="{{ tags.value }}"
+        value="{{ searchTags.value }}"
       />
     </div>
     <div *ngIf="imageList.length > 0">

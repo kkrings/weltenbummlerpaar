@@ -12,7 +12,7 @@ export interface DiaryEntry {
   /**
    * Diary entry's ID
    */
-  _id: string;
+  id: string;
 
   /**
    * Diary entry's title
@@ -28,7 +28,12 @@ export interface DiaryEntry {
    * Location the diary entry refers to, e.g.:
    * city, state, country
    */
-  locationName: string;
+  location: string;
+
+  /**
+   * Diary entry's preview image
+   */
+  previewImage?: Image;
 
   /**
    * List of image objects
@@ -38,7 +43,7 @@ export interface DiaryEntry {
   /**
    * List of search tags
    */
-  tags: string[];
+  searchTags: string[];
 
   /**
    * Diary entry's creation date and time

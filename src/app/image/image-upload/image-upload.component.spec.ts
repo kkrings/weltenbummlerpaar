@@ -62,7 +62,7 @@ describe('ImageUploadComponent', () => {
   });
 
   it('files form control should not be required', () => {
-    component.image._id = '0';
+    component.image.id = '0';
     component.ngOnInit();
     fixture.detectChanges();
     expect(component.files.errors).toBeNull();
@@ -138,7 +138,7 @@ describe('ImageUploadComponent', () => {
       component.httpAlert.alertType = AlertType.server;
 
       const testImage: Image = {
-        _id: '0',
+        id: '0',
         description: 'some description',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -152,7 +152,7 @@ describe('ImageUploadComponent', () => {
       imageService.deleteImage.and.returnValue(testUtils.asyncData(testImage));
 
       component.imageDelete.subscribe((image: Image) =>
-        expect(image._id).toEqual(testImage._id)
+        expect(image.id).toEqual(testImage.id)
       );
       component.processing
         .pipe(first())
@@ -167,7 +167,7 @@ describe('ImageUploadComponent', () => {
       expect(component.httpAlert.alertType).toEqual(AlertType.none);
       expect(imageService.deleteImage).toHaveBeenCalledWith(
         testEntryId,
-        testImage._id
+        testImage.id
       );
 
       fixture
@@ -179,7 +179,7 @@ describe('ImageUploadComponent', () => {
   it(
     '#deleteImage should set alert message',
     waitForAsync(() => {
-      component.image._id = '0';
+      component.image.id = '0';
 
       const imageService = TestBed.inject(
         ImageService
@@ -207,7 +207,7 @@ describe('ImageUploadComponent', () => {
     let button = fixture.debugElement.query(buttonQuery);
     expect(button).toBeNull();
 
-    component.image._id = '0';
+    component.image.id = '0';
     fixture.detectChanges();
 
     button = fixture.debugElement.query(buttonQuery);
@@ -215,7 +215,7 @@ describe('ImageUploadComponent', () => {
   });
 
   it('delete button should call #deleteImage', () => {
-    component.image._id = '0';
+    component.image.id = '0';
     fixture.detectChanges();
 
     spyOn(component, 'deleteImage');
@@ -229,7 +229,7 @@ describe('ImageUploadComponent', () => {
   });
 
   it('delete button should be disabled when uploading image', () => {
-    component.image._id = '0';
+    component.image.id = '0';
     component.processUploadRequest = true;
     fixture.detectChanges();
     const button = fixture.debugElement.query(
@@ -239,7 +239,7 @@ describe('ImageUploadComponent', () => {
   });
 
   it('delete button should be hidden when deleting image', () => {
-    component.image._id = '0';
+    component.image.id = '0';
     component.processDeleteRequest = true;
     fixture.detectChanges();
     const button = fixture.debugElement.query(
@@ -249,7 +249,7 @@ describe('ImageUploadComponent', () => {
   });
 
   it('should not render delete spinner', () => {
-    component.image._id = '0';
+    component.image.id = '0';
     fixture.detectChanges();
     const spinner = fixture.debugElement.query(
       By.css('div.spinner-border.text-danger')
@@ -258,7 +258,7 @@ describe('ImageUploadComponent', () => {
   });
 
   it('should render delete spinner', () => {
-    component.image._id = '0';
+    component.image.id = '0';
     component.processDeleteRequest = true;
     fixture.detectChanges();
     const spinner = fixture.debugElement.query(
@@ -275,7 +275,7 @@ describe('ImageUploadComponent', () => {
       component.httpAlert.alertType = AlertType.server;
 
       const testImage: Image = {
-        _id: '0',
+        id: '0',
         description: 'some description',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -296,7 +296,7 @@ describe('ImageUploadComponent', () => {
       const formValue = component.imageForm.value;
 
       const uploadedImage: Image = {
-        _id: component.image._id,
+        id: component.image.id,
         description: testImage.description,
         createdAt: component.image.createdAt,
         updatedAt: component.image.updatedAt,
@@ -336,7 +336,7 @@ describe('ImageUploadComponent', () => {
 
   it('#onSubmit should update image', () => {
     const testImage: Image = {
-      _id: '0',
+      id: '0',
       description: 'some description',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -360,7 +360,7 @@ describe('ImageUploadComponent', () => {
   it(
     '#onSubmit should set alert message',
     waitForAsync(() => {
-      component.image._id = '0';
+      component.image.id = '0';
 
       const imageService = TestBed.inject(
         ImageService
@@ -390,7 +390,7 @@ describe('ImageUploadComponent', () => {
   });
 
   it('submit button should not be disabled', () => {
-    component.image._id = '0';
+    component.image.id = '0';
     component.image.description = 'some description';
     component.ngOnInit();
 
@@ -403,7 +403,7 @@ describe('ImageUploadComponent', () => {
   });
 
   it('submit button should be disabled when deleting image', () => {
-    component.image._id = '0';
+    component.image.id = '0';
     component.image.description = 'some description';
     component.processDeleteRequest = true;
     component.ngOnInit();
@@ -417,7 +417,7 @@ describe('ImageUploadComponent', () => {
   });
 
   it('submit button should be hidden when uploading image', () => {
-    component.image._id = '0';
+    component.image.id = '0';
     component.image.description = 'some description';
     component.processUploadRequest = true;
     component.ngOnInit();

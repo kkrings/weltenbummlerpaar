@@ -64,7 +64,7 @@ export class ImageUploadComponent implements OnInit {
    * Optional: inject an existing image that should be updated/deleted.
    */
   @Input() image: Image = {
-    _id: '',
+    id: '',
     description: '',
     createdAt: '',
     updatedAt: '',
@@ -138,7 +138,7 @@ export class ImageUploadComponent implements OnInit {
 
     this.description.setValue(this.image.description);
 
-    if (this.image._id.length > 0) {
+    if (this.image.id.length > 0) {
       this.files.clearValidators();
     }
   }
@@ -169,7 +169,7 @@ export class ImageUploadComponent implements OnInit {
     // reset alert message
     this.httpAlert.alertType = AlertType.none;
 
-    this.imageService.deleteImage(this.entryId, this.image._id).subscribe(
+    this.imageService.deleteImage(this.entryId, this.image.id).subscribe(
       (image: Image) => {
         this.processDeleteRequest = false;
         this.processing.emit(false);
@@ -196,7 +196,7 @@ export class ImageUploadComponent implements OnInit {
 
     upload.description = formValue.description;
 
-    const update = this.image._id.length > 0;
+    const update = this.image.id.length > 0;
 
     const request = (image: Image): Observable<Image> =>
       update

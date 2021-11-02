@@ -36,12 +36,12 @@ describe('NavbarComponent', () => {
   let fixture: ComponentFixture<NavbarComponent>;
 
   const testDiaryEntry: DiaryEntry = {
-    _id: '0',
+    id: '0',
     title: 'some title',
-    locationName: 'some location',
+    location: 'some location',
     body: 'some body',
     images: [],
-    tags: [],
+    searchTags: [],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

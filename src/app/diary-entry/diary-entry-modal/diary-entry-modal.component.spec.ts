@@ -37,25 +37,25 @@ describe('DiaryEntryModalComponent', () => {
   let fixture: ComponentFixture<DiaryEntryModalComponent>;
 
   const testDiaryEntry: DiaryEntry = {
-    _id: '0',
+    id: '0',
     title: 'some title',
-    locationName: 'some location',
+    location: 'some location',
     body: 'some body',
     images: [
       {
-        _id: '0',
+        id: '0',
         description: 'some description',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
       {
-        _id: '1',
+        id: '1',
         description: 'some description',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
     ],
-    tags: [],
+    searchTags: [],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -131,10 +131,10 @@ describe('DiaryEntryModalComponent', () => {
   });
 
   it("modal's body should show diary entry's location name", () => {
-    const locationName = fixture.debugElement.query(
+    const location = fixture.debugElement.query(
       By.css('.modal-body > h6.text-secondary')
     ).nativeElement;
-    expect(locationName.textContent).toMatch(testDiaryEntry.locationName);
+    expect(location.textContent).toMatch(testDiaryEntry.location);
   });
 
   it("modal's body should show diary entry's body", () => {
@@ -150,11 +150,11 @@ describe('DiaryEntryModalComponent', () => {
   });
 
   it("should render diary entry's tags", () => {
-    component.diaryEntry.tags = ['some tag', 'some other tag'];
+    component.diaryEntry.searchTags = ['some tag', 'some other tag'];
     fixture.detectChanges();
     const badges = fixture.debugElement.queryAll(By.css('.modal-body .badge'));
     const tags = badges.map((badge) => badge.nativeElement.textContent.trim());
-    expect(tags).toEqual(component.diaryEntry.tags);
+    expect(tags).toEqual(component.diaryEntry.searchTags);
   });
 
   it("modal's body should show diary entry's creation date", () => {

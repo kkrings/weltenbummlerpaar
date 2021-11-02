@@ -8,11 +8,11 @@
   <div *ngIf="diaryEntry.images.length > 0">
     <app-image-carousel [imageList]="diaryEntry.images"></app-image-carousel>
   </div>
-  <h6 class="text-secondary">{{ diaryEntry.locationName }}</h6>
+  <h6 class="text-secondary">{{ diaryEntry.location }}</h6>
   <p class="text-pre-line">{{ diaryEntry.body }}</p>
-  <p *ngIf="diaryEntry.tags.length > 0">
+  <p *ngIf="diaryEntry.searchTags.length > 0">
     <span
-      *ngFor="let tag of diaryEntry.tags"
+      *ngFor="let tag of diaryEntry.searchTags"
       class="badge badge-pill badge-outline-primary mr-1"
     >
       {{ tag }}

@@ -29,19 +29,19 @@
     </div>
   </div>
   <img
-    *ngIf="diaryEntry.images.length > 0"
+    *ngIf="diaryEntry.previewImage !== undefined"
     [appImage]="diaryEntry.images[0]"
     class="card-img-top"
   />
   <div class="card-body">
     <h4 class="card-title text-primary">{{ diaryEntry.title }}</h4>
     <h6 class="card-subtitle text-secondary mb-2">
-      {{ diaryEntry.locationName }}
+      {{ diaryEntry.location }}
     </h6>
     <p class="card-text">{{ diaryEntry | diaryEntryBrief: 150 }}</p>
-    <p *ngIf="diaryEntry.tags.length > 0">
+    <p *ngIf="diaryEntry.searchTags.length > 0">
       <span
-        *ngFor="let tag of diaryEntry.tags"
+        *ngFor="let tag of diaryEntry.searchTags"
         class="badge badge-pill badge-outline-primary mr-1"
       >
         {{ tag }}

@@ -31,14 +31,14 @@ describe('ImageService', () => {
 
   it("#getImageUrl should return image's URL", () => {
     const image: Image = {
-      _id: '5e558e05834fb6e13158eb74',
+      id: '5e558e05834fb6e13158eb74',
       description: 'This is a mock image for testing.',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
     expect(ImageService.getImageUrl(image)).toBe(
-      `${environment.baseurl}/images/${image._id}.jpg`
+      `${environment.baseurl}/images/${image.id}.jpg`
     );
   });
 
@@ -47,7 +47,7 @@ describe('ImageService', () => {
 
     const testImage: Image = {
       file: new File([], 'testImage.jpg', { type: 'image/jpeg' }),
-      _id: '0',
+      id: '0',
       description: 'This is a test image.',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -69,7 +69,7 @@ describe('ImageService', () => {
     const testEntryId = '0';
 
     const testImage: Image = {
-      _id: '0',
+      id: '0',
       description: 'This is a test image.',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -85,7 +85,7 @@ describe('ImageService', () => {
 
     const testImage: Image = {
       file: new File([], 'testImage.jpg', { type: 'image/jpeg' }),
-      _id: '0',
+      id: '0',
       description: 'This is a test image.',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -111,7 +111,7 @@ describe('ImageService', () => {
   it('#updateImage should return image', () => {
     const testImage: Image = {
       file: new File([], 'testImage.jpg', { type: 'image/jpeq' }),
-      _id: '0',
+      id: '0',
       description: 'This is a test image.',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -122,7 +122,7 @@ describe('ImageService', () => {
       .subscribe((image: Image) => expect(image).toEqual(testImage), fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/images/${testImage._id}`
+      `${environment.baseurl}/db/images/${testImage.id}`
     );
     expect(testRequest.request.method).toMatch('PUT');
 
@@ -131,7 +131,7 @@ describe('ImageService', () => {
 
   it('#updateImage without file should return image', () => {
     const testImage: Image = {
-      _id: '0',
+      id: '0',
       description: 'This is a test image.',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -142,7 +142,7 @@ describe('ImageService', () => {
       .subscribe((image: Image) => expect(image).toEqual(testImage), fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/images/${testImage._id}`
+      `${environment.baseurl}/db/images/${testImage.id}`
     );
     expect(testRequest.request.method).toMatch('PUT');
 
@@ -151,7 +151,7 @@ describe('ImageService', () => {
 
   it('#updateImage should return alert message', () => {
     const testImage: Image = {
-      _id: '0',
+      id: '0',
       description: 'This is a test image.',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -164,7 +164,7 @@ describe('ImageService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/images/${testImage._id}`
+      `${environment.baseurl}/db/images/${testImage.id}`
     );
     expect(testRequest.request.method).toMatch('PUT');
 
@@ -178,18 +178,18 @@ describe('ImageService', () => {
     const testEntryId = '0';
 
     const testImage: Image = {
-      _id: '0',
+      id: '0',
       description: 'This is a test image.',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
     service
-      .deleteImage(testEntryId, testImage._id)
+      .deleteImage(testEntryId, testImage.id)
       .subscribe((image: Image) => expect(image).toEqual(testImage), fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testEntryId}/images/${testImage._id}`
+      `${environment.baseurl}/db/entries/${testEntryId}/images/${testImage.id}`
     );
 
     expect(testRequest.request.method).toMatch('DELETE');
@@ -201,20 +201,20 @@ describe('ImageService', () => {
     const testEntryId = '0';
 
     const testImage: Image = {
-      _id: '0',
+      id: '0',
       description: 'This is a test image.',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
     service
-      .deleteImage(testEntryId, testImage._id)
+      .deleteImage(testEntryId, testImage.id)
       .subscribe(fail, (alertType: AlertType) =>
         expect(alertType).toEqual(AlertType.server)
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testEntryId}/images/${testImage._id}`
+      `${environment.baseurl}/db/entries/${testEntryId}/images/${testImage.id}`
     );
 
     expect(testRequest.request.method).toMatch('DELETE');

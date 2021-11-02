@@ -32,7 +32,7 @@ class MockImageUploadComponent {
    * Mock created/updated image (two-way data binding)
    */
   @Input() image: Image = {
-    _id: '',
+    id: '',
     description: '',
     createdAt: '',
     updatedAt: '',
@@ -72,25 +72,25 @@ describe('ImageModalComponent', () => {
     component = fixture.componentInstance;
 
     component.diaryEntry = {
-      _id: '0',
+      id: '0',
       title: 'some title',
-      locationName: 'some location',
+      location: 'some location',
       body: 'some body',
       images: [
         {
-          _id: '0',
+          id: '0',
           description: 'some description',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         },
         {
-          _id: '1',
+          id: '1',
           description: 'some description',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         },
       ],
-      tags: [],
+      searchTags: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -164,7 +164,7 @@ describe('ImageModalComponent', () => {
       const imageUploadComponent = imageUpload.injector.get(
         MockImageUploadComponent
       );
-      expect(imageUploadComponent.entryId).toEqual(component.diaryEntry._id);
+      expect(imageUploadComponent.entryId).toEqual(component.diaryEntry.id);
     }
   });
 
@@ -192,7 +192,7 @@ describe('ImageModalComponent', () => {
     );
 
     const uploadedImage: Image = {
-      _id: '2',
+      id: '2',
       description: 'some description',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -244,8 +244,8 @@ describe('ImageModalComponent', () => {
       imageUploadComponent.imageDelete.emit(deletedImage);
       fixture.detectChanges();
 
-      const imageIds = component.diaryEntry.images.map((image) => image._id);
-      expect(imageIds).not.toContain(deletedImage._id);
+      const imageIds = component.diaryEntry.images.map((image) => image.id);
+      expect(imageIds).not.toContain(deletedImage.id);
     }
   });
 });

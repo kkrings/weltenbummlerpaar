@@ -108,10 +108,10 @@ export class DiaryEntryService {
     return this.http
       .post<DiaryEntry>(this.#entryUrl, {
         title: diaryEntry.title,
-        locationName: diaryEntry.locationName,
+        location: diaryEntry.location,
         body: diaryEntry.body,
         images: diaryEntry.images,
-        tags: diaryEntry.tags,
+        searchTags: diaryEntry.searchTags,
       })
       .pipe(catchError(this.httpAlertService.handleError));
   }
@@ -127,12 +127,12 @@ export class DiaryEntryService {
    */
   updateEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
     return this.http
-      .put<DiaryEntry>(`${this.#entryUrl}/${diaryEntry._id}`, {
+      .put<DiaryEntry>(`${this.#entryUrl}/${diaryEntry.id}`, {
         title: diaryEntry.title,
-        locationName: diaryEntry.locationName,
+        location: diaryEntry.location,
         body: diaryEntry.body,
         images: diaryEntry.images,
-        tags: diaryEntry.tags,
+        searchTags: diaryEntry.searchTags,
       })
       .pipe(catchError(this.httpAlertService.handleError));
   }

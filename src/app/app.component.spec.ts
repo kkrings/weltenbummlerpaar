@@ -73,22 +73,22 @@ describe('AppComponent', () => {
 
   const diaryEntries: DiaryEntry[] = [
     {
-      _id: '0',
+      id: '0',
       title: 'some title',
-      locationName: 'some location',
+      location: 'some location',
       body: 'some body',
       images: [],
-      tags: ['some tag', 'some other tag'],
+      searchTags: ['some tag', 'some other tag'],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
     {
-      _id: '1',
+      id: '1',
       title: 'some title',
-      locationName: 'some location',
+      location: 'some location',
       body: 'some body',
       images: [],
-      tags: [],
+      searchTags: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
@@ -223,12 +223,12 @@ describe('AppComponent', () => {
     const component = navbar.injector.get(MockNavbarComponent);
 
     const diaryEntry: DiaryEntry = {
-      _id: '1',
+      id: '1',
       title: 'some title',
-      locationName: 'some location',
+      location: 'some location',
       body: 'some body',
       images: [],
-      tags: [],
+      searchTags: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

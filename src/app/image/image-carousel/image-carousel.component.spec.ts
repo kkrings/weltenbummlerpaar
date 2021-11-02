@@ -42,13 +42,13 @@ describe('ImageCarouselComponent', () => {
 
     component.imageList = [
       {
-        _id: '0',
+        id: '0',
         description: 'some description',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
       {
-        _id: '1',
+        id: '1',
         description: 'some description',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),

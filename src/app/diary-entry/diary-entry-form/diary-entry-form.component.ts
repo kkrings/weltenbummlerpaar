@@ -49,12 +49,12 @@ export class DiaryEntryFormComponent implements OnInit {
    * Optional: inject a diary entry that should be updated.
    */
   @Input() diaryEntry: DiaryEntry = {
-    _id: '',
+    id: '',
     title: '',
-    locationName: '',
+    location: '',
     body: '',
     images: [],
-    tags: [],
+    searchTags: [],
     createdAt: '',
     updatedAt: '',
   };
@@ -98,9 +98,9 @@ export class DiaryEntryFormComponent implements OnInit {
     // build the diary entry form
     this.diaryEntryForm = formBuilder.group({
       title: ['', Validators.required],
-      locationName: ['', Validators.required],
+      location: ['', Validators.required],
       body: ['', Validators.required],
-      tags: [''],
+      searchTags: [''],
     });
   }
 
@@ -109,9 +109,9 @@ export class DiaryEntryFormComponent implements OnInit {
    */
   ngOnInit(): void {
     this.title.setValue(this.diaryEntry.title);
-    this.locationName.setValue(this.diaryEntry.locationName);
+    this.location.setValue(this.diaryEntry.location);
     this.body.setValue(this.diaryEntry.body);
-    this.tags.setValue(this.diaryEntry.tags.join(', '));
+    this.searchTags.setValue(this.diaryEntry.searchTags.join(', '));
     this.imageList = [...this.diaryEntry.images];
   }
 
@@ -125,8 +125,8 @@ export class DiaryEntryFormComponent implements OnInit {
   /**
    * Location form control
    */
-  get locationName(): FormControl {
-    return this.diaryEntryForm.get('locationName') as FormControl;
+  get location(): FormControl {
+    return this.diaryEntryForm.get('location') as FormControl;
   }
 
   /**
@@ -139,8 +139,8 @@ export class DiaryEntryFormComponent implements OnInit {
   /**
    * Tags form control
    */
-  get tags(): FormControl {
-    return this.diaryEntryForm.get('tags') as FormControl;
+  get searchTags(): FormControl {
+    return this.diaryEntryForm.get('searchTags') as FormControl;
   }
 
   /**
@@ -197,12 +197,12 @@ export class DiaryEntryFormComponent implements OnInit {
     const formValue = this.diaryEntryForm.value;
 
     const entryFromForm: DiaryEntry = {
-      _id: this.diaryEntry._id,
+      id: this.diaryEntry.id,
       title: formValue.title,
-      locationName: formValue.locationName,
+      location: formValue.location,
       body: formValue.body,
       images: this.imageList,
-      tags: formValue.tags
+      searchTags: formValue.searchTags
         .split(',')
         .map((tag: string) => tag.trim())
         .filter((tag: string) => tag.length > 0),
@@ -210,7 +210,7 @@ export class DiaryEntryFormComponent implements OnInit {
       updatedAt: this.diaryEntry.updatedAt,
     };
 
-    const request = this.diaryEntry._id
+    const request = this.diaryEntry.id
       ? this.diaryEntryService.updateEntry(entryFromForm)
       : this.diaryEntryService.saveEntry(entryFromForm);
 

@@ -22,37 +22,37 @@ describe('DiaryEntryFormComponent', () => {
   let fixture: ComponentFixture<DiaryEntryFormComponent>;
 
   const testEntry: DiaryEntry = {
-    _id: '0',
+    id: '0',
     title: 'some title',
-    locationName: 'some location',
+    location: 'some location',
     body: 'some body',
     images: [],
-    tags: ['some tag', 'some other tag'],
+    searchTags: ['some tag', 'some other tag'],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
 
   const testImages: Image[] = [
     {
-      _id: '0',
+      id: '0',
       description: 'some description',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
     {
-      _id: '1',
+      id: '1',
       description: 'some description',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
     {
-      _id: '2',
+      id: '2',
       description: 'some description',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
     {
-      _id: '3',
+      id: '3',
       description: 'some description',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -231,7 +231,7 @@ describe('DiaryEntryFormComponent', () => {
     component.ngOnInit();
     fixture.detectChanges();
     const locationInput = fixture.debugElement.query(By.css('#location'));
-    expect(locationInput.nativeElement.value).toEqual(testEntry.locationName);
+    expect(locationInput.nativeElement.value).toEqual(testEntry.location);
   });
 
   it('#location.value should match location entered by user', () => {
@@ -239,7 +239,7 @@ describe('DiaryEntryFormComponent', () => {
     const locationInput = fixture.debugElement.query(By.css('#location'));
     locationInput.nativeElement.value = testLocation;
     locationInput.nativeElement.dispatchEvent(new Event('input'));
-    expect(component.locationName.value).toEqual(testLocation);
+    expect(component.location.value).toEqual(testLocation);
   });
 
   it("should not render location's validation error", () => {
@@ -249,21 +249,21 @@ describe('DiaryEntryFormComponent', () => {
 
   it("should not render location's validation error", () => {
     const locationInput = fixture.debugElement.query(By.css('#location'));
-    locationInput.nativeElement.value = testEntry.locationName;
+    locationInput.nativeElement.value = testEntry.location;
     locationInput.nativeElement.dispatchEvent(new Event('input'));
     const errorMessage = fixture.debugElement.query(By.css('#location + div'));
     expect(errorMessage).toBeNull();
   });
 
   it("should render location's validation error", () => {
-    component.locationName.markAsTouched();
+    component.location.markAsTouched();
     fixture.detectChanges();
     const errorMessage = fixture.debugElement.query(By.css('#location + div'));
     expect(errorMessage).not.toBeNull();
   });
 
   it("should render location's validation error", () => {
-    component.locationName.markAsDirty();
+    component.location.markAsDirty();
     fixture.detectChanges();
     const errorMessage = fixture.debugElement.query(By.css('#location + div'));
     expect(errorMessage).not.toBeNull();
@@ -297,7 +297,7 @@ describe('DiaryEntryFormComponent', () => {
 
   it("should not render body's validation error", () => {
     const bodyInput = fixture.debugElement.query(By.css('#body'));
-    bodyInput.nativeElement.value = testEntry.locationName;
+    bodyInput.nativeElement.value = testEntry.location;
     bodyInput.nativeElement.dispatchEvent(new Event('input'));
     const errorMessage = fixture.debugElement.query(By.css('#body + div'));
     expect(errorMessage).toBeNull();
@@ -322,7 +322,7 @@ describe('DiaryEntryFormComponent', () => {
     const tagsInput = fixture.debugElement.query(By.css('#tags'));
     tagsInput.nativeElement.value = testTags;
     tagsInput.nativeElement.dispatchEvent(new Event('input'));
-    expect(component.tags.value).toEqual(testTags);
+    expect(component.searchTags.value).toEqual(testTags);
   });
 
   it('tags form control should be empty', () => {
@@ -335,7 +335,9 @@ describe('DiaryEntryFormComponent', () => {
     component.ngOnInit();
     fixture.detectChanges();
     const tagsInput = fixture.debugElement.query(By.css('#tags'));
-    expect(tagsInput.nativeElement.value).toEqual(testEntry.tags.join(', '));
+    expect(tagsInput.nativeElement.value).toEqual(
+      testEntry.searchTags.join(', ')
+    );
   });
 
   it("should not render diary entry's images", () => {
@@ -435,21 +437,21 @@ describe('DiaryEntryFormComponent', () => {
       component.httpAlert.alertType = AlertType.server;
 
       const diaryEntry: DiaryEntry = {
-        _id: component.diaryEntry._id,
+        id: component.diaryEntry.id,
         title: testEntry.title,
-        locationName: testEntry.locationName,
+        location: testEntry.location,
         body: testEntry.body,
         images: component.diaryEntry.images,
-        tags: testEntry.tags,
+        searchTags: testEntry.searchTags,
         createdAt: component.diaryEntry.createdAt,
         updatedAt: component.diaryEntry.updatedAt,
       };
 
       component.diaryEntryForm.setValue({
         title: testEntry.title,
-        locationName: testEntry.locationName,
+        location: testEntry.location,
         body: testEntry.body,
-        tags: testEntry.tags.join(', '),
+        searchTags: testEntry.searchTags.join(', '),
       });
 
       const service = TestBed.inject(

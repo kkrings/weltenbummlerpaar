@@ -25,31 +25,31 @@ class MockDiaryEntryService {
 
   #diaryEntries: DiaryEntry[] = [
     {
-      _id: '0',
+      id: '0',
       title: 'some title',
-      locationName: 'some location',
+      location: 'some location',
       body: 'some body',
-      tags: ['some tag', 'some other tag'],
+      searchTags: ['some tag', 'some other tag'],
       images: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
     {
-      _id: '1',
+      id: '1',
       title: 'some title',
-      locationName: 'some location',
+      location: 'some location',
       body: 'some body',
-      tags: ['some tag', 'some other tag', 'yet another tag'],
+      searchTags: ['some tag', 'some other tag', 'yet another tag'],
       images: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
     {
-      _id: '2',
+      id: '2',
       title: 'some title',
-      locationName: 'some location',
+      location: 'some location',
       body: 'some body',
-      tags: ['a tag the others do not have'],
+      searchTags: ['a tag the others do not have'],
       images: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -118,7 +118,7 @@ class MockDiaryEntryService {
 
   private filterEntries(tags: string[] = []): DiaryEntry[] {
     return this.#diaryEntries.filter((diaryEntry) =>
-      tags.every((tag) => diaryEntry.tags.includes(tag))
+      tags.every((tag) => diaryEntry.searchTags.includes(tag))
     );
   }
 }

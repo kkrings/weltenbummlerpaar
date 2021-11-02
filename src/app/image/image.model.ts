@@ -15,7 +15,7 @@ export interface Image {
   /**
    * Image's ID
    */
-  _id: string;
+  id: string;
 
   /**
    * Image's description
