@@ -8,7 +8,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DiaryEntry } from '../diary-entry.model';
 
-
 /**
  * Diary entry modal component
  *
@@ -18,7 +17,7 @@ import { DiaryEntry } from '../diary-entry.model';
 @Component({
   selector: 'app-diary-entry-modal',
   templateUrl: './diary-entry-modal.component.html',
-  styleUrls: ['./diary-entry-modal.component.scss']
+  styleUrls: ['./diary-entry-modal.component.scss'],
 })
 export class DiaryEntryModalComponent {
   /**
@@ -32,7 +31,7 @@ export class DiaryEntryModalComponent {
     images: [],
     tags: [],
     createdAt: '',
-    updatedAt: ''
+    updatedAt: '',
   };
 
   /**
@@ -41,7 +40,7 @@ export class DiaryEntryModalComponent {
    * @param modal
    *   Holds a reference to the modal.
    */
-  constructor(private modal: NgbActiveModal) { }
+  constructor(private modal: NgbActiveModal) {}
 
   /**
    * Close the diary entry modal.

@@ -1,58 +1,71 @@
 <form [formGroup]="adminLoginForm" (ngSubmit)="onSubmit()">
   <div class="modal-header">
     <h4 class="modal-title text-primary">Admin-Login</h4>
-    <button type="button"
-            class="close"
-            [disabled]="showSpinner"
-            (click)="close()">
+    <button
+      type="button"
+      class="close"
+      [disabled]="showSpinner"
+      (click)="close()"
+    >
       <span>&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <div class="form-group">
       <label class="sr-only" for="username">Username</label>
-      <input class="form-control"
-             formControlName="username"
-             id="username"
-             placeholder="Username"
-             required
-             type="text">
+      <input
+        class="form-control"
+        formControlName="username"
+        id="username"
+        placeholder="Username"
+        required
+        type="text"
+      />
       <div class="text-danger" *ngIf="showValidationError('username')">
         <small>Ohne Username ist kein Login möglich.</small>
       </div>
     </div>
     <div class="form-group">
       <label class="sr-only" for="password">Passwort</label>
-      <input class="form-control"
-             formControlName="password"
-             id="password"
-             placeholder="Passwort"
-             required
-             type="password">
+      <input
+        class="form-control"
+        formControlName="password"
+        id="password"
+        placeholder="Passwort"
+        required
+        type="password"
+      />
       <div class="text-danger" *ngIf="showValidationError('password')">
         <small>Ohne Passwort ist kein Login möglich.</small>
       </div>
     </div>
     <div *ngIf="loginFailed">
       <ngb-alert [dismissible]="false" [type]="'danger'">
-        Der Admin-Login ist fehl geschlagen, da Username und/oder Passwort falsch sind.
+        Der Admin-Login ist fehl geschlagen, da Username und/oder Passwort
+        falsch sind.
       </ngb-alert>
     </div>
     <div *ngIf="httpAlert.isShown">
-      <app-http-alert-message [alertType]="httpAlert.alertType"></app-http-alert-message>
+      <app-http-alert-message
+        [alertType]="httpAlert.alertType"
+      ></app-http-alert-message>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button"
-            class="btn btn-danger"
-            [disabled]="showSpinner"
-            (click)="close()">
+    <button
+      type="button"
+      class="btn btn-danger"
+      [disabled]="showSpinner"
+      (click)="close()"
+    >
       Abbrechen
     </button>
-    <button type="submit"
-            class="btn btn-primary"
-            [disabled]="adminLoginForm.invalid"
-            [hidden]="showSpinner">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="adminLoginForm.invalid"
+      [hidden]="showSpinner"
+    >
       Login
     </button>
     <div *ngIf="showSpinner" class="spinner-border text-primary" role="status">

@@ -7,7 +7,6 @@ import { Component, Input } from '@angular/core';
 
 import { AlertType } from '../alert.model';
 
-
 /**
  * HTTP alert message component
  *
@@ -16,7 +15,7 @@ import { AlertType } from '../alert.model';
 @Component({
   selector: 'app-http-alert-message',
   templateUrl: './http-alert-message.component.html',
-  styleUrls: ['./http-alert-message.component.scss']
+  styleUrls: ['./http-alert-message.component.scss'],
 })
 export class HttpAlertMessageComponent {
   /**

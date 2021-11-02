@@ -12,7 +12,6 @@ import { DiaryEntry } from './diary-entry.model';
 import { HttpAlertService } from '../http-alert/http-alert.service';
 import { environment } from '../../environments/environment';
 
-
 /**
  * Diary entry service
  *
@@ -20,7 +19,7 @@ import { environment } from '../../environments/environment';
  * to get, create, delete, and update diary entries.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DiaryEntryService {
   /**
@@ -37,7 +36,10 @@ export class DiaryEntryService {
    * @param httpAlertService
    *   Handles failed HTTP requests.
    */
-  constructor(private http: HttpClient, private httpAlertService: HttpAlertService) { }
+  constructor(
+    private http: HttpClient,
+    private httpAlertService: HttpAlertService
+  ) {}
 
   /**
    * Count the number of diary entries available in total on the back-end
@@ -51,8 +53,8 @@ export class DiaryEntryService {
    */
   countEntries(tags: string[] = []): Observable<number> {
     return this.http
-        .get<number>(this.getSearchUrl(tags, 0, -1, true))
-        .pipe(catchError(this.httpAlertService.handleError));
+      .get<number>(this.getSearchUrl(tags, 0, -1, true))
+      .pipe(catchError(this.httpAlertService.handleError));
   }
 
   /**
@@ -68,10 +70,14 @@ export class DiaryEntryService {
    * @returns
    *   Found diary entries
    */
-  getEntries(tags: string[] = [], skip = 0, limit = -1): Observable<DiaryEntry[]> {
+  getEntries(
+    tags: string[] = [],
+    skip = 0,
+    limit = -1
+  ): Observable<DiaryEntry[]> {
     return this.http
-        .get<DiaryEntry[]>(this.getSearchUrl(tags, skip, limit))
-        .pipe(catchError(this.httpAlertService.handleError));
+      .get<DiaryEntry[]>(this.getSearchUrl(tags, skip, limit))
+      .pipe(catchError(this.httpAlertService.handleError));
   }
 
   /**
@@ -85,8 +91,8 @@ export class DiaryEntryService {
    */
   getEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
-        .get<DiaryEntry>(`${this.#entryUrl}/${entryId}`)
-        .pipe(catchError(this.httpAlertService.handleError));
+      .get<DiaryEntry>(`${this.#entryUrl}/${entryId}`)
+      .pipe(catchError(this.httpAlertService.handleError));
   }
 
   /**
@@ -100,14 +106,14 @@ export class DiaryEntryService {
    */
   saveEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
     return this.http
-        .post<DiaryEntry>(this.#entryUrl, {
-          title: diaryEntry.title,
-          locationName: diaryEntry.locationName,
-          body: diaryEntry.body,
-          images: diaryEntry.images,
-          tags: diaryEntry.tags
-        })
-        .pipe(catchError(this.httpAlertService.handleError));
+      .post<DiaryEntry>(this.#entryUrl, {
+        title: diaryEntry.title,
+        locationName: diaryEntry.locationName,
+        body: diaryEntry.body,
+        images: diaryEntry.images,
+        tags: diaryEntry.tags,
+      })
+      .pipe(catchError(this.httpAlertService.handleError));
   }
 
   /**
@@ -121,15 +127,14 @@ export class DiaryEntryService {
    */
   updateEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
     return this.http
-        .put<DiaryEntry>(
-            `${this.#entryUrl}/${diaryEntry._id}`, {
-              title: diaryEntry.title,
-              locationName: diaryEntry.locationName,
-              body: diaryEntry.body,
-              images: diaryEntry.images,
-              tags: diaryEntry.tags
-            })
-        .pipe(catchError(this.httpAlertService.handleError));
+      .put<DiaryEntry>(`${this.#entryUrl}/${diaryEntry._id}`, {
+        title: diaryEntry.title,
+        locationName: diaryEntry.locationName,
+        body: diaryEntry.body,
+        images: diaryEntry.images,
+        tags: diaryEntry.tags,
+      })
+      .pipe(catchError(this.httpAlertService.handleError));
   }
 
   /**
@@ -143,8 +148,8 @@ export class DiaryEntryService {
    */
   deleteEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
-        .delete<DiaryEntry>(`${this.#entryUrl}/${entryId}`)
-        .pipe(catchError(this.httpAlertService.handleError));
+      .delete<DiaryEntry>(`${this.#entryUrl}/${entryId}`)
+      .pipe(catchError(this.httpAlertService.handleError));
   }
 
   /**
@@ -159,10 +164,15 @@ export class DiaryEntryService {
    * @returns
    *   Search URL
    */
-  private getSearchUrl(tags: string[] = [], skip = 0, limit = -1, count = false): string {
+  private getSearchUrl(
+    tags: string[] = [],
+    skip = 0,
+    limit = -1,
+    count = false
+  ): string {
     const url = count ? `${this.#entryUrl}/count` : this.#entryUrl;
 
-    const query = tags.map(tag => `tags[$all][]=${tag}`);
+    const query = tags.map((tag) => `tags[$all][]=${tag}`);
 
     if (skip > 0) {
       query.push(`skip=${skip}`);

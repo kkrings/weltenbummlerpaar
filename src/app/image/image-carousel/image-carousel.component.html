@@ -1,15 +1,17 @@
 <div class="d-flex justify-content-end">
-  <small class="text-muted">{{imageNum}}/{{imageList.length}}</small>
+  <small class="text-muted">{{ imageNum }}/{{ imageList.length }}</small>
 </div>
 <ngb-carousel (slid)="setImageNum($event)">
-  <ng-template *ngFor="let image of imageList; let imageIndex = index"
-               id="{{imageIndex}}"
-               ngbSlide>
+  <ng-template
+    *ngFor="let image of imageList; let imageIndex = index"
+    id="{{ imageIndex }}"
+    ngbSlide
+  >
     <figure class="figure">
       <a [appImage]="image">
-        <img [appImage]="image" class="figure-img img-fluid rounded">
+        <img [appImage]="image" class="figure-img img-fluid rounded" />
       </a>
-      <figcaption class="figure-caption">{{image.description}}</figcaption>
+      <figcaption class="figure-caption">{{ image.description }}</figcaption>
     </figure>
   </ng-template>
 </ngb-carousel>

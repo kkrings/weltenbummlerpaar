@@ -6,7 +6,6 @@
 import { DiaryEntryBriefPipe } from './diary-entry-brief.pipe';
 import { DiaryEntry } from './diary-entry.model';
 
-
 describe('DiaryEntryBriefPipe', () => {
   const diaryEntry: DiaryEntry = {
     _id: '0',
@@ -15,8 +14,8 @@ describe('DiaryEntryBriefPipe', () => {
     body: 'some body',
     images: [],
     tags: [],
-    createdAt: (new Date()).toISOString(),
-    updatedAt: (new Date()).toISOString()
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   };
 
   it('#transform should not transform short bodies', () => {

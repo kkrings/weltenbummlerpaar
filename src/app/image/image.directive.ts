@@ -3,13 +3,10 @@
  * @packageDocumentation
  */
 
-import {
-  Directive, OnInit, Input, ElementRef, Renderer2
-} from '@angular/core';
+import { Directive, OnInit, Input, ElementRef, Renderer2 } from '@angular/core';
 
 import { Image } from './image.model';
 import { ImageService } from './image.service';
-
 
 /**
  * Image directive
@@ -20,7 +17,7 @@ import { ImageService } from './image.service';
  * the image's filename.
  */
 @Directive({
-  selector: '[appImage]'
+  selector: '[appImage]',
 })
 export class ImageDirective implements OnInit {
   /**
@@ -30,7 +27,7 @@ export class ImageDirective implements OnInit {
     _id: '',
     description: '',
     createdAt: '',
-    updatedAt: ''
+    updatedAt: '',
   };
 
   /**
@@ -42,7 +39,7 @@ export class ImageDirective implements OnInit {
    *   Holds a reference to the HTML element this attribute directive is
    *   applied to.
    */
-  constructor(private renderer: Renderer2, private element: ElementRef) { }
+  constructor(private renderer: Renderer2, private element: ElementRef) {}
 
   /**
    * Initialize the image directive.
@@ -51,8 +48,20 @@ export class ImageDirective implements OnInit {
    * attribute directive is applied to.
    */
   ngOnInit(): void {
-    this.renderer.setProperty(this.element.nativeElement, 'src', ImageService.getImageUrl(this.image));
-    this.renderer.setProperty(this.element.nativeElement, 'alt', `${this.image._id}.jpg`);
-    this.renderer.setProperty(this.element.nativeElement, 'href', ImageService.getImageUrl(this.image));
+    this.renderer.setProperty(
+      this.element.nativeElement,
+      'src',
+      ImageService.getImageUrl(this.image)
+    );
+    this.renderer.setProperty(
+      this.element.nativeElement,
+      'alt',
+      `${this.image._id}.jpg`
+    );
+    this.renderer.setProperty(
+      this.element.nativeElement,
+      'href',
+      ImageService.getImageUrl(this.image)
+    );
   }
 }

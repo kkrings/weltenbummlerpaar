@@ -11,28 +11,25 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DiaryEntrySearchFormComponent } from './diary-entry-search-form.component';
 import { DiaryEntrySearchService } from '../diary-entry-search.service';
 
-
 describe('DiaryEntrySearchFormComponent', () => {
   let component: DiaryEntrySearchFormComponent;
   let fixture: ComponentFixture<DiaryEntrySearchFormComponent>;
 
   beforeEach(async () => {
-    const diaryEntrySearchServiceSpy = jasmine.createSpyObj('DiaryEntrySearchService', [
-      'subscribeToSearchTags',
-      'unsubscribeFromSearchTags'
-    ]);
+    const diaryEntrySearchServiceSpy = jasmine.createSpyObj(
+      'DiaryEntrySearchService',
+      ['subscribeToSearchTags', 'unsubscribeFromSearchTags']
+    );
 
     await TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        FontAwesomeModule
-      ],
-      declarations: [
-        DiaryEntrySearchFormComponent
-      ],
+      imports: [ReactiveFormsModule, FontAwesomeModule],
+      declarations: [DiaryEntrySearchFormComponent],
       providers: [
-        {provide: DiaryEntrySearchService, useValue: diaryEntrySearchServiceSpy}
-      ]
+        {
+          provide: DiaryEntrySearchService,
+          useValue: diaryEntrySearchServiceSpy,
+        },
+      ],
     }).compileComponents();
   });
 
@@ -43,12 +40,18 @@ describe('DiaryEntrySearchFormComponent', () => {
   });
 
   it('on initialization, diary entry search service should subscribe to search tags form', () => {
-    const service = TestBed.inject(DiaryEntrySearchService) as jasmine.SpyObj<DiaryEntrySearchService>;
-    expect(service.subscribeToSearchTags).toHaveBeenCalledOnceWith(component.diaryEntrySearchTags.valueChanges);
+    const service = TestBed.inject(
+      DiaryEntrySearchService
+    ) as jasmine.SpyObj<DiaryEntrySearchService>;
+    expect(service.subscribeToSearchTags).toHaveBeenCalledOnceWith(
+      component.diaryEntrySearchTags.valueChanges
+    );
   });
 
   it('on destroy, diary entry search service should unsubscribe from search tags form', () => {
-    const service = TestBed.inject(DiaryEntrySearchService) as jasmine.SpyObj<DiaryEntrySearchService>;
+    const service = TestBed.inject(
+      DiaryEntrySearchService
+    ) as jasmine.SpyObj<DiaryEntrySearchService>;
     component.ngOnDestroy();
     expect(service.unsubscribeFromSearchTags).toHaveBeenCalled();
   });

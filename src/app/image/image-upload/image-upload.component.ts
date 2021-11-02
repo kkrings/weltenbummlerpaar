@@ -3,9 +3,22 @@
  * @packageDocumentation
  */
 
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { Observable } from 'rxjs';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormBuilder,
+  Validators,
+} from '@angular/forms';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import bsCustomFileInput from 'bs-custom-file-input';
@@ -13,7 +26,6 @@ import bsCustomFileInput from 'bs-custom-file-input';
 import { ImageService } from '../image.service';
 import { Image } from '../image.model';
 import { Alert, AlertType } from '../../http-alert/alert.model';
-
 
 /**
  * Image upload component
@@ -24,7 +36,7 @@ import { Alert, AlertType } from '../../http-alert/alert.model';
 @Component({
   selector: 'app-image-upload',
   templateUrl: './image-upload.component.html',
-  styleUrls: ['./image-upload.component.scss']
+  styleUrls: ['./image-upload.component.scss'],
 })
 export class ImageUploadComponent implements OnInit {
   /**
@@ -40,7 +52,7 @@ export class ImageUploadComponent implements OnInit {
     reset: () => {
       // this mock native element with a mock reset method gets overriden after
       // initalization with the actual form element
-    }
+    },
   });
 
   /**
@@ -55,7 +67,7 @@ export class ImageUploadComponent implements OnInit {
     _id: '',
     description: '',
     createdAt: '',
-    updatedAt: ''
+    updatedAt: '',
   };
 
   /**
@@ -113,7 +125,7 @@ export class ImageUploadComponent implements OnInit {
     // build the image form
     this.imageForm = formBuilder.group({
       files: [null, Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
     });
   }
 
@@ -158,23 +170,24 @@ export class ImageUploadComponent implements OnInit {
     this.httpAlert.alertType = AlertType.none;
 
     this.imageService.deleteImage(this.entryId, this.image._id).subscribe(
-        (image: Image) => {
-          this.processDeleteRequest = false;
-          this.processing.emit(false);
-          this.imageDelete.emit(image);
-        },
-        (alertType: AlertType) => {
-          this.processDeleteRequest = false;
-          this.processing.emit(false);
-          this.httpAlert.alertType = alertType;
-        });
+      (image: Image) => {
+        this.processDeleteRequest = false;
+        this.processing.emit(false);
+        this.imageDelete.emit(image);
+      },
+      (alertType: AlertType) => {
+        this.processDeleteRequest = false;
+        this.processing.emit(false);
+        this.httpAlert.alertType = alertType;
+      }
+    );
   }
 
   /**
    * Submit an image upload/update request to the back-end server.
    */
   onSubmit(): void {
-    const upload: Image = {...this.image};
+    const upload: Image = { ...this.image };
     const formValue = this.imageForm.value;
 
     if (formValue.files) {
@@ -185,7 +198,8 @@ export class ImageUploadComponent implements OnInit {
 
     const update = this.image._id.length > 0;
 
-    const request = (image: Image): Observable<Image> => update
+    const request = (image: Image): Observable<Image> =>
+      update
         ? this.imageService.updateImage(image)
         : this.imageService.uploadImage(this.entryId, image);
 
@@ -213,6 +227,7 @@ export class ImageUploadComponent implements OnInit {
         this.processUploadRequest = false;
         this.processing.emit(false);
         this.httpAlert.alertType = alertType;
-      });
+      }
+    );
   }
 }

@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title text-primary">{{diaryEntry.title}}</h4>
+  <h4 class="modal-title text-primary">{{ diaryEntry.title }}</h4>
   <button type="button" class="close" (click)="close()">
     <span>&times;</span>
   </button>
@@ -8,16 +8,21 @@
   <div *ngIf="diaryEntry.images.length > 0">
     <app-image-carousel [imageList]="diaryEntry.images"></app-image-carousel>
   </div>
-  <h6 class="text-secondary">{{diaryEntry.locationName}}</h6>
-  <p class="text-pre-line">{{diaryEntry.body}}</p>
+  <h6 class="text-secondary">{{ diaryEntry.locationName }}</h6>
+  <p class="text-pre-line">{{ diaryEntry.body }}</p>
   <p *ngIf="diaryEntry.tags.length > 0">
-    <span *ngFor="let tag of diaryEntry.tags"
-          class="badge badge-pill badge-outline-primary mr-1">
-      {{tag}}
+    <span
+      *ngFor="let tag of diaryEntry.tags"
+      class="badge badge-pill badge-outline-primary mr-1"
+    >
+      {{ tag }}
     </span>
   </p>
-  <p><small class="text-muted">Erstellt am {{diaryEntry.createdAt | date}}.
-  </small></p>
+  <p>
+    <small class="text-muted"
+      >Erstellt am {{ diaryEntry.createdAt | date }}.
+    </small>
+  </p>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-primary" (click)="close()">

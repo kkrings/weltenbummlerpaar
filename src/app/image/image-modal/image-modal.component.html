@@ -1,37 +1,45 @@
 <div class="modal-header">
   <h4 class="modal-title text-primary">Fotos hinzufügen/bearbeiten</h4>
-  <button type="button"
-          class="close"
-          (click)="close()"
-          [disabled]="disableClose">
+  <button
+    type="button"
+    class="close"
+    (click)="close()"
+    [disabled]="disableClose"
+  >
     <span>&times;</span>
   </button>
 </div>
 <div class="modal-body">
   <div class="form-group">
     <h6 class="text-secondary">Foto hinzufügen</h6>
-    <app-image-upload [entryId]="diaryEntry._id"
-                      (imageChange)="diaryEntry.images.push($event)"
-                      (processing)="disableClose = $event">
+    <app-image-upload
+      [entryId]="diaryEntry._id"
+      (imageChange)="diaryEntry.images.push($event)"
+      (processing)="disableClose = $event"
+    >
     </app-image-upload>
   </div>
   <div *ngFor="let image of diaryEntry.images; let imageIndex = index">
     <div class="form-group">
       <h6 class="text-secondary">Foto bearbeiten</h6>
-      <img [appImage]="image" class="img img-fluid rounded mb-2">
-      <app-image-upload [entryId]="diaryEntry._id"
-                        [(image)]="diaryEntry.images[imageIndex]"
-                        (imageDelete)="removeImageFromEntry($event._id)"
-                        (processing)="disableClose = $event">
+      <img [appImage]="image" class="img img-fluid rounded mb-2" />
+      <app-image-upload
+        [entryId]="diaryEntry._id"
+        [(image)]="diaryEntry.images[imageIndex]"
+        (imageDelete)="removeImageFromEntry($event._id)"
+        (processing)="disableClose = $event"
+      >
       </app-image-upload>
     </div>
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button"
-          class="btn btn-primary"
-          (click)="close()"
-          [disabled]="disableClose">
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="close()"
+    [disabled]="disableClose"
+  >
     Schließen
   </button>
 </div>

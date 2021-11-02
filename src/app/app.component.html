@@ -1,5 +1,5 @@
 <div class="logo-container mt-2 mb-4">
-  <img class="logo" src="assets/logo.svg"/>
+  <img class="logo" src="assets/logo.svg" />
   <div class="logo-background"></div>
 </div>
 <div class="container">
@@ -23,23 +23,29 @@
   <app-diary-entry-grid [diaryEntries]="diaryEntries"></app-diary-entry-grid>
 </div>
 <div *ngIf="!showSpinner && httpAlert.isShown" class="container mb-4">
-  <app-http-alert-message [alertType]="httpAlert.alertType"></app-http-alert-message>
+  <app-http-alert-message
+    [alertType]="httpAlert.alertType"
+  ></app-http-alert-message>
 </div>
 <div class="bg-primary text-white">
   <div class="container-fluid p-4">
     <div class="row">
       <div class="col-sm-6">
         <h5>Warum ein Reisetagebuch?</h5>
-        <p>Mit unserem Reisetagebuch möchten wir unsere Eindrücke und
-        Erlebnisse auf Reisen mit unseren Familien und Freunden teilen. Das
-        bedeutet, dass ihr hier weder Reisetipps noch Empfehlungen für
-        Unterkünfte, Restaurants usw. finden werdet.</p>
+        <p>
+          Mit unserem Reisetagebuch möchten wir unsere Eindrücke und Erlebnisse
+          auf Reisen mit unseren Familien und Freunden teilen. Das bedeutet,
+          dass ihr hier weder Reisetipps noch Empfehlungen für Unterkünfte,
+          Restaurants usw. finden werdet.
+        </p>
       </div>
       <div class="col-sm-6">
         <h5>Was ist mit personenbezogenen Daten?</h5>
-        <p>Auf unserer Seite werden keinerlei personenbezogene Daten
-        gespeichert. Das bedeutet: keine Cookies, keine Social Media Buttons
-        und keine Tools wie Google Analytics usw.</p>
+        <p>
+          Auf unserer Seite werden keinerlei personenbezogene Daten gespeichert.
+          Das bedeutet: keine Cookies, keine Social Media Buttons und keine
+          Tools wie Google Analytics usw.
+        </p>
       </div>
     </div>
   </div>

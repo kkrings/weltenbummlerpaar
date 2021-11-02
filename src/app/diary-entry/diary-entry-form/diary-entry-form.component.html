@@ -1,46 +1,46 @@
 <form [formGroup]="diaryEntryForm" (ngSubmit)="onSubmit()">
   <div class="modal-header">
     <h4 class="modal-title text-primary">
-      {{modalTitle}}
+      {{ modalTitle }}
     </h4>
-    <button type="button"
-            class="close"
-            [disabled]="processRequest"
-            (click)="closeModal()">
+    <button
+      type="button"
+      class="close"
+      [disabled]="processRequest"
+      (click)="closeModal()"
+    >
       <span>&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <div class="form-group">
-      <label for="title">
-        Gib dem Tagebucheintrag einen Titel:
-      </label>
-      <input formControlName="title"
-             class="form-control"
-             type="text"
-             id="title"
-             placeholder="Titel"
-             value="{{title.value}}"
-             required>
+      <label for="title"> Gib dem Tagebucheintrag einen Titel: </label>
+      <input
+        formControlName="title"
+        class="form-control"
+        type="text"
+        id="title"
+        placeholder="Titel"
+        value="{{ title.value }}"
+        required
+      />
       <div *ngIf="isInvalid(title)">
         <div *ngIf="title.errors?.required">
-          <small class="text-danger">
-            Ohne Titel kein Tagebucheintrag.
-          </small>
+          <small class="text-danger"> Ohne Titel kein Tagebucheintrag. </small>
         </div>
       </div>
     </div>
     <div class="form-group">
-      <label for="location">
-        Über welchen Ort schreibst du?
-      </label>
-      <input formControlName="locationName"
-             class="form-control"
-             type="text"
-             id="location"
-             placeholder="Stadt, Region, Land, ..."
-             value="{{locationName.value}}"
-             required>
+      <label for="location"> Über welchen Ort schreibst du? </label>
+      <input
+        formControlName="locationName"
+        class="form-control"
+        type="text"
+        id="location"
+        placeholder="Stadt, Region, Land, ..."
+        value="{{ locationName.value }}"
+        required
+      />
       <div *ngIf="isInvalid(locationName)">
         <div *ngIf="locationName.errors?.required">
           <small class="text-danger">
@@ -53,19 +53,19 @@
       <label for="body">
         Hier kommt der Inhalt des Tagebucheintrages hin:
       </label>
-      <textarea formControlName="body"
-                class="form-control"
-                rows="10"
-                id="body"
-                placeholder="Inhalt"
-                value="{{body.value}}"
-                required>
+      <textarea
+        formControlName="body"
+        class="form-control"
+        rows="10"
+        id="body"
+        placeholder="Inhalt"
+        value="{{ body.value }}"
+        required
+      >
       </textarea>
       <div *ngIf="isInvalid(body)">
         <div *ngIf="body.errors?.required">
-          <small class="text-danger">
-            Ohne Inhalt kein Tagebucheintrag.
-          </small>
+          <small class="text-danger"> Ohne Inhalt kein Tagebucheintrag. </small>
         </div>
       </div>
     </div>
@@ -74,55 +74,71 @@
         Unter welchen Stichwörtern soll der Tagebucheintrag gefunden werden
         können?
       </label>
-      <input formControlName="tags"
-             class="form-control"
-             id="tags"
-             type="text"
-             placeholder="Stichwort, noch ein Stichwort, ..."
-             value="{{tags.value}}">
+      <input
+        formControlName="tags"
+        class="form-control"
+        id="tags"
+        type="text"
+        placeholder="Stichwort, noch ein Stichwort, ..."
+        value="{{ tags.value }}"
+      />
     </div>
     <div *ngIf="imageList.length > 0">
       <h5 class="text-secondary">Fotoreihenfolge</h5>
       <div *ngFor="let image of imageList; let imageIndex = index">
         <div class="mb-1">
-          <button type="button"
-                  class="btn btn-primary btn-sm"
-                  (click)="moveImageUp(imageIndex)">
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            (click)="moveImageUp(imageIndex)"
+          >
             <fa-icon [icon]="moveImageUpIcon"></fa-icon> Hoch
           </button>
-          <button type="button"
-                  class="btn btn-primary btn-sm ml-1"
-                  (click)="moveImageDown(imageIndex)">
+          <button
+            type="button"
+            class="btn btn-primary btn-sm ml-1"
+            (click)="moveImageDown(imageIndex)"
+          >
             <fa-icon [icon]="moveImageDownIcon"></fa-icon> Runter
           </button>
         </div>
         <figure class="figure">
-          <img [appImage]="image" class="figure-img img-fluid rounded">
-          <figcaption class="figure-caption">{{image.description}}</figcaption>
+          <img [appImage]="image" class="figure-img img-fluid rounded" />
+          <figcaption class="figure-caption">
+            {{ image.description }}
+          </figcaption>
         </figure>
       </div>
     </div>
     <div *ngIf="httpAlert.isShown" class="py-2">
-      <app-http-alert-message [alertType]="httpAlert.alertType"></app-http-alert-message>
+      <app-http-alert-message
+        [alertType]="httpAlert.alertType"
+      ></app-http-alert-message>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button"
-            class="btn btn-danger"
-            [disabled]="processRequest"
-            (click)="closeModal()">
+    <button
+      type="button"
+      class="btn btn-danger"
+      [disabled]="processRequest"
+      (click)="closeModal()"
+    >
       Abbrechen
     </button>
-    <button type="submit"
-            class="btn btn-primary"
-            [disabled]="diaryEntryForm.invalid"
-            [hidden]="processRequest">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="diaryEntryForm.invalid"
+      [hidden]="processRequest"
+    >
       Speichern
     </button>
-    <div *ngIf="processRequest"
-         class="spinner-border text-primary"
-         role="status">
-      <span class="sr-only">{{modalTitle}} ...</span>
+    <div
+      *ngIf="processRequest"
+      class="spinner-border text-primary"
+      role="status"
+    >
+      <span class="sr-only">{{ modalTitle }} ...</span>
     </div>
   </div>
 </form>

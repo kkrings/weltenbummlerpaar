@@ -4,7 +4,12 @@
  */
 
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,7 +17,6 @@ import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntry } from '../diary-entry.model';
 import { Image } from '../../image/image.model';
 import { Alert, AlertType } from 'src/app/http-alert/alert.model';
-
 
 /**
  * Diary entry form component
@@ -23,7 +27,7 @@ import { Alert, AlertType } from 'src/app/http-alert/alert.model';
 @Component({
   selector: 'app-diary-entry-form',
   templateUrl: './diary-entry-form.component.html',
-  styleUrls: ['./diary-entry-form.component.scss']
+  styleUrls: ['./diary-entry-form.component.scss'],
 })
 export class DiaryEntryFormComponent implements OnInit {
   /**
@@ -52,7 +56,7 @@ export class DiaryEntryFormComponent implements OnInit {
     images: [],
     tags: [],
     createdAt: '',
-    updatedAt: ''
+    updatedAt: '',
   };
 
   /**
@@ -86,13 +90,17 @@ export class DiaryEntryFormComponent implements OnInit {
    * @param modal
    *   Holds a reference to the modal.
    */
-  constructor(formBuilder: FormBuilder, private diaryEntryService: DiaryEntryService, private modal: NgbActiveModal) {
+  constructor(
+    formBuilder: FormBuilder,
+    private diaryEntryService: DiaryEntryService,
+    private modal: NgbActiveModal
+  ) {
     // build the diary entry form
     this.diaryEntryForm = formBuilder.group({
       title: ['', Validators.required],
       locationName: ['', Validators.required],
       body: ['', Validators.required],
-      tags: ['']
+      tags: [''],
     });
   }
 
@@ -167,7 +175,7 @@ export class DiaryEntryFormComponent implements OnInit {
    *   Image's index
    */
   moveImageUp(index: number): void {
-    const prev = ((index > 0) ? index : this.imageList.length) - 1;
+    const prev = (index > 0 ? index : this.imageList.length) - 1;
     const image = this.imageList.splice(index, 1)[0];
     this.imageList.splice(prev, 0, image);
   }
@@ -194,14 +202,17 @@ export class DiaryEntryFormComponent implements OnInit {
       locationName: formValue.locationName,
       body: formValue.body,
       images: this.imageList,
-      tags: formValue.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0),
+      tags: formValue.tags
+        .split(',')
+        .map((tag: string) => tag.trim())
+        .filter((tag: string) => tag.length > 0),
       createdAt: this.diaryEntry.createdAt,
-      updatedAt: this.diaryEntry.updatedAt
+      updatedAt: this.diaryEntry.updatedAt,
     };
 
-    const request = (this.diaryEntry._id)
-        ? this.diaryEntryService.updateEntry(entryFromForm)
-        : this.diaryEntryService.saveEntry(entryFromForm);
+    const request = this.diaryEntry._id
+      ? this.diaryEntryService.updateEntry(entryFromForm)
+      : this.diaryEntryService.saveEntry(entryFromForm);
 
     // reset alert message
     this.httpAlert.alertType = AlertType.none;
@@ -220,6 +231,7 @@ export class DiaryEntryFormComponent implements OnInit {
       (alertType: AlertType) => {
         this.processRequest = false;
         this.httpAlert.alertType = alertType;
-      });
+      }
+    );
   }
 }

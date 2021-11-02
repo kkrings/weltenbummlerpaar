@@ -1,55 +1,69 @@
 <div class="card h-100">
   <div class="card-header bg-transparent" appAuth>
-    <button type="button"
-            class="btn btn-primary btn-sm"
-            (click)="openUpdateEntryModal()"
-            [disabled]="showSpinner">
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="openUpdateEntryModal()"
+      [disabled]="showSpinner"
+    >
       <fa-icon [icon]="diaryEntryEditIcon"></fa-icon> Bearb.
     </button>
-    <button type="button"
-            class="btn btn-secondary btn-sm ml-1"
-            (click)="openImageModal()"
-            [disabled]="showSpinner">
+    <button
+      type="button"
+      class="btn btn-secondary btn-sm ml-1"
+      (click)="openImageModal()"
+      [disabled]="showSpinner"
+    >
       <fa-icon [icon]="diaryEntryImagesIcon"></fa-icon> Fotos
     </button>
-    <button type="button"
-            class="btn btn-danger btn-sm ml-1"
-            [hidden]="showSpinner"
-            (click)="deleteEntry()">
+    <button
+      type="button"
+      class="btn btn-danger btn-sm ml-1"
+      [hidden]="showSpinner"
+      (click)="deleteEntry()"
+    >
       <fa-icon [icon]="diaryEntryDeleteIcon"></fa-icon> Entf.
     </button>
-    <div *ngIf="showSpinner"
-         class="spinner-border text-danger"
-         role="status">
+    <div *ngIf="showSpinner" class="spinner-border text-danger" role="status">
       <span class="sr-only">Lösche Tagebucheintrag...</span>
     </div>
   </div>
-  <img *ngIf="diaryEntry.images.length > 0"
-       [appImage]="diaryEntry.images[0]"
-       class="card-img-top">
+  <img
+    *ngIf="diaryEntry.images.length > 0"
+    [appImage]="diaryEntry.images[0]"
+    class="card-img-top"
+  />
   <div class="card-body">
-    <h4 class="card-title text-primary">{{diaryEntry.title}}</h4>
+    <h4 class="card-title text-primary">{{ diaryEntry.title }}</h4>
     <h6 class="card-subtitle text-secondary mb-2">
-      {{diaryEntry.locationName}}
+      {{ diaryEntry.locationName }}
     </h6>
-    <p class="card-text">{{diaryEntry | diaryEntryBrief:150}}</p>
+    <p class="card-text">{{ diaryEntry | diaryEntryBrief: 150 }}</p>
     <p *ngIf="diaryEntry.tags.length > 0">
-      <span *ngFor="let tag of diaryEntry.tags"
-            class="badge badge-pill badge-outline-primary mr-1">
-        {{tag}}
+      <span
+        *ngFor="let tag of diaryEntry.tags"
+        class="badge badge-pill badge-outline-primary mr-1"
+      >
+        {{ tag }}
       </span>
     </p>
-    <p class="card-text"><small class="text-muted">
-      Erstellt am {{diaryEntry.createdAt | date}}.
-    </small></p>
-    <button type="button"
-            class="btn btn-primary"
-            (click)="openEntryModal()"
-            [disabled]="showSpinner">
-        Erfahre mehr
+    <p class="card-text">
+      <small class="text-muted">
+        Erstellt am {{ diaryEntry.createdAt | date }}.
+      </small>
+    </p>
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="openEntryModal()"
+      [disabled]="showSpinner"
+    >
+      Erfahre mehr
     </button>
     <div *ngIf="httpAlert.isShown" class="mt-4">
-      <app-http-alert-message [alertType]="httpAlert.alertType"></app-http-alert-message>
+      <app-http-alert-message
+        [alertType]="httpAlert.alertType"
+      ></app-http-alert-message>
     </div>
   </div>
 </div>

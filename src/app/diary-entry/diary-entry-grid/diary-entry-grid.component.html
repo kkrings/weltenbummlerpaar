@@ -1,7 +1,10 @@
 <div class="container" *ngIf="diaryEntries.length > 0">
   <div class="row row-cols-1 row-cols-md-2">
     <div class="col mb-4" *ngFor="let diaryEntry of diaryEntries">
-      <app-diary-entry-card [diaryEntry]="diaryEntry" (deletedEntryId)="deleteDiaryEntry($event)">
+      <app-diary-entry-card
+        [diaryEntry]="diaryEntry"
+        (deletedEntryId)="deleteDiaryEntry($event)"
+      >
       </app-diary-entry-card>
     </div>
   </div>

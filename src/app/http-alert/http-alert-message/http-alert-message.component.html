@@ -1,4 +1,8 @@
-<ngb-alert *ngIf="showAlert" [dismissible]="alertIsDismissible" [type]="'danger'">
+<ngb-alert
+  *ngIf="showAlert"
+  [dismissible]="alertIsDismissible"
+  [type]="'danger'"
+>
   Ups, da ist etwas schief gegangen:
   <span *ngIf="clientSideError">
     Ich kann nicht mit dem Backendserver reden.

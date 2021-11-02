@@ -10,19 +10,14 @@ import { NgbAlert, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpAlertMessageComponent } from './http-alert-message.component';
 import { AlertType } from '../alert.model';
 
-
 describe('HttpAlertMessageComponent', () => {
   let component: HttpAlertMessageComponent;
   let fixture: ComponentFixture<HttpAlertMessageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        NgbAlertModule
-      ],
-      declarations: [
-        HttpAlertMessageComponent
-      ]
+      imports: [NgbAlertModule],
+      declarations: [HttpAlertMessageComponent],
     }).compileComponents();
   });
 

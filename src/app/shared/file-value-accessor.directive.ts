@@ -3,7 +3,13 @@
  * @packageDocumentation
  */
 
-import { Directive, ElementRef, forwardRef, HostListener, Renderer2 } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  forwardRef,
+  HostListener,
+  Renderer2,
+} from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 /**
@@ -19,9 +25,9 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => FileValueAccessorDirective),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class FileValueAccessorDirective implements ControlValueAccessor {
   /**

@@ -9,7 +9,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DiaryEntry } from '../../diary-entry/diary-entry.model';
 import { Image } from '../image.model';
 
-
 /**
  * Image modal component
  *
@@ -20,7 +19,7 @@ import { Image } from '../image.model';
 @Component({
   selector: 'app-image-modal',
   templateUrl: './image-modal.component.html',
-  styleUrls: ['./image-modal.component.scss']
+  styleUrls: ['./image-modal.component.scss'],
 })
 export class ImageModalComponent {
   /**
@@ -34,7 +33,7 @@ export class ImageModalComponent {
     images: [],
     tags: [],
     createdAt: '',
-    updatedAt: ''
+    updatedAt: '',
   };
 
   /**
@@ -48,7 +47,7 @@ export class ImageModalComponent {
    * @param modal
    *   Holds a reference to the modal.
    */
-  constructor(private modal: NgbActiveModal) { }
+  constructor(private modal: NgbActiveModal) {}
 
   /**
    * Close the modal.
@@ -64,6 +63,8 @@ export class ImageModalComponent {
    *   Image's ID
    */
   removeImageFromEntry(imageId: string): void {
-    this.diaryEntry.images = this.diaryEntry.images.filter((image: Image) => image._id !== imageId);
+    this.diaryEntry.images = this.diaryEntry.images.filter(
+      (image: Image) => image._id !== imageId
+    );
   }
 }

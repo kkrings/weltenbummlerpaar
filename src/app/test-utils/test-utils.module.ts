@@ -9,7 +9,6 @@ import { Observable, defer } from 'rxjs';
 
 import { AlertType } from '../http-alert/alert.model';
 
-
 /**
  * Data observable
  *
@@ -24,7 +23,8 @@ import { AlertType } from '../http-alert/alert.model';
  * @returns
  *   Data observable
  */
-export const asyncData = <T>(data: T): Observable<T> => defer(() => Promise.resolve(data));
+export const asyncData = <T>(data: T): Observable<T> =>
+  defer(() => Promise.resolve(data));
 
 /**
  * Error observale
@@ -40,8 +40,8 @@ export const asyncData = <T>(data: T): Observable<T> => defer(() => Promise.reso
  * @returns
  *   Error observable
  */
-export const asyncError = <T>(error: T): Observable<never> => defer(() => Promise.reject(error));
-
+export const asyncError = <T>(error: T): Observable<never> =>
+  defer(() => Promise.reject(error));
 
 /**
  * Mock active modal
@@ -50,14 +50,14 @@ export class MockNgbActiveModal {
   /**
    * Mock the active modal's close method.
    */
-  close(): void { }
+  close(): void {}
 }
 
 /**
  * Mock image directive
  */
 @Directive({
-  selector: '[appImage]'
+  selector: '[appImage]',
 })
 export class MockImageDirective {
   /**
@@ -71,7 +71,7 @@ export class MockImageDirective {
  */
 @Component({
   selector: 'app-http-alert-message',
-  template: ''
+  template: '',
 })
 export class MockHttpAlertMessageComponent {
   /**
@@ -87,16 +87,8 @@ export class MockHttpAlertMessageComponent {
  * services, and so on that are used in more than one unit test file.
  */
 @NgModule({
-  declarations: [
-    MockImageDirective,
-    MockHttpAlertMessageComponent
-  ],
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    MockImageDirective,
-    MockHttpAlertMessageComponent
-  ]
+  declarations: [MockImageDirective, MockHttpAlertMessageComponent],
+  imports: [CommonModule],
+  exports: [MockImageDirective, MockHttpAlertMessageComponent],
 })
-export class TestUtilsModule { }
+export class TestUtilsModule {}

@@ -13,7 +13,7 @@ export class Alert {
    * @param alertType
    *   HTTP alert type, which corresponds to a user-friendly alert message
    */
-  constructor(public alertType: AlertType = AlertType.none) { }
+  constructor(public alertType: AlertType = AlertType.none) {}
 
   /**
    * If `true`, an alert message is shown if `alertType` is passed to the HTTP
@@ -21,7 +21,7 @@ export class Alert {
    */
   get isShown(): boolean {
     return this.alertType !== AlertType.none;
-  };
+  }
 }
 
 /**
@@ -45,5 +45,5 @@ export enum AlertType {
   /**
    * The back-end server has responded with a permission denied message.
    */
-  permission = 'permission denied'
+  permission = 'permission denied',
 }

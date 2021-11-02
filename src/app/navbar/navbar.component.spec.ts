@@ -14,7 +14,6 @@ import { DiaryEntryFormComponent } from '../diary-entry/diary-entry-form/diary-e
 import { AuthService } from '../auth/auth.service';
 import { DiaryEntry } from '../diary-entry/diary-entry.model';
 
-
 /**
  * Mock authentication service
  */
@@ -27,47 +26,41 @@ class MockAuthService {
   /**
    * Mock isLoggedIn property
    */
-  get isLoggedIn(): boolean
-  {
+  get isLoggedIn(): boolean {
     return false;
   }
 }
-
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
 
   const testDiaryEntry: DiaryEntry = {
-      _id: '0',
-      title: 'some title',
-      locationName: 'some location',
-      body: 'some body',
-      images: [],
-      tags: [],
-      createdAt: (new Date()).toISOString(),
-      updatedAt: (new Date()).toISOString()
-    };
+    _id: '0',
+    title: 'some title',
+    locationName: 'some location',
+    body: 'some body',
+    images: [],
+    tags: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
 
   beforeEach(async () => {
     const modalServiceSpy = jasmine.createSpyObj('NgbModal', ['open']);
 
     const mockModal: Partial<NgbModalRef> = {
-      result: Promise.resolve(testDiaryEntry)
+      result: Promise.resolve(testDiaryEntry),
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        FontAwesomeModule
-      ],
-      declarations: [
-        NavbarComponent
-      ],
+      imports: [FontAwesomeModule],
+      declarations: [NavbarComponent],
       providers: [
-        {provide: AuthService, useClass: MockAuthService},
-        {provide: NgbModal, useValue: modalServiceSpy},
-        {provide: NgbModalRef, useValue: mockModal}
-      ]
+        { provide: AuthService, useClass: MockAuthService },
+        { provide: NgbModal, useValue: modalServiceSpy },
+        { provide: NgbModalRef, useValue: mockModal },
+      ],
     }).compileComponents();
   });
 
@@ -84,7 +77,7 @@ describe('NavbarComponent', () => {
 
     expect(modalService.open).toHaveBeenCalledWith(AuthModalComponent, {
       backdrop: 'static',
-      keyboard: false
+      keyboard: false,
     });
   });
 
@@ -128,32 +121,35 @@ describe('NavbarComponent', () => {
     expect(button).toBeNull();
   });
 
-  it('#openDiaryEntryModal should open diary entry modal', waitForAsync(() => {
-    const modalService = TestBed.inject(NgbModal) as jasmine.SpyObj<NgbModal>;
+  it(
+    '#openDiaryEntryModal should open diary entry modal',
+    waitForAsync(() => {
+      const modalService = TestBed.inject(NgbModal) as jasmine.SpyObj<NgbModal>;
 
-    const modal: NgbModalRef = TestBed.inject(NgbModalRef);
-    modalService.open.and.returnValue(modal);
+      const modal: NgbModalRef = TestBed.inject(NgbModalRef);
+      modalService.open.and.returnValue(modal);
 
-    component.newDiaryEntry.subscribe((diaryEntry: DiaryEntry) => {
-      expect(diaryEntry).toEqual(testDiaryEntry);
-    });
+      component.newDiaryEntry.subscribe((diaryEntry: DiaryEntry) => {
+        expect(diaryEntry).toEqual(testDiaryEntry);
+      });
 
-    component.openDiaryEntryModal();
+      component.openDiaryEntryModal();
 
-    expect(modalService.open).toHaveBeenCalledWith(DiaryEntryFormComponent, {
-       backdrop: 'static',
-       keyboard: false
-    });
+      expect(modalService.open).toHaveBeenCalledWith(DiaryEntryFormComponent, {
+        backdrop: 'static',
+        keyboard: false,
+      });
 
-    modal.result = Promise.resolve(null);
+      modal.result = Promise.resolve(null);
 
-    component.openDiaryEntryModal();
+      component.openDiaryEntryModal();
 
-    expect(modalService.open).toHaveBeenCalledWith(DiaryEntryFormComponent, {
-       backdrop: 'static',
-       keyboard: false
-    });
-  }));
+      expect(modalService.open).toHaveBeenCalledWith(DiaryEntryFormComponent, {
+        backdrop: 'static',
+        keyboard: false,
+      });
+    })
+  );
 
   it('new diary entry button should trigger #openDiaryEntryModal', () => {
     const authService = TestBed.inject(AuthService);
@@ -161,7 +157,9 @@ describe('NavbarComponent', () => {
     spyOnProperty(authService, 'isLoggedIn', 'get').and.returnValue(true);
     fixture.detectChanges();
 
-    const button = fixture.debugElement.query(By.css('#create-diary-entry-button'));
+    const button = fixture.debugElement.query(
+      By.css('#create-diary-entry-button')
+    );
 
     spyOn(component, 'openDiaryEntryModal');
     button.triggerEventHandler('click', null);
@@ -175,7 +173,9 @@ describe('NavbarComponent', () => {
     spyOnProperty(authService, 'isLoggedIn', 'get').and.returnValue(false);
     fixture.detectChanges();
 
-    const button = fixture.debugElement.query(By.css('#create-diary-entry-button'));
+    const button = fixture.debugElement.query(
+      By.css('#create-diary-entry-button')
+    );
 
     expect(button).toBeNull();
   });

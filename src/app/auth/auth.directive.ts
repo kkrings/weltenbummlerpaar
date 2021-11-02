@@ -7,7 +7,6 @@ import { Directive, DoCheck, ElementRef, Renderer2 } from '@angular/core';
 
 import { AuthService } from './auth.service';
 
-
 /**
  * Authentication directive
  *
@@ -15,7 +14,7 @@ import { AuthService } from './auth.service';
  * depending on if an admin user is logged in or not, respectively.
  */
 @Directive({
-  selector: '[appAuth]'
+  selector: '[appAuth]',
 })
 export class AuthDirective implements DoCheck {
   /**
@@ -29,7 +28,11 @@ export class AuthDirective implements DoCheck {
    * @param authService
    *   Service for checking if an admin user is logged in
    */
-  constructor(private renderer: Renderer2, private element: ElementRef, private authService: AuthService) {
+  constructor(
+    private renderer: Renderer2,
+    private element: ElementRef,
+    private authService: AuthService
+  ) {
     // do not show element by default
     this.renderer.addClass(this.element.nativeElement, 'd-none');
   }

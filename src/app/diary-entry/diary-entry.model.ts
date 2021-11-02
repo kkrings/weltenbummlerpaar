@@ -5,7 +5,6 @@
 
 import { Image } from '../image/image.model';
 
-
 /**
  * Diary entry model
  */

@@ -1,22 +1,28 @@
 <div class="d-flex justify-content-center">
-  <button id="login-button"
-          class="btn btn-primary"
-          type="button"
-          [hidden]="isLoggedIn"
-          (click)="openLoginModal()">
+  <button
+    id="login-button"
+    class="btn btn-primary"
+    type="button"
+    [hidden]="isLoggedIn"
+    (click)="openLoginModal()"
+  >
     <fa-icon [icon]="loginIcon"></fa-icon> Login
   </button>
   <div *ngIf="isLoggedIn">
-    <button id="create-diary-entry-button"
-            class="btn btn-primary"
-            type="button"
-            (click)="openDiaryEntryModal()">
+    <button
+      id="create-diary-entry-button"
+      class="btn btn-primary"
+      type="button"
+      (click)="openDiaryEntryModal()"
+    >
       <fa-icon [icon]="addDiaryEntryIcon"></fa-icon> Eintrag
     </button>
-    <button id="logout-button"
-            class="btn btn-primary ml-2"
-            type="button"
-            (click)="logout()">
+    <button
+      id="logout-button"
+      class="btn btn-primary ml-2"
+      type="button"
+      (click)="logout()"
+    >
       <fa-icon [icon]="logoutIcon"></fa-icon> Logout
     </button>
   </div>

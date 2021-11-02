@@ -3,7 +3,6 @@
  * @packageDocumentation
  */
 
-
 /**
  * Diary entry search numbers model
  *

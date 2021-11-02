@@ -13,7 +13,7 @@ import { DiaryEntry } from './diary-entry.model';
  * This pipe can be used to show a brief version of a diary entry's body.
  */
 @Pipe({
-  name: 'diaryEntryBrief'
+  name: 'diaryEntryBrief',
 })
 export class DiaryEntryBriefPipe implements PipeTransform {
   /**
@@ -42,5 +42,4 @@ export class DiaryEntryBriefPipe implements PipeTransform {
 
     return body;
   }
-
 }

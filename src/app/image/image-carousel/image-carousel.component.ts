@@ -8,7 +8,6 @@ import { NgbCarouselConfig, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 
 import { Image } from '../image.model';
 
-
 /**
  * Image carousel component
  *
@@ -18,7 +17,7 @@ import { Image } from '../image.model';
 @Component({
   selector: 'app-image-carousel',
   templateUrl: './image-carousel.component.html',
-  styleUrls: ['./image-carousel.component.scss']
+  styleUrls: ['./image-carousel.component.scss'],
 })
 export class ImageCarouselComponent {
   /**

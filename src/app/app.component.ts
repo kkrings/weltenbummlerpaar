@@ -13,14 +13,13 @@ import { DiaryEntry } from './diary-entry/diary-entry.model';
 import { Alert, AlertType } from './http-alert/alert.model';
 import { environment } from '../environments/environment';
 
-
 /**
  * Root component
  */
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
   /**
@@ -57,7 +56,10 @@ export class AppComponent implements OnInit, OnDestroy {
    * @param diaryEntrySearchService
    *   Service for searching for diary entries on the back-end server
    */
-  constructor(ngbConfig: NgbConfig, private diaryEntrySearchService: DiaryEntrySearchService) {
+  constructor(
+    ngbConfig: NgbConfig,
+    private diaryEntrySearchService: DiaryEntrySearchService
+  ) {
     ngbConfig.animation = environment.animation;
   }
 
@@ -66,11 +68,15 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     this.#updateShowSpinner = this.diaryEntrySearchService.searching$.subscribe(
-        (searching: boolean) => this.showSpinner = searching);
+      (searching: boolean) => (this.showSpinner = searching)
+    );
 
-    this.#updateDiaryEntries = this.diaryEntrySearchService.diaryEntries$.subscribe(
-        (result: DiaryEntrySearchResult) => this.diaryEntries = result.entries,
-        (alertType: AlertType) => this.httpAlert.alertType = alertType);
+    this.#updateDiaryEntries =
+      this.diaryEntrySearchService.diaryEntries$.subscribe(
+        (result: DiaryEntrySearchResult) =>
+          (this.diaryEntries = result.entries),
+        (alertType: AlertType) => (this.httpAlert.alertType = alertType)
+      );
   }
 
   /**

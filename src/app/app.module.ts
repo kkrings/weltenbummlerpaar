@@ -8,7 +8,11 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbAlertModule, NgbCarouselModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbAlertModule,
+  NgbCarouselModule,
+  NgbModalModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { environment } from '../environments/environment';
@@ -19,9 +23,7 @@ import { AuthModalComponent } from './auth/auth-modal/auth-modal.component';
 import { AuthDirective } from './auth/auth.directive';
 import { DiaryEntryFormComponent } from './diary-entry/diary-entry-form/diary-entry-form.component';
 
-import {
-  DiaryEntrySearchFormComponent
-} from './diary-entry/diary-entry-search/diary-entry-search-form/diary-entry-search-form.component';
+import { DiaryEntrySearchFormComponent } from './diary-entry/diary-entry-search/diary-entry-search-form/diary-entry-search-form.component';
 
 import { DiaryEntryGridComponent } from './diary-entry/diary-entry-grid/diary-entry-grid.component';
 import { DiaryEntryCardComponent } from './diary-entry/diary-entry-card/diary-entry-card.component';
@@ -33,7 +35,6 @@ import { ImageUploadComponent } from './image/image-upload/image-upload.componen
 import { ImageDirective } from './image/image.directive';
 import { FileValueAccessorDirective } from './shared/file-value-accessor.directive';
 import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-alert-message.component';
-
 
 /**
  * Application's root module
@@ -57,7 +58,7 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
     ImageUploadComponent,
     ImageDirective,
     FileValueAccessorDirective,
-    HttpAlertMessageComponent
+    HttpAlertMessageComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,17 +67,16 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
       config: {
         tokenGetter: () => localStorage.getItem('JWT'),
         allowedDomains: [environment.domain],
-        disallowedRoutes: [`${environment.domain}/db/admins/login`]
-      }
+        disallowedRoutes: [`${environment.domain}/db/admins/login`],
+      },
     }),
     ReactiveFormsModule,
     NgbAlertModule,
     NgbCarouselModule,
     NgbModalModule,
-    FontAwesomeModule
+    FontAwesomeModule,
   ],
-  providers: [
-  ],
-  bootstrap: [AppComponent]
+  providers: [],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

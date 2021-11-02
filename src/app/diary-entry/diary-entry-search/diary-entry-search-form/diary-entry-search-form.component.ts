@@ -9,7 +9,6 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import { DiaryEntrySearchService } from '../diary-entry-search.service';
 
-
 /**
  * Diary entry search form component
  *
@@ -19,7 +18,7 @@ import { DiaryEntrySearchService } from '../diary-entry-search.service';
 @Component({
   selector: 'app-diary-entry-search-form',
   templateUrl: './diary-entry-search-form.component.html',
-  styleUrls: ['./diary-entry-search-form.component.scss']
+  styleUrls: ['./diary-entry-search-form.component.scss'],
 })
 export class DiaryEntrySearchFormComponent implements OnInit, OnDestroy {
   /**
@@ -40,8 +39,11 @@ export class DiaryEntrySearchFormComponent implements OnInit, OnDestroy {
    * @param diaryEntryService
    *   Service for searching for diary entries on the back-end server
    */
-  constructor(formBuilder: FormBuilder, private diaryEntrySearchService: DiaryEntrySearchService) {
-    this.diaryEntrySearchForm = formBuilder.group({tags: ['']});
+  constructor(
+    formBuilder: FormBuilder,
+    private diaryEntrySearchService: DiaryEntrySearchService
+  ) {
+    this.diaryEntrySearchForm = formBuilder.group({ tags: [''] });
   }
 
   /**
@@ -49,7 +51,9 @@ export class DiaryEntrySearchFormComponent implements OnInit, OnDestroy {
    * tags input.
    */
   ngOnInit(): void {
-    this.diaryEntrySearchService.subscribeToSearchTags(this.diaryEntrySearchTags.valueChanges);
+    this.diaryEntrySearchService.subscribeToSearchTags(
+      this.diaryEntrySearchTags.valueChanges
+    );
     this.diaryEntrySearchTags.setValue('');
   }
 

@@ -6,7 +6,6 @@
 import { DiaryEntry } from '../diary-entry.model';
 import { DiaryEntrySearchNums } from './diary-entry-search-nums.model';
 
-
 /**
  * Diary entry search result model
  *
@@ -42,7 +41,11 @@ export class DiaryEntrySearchResult {
    *   Number of diary entries loaded from and available in total on the
    *   back-end server
    */
-  constructor(searchTags: string[] = [], entries: DiaryEntry[] = [], numEntries = {loaded: 0, total: 0}) {
+  constructor(
+    searchTags: string[] = [],
+    entries: DiaryEntry[] = [],
+    numEntries = { loaded: 0, total: 0 }
+  ) {
     this.#searchTags = searchTags;
     this.entries = entries;
     this.numEntries = numEntries;

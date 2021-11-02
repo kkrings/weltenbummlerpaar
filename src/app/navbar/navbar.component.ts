@@ -5,13 +5,16 @@
 
 import { Component, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { faPlus, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus,
+  faSignInAlt,
+  faSignOutAlt,
+} from '@fortawesome/free-solid-svg-icons';
 
 import { AuthModalComponent } from '../auth/auth-modal/auth-modal.component';
 import { DiaryEntryFormComponent } from '../diary-entry/diary-entry-form/diary-entry-form.component';
 import { AuthService } from '../auth/auth.service';
 import { DiaryEntry } from '../diary-entry/diary-entry.model';
-
 
 /**
  * Navigation bar component
@@ -24,7 +27,7 @@ import { DiaryEntry } from '../diary-entry/diary-entry.model';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
   /**
@@ -55,7 +58,10 @@ export class NavbarComponent {
    * @param modalService
    *   Service for showing the admin login form via Bootstrap's modal component
    */
-  constructor(private authService: AuthService, private modalService: NgbModal) { }
+  constructor(
+    private authService: AuthService,
+    private modalService: NgbModal
+  ) {}
 
   /**
    * Admin login modal
@@ -65,7 +71,7 @@ export class NavbarComponent {
   openLoginModal(): void {
     this.modalService.open(AuthModalComponent, {
       backdrop: 'static',
-      keyboard: false
+      keyboard: false,
     });
   }
 
@@ -78,7 +84,7 @@ export class NavbarComponent {
   openDiaryEntryModal(): void {
     const modal = this.modalService.open(DiaryEntryFormComponent, {
       backdrop: 'static',
-      keyboard: false
+      keyboard: false,
     });
 
     modal.result.then((diaryEntry?: DiaryEntry) => {

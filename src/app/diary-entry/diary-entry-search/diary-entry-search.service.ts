@@ -5,7 +5,12 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+} from 'rxjs/operators';
 
 import { DiaryEntry } from '../diary-entry.model';
 import { DiaryEntrySearchNums } from './diary-entry-search-nums.model';
@@ -24,7 +29,7 @@ import { DiaryEntryService } from '../diary-entry.service';
  * back-end server.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DiaryEntrySearchService {
   /**
@@ -40,7 +45,9 @@ export class DiaryEntrySearchService {
   /**
    * Source for emitting a list of found diary entries via `diaryEntries$`
    */
-  #diaryEntrySource = new BehaviorSubject<DiaryEntrySearchResult>(new DiaryEntrySearchResult());
+  #diaryEntrySource = new BehaviorSubject<DiaryEntrySearchResult>(
+    new DiaryEntrySearchResult()
+  );
 
   /**
    * Source for emitting a search's status via `searching$`
@@ -65,7 +72,10 @@ export class DiaryEntrySearchService {
    * @param config
    *   Diary entry search configuration
    */
-  constructor(private diaryEntryService: DiaryEntryService, private config: DiaryEntrySearchConfig) {
+  constructor(
+    private diaryEntryService: DiaryEntryService,
+    private config: DiaryEntrySearchConfig
+  ) {
     this.diaryEntries$ = this.#diaryEntrySource.asObservable();
     this.searching$ = this.#searchingSource.asObservable();
   }
@@ -82,17 +92,21 @@ export class DiaryEntrySearchService {
   subscribeToSearchTags(tags$: Observable<string>): void {
     this.unsubscribeFromSearchTags();
 
-    this.#onSearchTags = tags$.subscribe(_ => this.#searchingSource.next(true));
+    this.#onSearchTags = tags$.subscribe((_) =>
+      this.#searchingSource.next(true)
+    );
 
     const diaryEntrySearch$ = tags$.pipe(
-        map(tags => this.splitSearchTags(tags)),
-        debounceTime(this.config.waitForTags),
-        distinctUntilChanged(),
-        switchMap(tags => this.searchEntries(tags)));
+      map((tags) => this.splitSearchTags(tags)),
+      debounceTime(this.config.waitForTags),
+      distinctUntilChanged(),
+      switchMap((tags) => this.searchEntries(tags))
+    );
 
     this.#onSearchResult = diaryEntrySearch$.subscribe(
-        result => this.emitResult(result),
-        error => this.emitError(error));
+      (result) => this.emitResult(result),
+      (error) => this.emitError(error)
+    );
   }
 
   /**
@@ -107,7 +121,10 @@ export class DiaryEntrySearchService {
   }
 
   private splitSearchTags(tags: string): string[] {
-    return tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+    return tags
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.length > 0);
   }
 
   private emitResult(result: DiaryEntrySearchResult): void {
@@ -122,15 +139,28 @@ export class DiaryEntrySearchService {
 
   private searchEntries(tags: string[]): Observable<DiaryEntrySearchResult> {
     const search = forkJoin({
-      entries: this.diaryEntryService.getEntries(tags, 0, this.config.limitNumEntries),
-      count: this.diaryEntryService.countEntries(tags)
+      entries: this.diaryEntryService.getEntries(
+        tags,
+        0,
+        this.config.limitNumEntries
+      ),
+      count: this.diaryEntryService.countEntries(tags),
     });
 
-    return search.pipe(map(({entries, count}) => this.searchResult(tags, entries, count)));
+    return search.pipe(
+      map(({ entries, count }) => this.searchResult(tags, entries, count))
+    );
   }
 
-  private searchResult(tags: string[], entries: DiaryEntry[], count: number): DiaryEntrySearchResult {
-    const numEntries: DiaryEntrySearchNums = {loaded: entries.length, total: count};
+  private searchResult(
+    tags: string[],
+    entries: DiaryEntry[],
+    count: number
+  ): DiaryEntrySearchResult {
+    const numEntries: DiaryEntrySearchNums = {
+      loaded: entries.length,
+      total: count,
+    };
     return new DiaryEntrySearchResult(tags, entries, numEntries);
   }
 }

@@ -12,7 +12,6 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpAlertService } from '../http-alert/http-alert.service';
 import { environment } from '../../environments/environment';
 
-
 /**
  * Interface for token response from back-end server
  */
@@ -34,7 +33,7 @@ interface Token {
  * server by providing a username and a password.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   /**
@@ -48,9 +47,10 @@ export class AuthService {
    *   Checks if the JSON web token is expired.
    */
   constructor(
-      private http: HttpClient,
-      private httpAlertService: HttpAlertService,
-      private jwtHelperService: JwtHelperService) { }
+    private http: HttpClient,
+    private httpAlertService: HttpAlertService,
+    private jwtHelperService: JwtHelperService
+  ) {}
 
   /**
    * Admin login
@@ -67,9 +67,15 @@ export class AuthService {
    *   True if authentication was successful.
    */
   login(username: string, password: string): Observable<boolean> {
-    return this.http.post<Token>(`${environment.baseurl}/db/admins/login`, {username, password}).pipe(
+    return this.http
+      .post<Token>(`${environment.baseurl}/db/admins/login`, {
+        username,
+        password,
+      })
+      .pipe(
         map((response: Token) => this.toSuccess(response)),
-        catchError(this.httpAlertService.handleError));
+        catchError(this.httpAlertService.handleError)
+      );
   }
 
   /**

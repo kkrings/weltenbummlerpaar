@@ -4,12 +4,16 @@
  */
 
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthService } from '../auth.service';
 import { Alert, AlertType } from '../../http-alert/alert.model';
-
 
 /**
  * Authentication modal component
@@ -20,7 +24,7 @@ import { Alert, AlertType } from '../../http-alert/alert.model';
 @Component({
   selector: 'app-auth-modal',
   templateUrl: './auth-modal.component.html',
-  styleUrls: ['./auth-modal.component.scss']
+  styleUrls: ['./auth-modal.component.scss'],
 })
 export class AuthModalComponent {
   /**
@@ -55,11 +59,15 @@ export class AuthModalComponent {
    * @param authService
    *   Service for sending the login request to the back-end server
    */
-  constructor(formBuilder: FormBuilder, private modal: NgbActiveModal, private authService: AuthService) {
+  constructor(
+    formBuilder: FormBuilder,
+    private modal: NgbActiveModal,
+    private authService: AuthService
+  ) {
     // build the admin login form
     this.adminLoginForm = formBuilder.group({
       username: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
     });
   }
 
@@ -90,11 +98,11 @@ export class AuthModalComponent {
     const formControl = this.adminLoginForm.get(formControlName);
 
     return (
-        (formControl !== null) &&
-        (formControl.invalid) &&
-        (formControl.dirty || formControl.touched) &&
-        (formControl.errors !== null) &&
-        (formControl.errors.required)
+      formControl !== null &&
+      formControl.invalid &&
+      (formControl.dirty || formControl.touched) &&
+      formControl.errors !== null &&
+      formControl.errors.required
     );
   }
 
@@ -112,7 +120,7 @@ export class AuthModalComponent {
    * error message is presented to the user.
    */
   onSubmit(): void {
-    const {username, password} = this.adminLoginForm.value;
+    const { username, password } = this.adminLoginForm.value;
 
     // reset failed login message
     this.loginFailed = false;
@@ -137,6 +145,7 @@ export class AuthModalComponent {
       (alertType: AlertType) => {
         this.showSpinner = false;
         this.httpAlert.alertType = alertType;
-      });
+      }
+    );
   }
 }

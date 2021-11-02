@@ -10,31 +10,24 @@ import { By } from '@angular/platform-browser';
 import { AuthDirective } from './auth.directive';
 import { AuthService } from './auth.service';
 
-
 /**
  * Dummy authentication component
  */
 @Component({
-  template: '<div appAuth></div>'
+  template: '<div appAuth></div>',
 })
 class AuthComponent {}
-
 
 describe('AuthDirective', () => {
   it('should hide element if no admin user is logged in', async () => {
     // no admin user is logged in
     const mockAuthService: Partial<AuthService> = {
-      isLoggedIn: false
+      isLoggedIn: false,
     };
 
     await TestBed.configureTestingModule({
-      declarations: [
-        AuthComponent,
-        AuthDirective
-      ],
-      providers: [
-        {provide: AuthService, useValue: mockAuthService}
-      ]
+      declarations: [AuthComponent, AuthDirective],
+      providers: [{ provide: AuthService, useValue: mockAuthService }],
     }).compileComponents();
 
     const fixture = TestBed.createComponent(AuthComponent);
@@ -47,17 +40,12 @@ describe('AuthDirective', () => {
   it('should show element if admin user is logged in', async () => {
     // admin user is logged in
     const mockAuthService: Partial<AuthService> = {
-      isLoggedIn: true
+      isLoggedIn: true,
     };
 
     await TestBed.configureTestingModule({
-      declarations: [
-        AuthComponent,
-        AuthDirective
-      ],
-      providers: [
-        {provide: AuthService, useValue: mockAuthService}
-      ]
+      declarations: [AuthComponent, AuthDirective],
+      providers: [{ provide: AuthService, useValue: mockAuthService }],
     }).compileComponents();
 
     const fixture = TestBed.createComponent(AuthComponent);

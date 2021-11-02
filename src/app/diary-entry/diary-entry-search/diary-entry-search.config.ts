@@ -5,12 +5,11 @@
 
 import { Injectable } from '@angular/core';
 
-
 /**
  * Config for diary entry search service
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DiaryEntrySearchConfig {
   /**

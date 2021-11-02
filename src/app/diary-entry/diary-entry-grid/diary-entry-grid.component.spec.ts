@@ -11,12 +11,11 @@ import { NgbAlert, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { DiaryEntryGridComponent } from './diary-entry-grid.component';
 import { DiaryEntry } from '../diary-entry.model';
 
-
 /**
  * Mock diary entry card component
  */
 @Component({
-  selector: 'app-diary-entry-card'
+  selector: 'app-diary-entry-card',
 })
 class MockDiaryEntryCardComponent {
   /**
@@ -30,7 +29,7 @@ class MockDiaryEntryCardComponent {
     images: [],
     tags: [],
     createdAt: '',
-    updatedAt: ''
+    updatedAt: '',
   };
 
   /**
@@ -40,20 +39,14 @@ class MockDiaryEntryCardComponent {
   @Output() deletedEntryId = new EventEmitter<string>();
 }
 
-
 describe('DiaryEntryGridComponent', () => {
   let component: DiaryEntryGridComponent;
   let fixture: ComponentFixture<DiaryEntryGridComponent>;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [
-        NgbAlertModule
-      ],
-      declarations: [
-        DiaryEntryGridComponent,
-        MockDiaryEntryCardComponent
-      ]
+      imports: [NgbAlertModule],
+      declarations: [DiaryEntryGridComponent, MockDiaryEntryCardComponent],
     }).compileComponents();
   });
 
@@ -61,31 +54,36 @@ describe('DiaryEntryGridComponent', () => {
     fixture = TestBed.createComponent(DiaryEntryGridComponent);
     component = fixture.componentInstance;
 
-    component.diaryEntries = [{
-      _id: '0',
-      title: 'some title',
-      locationName: 'some location',
-      body: 'some body',
-      images: [],
-      tags: [],
-      createdAt: (new Date()).toISOString(),
-      updatedAt: (new Date()).toISOString()
-    }, {
-      _id: '1',
-      title: 'some title',
-      locationName: 'some location',
-      body: 'some body',
-      images: [],
-      tags: [],
-      createdAt: (new Date()).toISOString(),
-      updatedAt: (new Date()).toISOString()
-    }];
+    component.diaryEntries = [
+      {
+        _id: '0',
+        title: 'some title',
+        locationName: 'some location',
+        body: 'some body',
+        images: [],
+        tags: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        _id: '1',
+        title: 'some title',
+        locationName: 'some location',
+        body: 'some body',
+        images: [],
+        tags: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+    ];
 
     fixture.detectChanges();
   });
 
   it('should render diary entries on grid', () => {
-    const entryCards = fixture.debugElement.queryAll(By.directive(MockDiaryEntryCardComponent));
+    const entryCards = fixture.debugElement.queryAll(
+      By.directive(MockDiaryEntryCardComponent)
+    );
     expect(entryCards.length).toEqual(component.diaryEntries.length);
   });
 
@@ -104,7 +102,7 @@ describe('DiaryEntryGridComponent', () => {
   it('#deleteDiaryEntry should remove diary entry from view', () => {
     const testId = component.diaryEntries[0]._id;
     component.deleteDiaryEntry(testId);
-    const entryIds = component.diaryEntries.map(diaryEntry => diaryEntry._id);
+    const entryIds = component.diaryEntries.map((diaryEntry) => diaryEntry._id);
     expect(entryIds).not.toContain(testId);
   });
 });

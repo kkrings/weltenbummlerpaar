@@ -12,7 +12,6 @@ import { Image } from './image.model';
 import { HttpAlertService } from '../http-alert/http-alert.service';
 import { environment } from '../../environments/environment';
 
-
 /**
  * Image service
  *
@@ -20,7 +19,7 @@ import { environment } from '../../environments/environment';
  * on, or from the back-end server, respectively.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ImageService {
   /**
@@ -31,7 +30,10 @@ export class ImageService {
    * @param httpAlertService
    *   Service for handling HTTP errors
    */
-  constructor(private http: HttpClient, private httpAlertService: HttpAlertService) { }
+  constructor(
+    private http: HttpClient,
+    private httpAlertService: HttpAlertService
+  ) {}
 
   /**
    * Get image's URL.
@@ -71,8 +73,8 @@ export class ImageService {
     const url = `${environment.baseurl}/db/entries/${entryId}/images`;
 
     return this.http
-        .post<Image>(url, formData)
-        .pipe(catchError(this.httpAlertService.handleError));
+      .post<Image>(url, formData)
+      .pipe(catchError(this.httpAlertService.handleError));
   }
 
   /**
@@ -95,8 +97,8 @@ export class ImageService {
     formData.set('description', image.description);
 
     return this.http
-        .put<Image>(`${environment.baseurl}/db/images/${image._id}`, formData)
-        .pipe(catchError(this.httpAlertService.handleError));
+      .put<Image>(`${environment.baseurl}/db/images/${image._id}`, formData)
+      .pipe(catchError(this.httpAlertService.handleError));
   }
 
   /**
@@ -112,7 +114,9 @@ export class ImageService {
    */
   deleteImage(entryId: string, imageId: string): Observable<Image> {
     return this.http
-        .delete<Image>(`${environment.baseurl}/db/entries/${entryId}/images/${imageId}`)
-        .pipe(catchError(this.httpAlertService.handleError));
+      .delete<Image>(
+        `${environment.baseurl}/db/entries/${entryId}/images/${imageId}`
+      )
+      .pipe(catchError(this.httpAlertService.handleError));
   }
 }
