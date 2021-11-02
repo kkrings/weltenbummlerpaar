@@ -1,0 +1,34 @@
+{
+	"name": "Weltenbummlerpaar",
+	"runArgs": ["--init"],
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": { 
+			"VARIANT": "16-bullseye"
+		}
+	},
+	"settings": {
+		"editor.renderWhitespace": "all",
+		"editor.rulers": [80],
+		"[typescript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+		},
+		"[html]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[scss]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		}
+	},
+	"extensions": [
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode"
+	],
+	"forwardPorts": [4200],
+	"postCreateCommand": "npm install",
+	"remoteUser": "node",
+	"features": {
+		"git": "latest",
+		"git-lfs": "latest"
+	}
+}
