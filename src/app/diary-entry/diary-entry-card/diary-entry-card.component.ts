@@ -14,7 +14,6 @@ import { DiaryEntryModalComponent } from '../diary-entry-modal/diary-entry-modal
 import { ImageModalComponent } from '../../image/image-modal/image-modal.component';
 import { Alert, AlertType } from '../../http-alert/alert.model';
 
-
 /**
  * Diary entry card component
  *
@@ -24,7 +23,7 @@ import { Alert, AlertType } from '../../http-alert/alert.model';
 @Component({
   selector: 'app-diary-entry-card',
   templateUrl: './diary-entry-card.component.html',
-  styleUrls: ['./diary-entry-card.component.scss']
+  styleUrls: ['./diary-entry-card.component.scss'],
 })
 export class DiaryEntryCardComponent {
   /**
@@ -53,7 +52,7 @@ export class DiaryEntryCardComponent {
     images: [],
     tags: [],
     createdAt: '',
-    updatedAt: ''
+    updatedAt: '',
   };
 
   /**
@@ -84,7 +83,10 @@ export class DiaryEntryCardComponent {
    * @param diaryEntryService
    *   Service for deleting the injected diary entry from the back-end server
    */
-  constructor(private modalService: NgbModal, private diaryEntryService: DiaryEntryService) { }
+  constructor(
+    private modalService: NgbModal,
+    private diaryEntryService: DiaryEntryService
+  ) {}
 
   /**
    * Show full diary entry.
@@ -105,7 +107,7 @@ export class DiaryEntryCardComponent {
   openUpdateEntryModal(): void {
     const modal = this.modalService.open(DiaryEntryFormComponent, {
       backdrop: 'static',
-      keyboard: false
+      keyboard: false,
     });
 
     modal.componentInstance.modalTitle = 'Bearbeite Tagebucheintrag';
@@ -121,7 +123,7 @@ export class DiaryEntryCardComponent {
   openImageModal(): void {
     const modal = this.modalService.open(ImageModalComponent, {
       backdrop: 'static',
-      keyboard: false
+      keyboard: false,
     });
 
     modal.componentInstance.diaryEntry = this.diaryEntry;
