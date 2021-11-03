@@ -38,7 +38,7 @@ describe('ImageService', () => {
     };
 
     expect(ImageService.getImageUrl(image)).toBe(
-      `${environment.baseurl}/images/${image.id}.jpg`
+      `${environment.baseurl}/image-uploads/${image.id}.jpg`
     );
   });
 
@@ -58,7 +58,7 @@ describe('ImageService', () => {
       .subscribe((image: Image) => expect(image).toEqual(testImage), fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testEntryId}/images`
+      `${environment.baseurl}/diary-entries/${testEntryId}/images`
     );
     expect(testRequest.request.method).toMatch('POST');
 
@@ -98,7 +98,7 @@ describe('ImageService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testEntryId}/images`
+      `${environment.baseurl}/diary-entries/${testEntryId}/images`
     );
     expect(testRequest.request.method).toMatch('POST');
 
@@ -122,9 +122,9 @@ describe('ImageService', () => {
       .subscribe((image: Image) => expect(image).toEqual(testImage), fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/images/${testImage.id}`
+      `${environment.baseurl}/images/${testImage.id}`
     );
-    expect(testRequest.request.method).toMatch('PUT');
+    expect(testRequest.request.method).toMatch('PATCH');
 
     testRequest.flush(testImage);
   });
@@ -142,9 +142,9 @@ describe('ImageService', () => {
       .subscribe((image: Image) => expect(image).toEqual(testImage), fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/images/${testImage.id}`
+      `${environment.baseurl}/images/${testImage.id}`
     );
-    expect(testRequest.request.method).toMatch('PUT');
+    expect(testRequest.request.method).toMatch('PATCH');
 
     testRequest.flush(testImage);
   });
@@ -164,9 +164,9 @@ describe('ImageService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/images/${testImage.id}`
+      `${environment.baseurl}/images/${testImage.id}`
     );
-    expect(testRequest.request.method).toMatch('PUT');
+    expect(testRequest.request.method).toMatch('PATCH');
 
     testRequest.flush('mock HTTP error response', {
       status: 500,
@@ -189,7 +189,7 @@ describe('ImageService', () => {
       .subscribe((image: Image) => expect(image).toEqual(testImage), fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testEntryId}/images/${testImage.id}`
+      `${environment.baseurl}/diary-entries/${testEntryId}/images/${testImage.id}`
     );
 
     expect(testRequest.request.method).toMatch('DELETE');
@@ -214,7 +214,7 @@ describe('ImageService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testEntryId}/images/${testImage.id}`
+      `${environment.baseurl}/diary-entries/${testEntryId}/images/${testImage.id}`
     );
 
     expect(testRequest.request.method).toMatch('DELETE');

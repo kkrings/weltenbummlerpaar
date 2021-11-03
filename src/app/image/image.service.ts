@@ -45,7 +45,7 @@ export class ImageService {
    *   Image's URL
    */
   static getImageUrl(image: Image): string {
-    return `${environment.baseurl}/images/${image.id}.jpg`;
+    return `${environment.baseurl}/image-uploads/${image.id}.jpg`;
   }
 
   /**
@@ -67,10 +67,10 @@ export class ImageService {
       return throwError('No image file was specified for the upload.');
     }
 
-    formData.set('image', image.file);
+    formData.set('imageUpload', image.file);
     formData.set('description', image.description);
 
-    const url = `${environment.baseurl}/db/entries/${entryId}/images`;
+    const url = `${environment.baseurl}/diary-entries/${entryId}/images`;
 
     return this.http
       .post<Image>(url, formData)
@@ -91,13 +91,13 @@ export class ImageService {
     const formData = new FormData();
 
     if (image.file) {
-      formData.set('image', image.file);
+      formData.set('imageUpload', image.file);
     }
 
     formData.set('description', image.description);
 
     return this.http
-      .put<Image>(`${environment.baseurl}/db/images/${image.id}`, formData)
+      .patch<Image>(`${environment.baseurl}/images/${image.id}`, formData)
       .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -115,7 +115,7 @@ export class ImageService {
   deleteImage(entryId: string, imageId: string): Observable<Image> {
     return this.http
       .delete<Image>(
-        `${environment.baseurl}/db/entries/${entryId}/images/${imageId}`
+        `${environment.baseurl}/diary-entries/${entryId}/images/${imageId}`
       )
       .pipe(catchError(this.httpAlertService.handleError));
   }

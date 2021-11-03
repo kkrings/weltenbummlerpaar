@@ -63,10 +63,10 @@ describe('DiaryEntryService', () => {
       }, fail);
 
     const query = testDiaryEntry.searchTags
-      .map((tag) => `tags[$all][]=${tag}`)
+      .map((tag) => `searchTags=${tag}`)
       .join('&');
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries?${query}`
+      `${environment.baseurl}/diary-entries?${query}`
     );
 
     expect(testRequest.request.method).toMatch('GET');
@@ -80,7 +80,7 @@ describe('DiaryEntryService', () => {
     }, fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries`
+      `${environment.baseurl}/diary-entries`
     );
     expect(testRequest.request.method).toMatch('GET');
 
@@ -95,7 +95,7 @@ describe('DiaryEntryService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries`
+      `${environment.baseurl}/diary-entries`
     );
     expect(testRequest.request.method).toMatch('GET');
 
@@ -116,7 +116,7 @@ describe('DiaryEntryService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testDiaryEntry.id}`
+      `${environment.baseurl}/diary-entries/${testDiaryEntry.id}`
     );
     expect(testRequest.request.method).toMatch('GET');
 
@@ -133,7 +133,7 @@ describe('DiaryEntryService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testDiaryEntry.id}`
+      `${environment.baseurl}/diary-entries/${testDiaryEntry.id}`
     );
     expect(testRequest.request.method).toMatch('GET');
 
@@ -154,7 +154,7 @@ describe('DiaryEntryService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries`
+      `${environment.baseurl}/diary-entries`
     );
     expect(testRequest.request.method).toMatch('POST');
 
@@ -171,7 +171,7 @@ describe('DiaryEntryService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries`
+      `${environment.baseurl}/diary-entries`
     );
     expect(testRequest.request.method).toMatch('POST');
 
@@ -192,9 +192,9 @@ describe('DiaryEntryService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testDiaryEntry.id}`
+      `${environment.baseurl}/diary-entries/${testDiaryEntry.id}`
     );
-    expect(testRequest.request.method).toMatch('PUT');
+    expect(testRequest.request.method).toMatch('PATCH');
 
     testRequest.flush(testDiaryEntry);
   });
@@ -209,9 +209,9 @@ describe('DiaryEntryService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testDiaryEntry.id}`
+      `${environment.baseurl}/diary-entries/${testDiaryEntry.id}`
     );
-    expect(testRequest.request.method).toMatch('PUT');
+    expect(testRequest.request.method).toMatch('PATCH');
 
     testRequest.flush('mock HTTP error response', {
       status: 500,
@@ -230,7 +230,7 @@ describe('DiaryEntryService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testDiaryEntry.id}`
+      `${environment.baseurl}/diary-entries/${testDiaryEntry.id}`
     );
     expect(testRequest.request.method).toMatch('DELETE');
 
@@ -247,7 +247,7 @@ describe('DiaryEntryService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/entries/${testDiaryEntry.id}`
+      `${environment.baseurl}/diary-entries/${testDiaryEntry.id}`
     );
     expect(testRequest.request.method).toMatch('DELETE');
 

@@ -11,6 +11,7 @@ import {
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { AuthService } from './auth.service';
+import { AlertType } from '../http-alert/alert.model';
 import { environment } from '../../environments/environment';
 
 /**
@@ -64,27 +65,31 @@ describe('AuthService', () => {
     }, fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/admins/login`
+      `${environment.baseurl}/auth/login`
     );
 
     expect(testRequest.request.method).toMatch('POST');
     expect(testRequest.request.body.username).toMatch('username');
     expect(testRequest.request.body.password).toMatch('password');
 
-    testRequest.flush({ success: true, token: 'mockJWT' });
+    testRequest.flush({ accessToken: 'mockJWT' });
   });
 
   it('test unsuccessfl login of admin user', () => {
-    authService.login('username', 'password').subscribe((success: boolean) => {
-      expect(success).toBeFalse();
-      expect(authService.isLoggedIn).toBeFalse();
-    }, fail);
+    authService
+      .login('username', 'password')
+      .subscribe(fail, (alertType: AlertType) =>
+        expect(alertType).toEqual(AlertType.permission)
+      );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/db/admins/login`
+      `${environment.baseurl}/auth/login`
     );
 
-    testRequest.flush({ success: false });
+    testRequest.flush('mock not-authorized response', {
+      status: 401,
+      statusText: 'Authentication failed',
+    });
   });
 
   afterEach(() => httpTestingController.verify());

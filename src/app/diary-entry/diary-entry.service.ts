@@ -25,7 +25,7 @@ export class DiaryEntryService {
   /**
    * URL to entry end point
    */
-  #entryUrl = `${environment.baseurl}/db/entries`;
+  #entryUrl = `${environment.baseurl}/diary-entries`;
 
   /**
   /**
@@ -127,11 +127,11 @@ export class DiaryEntryService {
    */
   updateEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
     return this.http
-      .put<DiaryEntry>(`${this.#entryUrl}/${diaryEntry.id}`, {
+      .patch<DiaryEntry>(`${this.#entryUrl}/${diaryEntry.id}`, {
         title: diaryEntry.title,
         location: diaryEntry.location,
         body: diaryEntry.body,
-        images: diaryEntry.images,
+        images: diaryEntry.images.map((image) => image.id),
         searchTags: diaryEntry.searchTags,
       })
       .pipe(catchError(this.httpAlertService.handleError));
@@ -172,14 +172,14 @@ export class DiaryEntryService {
   ): string {
     const url = count ? `${this.#entryUrl}/count` : this.#entryUrl;
 
-    const query = tags.map((tag) => `tags[$all][]=${tag}`);
+    const query = tags.map((tag) => `searchTags=${tag}`);
 
     if (skip > 0) {
-      query.push(`skip=${skip}`);
+      query.push(`skipDiaryEntries=${skip}`);
     }
 
     if (limit > 0) {
-      query.push(`limit=${limit}`);
+      query.push(`numDiaryEntries=${limit}`);
     }
 
     return query.length > 0 ? `${url}?${query.join('&')}` : url;

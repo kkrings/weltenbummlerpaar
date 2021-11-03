@@ -17,13 +17,9 @@ import { environment } from '../../environments/environment';
  */
 interface Token {
   /**
-   * Specifies if admin login request was successful.
-   */
-  readonly success: boolean;
-  /**
    * Actual JSON web token
    */
-  readonly token: string;
+  readonly accessToken: string;
 }
 
 /**
@@ -68,7 +64,7 @@ export class AuthService {
    */
   login(username: string, password: string): Observable<boolean> {
     return this.http
-      .post<Token>(`${environment.baseurl}/db/admins/login`, {
+      .post<Token>(`${environment.baseurl}/auth/login`, {
         username,
         password,
       })
@@ -111,10 +107,7 @@ export class AuthService {
    *   If `true`, the admin login was successful.
    */
   private toSuccess(response: Token): boolean {
-    if (response.success) {
-      localStorage.setItem('JWT', response.token);
-    }
-
-    return response.success;
+    localStorage.setItem('JWT', response.accessToken);
+    return true;
   }
 }

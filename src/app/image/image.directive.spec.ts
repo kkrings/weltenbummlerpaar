@@ -46,7 +46,7 @@ describe('ImageDirective', () => {
   it("img's src property should be set to the image's URL", () => {
     const img = fixture.debugElement.query(By.css('img'));
     const src = img.nativeElement.getAttribute('src');
-    expect(src).toMatch(`${environment.baseurl}/images/0.jpg`);
+    expect(src).toMatch(`${environment.baseurl}/image-uploads/0.jpg`);
   });
 
   it("img's alt property should be set to the image's filename", () => {
@@ -58,6 +58,6 @@ describe('ImageDirective', () => {
   it("a's href property should be set to the image's URL", () => {
     const atag = fixture.debugElement.query(By.css('a'));
     const href = atag.nativeElement.getAttribute('href');
-    expect(href).toMatch(`${environment.baseurl}/images/0.jpg`);
+    expect(href).toMatch(`${environment.baseurl}/image-uploads/0.jpg`);
   });
 });
