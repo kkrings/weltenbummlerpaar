@@ -9,6 +9,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { Image } from './image.model';
+import { DiaryEntry } from '../diary-entry/diary-entry.model';
 import { HttpAlertService } from '../http-alert/http-alert.service';
 import { environment } from '../../environments/environment';
 
@@ -57,9 +58,9 @@ export class ImageService {
    *   New image that should be uploaded
    *
    * @returns
-   *   The uploaded image
+   *   The updated diary entry
    */
-  uploadImage(entryId: string, image: Image): Observable<Image> {
+  uploadImage(entryId: string, image: Image): Observable<DiaryEntry> {
     // upload is based on multipart/form-data
     const formData = new FormData();
 
@@ -73,7 +74,7 @@ export class ImageService {
     const url = `${environment.baseurl}/diary-entries/${entryId}/images`;
 
     return this.http
-      .post<Image>(url, formData)
+      .post<DiaryEntry>(url, formData)
       .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -110,11 +111,11 @@ export class ImageService {
    *   Image's ID
    *
    * @returns
-   *   The deleted image
+   *   The updated diary entry
    */
-  deleteImage(entryId: string, imageId: string): Observable<Image> {
+  deleteImage(entryId: string, imageId: string): Observable<DiaryEntry> {
     return this.http
-      .delete<Image>(
+      .delete<DiaryEntry>(
         `${environment.baseurl}/diary-entries/${entryId}/images/${imageId}`
       )
       .pipe(catchError(this.httpAlertService.handleError));

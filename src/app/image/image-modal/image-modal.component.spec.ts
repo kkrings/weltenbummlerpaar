@@ -10,6 +10,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ImageModalComponent } from './image-modal.component';
 import { Image } from '../image.model';
+import { DiaryEntry } from '../../diary-entry/diary-entry.model';
 
 import {
   MockNgbActiveModal,
@@ -39,14 +40,19 @@ class MockImageUploadComponent {
   };
 
   /**
-   * Mock created/updated image (two-way data binding)
+   * Mock created images
    */
-  @Output() imageChange = new EventEmitter<Image>();
+  @Output() imageCreate = new EventEmitter<DiaryEntry>();
 
   /**
    * Mock deleted image
    */
-  @Output() imageDelete = new EventEmitter<Image>();
+  @Output() imageDelete = new EventEmitter<DiaryEntry>();
+
+  /**
+   * Mock updated image (two-way data binding)
+   */
+  @Output() imageChange = new EventEmitter<Image>();
 
   /**
    * Mock back-end server's processing status
@@ -187,9 +193,15 @@ describe('ImageModalComponent', () => {
     const imageUpload = fixture.debugElement.queryAll(
       By.directive(MockImageUploadComponent)
     )[0];
+
     const imageUploadComponent = imageUpload.injector.get(
       MockImageUploadComponent
     );
+
+    const diaryEntry: DiaryEntry = {
+      ...component.diaryEntry,
+      images: [...component.diaryEntry.images],
+    };
 
     const uploadedImage: Image = {
       id: '2',
@@ -198,7 +210,9 @@ describe('ImageModalComponent', () => {
       updatedAt: new Date().toISOString(),
     };
 
-    imageUploadComponent.imageChange.emit(uploadedImage);
+    diaryEntry.images.push(uploadedImage);
+
+    imageUploadComponent.imageCreate.emit(diaryEntry);
     fixture.detectChanges();
 
     const lastIndex = component.diaryEntry.images.length - 1;
@@ -240,8 +254,13 @@ describe('ImageModalComponent', () => {
       );
 
       const deletedImage = imageUploadComponent.image;
+      const diaryEntry: DiaryEntry = { ...component.diaryEntry };
 
-      imageUploadComponent.imageDelete.emit(deletedImage);
+      diaryEntry.images = diaryEntry.images.filter(
+        (image) => image.id !== deletedImage.id
+      );
+
+      imageUploadComponent.imageDelete.emit(diaryEntry);
       fixture.detectChanges();
 
       const imageIds = component.diaryEntry.images.map((image) => image.id);

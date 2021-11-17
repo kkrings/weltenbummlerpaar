@@ -11,6 +11,7 @@ import {
 
 import { ImageService } from './image.service';
 import { Image } from './image.model';
+import { DiaryEntry } from '../diary-entry/diary-entry.model';
 import { HttpAlertService } from '../http-alert/http-alert.service';
 import { AlertType } from '../http-alert/alert.model';
 import { environment } from '../../environments/environment';
@@ -43,26 +44,40 @@ describe('ImageService', () => {
   });
 
   it('#uploadImage should return image', () => {
-    const testEntryId = '0';
-
-    const testImage: Image = {
-      file: new File([], 'testImage.jpg', { type: 'image/jpeg' }),
+    const testEntry: DiaryEntry = {
       id: '0',
-      description: 'This is a test image.',
+      title: 'some title',
+      location: 'some location',
+      body: 'some body',
+      searchTags: [],
+      images: [
+        {
+          id: '0',
+          description: 'This is a test image.',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      ],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
+    const testImage: Image = {
+      ...testEntry.images[0],
+      file: new File([], 'testImage.jpg', { type: 'image/jpeg' }),
+    };
+
     service
-      .uploadImage(testEntryId, testImage)
-      .subscribe((image: Image) => expect(image).toEqual(testImage), fail);
+      .uploadImage(testEntry.id, testImage)
+      .subscribe((entry: DiaryEntry) => expect(entry).toEqual(testEntry), fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/diary-entries/${testEntryId}/images`
+      `${environment.baseurl}/diary-entries/${testEntry.id}/images`
     );
+
     expect(testRequest.request.method).toMatch('POST');
 
-    testRequest.flush(testImage);
+    testRequest.flush(testEntry);
   });
 
   it('#uploadImage without file should throw', () => {
@@ -175,18 +190,30 @@ describe('ImageService', () => {
   });
 
   it('#delteImage should return image', () => {
-    const testEntryId = '0';
-
-    const testImage: Image = {
+    const testEntry: DiaryEntry = {
       id: '0',
-      description: 'This is a test image.',
+      title: 'some title',
+      location: 'some location',
+      body: 'some body',
+      searchTags: [],
+      images: [
+        {
+          id: '0',
+          description: 'This is a test image.',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      ],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
+    const testEntryId = testEntry.id;
+    const testImage = testEntry.images[0];
+
     service
       .deleteImage(testEntryId, testImage.id)
-      .subscribe((image: Image) => expect(image).toEqual(testImage), fail);
+      .subscribe((entry: DiaryEntry) => expect(entry).toEqual(testEntry), fail);
 
     const testRequest = httpTestingController.expectOne(
       `${environment.baseurl}/diary-entries/${testEntryId}/images/${testImage.id}`
@@ -194,7 +221,7 @@ describe('ImageService', () => {
 
     expect(testRequest.request.method).toMatch('DELETE');
 
-    testRequest.flush(testImage);
+    testRequest.flush(testEntry);
   });
 
   it('#deleteImage should return alert message', () => {

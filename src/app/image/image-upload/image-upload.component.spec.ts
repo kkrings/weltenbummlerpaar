@@ -13,6 +13,7 @@ import { first, last } from 'rxjs/operators';
 import { ImageUploadComponent } from './image-upload.component';
 import { ImageService } from '../image.service';
 import { Image } from '../image.model';
+import { DiaryEntry } from '../../diary-entry/diary-entry.model';
 import { AlertType } from '../../http-alert/alert.model';
 
 import * as testUtils from '../../test-utils/test-utils.module';
@@ -21,7 +22,25 @@ describe('ImageUploadComponent', () => {
   let component: ImageUploadComponent;
   let fixture: ComponentFixture<ImageUploadComponent>;
 
-  const testEntryId = '0';
+  const testEntry: DiaryEntry = {
+    id: '0',
+    title: 'some title',
+    location: 'some location',
+    body: 'some body',
+    searchTags: [],
+    images: [
+      {
+        id: '0',
+        description: 'some description',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  const testEntryId = testEntry.id;
 
   beforeEach(async () => {
     const imageServiceSpy = jasmine.createSpyObj('ImageService', [
@@ -137,26 +156,23 @@ describe('ImageUploadComponent', () => {
     waitForAsync(() => {
       component.httpAlert.alertType = AlertType.server;
 
-      const testImage: Image = {
-        id: '0',
-        description: 'some description',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-
+      const testImage = testEntry.images[0];
       component.image = testImage;
 
       const imageService = TestBed.inject(
         ImageService
       ) as jasmine.SpyObj<ImageService>;
-      imageService.deleteImage.and.returnValue(testUtils.asyncData(testImage));
 
-      component.imageDelete.subscribe((image: Image) =>
-        expect(image.id).toEqual(testImage.id)
+      imageService.deleteImage.and.returnValue(testUtils.asyncData(testEntry));
+
+      component.imageDelete.subscribe((entry: DiaryEntry) =>
+        expect(entry.id).toEqual(testEntry.id)
       );
+
       component.processing
         .pipe(first())
         .subscribe((processing: boolean) => expect(processing).toBeTrue());
+
       component.processing
         .pipe(last())
         .subscribe((processing: boolean) => expect(processing).toBeFalse());
@@ -165,6 +181,7 @@ describe('ImageUploadComponent', () => {
 
       expect(component.processDeleteRequest).toBeTrue();
       expect(component.httpAlert.alertType).toEqual(AlertType.none);
+
       expect(imageService.deleteImage).toHaveBeenCalledWith(
         testEntryId,
         testImage.id
@@ -274,12 +291,7 @@ describe('ImageUploadComponent', () => {
 
       component.httpAlert.alertType = AlertType.server;
 
-      const testImage: Image = {
-        id: '0',
-        description: 'some description',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
+      const testImage = testEntry.images[0];
 
       const description = fixture.debugElement.query(By.css('#description'));
       description.nativeElement.value = testImage.description;
@@ -306,14 +318,17 @@ describe('ImageUploadComponent', () => {
       const imageService = TestBed.inject(
         ImageService
       ) as jasmine.SpyObj<ImageService>;
-      imageService.uploadImage.and.returnValue(testUtils.asyncData(testImage));
+
+      imageService.uploadImage.and.returnValue(testUtils.asyncData(testEntry));
 
       component.imageChange.subscribe((image: Image) =>
         expect(image).toEqual(testImage)
       );
+
       component.processing
         .pipe(first())
         .subscribe((processing: boolean) => expect(processing).toBeTrue());
+
       component.processing
         .pipe(last())
         .subscribe((processing: boolean) => expect(processing).toBeFalse());
@@ -336,6 +351,7 @@ describe('ImageUploadComponent', () => {
 
   it('#onSubmit should update image', () => {
     const testImage: Image = {
+      file: undefined,
       id: '0',
       description: 'some description',
       createdAt: new Date().toISOString(),
@@ -350,6 +366,7 @@ describe('ImageUploadComponent', () => {
     const imageService = TestBed.inject(
       ImageService
     ) as jasmine.SpyObj<ImageService>;
+
     imageService.updateImage.and.returnValue(of(testImage));
 
     component.onSubmit();

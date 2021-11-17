@@ -57,14 +57,13 @@ export class ImageModalComponent {
   }
 
   /**
-   * Remove the given image from the injected diary entry.
+   * Update the injected diary entry.
    *
-   * @param imageId
-   *   Image's ID
+   * @param entry
+   *   Updated diary entry
    */
-  removeImageFromEntry(imageId: string): void {
-    this.diaryEntry.images = this.diaryEntry.images.filter(
-      (image: Image) => image.id !== imageId
-    );
+  updateEntry(entry: DiaryEntry): void {
+    Object.assign(this.diaryEntry, entry);
+    this.diaryEntry.previewImage = entry.previewImage;
   }
 }

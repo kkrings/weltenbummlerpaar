@@ -8,7 +8,7 @@
       accept="image/jpeg"
       [required]="image.id.length === 0 ? 'required' : false"
     />
-    <label for="files" class="custom-file-label"> Wähle ein Foto. </label>
+    <label for="files" class="custom-file-label">Wähle ein Foto.</label>
   </div>
   <div class="form-group">
     <label for="description" class="sr-only">Beschreibung:</label>
@@ -24,7 +24,7 @@
       *ngIf="description.invalid && (description.dirty || description.touched)"
     >
       <div *ngIf="description.errors?.required">
-        <small class="text-danger"> Ohne Beschreibung kein Foto-Upload. </small>
+        <small class="text-danger">Ohne Beschreibung kein Foto-Upload.</small>
       </div>
     </div>
   </div>

@@ -25,6 +25,7 @@ import bsCustomFileInput from 'bs-custom-file-input';
 
 import { ImageService } from '../image.service';
 import { Image } from '../image.model';
+import { DiaryEntry } from '../../diary-entry/diary-entry.model';
 import { Alert, AlertType } from '../../http-alert/alert.model';
 
 /**
@@ -71,14 +72,19 @@ export class ImageUploadComponent implements OnInit {
   };
 
   /**
-   * Inform the parent component that the injected image was changed.
+   * Inform the parent component that the injected image was created.
    */
-  @Output() imageChange = new EventEmitter<Image>();
+  @Output() imageCreate = new EventEmitter<DiaryEntry>();
 
   /**
    * Inform the parent component that the injected image was deleted.
    */
-  @Output() imageDelete = new EventEmitter<Image>();
+  @Output() imageDelete = new EventEmitter<DiaryEntry>();
+
+  /**
+   * Inform the parent component that the injected image was changed.
+   */
+  @Output() imageChange = new EventEmitter<Image>();
 
   /**
    * Inform the parent component that a request is being processed by the
@@ -170,10 +176,10 @@ export class ImageUploadComponent implements OnInit {
     this.httpAlert.alertType = AlertType.none;
 
     this.imageService.deleteImage(this.entryId, this.image.id).subscribe(
-      (image: Image) => {
+      (entry: DiaryEntry) => {
         this.processDeleteRequest = false;
         this.processing.emit(false);
-        this.imageDelete.emit(image);
+        this.imageDelete.emit(entry);
       },
       (alertType: AlertType) => {
         this.processDeleteRequest = false;
@@ -187,21 +193,15 @@ export class ImageUploadComponent implements OnInit {
    * Submit an image upload/update request to the back-end server.
    */
   onSubmit(): void {
-    const upload: Image = { ...this.image };
     const formValue = this.imageForm.value;
 
-    if (formValue.files) {
-      upload.file = formValue.files[0];
-    }
+    const image: Image = {
+      ...this.image,
+      file: formValue.files?.[0],
+      description: formValue.description,
+    };
 
-    upload.description = formValue.description;
-
-    const update = this.image.id.length > 0;
-
-    const request = (image: Image): Observable<Image> =>
-      update
-        ? this.imageService.updateImage(image)
-        : this.imageService.uploadImage(this.entryId, image);
+    const updateImage = this.image.id.length > 0;
 
     // reset alert message
     this.httpAlert.alertType = AlertType.none;
@@ -210,18 +210,36 @@ export class ImageUploadComponent implements OnInit {
     this.processUploadRequest = true;
     this.processing.emit(true);
 
-    request(upload).subscribe(
+    if (updateImage) {
+      this.updateImage(image);
+    } else {
+      this.uploadImage(image);
+    }
+  }
+
+  private uploadImage(image: Image): void {
+    this.imageService.uploadImage(this.entryId, image).subscribe(
+      (entry: DiaryEntry) => {
+        this.processUploadRequest = false;
+        this.processing.emit(false);
+        this.imageCreate.emit(entry);
+        this.imageFormElement.nativeElement.reset();
+        this.imageForm.reset();
+      },
+      (alertType: AlertType) => {
+        this.processUploadRequest = false;
+        this.processing.emit(false);
+        this.httpAlert.alertType = alertType;
+      }
+    );
+  }
+
+  private updateImage(image: Image): void {
+    this.imageService.updateImage(image).subscribe(
       (image: Image) => {
         this.processUploadRequest = false;
         this.processing.emit(false);
-
-        if (update) {
-          this.imageChange.emit(Object.assign(this.image, image));
-        } else {
-          this.imageChange.emit(image);
-          this.imageFormElement.nativeElement.reset();
-          this.imageForm.reset();
-        }
+        this.imageChange.emit(Object.assign(this.image, image));
       },
       (alertType: AlertType) => {
         this.processUploadRequest = false;
