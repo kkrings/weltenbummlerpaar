@@ -3,7 +3,14 @@
  * @packageDocumentation
  */
 
-import { Directive, OnInit, Input, ElementRef, Renderer2 } from '@angular/core';
+import {
+  Directive,
+  OnInit,
+  Input,
+  ElementRef,
+  Renderer2,
+  DoCheck,
+} from '@angular/core';
 
 import { Image } from './image.model';
 import { ImageService } from './image.service';
@@ -19,7 +26,7 @@ import { ImageService } from './image.service';
 @Directive({
   selector: '[appImage]',
 })
-export class ImageDirective implements OnInit {
+export class ImageDirective implements OnInit, DoCheck {
   /**
    * Image object
    */
@@ -29,6 +36,8 @@ export class ImageDirective implements OnInit {
     createdAt: '',
     updatedAt: '',
   };
+
+  imageUpdatedAt = '';
 
   /**
    * Construct the image directive.
@@ -48,16 +57,39 @@ export class ImageDirective implements OnInit {
    * attribute directive is applied to.
    */
   ngOnInit(): void {
+    this.imageUpdatedAt = this.image.updatedAt;
+    this.setImgSrc();
+    this.setImgAlt();
+    this.setImgHref();
+  }
+
+  /**
+   * Force a reload if the image has been updated.
+   */
+  ngDoCheck(): void {
+    if (this.image != null && this.image.updatedAt !== this.imageUpdatedAt) {
+      this.imageUpdatedAt = this.image.updatedAt;
+      this.setImgSrc();
+    }
+  }
+
+  private setImgSrc(): void {
     this.renderer.setProperty(
       this.element.nativeElement,
       'src',
-      ImageService.getImageUrl(this.image)
+      `${ImageService.getImageUrl(this.image)}?${this.image.updatedAt}`
     );
+  }
+
+  private setImgAlt(): void {
     this.renderer.setProperty(
       this.element.nativeElement,
       'alt',
       `${this.image.id}.jpg`
     );
+  }
+
+  private setImgHref(): void {
     this.renderer.setProperty(
       this.element.nativeElement,
       'href',

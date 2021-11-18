@@ -6,11 +6,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { Image } from './image.model';
 import { DiaryEntry } from '../diary-entry/diary-entry.model';
 import { HttpAlertService } from '../http-alert/http-alert.service';
+import { setPreviewImage } from '../utils';
 import { environment } from '../../environments/environment';
 
 /**
@@ -75,6 +76,7 @@ export class ImageService {
 
     return this.http
       .post<DiaryEntry>(url, formData)
+      .pipe(map((entry) => setPreviewImage(entry)))
       .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -114,10 +116,11 @@ export class ImageService {
    *   The updated diary entry
    */
   deleteImage(entryId: string, imageId: string): Observable<DiaryEntry> {
+    const url = `${environment.baseurl}/diary-entries/${entryId}/images`;
+
     return this.http
-      .delete<DiaryEntry>(
-        `${environment.baseurl}/diary-entries/${entryId}/images/${imageId}`
-      )
+      .delete<DiaryEntry>(`${url}/${imageId}`)
+      .pipe(map((entry) => setPreviewImage(entry)))
       .pipe(catchError(this.httpAlertService.handleError));
   }
 }

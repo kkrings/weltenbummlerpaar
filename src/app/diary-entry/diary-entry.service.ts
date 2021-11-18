@@ -6,10 +6,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { DiaryEntry } from './diary-entry.model';
 import { HttpAlertService } from '../http-alert/http-alert.service';
+import { setPreviewImage } from '../utils';
 import { environment } from '../../environments/environment';
 
 /**
@@ -77,6 +78,7 @@ export class DiaryEntryService {
   ): Observable<DiaryEntry[]> {
     return this.http
       .get<DiaryEntry[]>(this.getSearchUrl(tags, skip, limit))
+      .pipe(map((entries) => entries.map((entry) => setPreviewImage(entry))))
       .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -92,6 +94,7 @@ export class DiaryEntryService {
   getEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
       .get<DiaryEntry>(`${this.#entryUrl}/${entryId}`)
+      .pipe(map((entry) => setPreviewImage(entry)))
       .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -113,6 +116,7 @@ export class DiaryEntryService {
         images: diaryEntry.images,
         searchTags: diaryEntry.searchTags,
       })
+      .pipe(map((entry) => setPreviewImage(entry)))
       .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -134,6 +138,7 @@ export class DiaryEntryService {
         images: diaryEntry.images.map((image) => image.id),
         searchTags: diaryEntry.searchTags,
       })
+      .pipe(map((entry) => setPreviewImage(entry)))
       .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -149,6 +154,7 @@ export class DiaryEntryService {
   deleteEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
       .delete<DiaryEntry>(`${this.#entryUrl}/${entryId}`)
+      .pipe(map((entry) => setPreviewImage(entry)))
       .pipe(catchError(this.httpAlertService.handleError));
   }
 
