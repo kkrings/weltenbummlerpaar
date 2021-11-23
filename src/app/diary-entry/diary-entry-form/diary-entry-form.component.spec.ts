@@ -441,6 +441,7 @@ describe('DiaryEntryFormComponent', () => {
         title: testEntry.title,
         location: testEntry.location,
         body: testEntry.body,
+        previewImage: testEntry.previewImage,
         images: component.diaryEntry.images,
         searchTags: testEntry.searchTags,
         createdAt: component.diaryEntry.createdAt,
@@ -452,6 +453,7 @@ describe('DiaryEntryFormComponent', () => {
         location: testEntry.location,
         body: testEntry.body,
         searchTags: testEntry.searchTags.join(', '),
+        previewImage: testEntry.previewImage ?? null,
       });
 
       const service = TestBed.inject(
@@ -485,7 +487,11 @@ describe('DiaryEntryFormComponent', () => {
 
       fixture.detectChanges();
 
-      const updatedEntry = { ...testEntry };
+      const updatedEntry = {
+        ...testEntry,
+        previewImage: testEntry.previewImage,
+      };
+
       updatedEntry.title = 'updated title';
       component.title.setValue(updatedEntry.title);
 

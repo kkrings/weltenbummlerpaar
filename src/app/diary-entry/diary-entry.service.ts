@@ -135,6 +135,7 @@ export class DiaryEntryService {
         title: diaryEntry.title,
         location: diaryEntry.location,
         body: diaryEntry.body,
+        previewImage: diaryEntry.previewImage?.id,
         images: diaryEntry.images.map((image) => image.id),
         searchTags: diaryEntry.searchTags,
       })
