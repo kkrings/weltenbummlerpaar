@@ -1,14 +1,11 @@
 # Weltenbummlerpaar
 
-[![Build Status](https://travis-ci.com/kkrings/weltenbummlerpaar.svg?branch=master)](
-https://travis-ci.com/kkrings/weltenbummlerpaar)
-
 This project contains the [Angular][]-based front end of the
 *Weltenbummlerpaar* travel diary web application. The corresponding
-[Express][]-based back-end application can be found [here][Backend].
+[Nest][]-based back-end application can be found [here][Backend].
 
 [Angular]: https://angular.io/
-[Express]: https://expressjs.com/
+[Nest]: https://nestjs.com/
 [Backend]: https://kkrings.github.io/weltenbummlerpaar-backend/
 
 
@@ -37,11 +34,12 @@ back-end application:
 | ----------------- | ---------------------------------------- |
 | 1.0.x             | 1.0.x                                    |
 | 1.1.x             | 1.1.x                                    |
+| 2.0.x             | 2.0.x                                    |
 
 The last step is to initiate the application's build process in **production**
 mode:
 
-    ./node_modules/.bin/ng build --prod
+    npm run build
 
 The output files are written to `dist/weltenbummlerpaar/de` and can be copied
 to a remote server. This is usually the same server that hosts the back-end
@@ -58,30 +56,21 @@ The application's source code is hosted on [GitHub][Frontend]:
 
     git clone https://github.com/kkrings/weltenbummlerpaar.git
     cd weltenbummlerpaar
-    npm install
 
 [Frontend]: https://github.com/kkrings/weltenbummlerpaar/
 
-Unit tests as well as end-to-end tests are provided based on [Jasmine][],
-[Karma][], and [Protractor][]. All unit tests are executed via:
+The application's dependencies are installed via:
 
-     ./node_modules/.bin/ng test
+    npm install
+
+Unit tests are provided based on [Jasmine][] and [Karma][]. All unit tests are
+executed via:
+
+     npm run test
 
 [Jasmine]: https://jasmine.github.io/
 [Karma]: http://karma-runner.github.io/
-[Protractor]: https://www.protractortest.org/
 
 A code coverage report is created at `coverage/weltenbummlerpaar` via:
 
-     ./node_modules/.bin/ng test --code-coverage --no-watch
-
-The end-to-end tests need a local installation of the back-end application up
-and running before they are executed via:
-
-     ./node_modules/.bin/ng e2e
-
-The application's documentation can be build locally at `docs` via [TypeDoc][]:
-
-    ./node_modules/.bin/typedoc
-
-[TypeDoc]: https://typedoc.org/
+     npm run test -- --code-coverage --no-watch
