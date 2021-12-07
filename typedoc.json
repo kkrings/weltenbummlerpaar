@@ -1,7 +1,0 @@
-{
-    "name": "Weltenbummlerpaar Documentation",
-    "entryPoints": ["./src/app/app.module.ts"],
-    "exclude": ["./src/environments/*.ts"],
-    "out": "docs",
-    "tsconfig": "tsconfig.app.json"
-}
