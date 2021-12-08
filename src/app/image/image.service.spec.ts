@@ -72,7 +72,7 @@ describe('ImageService', () => {
       .subscribe((entry: DiaryEntry) => expect(entry).toEqual(testEntry), fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/diary-entries/${testEntry.id}/images`
+      `${environment.baseurl}/rest/diary-entries/${testEntry.id}/images`
     );
 
     expect(testRequest.request.method).toMatch('POST');
@@ -113,7 +113,7 @@ describe('ImageService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/diary-entries/${testEntryId}/images`
+      `${environment.baseurl}/rest/diary-entries/${testEntryId}/images`
     );
     expect(testRequest.request.method).toMatch('POST');
 
@@ -137,7 +137,7 @@ describe('ImageService', () => {
       .subscribe((image: Image) => expect(image).toEqual(testImage), fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/images/${testImage.id}`
+      `${environment.baseurl}/rest/images/${testImage.id}`
     );
     expect(testRequest.request.method).toMatch('PATCH');
 
@@ -157,7 +157,7 @@ describe('ImageService', () => {
       .subscribe((image: Image) => expect(image).toEqual(testImage), fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/images/${testImage.id}`
+      `${environment.baseurl}/rest/images/${testImage.id}`
     );
     expect(testRequest.request.method).toMatch('PATCH');
 
@@ -179,7 +179,7 @@ describe('ImageService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/images/${testImage.id}`
+      `${environment.baseurl}/rest/images/${testImage.id}`
     );
     expect(testRequest.request.method).toMatch('PATCH');
 
@@ -216,7 +216,7 @@ describe('ImageService', () => {
       .subscribe((entry: DiaryEntry) => expect(entry).toEqual(testEntry), fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/diary-entries/${testEntryId}/images/${testImage.id}`
+      `${environment.baseurl}/rest/diary-entries/${testEntryId}/images/${testImage.id}`
     );
 
     expect(testRequest.request.method).toMatch('DELETE');
@@ -241,7 +241,7 @@ describe('ImageService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/diary-entries/${testEntryId}/images/${testImage.id}`
+      `${environment.baseurl}/rest/diary-entries/${testEntryId}/images/${testImage.id}`
     );
 
     expect(testRequest.request.method).toMatch('DELETE');

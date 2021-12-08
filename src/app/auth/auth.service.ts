@@ -64,7 +64,7 @@ export class AuthService {
    */
   login(username: string, password: string): Observable<boolean> {
     return this.http
-      .post<Token>(`${environment.baseurl}/auth/login`, {
+      .post<Token>(`${environment.baseurl}/rest/auth/login`, {
         username,
         password,
       })

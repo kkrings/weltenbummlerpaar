@@ -26,7 +26,7 @@ export class DiaryEntryService {
   /**
    * URL to entry end point
    */
-  #entryUrl = `${environment.baseurl}/diary-entries`;
+  #entryUrl = `${environment.baseurl}/rest/diary-entries`;
 
   /**
   /**

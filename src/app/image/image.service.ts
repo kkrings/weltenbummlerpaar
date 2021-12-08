@@ -72,7 +72,7 @@ export class ImageService {
     formData.set('imageUpload', image.file);
     formData.set('description', image.description);
 
-    const url = `${environment.baseurl}/diary-entries/${entryId}/images`;
+    const url = `${environment.baseurl}/rest/diary-entries/${entryId}/images`;
 
     return this.http
       .post<DiaryEntry>(url, formData)
@@ -100,7 +100,7 @@ export class ImageService {
     formData.set('description', image.description);
 
     return this.http
-      .patch<Image>(`${environment.baseurl}/images/${image.id}`, formData)
+      .patch<Image>(`${environment.baseurl}/rest/images/${image.id}`, formData)
       .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -116,7 +116,7 @@ export class ImageService {
    *   The updated diary entry
    */
   deleteImage(entryId: string, imageId: string): Observable<DiaryEntry> {
-    const url = `${environment.baseurl}/diary-entries/${entryId}/images`;
+    const url = `${environment.baseurl}/rest/diary-entries/${entryId}/images`;
 
     return this.http
       .delete<DiaryEntry>(`${url}/${imageId}`)

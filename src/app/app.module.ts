@@ -64,7 +64,7 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
       config: {
         tokenGetter: () => localStorage.getItem('JWT'),
         allowedDomains: [environment.domain],
-        disallowedRoutes: [`${environment.domain}/auth/login`],
+        disallowedRoutes: [`${environment.baseurl}/rest/auth/login`],
       },
     }),
     ReactiveFormsModule,

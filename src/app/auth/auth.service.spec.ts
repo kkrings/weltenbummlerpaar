@@ -65,7 +65,7 @@ describe('AuthService', () => {
     }, fail);
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/auth/login`
+      `${environment.baseurl}/rest/auth/login`
     );
 
     expect(testRequest.request.method).toMatch('POST');
@@ -83,7 +83,7 @@ describe('AuthService', () => {
       );
 
     const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/auth/login`
+      `${environment.baseurl}/rest/auth/login`
     );
 
     testRequest.flush('mock not-authorized response', {
