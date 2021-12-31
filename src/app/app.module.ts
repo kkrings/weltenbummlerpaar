@@ -12,6 +12,7 @@ import {
   NgbAlertModule,
   NgbCarouselModule,
   NgbModalModule,
+  NgbTypeaheadModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -30,6 +31,8 @@ import { ImageCarouselComponent } from './image/image-carousel/image-carousel.co
 import { ImageModalComponent } from './image/image-modal/image-modal.component';
 import { ImageUploadComponent } from './image/image-upload/image-upload.component';
 import { ImageDirective } from './image/image.directive';
+import { SearchTagSearchComponent } from './search-tag/search-tag-search/search-tag-search.component';
+import { SearchTagSearchAccessorDirective } from './search-tag/search-tag-search-accessor.directive';
 import { FileValueAccessorDirective } from './shared/file-value-accessor.directive';
 import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-alert-message.component';
 
@@ -54,6 +57,8 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
     ImageModalComponent,
     ImageUploadComponent,
     ImageDirective,
+    SearchTagSearchComponent,
+    SearchTagSearchAccessorDirective,
     FileValueAccessorDirective,
     HttpAlertMessageComponent,
   ],
@@ -71,6 +76,7 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
     NgbAlertModule,
     NgbCarouselModule,
     NgbModalModule,
+    NgbTypeaheadModule,
     FontAwesomeModule,
   ],
   providers: [],

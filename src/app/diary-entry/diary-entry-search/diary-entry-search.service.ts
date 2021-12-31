@@ -5,12 +5,7 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  switchMap,
-} from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import { DiaryEntry } from '../diary-entry.model';
 import { DiaryEntrySearchNums } from './diary-entry-search-nums.model';
@@ -89,7 +84,7 @@ export class DiaryEntrySearchService {
    * @param tags$
    *   Search tags observable
    */
-  subscribeToSearchTags(tags$: Observable<string>): void {
+  subscribeToSearchTags(tags$: Observable<string[]>): void {
     this.unsubscribeFromSearchTags();
 
     this.#onSearchTags = tags$.subscribe((_) =>
@@ -97,9 +92,6 @@ export class DiaryEntrySearchService {
     );
 
     const diaryEntrySearch$ = tags$.pipe(
-      map((tags) => this.splitSearchTags(tags)),
-      debounceTime(this.config.waitForTags),
-      distinctUntilChanged(),
       switchMap((tags) => this.searchEntries(tags))
     );
 
@@ -118,13 +110,6 @@ export class DiaryEntrySearchService {
   unsubscribeFromSearchTags(): void {
     this.#onSearchTags.unsubscribe();
     this.#onSearchResult.unsubscribe();
-  }
-
-  private splitSearchTags(tags: string): string[] {
-    return tags
-      .split(',')
-      .map((tag) => tag.trim())
-      .filter((tag) => tag.length > 0);
   }
 
   private emitResult(result: DiaryEntrySearchResult): void {

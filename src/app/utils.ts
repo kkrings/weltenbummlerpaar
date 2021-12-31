@@ -1,3 +1,6 @@
+import { MonoTypeOperatorFunction } from 'rxjs';
+import { debounceTime as _debounceTime } from 'rxjs/operators';
+
 import { DiaryEntry } from './diary-entry/diary-entry.model';
 
 /**
@@ -20,3 +23,12 @@ export const setPreviewImage = (entry: DiaryEntry): DiaryEntry => {
 
   return entry;
 };
+
+/**
+ * Default debounce function
+ *
+ * @returns
+ *   Source observable, debounced by 300 ms
+ */
+export const debounceTime = <T>(): MonoTypeOperatorFunction<T> =>
+  _debounceTime(300);

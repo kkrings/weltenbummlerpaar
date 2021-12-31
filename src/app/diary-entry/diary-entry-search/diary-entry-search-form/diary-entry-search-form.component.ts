@@ -43,7 +43,7 @@ export class DiaryEntrySearchFormComponent implements OnInit, OnDestroy {
     formBuilder: FormBuilder,
     private diaryEntrySearchService: DiaryEntrySearchService
   ) {
-    this.diaryEntrySearchForm = formBuilder.group({ tags: [''] });
+    this.diaryEntrySearchForm = formBuilder.group({ searchTags: [[]] });
   }
 
   /**
@@ -54,7 +54,8 @@ export class DiaryEntrySearchFormComponent implements OnInit, OnDestroy {
     this.diaryEntrySearchService.subscribeToSearchTags(
       this.diaryEntrySearchTags.valueChanges
     );
-    this.diaryEntrySearchTags.setValue('');
+
+    this.diaryEntrySearchTags.setValue([]);
   }
 
   /**
@@ -68,6 +69,6 @@ export class DiaryEntrySearchFormComponent implements OnInit, OnDestroy {
    * Diary entries search tags form control
    */
   get diaryEntrySearchTags(): FormControl {
-    return this.diaryEntrySearchForm.get('tags') as FormControl;
+    return this.diaryEntrySearchForm.get('searchTags') as FormControl;
   }
 }
