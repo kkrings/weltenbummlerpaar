@@ -37,6 +37,11 @@
     <span *ngIf="searchTags.length > 0">Hinzufügen</span>
   </button>
 </form>
+<div *ngIf="!searching && httpAlert.isShown" class="mt-2">
+  <app-http-alert-message
+    [alertType]="httpAlert.alertType"
+  ></app-http-alert-message>
+</div>
 <button
   *ngFor="let searchTag of searchTags"
   type="button"
