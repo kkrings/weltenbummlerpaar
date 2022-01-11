@@ -8,7 +8,6 @@ import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { DiaryEntry } from '../diary-entry.model';
-import { DiaryEntrySearchNums } from './diary-entry-search-nums.model';
 import { DiaryEntrySearchResult } from './diary-entry-search.model';
 import { DiaryEntrySearchConfig } from './diary-entry-search.config';
 import { DiaryEntryService } from '../diary-entry.service';
@@ -40,24 +39,26 @@ export class DiaryEntrySearchService {
   /**
    * Source for emitting a list of found diary entries via `diaryEntries$`
    */
-  #diaryEntrySource = new BehaviorSubject<DiaryEntrySearchResult>(
-    new DiaryEntrySearchResult()
-  );
+  private diaryEntrySource = new BehaviorSubject<DiaryEntrySearchResult>({
+    searchTags: [],
+    entries: [],
+    numEntries: -1,
+  });
 
   /**
    * Source for emitting a search's status via `searching$`
    */
-  #searchingSource = new BehaviorSubject<boolean>(false);
+  private searchingSource = new BehaviorSubject<boolean>(false);
 
   /**
    * Subscription to search tags observable
    */
-  #onSearchTags = Subscription.EMPTY;
+  private onSearchTags = Subscription.EMPTY;
 
   /**
    * Subscription to found diary entries
    */
-  #onSearchResult = Subscription.EMPTY;
+  private onSearchResult = Subscription.EMPTY;
 
   /**
    * Initialize diary entry search service.
@@ -71,8 +72,8 @@ export class DiaryEntrySearchService {
     private diaryEntryService: DiaryEntryService,
     private config: DiaryEntrySearchConfig
   ) {
-    this.diaryEntries$ = this.#diaryEntrySource.asObservable();
-    this.searching$ = this.#searchingSource.asObservable();
+    this.diaryEntries$ = this.diaryEntrySource.asObservable();
+    this.searching$ = this.searchingSource.asObservable();
   }
 
   /**
@@ -87,15 +88,13 @@ export class DiaryEntrySearchService {
   subscribeToSearchTags(tags$: Observable<string[]>): void {
     this.unsubscribeFromSearchTags();
 
-    this.#onSearchTags = tags$.subscribe((_) =>
-      this.#searchingSource.next(true)
-    );
+    this.onSearchTags = tags$.subscribe(() => this.searchingSource.next(true));
 
     const diaryEntrySearch$ = tags$.pipe(
       switchMap((tags) => this.searchEntries(tags))
     );
 
-    this.#onSearchResult = diaryEntrySearch$.subscribe(
+    this.onSearchResult = diaryEntrySearch$.subscribe(
       (result) => this.emitResult(result),
       (error) => this.emitError(error)
     );
@@ -108,44 +107,54 @@ export class DiaryEntrySearchService {
    * entry search tags.
    */
   unsubscribeFromSearchTags(): void {
-    this.#onSearchTags.unsubscribe();
-    this.#onSearchResult.unsubscribe();
+    this.onSearchTags.unsubscribe();
+    this.onSearchResult.unsubscribe();
+  }
+
+  /**
+   * Load more diary entries from the back-end server.
+   *
+   * @param tags
+   *   Use these search tags for the loading.
+   * @param skip
+   *   Skip the specified number of (already loaded) diary entries.
+   *
+   * @returns
+   *   List of loaded diary entries
+   */
+  moreEntries(tags: string[], skip: number): Observable<DiaryEntry[]> {
+    return this.getEntries(tags, skip);
   }
 
   private emitResult(result: DiaryEntrySearchResult): void {
-    this.#searchingSource.next(false);
-    this.#diaryEntrySource.next(result);
+    this.searchingSource.next(false);
+    this.diaryEntrySource.next(result);
   }
 
   private emitError(error: string): void {
-    this.#searchingSource.next(false);
-    this.#diaryEntrySource.error(error);
+    this.searchingSource.next(false);
+    this.diaryEntrySource.error(error);
   }
 
   private searchEntries(tags: string[]): Observable<DiaryEntrySearchResult> {
-    const search = forkJoin({
-      entries: this.diaryEntryService.getEntries(
-        tags,
-        0,
-        this.config.limitNumEntries
-      ),
-      count: this.diaryEntryService.countEntries(tags),
-    });
-
-    return search.pipe(
-      map(({ entries, count }) => this.searchResult(tags, entries, count))
+    return forkJoin({
+      entries: this.getEntries(tags),
+      count: this.countEntries(tags),
+    }).pipe(
+      map(({ entries, count }) => ({
+        searchTags: tags,
+        entries: entries,
+        numEntries: count,
+      }))
     );
   }
 
-  private searchResult(
-    tags: string[],
-    entries: DiaryEntry[],
-    count: number
-  ): DiaryEntrySearchResult {
-    const numEntries: DiaryEntrySearchNums = {
-      loaded: entries.length,
-      total: count,
-    };
-    return new DiaryEntrySearchResult(tags, entries, numEntries);
+  private getEntries(tags: string[], skip = 0): Observable<DiaryEntry[]> {
+    const limit = this.config.limitNumEntries;
+    return this.diaryEntryService.getEntries(tags, skip, limit);
+  }
+
+  private countEntries(tags: string[]): Observable<number> {
+    return this.diaryEntryService.countEntries(tags);
   }
 }
