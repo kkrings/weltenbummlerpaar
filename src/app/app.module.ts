@@ -23,6 +23,7 @@ import { AuthModalComponent } from './auth/auth-modal/auth-modal.component';
 import { AuthDirective } from './auth/auth.directive';
 import { DiaryEntryFormComponent } from './diary-entry/diary-entry-form/diary-entry-form.component';
 import { DiaryEntrySearchFormComponent } from './diary-entry/diary-entry-search/diary-entry-search-form/diary-entry-search-form.component';
+import { DiaryEntryLoadMoreComponent } from './diary-entry/diary-entry-search/diary-entry-load-more/diary-entry-load-more.component';
 import { DiaryEntryGridComponent } from './diary-entry/diary-entry-grid/diary-entry-grid.component';
 import { DiaryEntryCardComponent } from './diary-entry/diary-entry-card/diary-entry-card.component';
 import { DiaryEntryModalComponent } from './diary-entry/diary-entry-modal/diary-entry-modal.component';
@@ -49,6 +50,7 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
     AuthDirective,
     DiaryEntryFormComponent,
     DiaryEntrySearchFormComponent,
+    DiaryEntryLoadMoreComponent,
     DiaryEntryGridComponent,
     DiaryEntryCardComponent,
     DiaryEntryModalComponent,

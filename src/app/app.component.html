@@ -25,6 +25,11 @@
     [alertType]="httpAlert.alertType"
   ></app-http-alert-message>
 </div>
+<div class="container mb-4">
+  <app-diary-entry-load-more
+    (moreEntries)="handleMoreEntries($event)"
+  ></app-diary-entry-load-more>
+</div>
 <div class="bg-primary text-white">
   <div class="container-fluid p-4">
     <div class="row">
