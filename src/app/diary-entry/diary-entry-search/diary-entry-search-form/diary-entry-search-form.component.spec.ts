@@ -3,31 +3,57 @@
  * @packageDocumentation
  */
 
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { By } from '@angular/platform-browser';
+import { Observable, Subject } from 'rxjs';
 
 import { DiaryEntrySearchFormComponent } from './diary-entry-search-form.component';
 import { DiaryEntrySearchService } from '../diary-entry-search.service';
+import { SearchTagSearchAccessorDirective } from '../../../search-tag/search-tag-search-accessor.directive';
+import { SearchTagSearchComponent } from 'src/app/search-tag/search-tag-search/search-tag-search.component';
+
+@Component({
+  selector: 'app-search-tag-search',
+})
+class MockSearchTagSearchComponent {
+  searchTags$: Observable<string[]>;
+  searchTagsSource = new Subject<string[]>();
+
+  constructor() {
+    this.searchTags$ = this.searchTagsSource.asObservable();
+  }
+}
 
 describe('DiaryEntrySearchFormComponent', () => {
   let component: DiaryEntrySearchFormComponent;
   let fixture: ComponentFixture<DiaryEntrySearchFormComponent>;
+  let formControl: MockSearchTagSearchComponent;
 
   beforeEach(async () => {
+    formControl = new MockSearchTagSearchComponent();
+
     const diaryEntrySearchServiceSpy = jasmine.createSpyObj(
       'DiaryEntrySearchService',
       ['subscribeToSearchTags', 'unsubscribeFromSearchTags']
     );
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, FontAwesomeModule],
-      declarations: [DiaryEntrySearchFormComponent],
+      imports: [ReactiveFormsModule],
+      declarations: [
+        DiaryEntrySearchFormComponent,
+        SearchTagSearchAccessorDirective,
+        MockSearchTagSearchComponent,
+      ],
       providers: [
         {
           provide: DiaryEntrySearchService,
           useValue: diaryEntrySearchServiceSpy,
+        },
+        {
+          provide: SearchTagSearchComponent,
+          useValue: formControl,
         },
       ],
     }).compileComponents();
@@ -54,13 +80,5 @@ describe('DiaryEntrySearchFormComponent', () => {
     ) as jasmine.SpyObj<DiaryEntrySearchService>;
     component.ngOnDestroy();
     expect(service.unsubscribeFromSearchTags).toHaveBeenCalled();
-  });
-
-  it('#diaryEntrySearchTags.value should match entered search tags', () => {
-    const searchTags = 'some tag, some other tag';
-    const searchTagsInput = fixture.debugElement.query(By.css('#tags'));
-    searchTagsInput.nativeElement.value = searchTags;
-    searchTagsInput.nativeElement.dispatchEvent(new Event('input'));
-    expect(component.diaryEntrySearchTags.value).toEqual(searchTags);
   });
 });

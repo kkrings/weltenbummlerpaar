@@ -22,11 +22,6 @@ import { DiaryEntrySearchService } from '../diary-entry-search.service';
 })
 export class DiaryEntrySearchFormComponent implements OnInit, OnDestroy {
   /**
-   * Diary entry search icon
-   */
-  diaryEntrySearchIcon = faSearch;
-
-  /**
    * Reactive form for searching for diary entries given a list of tags
    */
   diaryEntrySearchForm: FormGroup;
