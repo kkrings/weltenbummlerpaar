@@ -12,8 +12,10 @@
       class="form-control border-left-0 border-right-0"
       type="text"
       placeholder="Stichwort"
+      (focus)="onFocus($any($event).target.value)"
       [ngbTypeahead]="search"
       [editable]="false"
+      popupClass="search-tags-search-window"
       required
     />
     <div class="input-group-append">

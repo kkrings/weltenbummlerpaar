@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faMinus, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { Observable, of, OperatorFunction, Subject } from 'rxjs';
+import { merge, Observable, of, OperatorFunction, Subject } from 'rxjs';
 import {
   catchError,
   distinctUntilChanged,
@@ -28,7 +28,8 @@ export class SearchTagSearchComponent {
   searchIcon = faSearch;
   deselectIcon = faMinus;
 
-  private searchTagsStream = new Subject<string[]>();
+  private searchTagsSource = new Subject<string[]>();
+  private focusSource = new Subject<string>();
 
   search: OperatorFunction<string, readonly string[]> = (
     searchTags$: Observable<string>
@@ -42,23 +43,29 @@ export class SearchTagSearchComponent {
       searchTag: ['', Validators.required],
     });
 
-    this.searchTags$ = this.searchTagsStream.asObservable();
+    this.searchTags$ = this.searchTagsSource.asObservable();
+  }
+
+  onFocus(searchTags: string): void {
+    if (this.searchForm.invalid) {
+      this.focusSource.next(searchTags);
+    }
   }
 
   onSubmit(): void {
     const { searchTag }: { searchTag: string } = this.searchForm.value;
     this.searchTags.push(searchTag);
-    this.searchTagsStream.next(this.searchTags);
+    this.searchTagsSource.next(this.searchTags);
     this.searchForm.reset();
   }
 
   deselect(searchTag: string): void {
     this.searchTags = this.searchTags.filter((tag) => tag !== searchTag);
-    this.searchTagsStream.next(this.searchTags);
+    this.searchTagsSource.next(this.searchTags);
   }
 
   private doSearch(searchTag$: Observable<string>): Observable<string[]> {
-    return searchTag$.pipe(
+    return merge(searchTag$, this.focusSource).pipe(
       tap(() => (this.searching = true)),
       debounceTime(),
       distinctUntilChanged(),
