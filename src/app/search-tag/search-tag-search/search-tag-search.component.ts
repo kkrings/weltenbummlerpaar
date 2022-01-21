@@ -4,15 +4,16 @@ import { faMinus, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { merge, Observable, of, OperatorFunction, Subject } from 'rxjs';
 import {
   catchError,
+  debounceTime,
   distinctUntilChanged,
   map,
   switchMap,
   tap,
 } from 'rxjs/operators';
 
+import { SearchTagSearchConfig } from '../search-tag-search-config.service';
 import { SearchTagService } from '../search-tag.service';
 import { Alert, AlertType } from '../../http-alert/alert.model';
-import { debounceTime } from '../../utils';
 
 @Component({
   selector: 'app-search-tag-search',
@@ -37,6 +38,7 @@ export class SearchTagSearchComponent {
 
   constructor(
     formBuilder: FormBuilder,
+    private config: SearchTagSearchConfig,
     private searchTagService: SearchTagService
   ) {
     this.searchForm = formBuilder.group({
@@ -67,7 +69,7 @@ export class SearchTagSearchComponent {
   private doSearch(searchTag$: Observable<string>): Observable<string[]> {
     return merge(searchTag$, this.focusSource).pipe(
       tap(() => (this.searching = true)),
-      debounceTime(),
+      debounceTime(this.config.waitForNumMs),
       distinctUntilChanged(),
       switchMap((tag) => this.handleSearch(tag)),
       map((searchTags) => this.removeSelected(searchTags)),
