@@ -18,6 +18,7 @@ import { SearchTagSearchComponent } from 'src/app/search-tag/search-tag-search/s
   selector: 'app-search-tag-search',
 })
 class MockSearchTagSearchComponent {
+  searchTags: string[] = [];
   searchTags$: Observable<string[]>;
   searchTagsSource = new Subject<string[]>();
 
@@ -65,19 +66,46 @@ describe('DiaryEntrySearchFormComponent', () => {
     fixture.detectChanges();
   });
 
-  it('on initialization, diary entry search service should subscribe to search tags form', () => {
+  beforeEach(() => {
     const service = TestBed.inject(
       DiaryEntrySearchService
     ) as jasmine.SpyObj<DiaryEntrySearchService>;
+
     expect(service.subscribeToSearchTags).toHaveBeenCalledOnceWith(
       component.diaryEntrySearchTags.valueChanges
     );
   });
 
-  it('on destroy, diary entry search service should unsubscribe from search tags form', () => {
+  it('#diaryEntrySearchForm is untouched', () => {
+    expect(component.diaryEntrySearchForm.untouched).toBeTrue();
+  });
+
+  it('#diaryEntrySearchTags.value is empty', () => {
+    expect(component.diaryEntrySearchTags.value).toEqual([]);
+  });
+
+  it('#diaryEntrySearchForm is touched', () => {
+    formControl.searchTagsSource.next([]);
+    expect(component.diaryEntrySearchForm.touched).toBeTrue();
+  });
+
+  it('#diaryEntrySearchTags.value is changed', () => {
+    const searchTags = ['Some search tag'];
+    formControl.searchTagsSource.next(searchTags);
+    expect(component.diaryEntrySearchTags.value).toEqual(searchTags);
+  });
+
+  it('search tags are set', () => {
+    const searchTags = ['Some search tag'];
+    component.diaryEntrySearchTags.setValue(searchTags);
+    expect(formControl.searchTags).toEqual(searchTags);
+  });
+
+  afterEach(() => {
     const service = TestBed.inject(
       DiaryEntrySearchService
     ) as jasmine.SpyObj<DiaryEntrySearchService>;
+
     component.ngOnDestroy();
     expect(service.unsubscribeFromSearchTags).toHaveBeenCalled();
   });
