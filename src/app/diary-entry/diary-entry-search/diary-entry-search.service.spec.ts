@@ -4,7 +4,8 @@
  */
 
 import { TestBed } from '@angular/core/testing';
-import { Observable, of, throwError } from 'rxjs';
+import { NEVER, Observable, of, Subscription, throwError } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 
 import { DiaryEntrySearchService } from './diary-entry-search.service';
@@ -21,7 +22,7 @@ class MockDiaryEntryService {
   /**
    * Diary entry search service configuration for unit tests
    */
-  static searchConfig = { waitForTags: 2, limitNumEntries: 2 };
+  static searchConfig = { limitNumEntries: 2 };
 
   private diaryEntries: DiaryEntry[] = [
     {
@@ -126,10 +127,9 @@ class MockDiaryEntryService {
 }
 
 describe('DiaryEntrySearchService', () => {
-  let diaryEntrySearchService: DiaryEntrySearchService;
-
   const mockDiaryEntryService = new MockDiaryEntryService();
-  let testScheduler: TestScheduler;
+
+  let diaryEntrySearchService: DiaryEntrySearchService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -149,143 +149,205 @@ describe('DiaryEntrySearchService', () => {
     diaryEntrySearchService = TestBed.inject(DiaryEntrySearchService);
   });
 
-  beforeEach(
-    () =>
-      (testScheduler = new TestScheduler((actual, expected) =>
-        expect(actual).toEqual(expected)
-      ))
-  );
+  describe('no search tag emission yet', () => {
+    let onDiaryEntries: Subscription;
 
-  it('#diaryEntries$ emits no diary entries', () =>
-    testScheduler.run(({ cold, expectObservable }) => {
-      const searchTags$ = cold<string[]>('--|');
+    beforeEach(() => {
+      onDiaryEntries = Subscription.EMPTY;
+    });
 
-      diaryEntrySearchService.subscribeToSearchTags(searchTags$);
+    beforeEach(() => {
+      diaryEntrySearchService.subscribeToSearchTags(NEVER);
+    });
 
-      expectObservable(diaryEntrySearchService.diaryEntries$, '^-!').toBe(
-        'a--',
-        {
-          a: { searchTags: [], entries: [], numEntries: -1 },
+    it('#diaryEntries$ emits no diary entries', (done) => {
+      onDiaryEntries = diaryEntrySearchService.diaryEntries$.subscribe(
+        (result) => {
+          expect(result).toEqual({
+            searchTags: [],
+            entries: [],
+            numEntries: -1,
+          });
+          done();
+        },
+        fail
+      );
+    });
+
+    afterEach(() => {
+      diaryEntrySearchService.unsubscribeFromSearchTags();
+    });
+
+    afterEach(() => {
+      onDiaryEntries.unsubscribe();
+    });
+  });
+
+  describe('empty search tag emission', () => {
+    let onDiaryEntries: Subscription;
+
+    beforeEach(() => {
+      onDiaryEntries = Subscription.EMPTY;
+    });
+
+    beforeEach(() => {
+      diaryEntrySearchService.subscribeToSearchTags(of([]));
+    });
+
+    it('#diaryEntries$ emits diary entries w/o search tags', (done) => {
+      onDiaryEntries = diaryEntrySearchService.diaryEntries$.subscribe(
+        (result) => {
+          expect(result).toEqual(mockDiaryEntryService.getExpectation());
+          done();
+        },
+        fail
+      );
+    });
+
+    afterEach(() => {
+      diaryEntrySearchService.unsubscribeFromSearchTags();
+    });
+
+    afterEach(() => {
+      onDiaryEntries.unsubscribe();
+    });
+  });
+
+  describe('search tag emission', () => {
+    const searchTags = ['some tag', 'some other tag'];
+
+    let onDiaryEntries: Subscription;
+
+    beforeEach(() => {
+      onDiaryEntries = Subscription.EMPTY;
+    });
+
+    beforeEach(() => {
+      diaryEntrySearchService.subscribeToSearchTags(of(searchTags));
+    });
+
+    it('#diaryEntries$ emits diary entries w/ search tags', (done) => {
+      onDiaryEntries = diaryEntrySearchService.diaryEntries$.subscribe(
+        (result) => {
+          expect(result).toEqual(
+            mockDiaryEntryService.getExpectation(searchTags)
+          );
+          done();
+        },
+        fail
+      );
+    });
+
+    afterEach(() => {
+      diaryEntrySearchService.unsubscribeFromSearchTags();
+    });
+
+    afterEach(() => {
+      onDiaryEntries.unsubscribe();
+    });
+  });
+
+  describe('#getEntries throws an error', () => {
+    let onDiaryEntries: Subscription;
+
+    beforeEach(() => {
+      onDiaryEntries = Subscription.EMPTY;
+    });
+
+    beforeEach(() => {
+      spyOn(mockDiaryEntryService, 'getEntries').and.returnValue(
+        throwError(AlertType.server)
+      );
+    });
+
+    beforeEach(() => {
+      diaryEntrySearchService.subscribeToSearchTags(of([]));
+    });
+
+    it('#diaryEntries$ passes the error through', (done) => {
+      onDiaryEntries = diaryEntrySearchService.diaryEntries$.subscribe(
+        fail,
+        (alertType) => {
+          expect(alertType).toEqual(AlertType.server);
+          done();
         }
       );
+    });
 
-      expectObservable(diaryEntrySearchService.searching$, '^-!').toBe('a--', {
-        a: false,
+    afterEach(() => {
+      diaryEntrySearchService.unsubscribeFromSearchTags();
+    });
+
+    afterEach(() => {
+      onDiaryEntries.unsubscribe();
+    });
+  });
+
+  describe('#countEntries throws an error', () => {
+    let onDiaryEntries: Subscription;
+
+    beforeEach(() => {
+      onDiaryEntries = Subscription.EMPTY;
+    });
+
+    beforeEach(() => {
+      spyOn(mockDiaryEntryService, 'countEntries').and.returnValue(
+        throwError(AlertType.server)
+      );
+    });
+
+    beforeEach(() => {
+      diaryEntrySearchService.subscribeToSearchTags(of([]));
+    });
+
+    it('#diaryEntries$ passes the error through', (done) => {
+      onDiaryEntries = diaryEntrySearchService.diaryEntries$.subscribe(
+        fail,
+        (alertType) => {
+          expect(alertType).toEqual(AlertType.server);
+          done();
+        }
+      );
+    });
+
+    afterEach(() => {
+      diaryEntrySearchService.unsubscribeFromSearchTags();
+    });
+
+    afterEach(() => {
+      onDiaryEntries.unsubscribe();
+    });
+  });
+
+  describe('#searching$', () => {
+    it('is toggled', () => {
+      const testScheduler = new TestScheduler((actual, expected) =>
+        expect(actual).toEqual(expected)
+      );
+
+      testScheduler.run(({ cold, expectObservable }) => {
+        const searchTags$ = cold<string[]>('-a', {
+          a: [],
+        });
+
+        diaryEntrySearchService.subscribeToSearchTags(searchTags$);
+
+        const countEntries$ = mockDiaryEntryService.countEntries();
+
+        spyOn(mockDiaryEntryService, 'countEntries').and.returnValue(
+          countEntries$.pipe(delay(2))
+        );
+
+        expectObservable(diaryEntrySearchService.searching$).toBe('ab-c', {
+          a: false,
+          b: true,
+          c: false,
+        });
       });
-    }));
+    });
 
-  // it('#diaryEntries$ emits diary entries w/o search tags', () =>
-  //   testScheduler.run(({ cold, expectObservable }) => {
-  //     const searchTags$ = cold<string[]>('a--|', { a: [] });
-
-  //     diaryEntrySearchService.subscribeToSearchTags(searchTags$);
-
-  //     expectObservable(diaryEntrySearchService.diaryEntries$).toBe('a-b-', {
-  //       a: { searchTags: [], entries: [], numEntries: -1 },
-  //       b: mockDiaryEntryService.getExpectation(),
-  //     });
-
-  //     expectObservable(diaryEntrySearchService.searching$).toBe('a-b-', {
-  //       a: true,
-  //       b: false,
-  //     });
-  //   }));
-
-  // it('#diaryEntries$ emits diary entries w/ search tags', () =>
-  //   testScheduler.run(({ cold, expectObservable }) => {
-  //     const searchTags = ['some tag', 'some other tag'];
-
-  //     const searchTags$ = cold('a--|', {
-  //       a: searchTags,
-  //     });
-
-  //     diaryEntrySearchService.subscribeToSearchTags(searchTags$);
-
-  //     expectObservable(diaryEntrySearchService.diaryEntries$).toBe('a-b-', {
-  //       a: { searchTags: [], entries: [], numEntries: -1 },
-  //       b: mockDiaryEntryService.getExpectation(searchTags),
-  //     });
-
-  //     expectObservable(diaryEntrySearchService.searching$).toBe('a-b-', {
-  //       a: true,
-  //       b: false,
-  //     });
-  //   }));
-
-  // it('#diaryEntries$ emits diary entries w/ type ahead', () =>
-  //   testScheduler.run(({ cold, expectObservable }) => {
-  //     const searchTags = ['some tag', 'some other tag'];
-
-  //     const searchTags$ = cold('ab--|', {
-  //       a: searchTags.slice(0, 1),
-  //       b: searchTags,
-  //     });
-
-  //     diaryEntrySearchService.subscribeToSearchTags(searchTags$);
-
-  //     expectObservable(diaryEntrySearchService.diaryEntries$).toBe('a--b-', {
-  //       a: { searchTags: [], entries: [], numEntries: -1 },
-  //       b: mockDiaryEntryService.getExpectation(searchTags),
-  //     });
-
-  //     expectObservable(diaryEntrySearchService.searching$).toBe('ab-c-', {
-  //       a: true,
-  //       b: true,
-  //       c: false,
-  //     });
-  //   }));
-
-  // it('#diaryEntries$ passes through error from #getEntries', () =>
-  //   testScheduler.run(({ cold, expectObservable }) => {
-  //     const searchTags$ = cold<string[]>('a--|', {
-  //       a: [],
-  //     });
-
-  //     diaryEntrySearchService.subscribeToSearchTags(searchTags$);
-
-  //     spyOn(mockDiaryEntryService, 'getEntries').and.returnValue(
-  //       throwError(AlertType.server)
-  //     );
-
-  //     expectObservable(diaryEntrySearchService.diaryEntries$).toBe(
-  //       'a-#-',
-  //       {
-  //         a: { searchTags: [], entries: [], numEntries: -1 },
-  //       },
-  //       AlertType.server
-  //     );
-
-  //     expectObservable(diaryEntrySearchService.searching$).toBe('a-b-', {
-  //       a: true,
-  //       b: false,
-  //     });
-  //   }));
-
-  // it('#diaryEntries$ passes through error from #countEntries', () =>
-  //   testScheduler.run(({ cold, expectObservable }) => {
-  //     const searchTags$ = cold<string[]>('a--|', {
-  //       a: [],
-  //     });
-
-  //     diaryEntrySearchService.subscribeToSearchTags(searchTags$);
-
-  //     spyOn(mockDiaryEntryService, 'countEntries').and.returnValue(
-  //       throwError(AlertType.server)
-  //     );
-
-  //     expectObservable(diaryEntrySearchService.diaryEntries$).toBe(
-  //       'a-#-',
-  //       {
-  //         a: { searchTags: [], entries: [], numEntries: [] },
-  //       },
-  //       AlertType.server
-  //     );
-
-  //     expectObservable(diaryEntrySearchService.searching$).toBe('a-b-', {
-  //       a: true,
-  //       b: false,
-  //     });
-  //   }));
-
-  afterEach(() => diaryEntrySearchService.unsubscribeFromSearchTags());
+    afterEach(() => {
+      diaryEntrySearchService.unsubscribeFromSearchTags();
+    });
+  });
 });
