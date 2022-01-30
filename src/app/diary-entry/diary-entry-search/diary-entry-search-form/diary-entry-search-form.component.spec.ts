@@ -6,7 +6,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 
 import { DiaryEntrySearchFormComponent } from './diary-entry-search-form.component';
