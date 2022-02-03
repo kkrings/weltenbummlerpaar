@@ -2,15 +2,13 @@
   <img class="logo" src="assets/logo.svg" />
   <div class="logo-background"></div>
 </div>
-<div class="container">
-  <div class="row">
-    <div class="col-md-4 order-md-2 pb-4 pb-md-0">
-      <app-navbar (newDiaryEntry)="addDiaryEntry($event)"></app-navbar>
-    </div>
-    <div class="col-md-6 offset-md-2 order-md-1">
-      <app-diary-entry-search-form></app-diary-entry-search-form>
-    </div>
+<div class="container mb-4">
+  <div class="mx-auto">
+    <app-navbar (newDiaryEntry)="addDiaryEntry($event)"></app-navbar>
   </div>
+</div>
+<div class="container mb-4">
+  <app-diary-entry-search-form></app-diary-entry-search-form>
 </div>
 <div *ngIf="showSpinner">
   <div class="d-flex justify-content-center mb-4">
@@ -26,6 +24,11 @@
   <app-http-alert-message
     [alertType]="httpAlert.alertType"
   ></app-http-alert-message>
+</div>
+<div class="container mb-4">
+  <app-diary-entry-load-more
+    (moreEntries)="handleMoreEntries($event)"
+  ></app-diary-entry-load-more>
 </div>
 <div class="bg-primary text-white">
   <div class="container-fluid p-4">

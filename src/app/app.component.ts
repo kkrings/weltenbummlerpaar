@@ -96,4 +96,8 @@ export class AppComponent implements OnInit, OnDestroy {
   addDiaryEntry(diaryEntry: DiaryEntry): void {
     this.diaryEntries.unshift(diaryEntry);
   }
+
+  handleMoreEntries(diaryEntries: DiaryEntry[]): void {
+    this.diaryEntries.push(...diaryEntries);
+  }
 }

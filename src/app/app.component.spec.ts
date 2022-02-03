@@ -26,6 +26,16 @@ import * as testUtils from './test-utils/test-utils.module';
 class MockDiaryEntrySearchFormComponent {}
 
 /**
+ * Mock diary entry load more component
+ */
+@Component({
+  selector: 'app-diary-entry-load-more',
+})
+class MockDiaryEntryLoadMoreComponent {
+  @Output() moreEntries = new EventEmitter<DiaryEntry[]>();
+}
+
+/**
  * Mock navigation bar component
  */
 @Component({
@@ -94,10 +104,11 @@ describe('AppComponent', () => {
     },
   ];
 
-  const diaryEntrySearchResult = new DiaryEntrySearchResult([], diaryEntries, {
-    loaded: diaryEntries.length,
-    total: diaryEntries.length,
-  });
+  const diaryEntrySearchResult: DiaryEntrySearchResult = {
+    searchTags: [],
+    entries: diaryEntries,
+    numEntries: diaryEntries.length,
+  };
 
   beforeEach(async () => {
     mockDiaryEntrySearchService = {
@@ -110,6 +121,7 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent,
         MockDiaryEntrySearchFormComponent,
+        MockDiaryEntryLoadMoreComponent,
         MockNavbarComponent,
         MockDiaryEntryGridComponent,
       ],

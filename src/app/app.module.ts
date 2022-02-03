@@ -12,6 +12,7 @@ import {
   NgbAlertModule,
   NgbCarouselModule,
   NgbModalModule,
+  NgbTypeaheadModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -22,6 +23,7 @@ import { AuthModalComponent } from './auth/auth-modal/auth-modal.component';
 import { AuthDirective } from './auth/auth.directive';
 import { DiaryEntryFormComponent } from './diary-entry/diary-entry-form/diary-entry-form.component';
 import { DiaryEntrySearchFormComponent } from './diary-entry/diary-entry-search/diary-entry-search-form/diary-entry-search-form.component';
+import { DiaryEntryLoadMoreComponent } from './diary-entry/diary-entry-search/diary-entry-load-more/diary-entry-load-more.component';
 import { DiaryEntryGridComponent } from './diary-entry/diary-entry-grid/diary-entry-grid.component';
 import { DiaryEntryCardComponent } from './diary-entry/diary-entry-card/diary-entry-card.component';
 import { DiaryEntryModalComponent } from './diary-entry/diary-entry-modal/diary-entry-modal.component';
@@ -30,6 +32,8 @@ import { ImageCarouselComponent } from './image/image-carousel/image-carousel.co
 import { ImageModalComponent } from './image/image-modal/image-modal.component';
 import { ImageUploadComponent } from './image/image-upload/image-upload.component';
 import { ImageDirective } from './image/image.directive';
+import { SearchTagSearchComponent } from './search-tag/search-tag-search/search-tag-search.component';
+import { SearchTagSearchAccessorDirective } from './search-tag/search-tag-search-accessor.directive';
 import { FileValueAccessorDirective } from './shared/file-value-accessor.directive';
 import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-alert-message.component';
 
@@ -46,6 +50,7 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
     AuthDirective,
     DiaryEntryFormComponent,
     DiaryEntrySearchFormComponent,
+    DiaryEntryLoadMoreComponent,
     DiaryEntryGridComponent,
     DiaryEntryCardComponent,
     DiaryEntryModalComponent,
@@ -54,6 +59,8 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
     ImageModalComponent,
     ImageUploadComponent,
     ImageDirective,
+    SearchTagSearchComponent,
+    SearchTagSearchAccessorDirective,
     FileValueAccessorDirective,
     HttpAlertMessageComponent,
   ],
@@ -71,6 +78,7 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
     NgbAlertModule,
     NgbCarouselModule,
     NgbModalModule,
+    NgbTypeaheadModule,
     FontAwesomeModule,
   ],
   providers: [],

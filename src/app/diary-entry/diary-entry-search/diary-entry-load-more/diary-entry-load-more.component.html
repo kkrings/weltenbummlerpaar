@@ -1,0 +1,18 @@
+<button
+  type="button"
+  class="btn btn-primary"
+  (click)="loadMoreEntries()"
+  [disabled]="searching || loading || numEntriesLoaded >= numEntriesTotal"
+>
+  <span
+    *ngIf="loading"
+    class="spinner-border spinner-border-sm"
+    role="status"
+  ></span>
+  Weitere Einträge
+</button>
+<div *ngIf="!loading && httpAlert.isShown" class="mt-2">
+  <app-http-alert-message
+    [alertType]="httpAlert.alertType"
+  ></app-http-alert-message>
+</div>

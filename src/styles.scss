@@ -1,9 +1,6 @@
 // override Bootstrap's primary and secondary color variables with colors from
 // the Beach color palette: https://www.color-hex.com/color-palette/895
-$primary: #96ceb4;
-$secondary: #ffcc5c;
-$danger: #ff6f69;
-
+@import "theme";
 @import "~bootstrap/scss/bootstrap";
 
 button.btn.btn-primary {
@@ -32,4 +29,9 @@ button.btn.btn-outline-light {
 .badge-outline-primary {
   border: 1px solid theme-color("primary");
   background-color: transparent;
+}
+
+.search-tags-search-window {
+  max-height: 250px;
+  overflow-y: auto;
 }
