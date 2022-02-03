@@ -1,4 +1,4 @@
-@import "../styles";
+@import "../theme";
 
 .logo-container {
   position: relative;
@@ -6,12 +6,12 @@
 
 .logo {
   width: 200px;
-  border: 5px solid theme-color("primary");
+  border: 5px solid $primary;
   border-radius: 50%;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  background-color: color("white");
+  background-color: white;
 }
 
 .logo-background {
@@ -21,5 +21,5 @@
   top: 50%;
   z-index: -1;
   transform: translateY(-50%);
-  background-color: theme-color("primary");
+  background-color: $primary;
 }
