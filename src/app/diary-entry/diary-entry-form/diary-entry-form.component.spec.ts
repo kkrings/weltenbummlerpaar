@@ -9,11 +9,11 @@ import { By } from '@angular/platform-browser';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { DiaryEntryFormComponent } from './diary-entry-form.component';
-import { DiaryEntryService } from '../diary-entry.service';
-import { DiaryEntry } from '../diary-entry.model';
+import { AlertType } from '../../http-alert/alert.model';
 import { Image } from '../../image/image.model';
-import { AlertType } from 'src/app/http-alert/alert.model';
+import { DiaryEntry } from '../diary-entry.model';
+import { DiaryEntryService } from '../diary-entry.service';
+import { DiaryEntryFormComponent } from './diary-entry-form.component';
 
 import * as testUtils from '../../test-utils/test-utils.module';
 
@@ -431,6 +431,27 @@ describe('DiaryEntryFormComponent', () => {
     });
   });
 
+  it('#previewImage.value should be null', () => {
+    expect(component.previewImage.value).toBeNull();
+  });
+
+  it("#previewImage.value should match diary entry's preview image", () => {
+    component.diaryEntry.previewImage = testImages[0];
+    component.ngOnInit();
+    expect(component.previewImage.value).toEqual(testImages[0]);
+  });
+
+  it('preview image buttons should set preview image', () => {
+    component.imageList = [...testImages];
+    fixture.detectChanges();
+
+    const buttons = fixture.debugElement.queryAll(By.css('.form-check-input'));
+    expect(buttons.length).toEqual(testImages.length);
+
+    buttons[0].triggerEventHandler('change', null);
+    expect(component.previewImage.value).toEqual(testImages[0]);
+  });
+
   it(
     '#onSubmit should create new diary entry',
     waitForAsync(() => {
@@ -495,9 +516,13 @@ describe('DiaryEntryFormComponent', () => {
       updatedEntry.title = 'updated title';
       component.title.setValue(updatedEntry.title);
 
+      updatedEntry.previewImage = testImages[0];
+      component.previewImage.setValue(testImages[0]);
+
       const service = TestBed.inject(
         DiaryEntryService
       ) as jasmine.SpyObj<DiaryEntryService>;
+
       service.updateEntry.and.returnValue(testUtils.asyncData(updatedEntry));
 
       component.onSubmit();
