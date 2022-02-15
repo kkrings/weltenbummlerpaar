@@ -77,7 +77,7 @@ export class DiaryEntryService {
     limit = -1
   ): Observable<DiaryEntry[]> {
     return this.http
-      .get<DiaryEntry[]>(this.getSearchUrl(tags, skip, limit))
+      .get<DiaryEntry[]>(this.getSearchUrl(tags, skip, limit, false))
       .pipe(map((entries) => entries.map((entry) => setPreviewImage(entry))))
       .pipe(catchError(this.httpAlertService.handleError));
   }
@@ -172,10 +172,10 @@ export class DiaryEntryService {
    *   Search URL
    */
   private getSearchUrl(
-    tags: string[] = [],
-    skip = 0,
-    limit = -1,
-    count = false
+    tags: string[],
+    skip: number,
+    limit: number,
+    count: boolean
   ): string {
     const url = count ? `${this.#entryUrl}/count` : this.#entryUrl;
 
