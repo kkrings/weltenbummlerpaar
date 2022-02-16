@@ -13,10 +13,10 @@ import {
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
-import { DiaryEntryService } from '../diary-entry.service';
+import { Alert, AlertType } from '../../../app/http-alert/alert.model';
 import { DiaryEntry } from '../diary-entry.model';
+import { DiaryEntryService } from '../diary-entry.service';
 import { Image } from '../../image/image.model';
-import { Alert, AlertType } from 'src/app/http-alert/alert.model';
 
 /**
  * Diary entry form component
