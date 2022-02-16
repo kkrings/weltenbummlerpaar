@@ -58,7 +58,7 @@ export class SearchTagSearchComponent {
     const { searchTag }: { searchTag: string } = this.searchForm.value;
     this.searchTags.push(searchTag);
     this.searchTagsSource.next(this.searchTags);
-    this.searchForm.reset();
+    this.searchForm.reset({ searchTag: '' });
   }
 
   deselect(searchTag: string): void {

@@ -349,6 +349,43 @@ describe('ImageUploadComponent', () => {
     })
   );
 
+  it(
+    '#onSubmit should set alert message on image upload',
+    waitForAsync(() => {
+      const testImage = testEntry.images[0];
+
+      const description = fixture.debugElement.query(By.css('#description'));
+      description.nativeElement.value = testImage.description;
+      description.nativeElement.dispatchEvent(new Event('input'));
+
+      const testFile = new File([], 'testImage.jpg', { type: 'image/jpeg' });
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(testFile);
+
+      const filesInput = fixture.debugElement.query(By.css('#files'));
+      filesInput.nativeElement.files = dataTransfer.files;
+      filesInput.nativeElement.dispatchEvent(new Event('input'));
+
+      const imageService = TestBed.inject(
+        ImageService
+      ) as jasmine.SpyObj<ImageService>;
+
+      const alertType = AlertType.server;
+      imageService.uploadImage.and.returnValue(testUtils.asyncError(alertType));
+
+      component.processing
+        .pipe(last())
+        .subscribe((processing: boolean) => expect(processing).toBeFalse());
+
+      component.onSubmit();
+
+      fixture.whenStable().then(() => {
+        expect(component.processUploadRequest).toBeFalse();
+        expect(component.httpAlert.alertType).toEqual(alertType);
+      });
+    })
+  );
+
   it('#onSubmit should update image', () => {
     const testImage: Image = {
       file: undefined,
@@ -375,7 +412,7 @@ describe('ImageUploadComponent', () => {
   });
 
   it(
-    '#onSubmit should set alert message',
+    '#onSubmit should set alert message on image update',
     waitForAsync(() => {
       component.image.id = '0';
 

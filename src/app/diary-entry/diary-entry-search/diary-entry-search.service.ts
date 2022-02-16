@@ -8,9 +8,9 @@ import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { DiaryEntry } from '../diary-entry.model';
-import { DiaryEntrySearchResult } from './diary-entry-search.model';
-import { DiaryEntrySearchConfig } from './diary-entry-search.config';
 import { DiaryEntryService } from '../diary-entry.service';
+import { DiaryEntrySearchConfig } from './diary-entry-search.config';
+import { DiaryEntrySearchResult } from './diary-entry-search.model';
 
 /**
  * Diary entry search service

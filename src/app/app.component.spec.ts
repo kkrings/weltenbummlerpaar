@@ -250,4 +250,33 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     expect(app.diaryEntries).toContain(diaryEntry);
   });
+
+  it('should load more diary entries', () => {
+    app.diaryEntries = [];
+    fixture.detectChanges();
+
+    const loadMoreButton = fixture.debugElement.query(
+      By.directive(MockDiaryEntryLoadMoreComponent)
+    );
+
+    const component = loadMoreButton.injector.get(
+      MockDiaryEntryLoadMoreComponent
+    );
+
+    const diaryEntry: DiaryEntry = {
+      id: '1',
+      title: 'some title',
+      location: 'some location',
+      body: 'some body',
+      images: [],
+      searchTags: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    component.moreEntries.emit([diaryEntry]);
+
+    fixture.detectChanges();
+    expect(app.diaryEntries).toContain(diaryEntry);
+  });
 });
