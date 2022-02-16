@@ -18,8 +18,8 @@ import { SearchTagSearchComponent } from './search-tag-search/search-tag-search.
 export class SearchTagSearchAccessorDirective
   implements ControlValueAccessor, OnInit, OnDestroy
 {
-  private onChange = (_: string[]) => {};
-  private onTouched = () => {};
+  private onChange!: (_: string[]) => void;
+  private onTouched!: () => void;
   private onSearchTags = Subscription.EMPTY;
   private touched = false;
 
