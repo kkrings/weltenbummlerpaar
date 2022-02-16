@@ -9,9 +9,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 
 import { DiaryEntrySearchFormComponent } from './diary-entry-search-form.component';
-import { DiaryEntrySearchService } from '../diary-entry-search.service';
 import { SearchTagSearchAccessorDirective } from '../../../search-tag/search-tag-search-accessor.directive';
-import { SearchTagSearchComponent } from 'src/app/search-tag/search-tag-search/search-tag-search.component';
+import { SearchTagSearchComponent } from '../../../search-tag/search-tag-search/search-tag-search.component';
+import { DiaryEntrySearchService } from '../diary-entry-search.service';
 
 @Component({
   selector: 'app-search-tag-search',
@@ -89,7 +89,8 @@ describe('DiaryEntrySearchFormComponent', () => {
   });
 
   it('#diaryEntrySearchTags.value is changed', () => {
-    const searchTags = ['Some search tag'];
+    const searchTags = ['Some search tag', 'Some other search tag'];
+    formControl.searchTagsSource.next(searchTags.slice(0, 1));
     formControl.searchTagsSource.next(searchTags);
     expect(component.diaryEntrySearchTags.value).toEqual(searchTags);
   });
