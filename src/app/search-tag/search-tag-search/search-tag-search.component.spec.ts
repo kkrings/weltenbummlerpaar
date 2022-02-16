@@ -1,10 +1,4 @@
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -12,7 +6,11 @@ import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { NEVER, of, Subscription, throwError } from 'rxjs';
 
 import { AlertType } from '../../http-alert/alert.model';
-import { asyncData } from '../../test-utils/test-utils.module';
+import {
+  asyncData,
+  MockHttpAlertMessageComponent,
+  TestUtilsModule,
+} from '../../test-utils/test-utils.module';
 import { SearchTagSearchConfig } from '../search-tag-search-config.service';
 import { SearchTagService } from '../search-tag.service';
 import { SearchTagSearchComponent } from './search-tag-search.component';
@@ -29,7 +27,12 @@ describe('SearchTagSearchComponent', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, FontAwesomeModule, NgbTypeaheadModule],
+      imports: [
+        ReactiveFormsModule,
+        FontAwesomeModule,
+        NgbTypeaheadModule,
+        TestUtilsModule,
+      ],
       declarations: [SearchTagSearchComponent],
       providers: [
         {
@@ -194,4 +197,161 @@ describe('SearchTagSearchComponent', () => {
       });
     })
   );
+
+  describe('#onSubmit', () => {
+    const searchTag = 'some search tag';
+
+    beforeEach(() => {
+      component.searchForm.setValue({ searchTag });
+    });
+
+    describe('#searchTags$', () => {
+      let onSearchTags: Subscription;
+
+      beforeEach(() => {
+        onSearchTags = Subscription.EMPTY;
+      });
+
+      it('should contain search tag', (done) => {
+        onSearchTags = component.searchTags$.subscribe((tags) => {
+          expect(tags).toContain(searchTag);
+          done();
+        }, fail);
+
+        component.onSubmit();
+      });
+
+      afterEach(() => {
+        onSearchTags.unsubscribe();
+      });
+    });
+
+    describe('#searchTags and #searchForm', () => {
+      beforeEach(() => {
+        component.onSubmit();
+      });
+
+      it('#searchTags should contain search tag', () => {
+        expect(component.searchTags).toContain(searchTag);
+      });
+
+      it('#searchForm should have been reset', () => {
+        expect(component.searchForm.value).toEqual({ searchTag: '' });
+      });
+    });
+  });
+
+  describe('#deselect', () => {
+    const searchTag = 'some search tag';
+
+    beforeEach(() => {
+      component.searchTags.push(searchTag);
+    });
+
+    describe('#searchTags$', () => {
+      let onSearchTags: Subscription;
+
+      beforeEach(() => {
+        onSearchTags = Subscription.EMPTY;
+      });
+
+      it('should not contain search tag', (done) => {
+        onSearchTags = component.searchTags$.subscribe((tags) => {
+          expect(tags).not.toContain(searchTag);
+          done();
+        }, fail);
+
+        component.deselect(searchTag);
+      });
+
+      afterEach(() => {
+        onSearchTags.unsubscribe();
+      });
+    });
+
+    describe('#searchTags', () => {
+      beforeEach(() => {
+        component.deselect(searchTag);
+      });
+
+      it('#searchTags should not contain search tag', () => {
+        expect(component.searchTags).not.toContain(searchTag);
+      });
+    });
+  });
+
+  it('spinner should not be visible', () => {
+    const spinner = fixture.debugElement.query(By.css('.spinner-border'));
+    expect(spinner.classes.invisible).toBeTrue();
+  });
+
+  it('spinner should be visible', () => {
+    component.searching = true;
+    fixture.detectChanges();
+    const spinner = fixture.debugElement.query(By.css('.spinner-border'));
+    expect(spinner.classes.invisible).toBeUndefined();
+  });
+
+  it('search button should be disabled', () => {
+    const button = fixture.debugElement.query(By.css('button[type=submit]'));
+    expect(button.nativeElement.disabled).toBeTrue();
+  });
+
+  it('search button schould be enabled', () => {
+    component.searchForm.setValue({ searchTag: 'some search tag' });
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('button[type=submit]'));
+    expect(button.nativeElement.disabled).toBeFalse();
+  });
+
+  it("search button's text content should be 'Suchen'", () => {
+    const button = fixture.debugElement.query(By.css('button[type=submit]'));
+    expect(button.nativeElement.textContent).toEqual('Suchen');
+  });
+
+  it("search button's text content should be 'Hinzufügen'", () => {
+    component.searchTags.push('some search tag');
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('button[type=submit]'));
+    expect(button.nativeElement.textContent).toEqual('Hinzufügen');
+  });
+
+  it('alert message should not have been rendered', () => {
+    const alert = fixture.debugElement.query(
+      By.directive(MockHttpAlertMessageComponent)
+    );
+    expect(alert).toBeNull();
+  });
+
+  it('alert message should have been rendered', () => {
+    component.httpAlert.alertType = AlertType.server;
+    fixture.detectChanges();
+    const alert = fixture.debugElement.query(
+      By.directive(MockHttpAlertMessageComponent)
+    );
+    expect(alert).not.toBeNull();
+  });
+
+  it('selected search tags should not have been rendered', () => {
+    const buttons = fixture.debugElement.queryAll(By.css('.btn-secondary'));
+    expect(buttons.length).toEqual(0);
+  });
+
+  it('selected search tags should have been rendered', () => {
+    const searchTags = ['some search tag', 'some other search tag'];
+    component.searchTags.push(...searchTags);
+    fixture.detectChanges();
+    const buttons = fixture.debugElement.queryAll(By.css('.btn-secondary'));
+    expect(buttons.length).toEqual(searchTags.length);
+  });
+
+  it('#deselect should have been called', () => {
+    spyOn(component, 'deselect');
+    const searchTag = 'some search tag';
+    component.searchTags.push(searchTag);
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('.btn-secondary'));
+    button.triggerEventHandler('click', null);
+    expect(component.deselect).toHaveBeenCalledOnceWith(searchTag);
+  });
 });
