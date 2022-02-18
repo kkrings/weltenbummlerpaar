@@ -34,7 +34,7 @@ back-end application:
 | ----------------- | ---------------------------------------- |
 | 1.0.x             | 1.0.x                                    |
 | 1.1.x             | 1.1.x                                    |
-| 2.0.x             | 2.0.x                                    |
+| 2.x.x             | 2.0.x                                    |
 
 The last step is to initiate the application's build process in **production**
 mode:
