@@ -10,7 +10,7 @@
     </button>
     <button
       type="button"
-      class="btn btn-secondary btn-sm ml-1"
+      class="btn btn-secondary btn-sm ms-1"
       (click)="openImageModal()"
       [disabled]="showSpinner"
     >
@@ -18,7 +18,7 @@
     </button>
     <button
       type="button"
-      class="btn btn-danger btn-sm ml-1"
+      class="btn btn-danger btn-sm ms-1"
       [hidden]="showSpinner"
       (click)="deleteEntry()"
     >
@@ -26,10 +26,10 @@
     </button>
     <div
       *ngIf="showSpinner"
-      class="spinner-border text-danger align-middle ml-1"
+      class="spinner-border text-danger align-middle ms-1"
       role="status"
     >
-      <span class="sr-only">Lösche Tagebucheintrag...</span>
+      <span class="visually-hidden">Lösche Tagebucheintrag...</span>
     </div>
   </div>
   <img
@@ -44,10 +44,7 @@
     </h6>
     <p class="card-text">{{ diaryEntry | diaryEntryBrief: 150 }}</p>
     <p *ngIf="diaryEntry.searchTags.length > 0">
-      <span
-        *ngFor="let tag of diaryEntry.searchTags"
-        class="badge badge-pill badge-outline-primary mr-1"
-      >
+      <span *ngFor="let tag of diaryEntry.searchTags" class="search-tag me-1">
         {{ tag }}
       </span>
     </p>
