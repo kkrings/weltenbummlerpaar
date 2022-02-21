@@ -4,31 +4,29 @@
 @import "~bootstrap/scss/bootstrap";
 
 button.btn.btn-primary {
-  border-radius: $rounded-pill;
-  color: color("white");
+  border-radius: $border-radius-pill;
+  color: $white;
 }
 
 button.btn.btn-secondary {
-  border-radius: $rounded-pill;
-  color: color("white");
+  border-radius: $border-radius-pill;
+  color: $white;
 }
 
 button.btn.btn-danger {
-  border-radius: $rounded-pill;
-  color: color("white");
+  border-radius: $border-radius-pill;
+  color: $white;
 }
 
 button.btn.btn-outline-light {
-  border-radius: $rounded-pill;
+  border-radius: $border-radius-pill;
 }
 
-.badge {
-  font-weight: normal;
-}
-
-.badge-outline-primary {
-  border: 1px solid theme-color("primary");
-  background-color: transparent;
+.search-tag {
+  border: $border-width solid $primary;
+  border-radius: $border-radius-pill;
+  font-size: $font-size-sm;
+  padding: map-get($spacers, 1) map-get($spacers, 2);
 }
 
 .search-tags-search-window {

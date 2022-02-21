@@ -21,8 +21,6 @@ import {
 } from '@angular/forms';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import bsCustomFileInput from 'bs-custom-file-input';
-
 import { ImageService } from '../image.service';
 import { Image } from '../image.model';
 import { DiaryEntry } from '../../diary-entry/diary-entry.model';
@@ -139,9 +137,6 @@ export class ImageUploadComponent implements OnInit {
    * Initialize the image upload component.
    */
   ngOnInit(): void {
-    // style file input tag
-    bsCustomFileInput.init();
-
     this.description.setValue(this.image.description);
 
     if (this.image.id.length > 0) {

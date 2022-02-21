@@ -3,16 +3,15 @@
     <h4 class="modal-title text-primary">Admin-Login</h4>
     <button
       type="button"
-      class="close"
+      class="btn-close"
       [disabled]="showSpinner"
       (click)="close()"
-    >
-      <span>&times;</span>
-    </button>
+      aria-label="Schließen"
+    ></button>
   </div>
   <div class="modal-body">
-    <div class="form-group">
-      <label class="sr-only" for="username">Username</label>
+    <div class="mb-3">
+      <label class="form-label visually-hidden" for="username">Username</label>
       <input
         class="form-control"
         formControlName="username"
@@ -25,8 +24,8 @@
         <small>Ohne Username ist kein Login möglich.</small>
       </div>
     </div>
-    <div class="form-group">
-      <label class="sr-only" for="password">Passwort</label>
+    <div class="mb-3">
+      <label class="form-label visually-hidden" for="password">Passwort</label>
       <input
         class="form-control"
         formControlName="password"
@@ -69,7 +68,7 @@
       Login
     </button>
     <div *ngIf="showSpinner" class="spinner-border text-primary" role="status">
-      <span class="sr-only">Sende Login-Request...</span>
+      <span class="visually-hidden">Sende Login-Request...</span>
     </div>
   </div>
 </form>

@@ -1,43 +1,45 @@
-<form class="form-inline" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
-  <label for="search-tag" class="sr-only">Stichwortsuche:</label>
-  <div class="input-group mr-sm-2">
-    <div class="input-group-prepend">
-      <div class="input-group-text bg-transparent">
+<form class="row g-2" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+  <div class="col-auto">
+    <label for="search-tag" class="form-label visually-hidden">
+      Stichwortsuche:
+    </label>
+    <div class="input-group me-sm-2">
+      <span class="input-group-text bg-transparent">
         <fa-icon [icon]="searchIcon"></fa-icon>
-      </div>
-    </div>
-    <input
-      formControlName="searchTag"
-      id="search-tag"
-      class="form-control border-left-0 border-right-0"
-      type="text"
-      placeholder="Stichwort"
-      (focus)="onFocus($any($event).target.value)"
-      [ngbTypeahead]="search"
-      [editable]="false"
-      popupClass="search-tags-search-window"
-      required
-    />
-    <div class="input-group-append">
+      </span>
+      <input
+        formControlName="searchTag"
+        id="search-tag"
+        class="form-control border-start-0 border-end-0"
+        type="text"
+        placeholder="Stichwort"
+        (focus)="onFocus($any($event).target.value)"
+        [ngbTypeahead]="search"
+        [editable]="false"
+        popupClass="search-tags-search-window"
+        required
+      />
       <div class="input-group-text bg-transparent">
         <div
           class="spinner-border spinner-border-sm"
           [class.invisible]="!searching"
           role="status"
         >
-          <span class="sr-only">Suche Stichwörter...</span>
+          <span class="visually-hidden">Suche Stichwörter...</span>
         </div>
       </div>
     </div>
   </div>
-  <button
-    type="submit"
-    class="btn btn-primary mt-2 mt-sm-0"
-    [disabled]="searchForm.invalid"
-  >
-    <span *ngIf="searchTags.length === 0">Suchen</span>
-    <span *ngIf="searchTags.length > 0">Hinzufügen</span>
-  </button>
+  <div class="col-auto">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="searchForm.invalid"
+    >
+      <span *ngIf="searchTags.length === 0">Suchen</span>
+      <span *ngIf="searchTags.length > 0">Hinzufügen</span>
+    </button>
+  </div>
 </form>
 <div *ngIf="!searching && httpAlert.isShown" class="mt-2">
   <app-http-alert-message
@@ -47,9 +49,9 @@
 <button
   *ngFor="let searchTag of searchTags"
   type="button"
-  class="btn btn-secondary btn-sm mt-2 mr-2"
+  class="btn btn-secondary btn-sm mt-2 me-2"
   (click)="deselect(searchTag)"
 >
-  <span class="mr-2">{{ searchTag }}</span>
+  <span class="me-2">{{ searchTag }}</span>
   <fa-icon [icon]="deselectIcon"></fa-icon>
 </button>

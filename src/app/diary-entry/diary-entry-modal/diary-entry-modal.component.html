@@ -1,8 +1,11 @@
 <div class="modal-header">
   <h4 class="modal-title text-primary">{{ diaryEntry.title }}</h4>
-  <button type="button" class="close" (click)="close()">
-    <span>&times;</span>
-  </button>
+  <button
+    type="button"
+    class="btn-close"
+    (click)="close()"
+    aria-label="Schließen"
+  ></button>
 </div>
 <div class="modal-body">
   <div *ngIf="diaryEntry.images.length > 0">
@@ -11,10 +14,7 @@
   <h6 class="text-secondary">{{ diaryEntry.location }}</h6>
   <p class="text-pre-line">{{ diaryEntry.body }}</p>
   <p *ngIf="diaryEntry.searchTags.length > 0">
-    <span
-      *ngFor="let tag of diaryEntry.searchTags"
-      class="badge badge-pill badge-outline-primary mr-1"
-    >
+    <span *ngFor="let tag of diaryEntry.searchTags" class="search-tag me-1">
       {{ tag }}
     </span>
   </p>

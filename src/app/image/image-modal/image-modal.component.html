@@ -2,15 +2,14 @@
   <h4 class="modal-title text-primary">Fotos hinzufügen/bearbeiten</h4>
   <button
     type="button"
-    class="close"
+    class="btn-close"
     (click)="close()"
     [disabled]="disableClose"
-  >
-    <span>&times;</span>
-  </button>
+    aria-label="Schließen"
+  ></button>
 </div>
 <div class="modal-body">
-  <div class="form-group">
+  <div class="mb-3">
     <h6 class="text-secondary">Foto hinzufügen</h6>
     <app-image-upload
       [entryId]="diaryEntry.id"
@@ -20,7 +19,7 @@
     </app-image-upload>
   </div>
   <div *ngFor="let image of diaryEntry.images; let imageIndex = index">
-    <div class="form-group">
+    <div class="mb-3">
       <h6 class="text-secondary">Foto bearbeiten</h6>
       <img [appImage]="image" class="img img-fluid rounded mb-2" />
       <app-image-upload
