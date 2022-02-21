@@ -26,6 +26,8 @@ button.btn.btn-outline-light {
   border: $border-width solid $primary;
   border-radius: $border-radius-pill;
   font-size: $font-size-sm;
+  margin-bottom: map-get($spacers, 1);
+  margin-right: map-get($spacers, 1);
   padding: map-get($spacers, 1) map-get($spacers, 2);
 }
 
