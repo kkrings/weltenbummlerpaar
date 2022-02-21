@@ -5,24 +5,27 @@
       class="btn btn-primary btn-sm"
       (click)="openUpdateEntryModal()"
       [disabled]="showSpinner"
+      aria-label="Bearbeiten"
     >
-      <fa-icon [icon]="diaryEntryEditIcon"></fa-icon> Bearb.
+      <fa-icon [icon]="diaryEntryEditIcon"></fa-icon>
     </button>
     <button
       type="button"
       class="btn btn-secondary btn-sm ms-1"
       (click)="openImageModal()"
       [disabled]="showSpinner"
+      aria-label="Fotos"
     >
-      <fa-icon [icon]="diaryEntryImagesIcon"></fa-icon> Fotos
+      <fa-icon [icon]="diaryEntryImagesIcon"></fa-icon>
     </button>
     <button
       type="button"
       class="btn btn-danger btn-sm ms-1"
       [hidden]="showSpinner"
       (click)="deleteEntry()"
+      aria-label="Entfernen"
     >
-      <fa-icon [icon]="diaryEntryDeleteIcon"></fa-icon> Entf.
+      <fa-icon [icon]="diaryEntryDeleteIcon"></fa-icon>
     </button>
     <div
       *ngIf="showSpinner"
