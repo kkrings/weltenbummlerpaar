@@ -46,11 +46,11 @@
       {{ diaryEntry.location }}
     </h6>
     <p class="card-text">{{ diaryEntry | diaryEntryBrief: 150 }}</p>
-    <p *ngIf="diaryEntry.searchTags.length > 0">
-      <span *ngFor="let tag of diaryEntry.searchTags" class="search-tag me-1">
+    <div *ngIf="diaryEntry.searchTags.length > 0" class="d-flex flex-wrap mb-3">
+      <div *ngFor="let tag of diaryEntry.searchTags" class="search-tag">
         {{ tag }}
-      </span>
-    </p>
+      </div>
+    </div>
     <p class="card-text">
       <small class="text-muted">
         Erstellt am {{ diaryEntry.createdAt | date }}.
