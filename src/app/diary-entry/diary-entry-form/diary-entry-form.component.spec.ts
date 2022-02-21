@@ -125,7 +125,7 @@ describe('DiaryEntryFormComponent', () => {
     component.processRequest = true;
     fixture.detectChanges();
     const closeButton = fixture.debugElement.query(
-      By.css('.modal-header button.close')
+      By.css('.modal-header .btn-close')
     );
     expect(closeButton.nativeElement.disabled).toBeTrue();
   });
@@ -157,7 +157,7 @@ describe('DiaryEntryFormComponent', () => {
 
   it("header's dismiss button should trigger #closeModal", () => {
     const closeButton = fixture.debugElement.query(
-      By.css('.modal-header button.close')
+      By.css('.modal-header .btn-close')
     );
     spyOn(component, 'closeModal');
     closeButton.triggerEventHandler('click', null);

@@ -145,15 +145,21 @@ describe('DiaryEntryModalComponent', () => {
   });
 
   it("should not render diary entry's tags", () => {
-    const badges = fixture.debugElement.queryAll(By.css('.modal-body .badge'));
-    expect(badges.length).toEqual(0);
+    const searchTags = fixture.debugElement.queryAll(
+      By.css('.modal-body .search-tag')
+    );
+    expect(searchTags.length).toEqual(0);
   });
 
   it("should render diary entry's tags", () => {
     component.diaryEntry.searchTags = ['some tag', 'some other tag'];
     fixture.detectChanges();
-    const badges = fixture.debugElement.queryAll(By.css('.modal-body .badge'));
-    const tags = badges.map((badge) => badge.nativeElement.textContent.trim());
+    const searchTags = fixture.debugElement.queryAll(
+      By.css('.modal-body .search-tag')
+    );
+    const tags = searchTags.map((badge) =>
+      badge.nativeElement.textContent.trim()
+    );
     expect(tags).toEqual(component.diaryEntry.searchTags);
   });
 
