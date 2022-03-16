@@ -3,28 +3,16 @@
  * @packageDocumentation
  */
 
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
 
-import { DiaryEntrySearchFormComponent } from './diary-entry-search-form.component';
-import { SearchTagSearchAccessorDirective } from '../../../search-tag/search-tag-search-accessor.directive';
 import { SearchTagSearchComponent } from '../../../search-tag/search-tag-search/search-tag-search.component';
+import {
+  MockSearchTagSearchComponent,
+  TestUtilsModule,
+} from '../../../test-utils/test-utils.module';
 import { DiaryEntrySearchService } from '../diary-entry-search.service';
-
-@Component({
-  selector: 'app-search-tag-search',
-})
-class MockSearchTagSearchComponent {
-  searchTags: string[] = [];
-  searchTags$: Observable<string[]>;
-  searchTagsSource = new Subject<string[]>();
-
-  constructor() {
-    this.searchTags$ = this.searchTagsSource.asObservable();
-  }
-}
+import { DiaryEntrySearchFormComponent } from './diary-entry-search-form.component';
 
 describe('DiaryEntrySearchFormComponent', () => {
   let component: DiaryEntrySearchFormComponent;
@@ -32,31 +20,25 @@ describe('DiaryEntrySearchFormComponent', () => {
   let formControl: MockSearchTagSearchComponent;
 
   beforeEach(async () => {
-    formControl = new MockSearchTagSearchComponent();
-
     const diaryEntrySearchServiceSpy = jasmine.createSpyObj(
       'DiaryEntrySearchService',
       ['subscribeToSearchTags', 'unsubscribeFromSearchTags']
     );
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
-      declarations: [
-        DiaryEntrySearchFormComponent,
-        SearchTagSearchAccessorDirective,
-        MockSearchTagSearchComponent,
-      ],
+      imports: [ReactiveFormsModule, TestUtilsModule],
+      declarations: [DiaryEntrySearchFormComponent],
       providers: [
         {
           provide: DiaryEntrySearchService,
           useValue: diaryEntrySearchServiceSpy,
         },
-        {
-          provide: SearchTagSearchComponent,
-          useValue: formControl,
-        },
       ],
     }).compileComponents();
+
+    formControl = TestBed.inject(
+      SearchTagSearchComponent
+    ) as unknown as MockSearchTagSearchComponent;
   });
 
   beforeEach(() => {

@@ -1,5 +1,9 @@
-<form class="row g-2" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
-  <div class="col-auto">
+<form
+  class="row row-cols-auto align-items-center g-2"
+  [formGroup]="searchForm"
+  (ngSubmit)="onSubmit()"
+>
+  <div class="col">
     <label for="search-tag" class="form-label visually-hidden">
       Stichwortsuche:
     </label>
@@ -15,7 +19,7 @@
         placeholder="Stichwort"
         (focus)="onFocus($any($event).target.value)"
         [ngbTypeahead]="search"
-        [editable]="false"
+        [editable]="allowNewSearchTags"
         popupClass="search-tags-search-window"
         required
       />
@@ -30,14 +34,14 @@
       </div>
     </div>
   </div>
-  <div class="col-auto">
+  <div class="col">
     <button
       type="submit"
-      class="btn btn-primary"
+      class="btn btn-primary btn-sm"
+      aria-label="Stichwort hinzufügen"
       [disabled]="searchForm.invalid"
     >
-      <span *ngIf="searchTags.length === 0">Suchen</span>
-      <span *ngIf="searchTags.length > 0">Hinzufügen</span>
+      <fa-icon [icon]="addIcon"></fa-icon>
     </button>
   </div>
 </form>

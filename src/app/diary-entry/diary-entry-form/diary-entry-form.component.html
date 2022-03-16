@@ -73,18 +73,14 @@
       </div>
     </div>
     <div class="mb-3">
-      <label for="tags" class="form-label">
+      <div class="mb-2">
         Unter welchen Stichwörtern soll der Tagebucheintrag gefunden werden
         können?
-      </label>
-      <input
+      </div>
+      <app-search-tag-search
         formControlName="searchTags"
-        class="form-control"
-        id="tags"
-        type="text"
-        placeholder="Stichwort, noch ein Stichwort, ..."
-        value="{{ searchTags.value }}"
-      />
+        [allowNewSearchTags]="true"
+      ></app-search-tag-search>
     </div>
     <div *ngIf="imageList.length > 0">
       <h5 class="text-secondary">Fotoreihenfolge</h5>

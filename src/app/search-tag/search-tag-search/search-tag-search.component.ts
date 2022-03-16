@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { faMinus, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faMinus, faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { merge, Observable, of, OperatorFunction, Subject } from 'rxjs';
 import {
   catchError,
@@ -21,12 +21,14 @@ import { Alert, AlertType } from '../../http-alert/alert.model';
   styleUrls: ['./search-tag-search.component.scss'],
 })
 export class SearchTagSearchComponent {
+  @Input() allowNewSearchTags = false;
   searching = false;
   httpAlert = new Alert();
   searchForm: FormGroup;
   searchTags: string[] = [];
   searchTags$;
   searchIcon = faSearch;
+  addIcon = faPlus;
   deselectIcon = faMinus;
 
   private searchTagsSource = new Subject<string[]>();

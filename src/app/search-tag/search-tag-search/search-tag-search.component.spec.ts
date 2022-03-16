@@ -304,18 +304,6 @@ describe('SearchTagSearchComponent', () => {
     expect(button.nativeElement.disabled).toBeFalse();
   });
 
-  it("search button's text content should be 'Suchen'", () => {
-    const button = fixture.debugElement.query(By.css('button[type=submit]'));
-    expect(button.nativeElement.textContent).toEqual('Suchen');
-  });
-
-  it("search button's text content should be 'Hinzufügen'", () => {
-    component.searchTags.push('some search tag');
-    fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button[type=submit]'));
-    expect(button.nativeElement.textContent).toEqual('Hinzufügen');
-  });
-
   it('alert message should not have been rendered', () => {
     const alert = fixture.debugElement.query(
       By.directive(MockHttpAlertMessageComponent)
