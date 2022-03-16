@@ -10,11 +10,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { of } from 'rxjs';
 import { first, last } from 'rxjs/operators';
 
-import { ImageUploadComponent } from './image-upload.component';
-import { ImageService } from '../image.service';
-import { Image } from '../image.model';
 import { DiaryEntry } from '../../diary-entry/diary-entry.model';
 import { AlertType } from '../../http-alert/alert.model';
+import { FileValueAccessorDirective } from '../../shared/file-value-accessor.directive';
+import { Image } from '../image.model';
+import { ImageService } from '../image.service';
+import { ImageUploadComponent } from './image-upload.component';
 
 import * as testUtils from '../../test-utils/test-utils.module';
 
@@ -55,7 +56,7 @@ describe('ImageUploadComponent', () => {
         FontAwesomeModule,
         testUtils.TestUtilsModule,
       ],
-      declarations: [ImageUploadComponent],
+      declarations: [FileValueAccessorDirective, ImageUploadComponent],
       providers: [{ provide: ImageService, useValue: imageServiceSpy }],
     }).compileComponents();
   });
@@ -97,9 +98,9 @@ describe('ImageUploadComponent', () => {
 
     const filesInput = fixture.debugElement.query(By.css('#files'));
     filesInput.nativeElement.files = dataTransfer.files;
-    filesInput.nativeElement.dispatchEvent(new Event('input'));
+    filesInput.nativeElement.dispatchEvent(new Event('change'));
 
-    expect(component.files.value).toEqual('C:\\fakepath\\' + testFile.name);
+    expect(component.files.value).toEqual(dataTransfer.files);
   });
 
   it('description form control should be empty', () => {
@@ -303,7 +304,7 @@ describe('ImageUploadComponent', () => {
 
       const filesInput = fixture.debugElement.query(By.css('#files'));
       filesInput.nativeElement.files = dataTransfer.files;
-      filesInput.nativeElement.dispatchEvent(new Event('input'));
+      filesInput.nativeElement.dispatchEvent(new Event('change'));
 
       const formValue = component.imageForm.value;
 
