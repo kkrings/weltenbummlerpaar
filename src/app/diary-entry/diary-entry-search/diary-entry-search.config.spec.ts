@@ -1,3 +1,8 @@
+/**
+ * Unit tests for diary entry search config
+ * @packageDocumentation
+ */
+
 import { DiaryEntrySearchConfig } from './diary-entry-search.config';
 
 describe('DiaryEntrySearchConfig', () => {
