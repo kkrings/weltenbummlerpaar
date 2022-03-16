@@ -12,9 +12,9 @@ import {
 import { environment } from '../../environments/environment';
 import { AlertType } from '../http-alert/alert.model';
 import { HttpAlertService } from '../http-alert/http-alert.service';
+import { Image } from '../image/image.model';
 import { DiaryEntry } from './diary-entry.model';
 import { DiaryEntryService } from './diary-entry.service';
-import { Image } from '../image/image.model';
 
 describe('DiaryEntryService', () => {
   let service: DiaryEntryService;
