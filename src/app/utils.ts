@@ -1,5 +1,7 @@
-import { MonoTypeOperatorFunction } from 'rxjs';
-import { debounceTime as _debounceTime } from 'rxjs/operators';
+/**
+ * Utility functions
+ * @packageDocumentation
+ */
 
 import { DiaryEntry } from './diary-entry/diary-entry.model';
 
