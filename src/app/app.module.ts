@@ -36,6 +36,7 @@ import { SearchTagSearchComponent } from './search-tag/search-tag-search/search-
 import { SearchTagSearchAccessorDirective } from './search-tag/search-tag-search-accessor.directive';
 import { FileValueAccessorDirective } from './shared/file-value-accessor.directive';
 import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-alert-message.component';
+import { ImageWithLoaderComponent } from './image/image-with-loader/image-with-loader.component';
 
 /**
  * Application's root module
@@ -63,6 +64,7 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
     SearchTagSearchAccessorDirective,
     FileValueAccessorDirective,
     HttpAlertMessageComponent,
+    ImageWithLoaderComponent,
   ],
   imports: [
     BrowserModule,

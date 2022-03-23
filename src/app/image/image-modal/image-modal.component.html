@@ -21,7 +21,10 @@
   <div *ngFor="let image of diaryEntry.images; let imageIndex = index">
     <div class="mb-3">
       <h6 class="text-secondary">Foto bearbeiten</h6>
-      <img [appImage]="image" class="img img-fluid rounded mb-2" />
+      <app-image-with-loader
+        [image]="image"
+        class="img img-fluid rounded mb-2"
+      ></app-image-with-loader>
       <app-image-upload
         [entryId]="diaryEntry.id"
         [(image)]="diaryEntry.images[imageIndex]"

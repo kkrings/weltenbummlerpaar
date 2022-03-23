@@ -117,7 +117,10 @@
           </div>
         </div>
         <figure class="figure">
-          <img [appImage]="image" class="figure-img img-fluid rounded" />
+          <app-image-with-loader
+            [image]="image"
+            class="figure-img img-fluid rounded"
+          ></app-image-with-loader>
           <figcaption class="figure-caption">
             {{ image.description }}
           </figcaption>

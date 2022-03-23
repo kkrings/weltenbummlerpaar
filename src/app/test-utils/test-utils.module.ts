@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { Observable, defer, Subject } from 'rxjs';
 
 import { AlertType } from '../http-alert/alert.model';
+import { Image } from '../image/image.model';
 import { SearchTagSearchAccessorDirective } from '../search-tag/search-tag-search-accessor.directive';
 import { SearchTagSearchComponent } from '../search-tag/search-tag-search/search-tag-search.component';
 
@@ -69,6 +70,30 @@ export class MockImageDirective {
 }
 
 /**
+ * Mock image with loader component
+ */
+@Component({
+  selector: 'app-image-with-loader',
+  template: '<img [appImage]="image" [class]="class" />',
+})
+export class MockImageWithLoaderComponent {
+  /**
+   * Mock input image
+   */
+  @Input() image: Image = {
+    id: '',
+    description: '',
+    createdAt: '',
+    updatedAt: '',
+  };
+
+  /**
+   * Mock input CSS classes
+   */
+  @Input() class = '';
+}
+
+/**
  * Mock HTTP alert message component
  */
 @Component({
@@ -124,6 +149,7 @@ export class MockSearchTagSearchComponent {
   imports: [CommonModule],
   declarations: [
     MockImageDirective,
+    MockImageWithLoaderComponent,
     MockHttpAlertMessageComponent,
     MockSearchTagSearchComponent,
     SearchTagSearchAccessorDirective,
@@ -136,6 +162,7 @@ export class MockSearchTagSearchComponent {
   ],
   exports: [
     MockImageDirective,
+    MockImageWithLoaderComponent,
     MockHttpAlertMessageComponent,
     MockSearchTagSearchComponent,
     SearchTagSearchAccessorDirective,
