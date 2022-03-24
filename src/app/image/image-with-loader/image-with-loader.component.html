@@ -1,0 +1,14 @@
+<div *ngIf="loading" class="image-loading-container">
+  <img
+    src="assets/image-loading.png"
+    alt="Foto wird geladen..."
+    [class]="class"
+  />
+  <div class="image-loading-text">Foto wird geladen...</div>
+</div>
+<img
+  [appImage]="image"
+  [class]="class"
+  [class.d-none]="loading"
+  (load)="imageIsLoaded()"
+/>

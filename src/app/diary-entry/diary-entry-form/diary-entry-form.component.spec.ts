@@ -11,6 +11,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AlertType } from '../../http-alert/alert.model';
 import { Image } from '../../image/image.model';
+import { SearchTagSearchComponent } from '../../search-tag/search-tag-search/search-tag-search.component';
 import { DiaryEntry } from '../diary-entry.model';
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntryFormComponent } from './diary-entry-form.component';
@@ -318,26 +319,28 @@ describe('DiaryEntryFormComponent', () => {
   });
 
   it('#tags.value should match tags entered by user', () => {
-    const testTags = 'some tag, some other tag';
-    const tagsInput = fixture.debugElement.query(By.css('#tags'));
-    tagsInput.nativeElement.value = testTags;
-    tagsInput.nativeElement.dispatchEvent(new Event('input'));
+    const searchTagSearch = TestBed.inject(
+      SearchTagSearchComponent
+    ) as unknown as testUtils.MockSearchTagSearchComponent;
+
+    const testTags = ['some tag', 'some other tag'];
+    searchTagSearch.searchTagsSource.next(testTags);
+
     expect(component.searchTags.value).toEqual(testTags);
   });
 
   it('tags form control should be empty', () => {
-    const tagsInput = fixture.debugElement.query(By.css('#tags'));
-    expect(tagsInput.nativeElement.value).toEqual('');
+    const searchTagSearch = TestBed.inject(SearchTagSearchComponent);
+    expect(searchTagSearch.searchTags).toEqual([]);
   });
 
   it("tags form control should match diary entry's tags", () => {
+    const searchTagSearch = TestBed.inject(SearchTagSearchComponent);
+
     component.diaryEntry = testEntry;
     component.ngOnInit();
-    fixture.detectChanges();
-    const tagsInput = fixture.debugElement.query(By.css('#tags'));
-    expect(tagsInput.nativeElement.value).toEqual(
-      testEntry.searchTags.join(', ')
-    );
+
+    expect(searchTagSearch.searchTags).toEqual(testEntry.searchTags);
   });
 
   it("should not render diary entry's images", () => {
@@ -473,7 +476,7 @@ describe('DiaryEntryFormComponent', () => {
         title: testEntry.title,
         location: testEntry.location,
         body: testEntry.body,
-        searchTags: testEntry.searchTags.join(', '),
+        searchTags: testEntry.searchTags,
         previewImage: testEntry.previewImage ?? null,
       });
 

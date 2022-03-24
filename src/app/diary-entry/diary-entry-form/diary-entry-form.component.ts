@@ -100,7 +100,7 @@ export class DiaryEntryFormComponent implements OnInit {
       title: ['', Validators.required],
       location: ['', Validators.required],
       body: ['', Validators.required],
-      searchTags: [''],
+      searchTags: [[]],
       previewImage: [null],
     });
   }
@@ -112,7 +112,7 @@ export class DiaryEntryFormComponent implements OnInit {
     this.title.setValue(this.diaryEntry.title);
     this.location.setValue(this.diaryEntry.location);
     this.body.setValue(this.diaryEntry.body);
-    this.searchTags.setValue(this.diaryEntry.searchTags.join(', '));
+    this.searchTags.setValue(this.diaryEntry.searchTags);
     this.previewImage.setValue(this.diaryEntry.previewImage ?? null);
     this.imageList = [...this.diaryEntry.images];
   }
@@ -212,10 +212,7 @@ export class DiaryEntryFormComponent implements OnInit {
       body: formValue.body,
       previewImage: formValue.previewImage ?? undefined,
       images: this.imageList,
-      searchTags: formValue.searchTags
-        .split(',')
-        .map((tag: string) => tag.trim())
-        .filter((tag: string) => tag.length > 0),
+      searchTags: formValue.searchTags,
       createdAt: this.diaryEntry.createdAt,
       updatedAt: this.diaryEntry.updatedAt,
     };

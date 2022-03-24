@@ -1,3 +1,8 @@
+/**
+ * Unit tests for search tag search component
+ * @packageDocumentation
+ */
+
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -302,18 +307,6 @@ describe('SearchTagSearchComponent', () => {
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('button[type=submit]'));
     expect(button.nativeElement.disabled).toBeFalse();
-  });
-
-  it("search button's text content should be 'Suchen'", () => {
-    const button = fixture.debugElement.query(By.css('button[type=submit]'));
-    expect(button.nativeElement.textContent).toEqual('Suchen');
-  });
-
-  it("search button's text content should be 'Hinzufügen'", () => {
-    component.searchTags.push('some search tag');
-    fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button[type=submit]'));
-    expect(button.nativeElement.textContent).toEqual('Hinzufügen');
   });
 
   it('alert message should not have been rendered', () => {

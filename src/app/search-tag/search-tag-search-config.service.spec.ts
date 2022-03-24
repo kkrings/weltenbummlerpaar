@@ -1,3 +1,8 @@
+/**
+ * Unit tests for search tag search config
+ * @packageDocumentation
+ */
+
 import { SearchTagSearchConfig } from './search-tag-search-config.service';
 
 describe('SearchTagSearchConfig', () => {

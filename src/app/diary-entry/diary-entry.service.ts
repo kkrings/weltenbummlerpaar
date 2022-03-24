@@ -8,10 +8,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { DiaryEntry } from './diary-entry.model';
+import { environment } from '../../environments/environment';
 import { HttpAlertService } from '../http-alert/http-alert.service';
 import { setPreviewImage } from '../utils';
-import { environment } from '../../environments/environment';
+import { DiaryEntry } from './diary-entry.model';
 
 /**
  * Diary entry service
@@ -26,9 +26,8 @@ export class DiaryEntryService {
   /**
    * URL to entry end point
    */
-  #entryUrl = `${environment.baseurl}/rest/diary-entries`;
+  private entryUrl = `${environment.baseurl}/rest/diary-entries`;
 
-  /**
   /**
    * Construct the diary entry service.
    *
@@ -59,7 +58,8 @@ export class DiaryEntryService {
   }
 
   /**
-   * Search for diary entries on the back-end server given a list of search tags.
+   * Search for diary entries on the back-end server given a list of search
+   * tags.
    *
    * @param tags
    *   List of search tags
@@ -93,7 +93,7 @@ export class DiaryEntryService {
    */
   getEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
-      .get<DiaryEntry>(`${this.#entryUrl}/${entryId}`)
+      .get<DiaryEntry>(`${this.entryUrl}/${entryId}`)
       .pipe(map((entry) => setPreviewImage(entry)))
       .pipe(catchError(this.httpAlertService.handleError));
   }
@@ -109,7 +109,7 @@ export class DiaryEntryService {
    */
   saveEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
     return this.http
-      .post<DiaryEntry>(this.#entryUrl, {
+      .post<DiaryEntry>(this.entryUrl, {
         title: diaryEntry.title,
         location: diaryEntry.location,
         body: diaryEntry.body,
@@ -131,7 +131,7 @@ export class DiaryEntryService {
    */
   updateEntry(diaryEntry: DiaryEntry): Observable<DiaryEntry> {
     return this.http
-      .patch<DiaryEntry>(`${this.#entryUrl}/${diaryEntry.id}`, {
+      .patch<DiaryEntry>(`${this.entryUrl}/${diaryEntry.id}`, {
         title: diaryEntry.title,
         location: diaryEntry.location,
         body: diaryEntry.body,
@@ -154,7 +154,7 @@ export class DiaryEntryService {
    */
   deleteEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
-      .delete<DiaryEntry>(`${this.#entryUrl}/${entryId}`)
+      .delete<DiaryEntry>(`${this.entryUrl}/${entryId}`)
       .pipe(map((entry) => setPreviewImage(entry)))
       .pipe(catchError(this.httpAlertService.handleError));
   }
@@ -177,7 +177,7 @@ export class DiaryEntryService {
     limit: number,
     count: boolean
   ): string {
-    const url = count ? `${this.#entryUrl}/count` : this.#entryUrl;
+    const url = count ? `${this.entryUrl}/count` : this.entryUrl;
 
     const query = tags.map((tag) => `searchTags=${tag}`);
 

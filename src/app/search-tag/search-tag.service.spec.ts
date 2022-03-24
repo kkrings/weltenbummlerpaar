@@ -1,13 +1,18 @@
+/**
+ * Unit tests for search tag service
+ * @packageDocumentation
+ */
+
 import { TestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
 
-import { SearchTagService } from './search-tag.service';
-import { HttpAlertService } from '../http-alert/http-alert.service';
-import { AlertType } from '../http-alert/alert.model';
 import { environment } from '../../environments/environment';
+import { AlertType } from '../http-alert/alert.model';
+import { HttpAlertService } from '../http-alert/http-alert.service';
+import { SearchTagService } from './search-tag.service';
 
 describe('SearchTagService', () => {
   let service: SearchTagService;

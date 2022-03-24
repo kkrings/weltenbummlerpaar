@@ -5,15 +5,14 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import { DiaryEntrySearchService } from '../diary-entry-search.service';
 
 /**
  * Diary entry search form component
  *
- * This component allows the user to search for diary entries given a
- * comma-separated list of search tags
+ * This component allows the user to search for diary entries given a list of
+ * search tags.
  */
 @Component({
   selector: 'app-diary-entry-search-form',
@@ -31,7 +30,7 @@ export class DiaryEntrySearchFormComponent implements OnInit, OnDestroy {
    *
    * @param formBuilder
    *   Service for building the diary entry search form
-   * @param diaryEntryService
+   * @param diaryEntrySearchService
    *   Service for searching for diary entries on the back-end server
    */
   constructor(

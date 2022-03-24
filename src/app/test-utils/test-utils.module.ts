@@ -5,9 +5,12 @@
 
 import { Component, Directive, Input, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, defer } from 'rxjs';
+import { Observable, defer, Subject } from 'rxjs';
 
 import { AlertType } from '../http-alert/alert.model';
+import { Image } from '../image/image.model';
+import { SearchTagSearchAccessorDirective } from '../search-tag/search-tag-search-accessor.directive';
+import { SearchTagSearchComponent } from '../search-tag/search-tag-search/search-tag-search.component';
 
 /**
  * Data observable
@@ -67,6 +70,30 @@ export class MockImageDirective {
 }
 
 /**
+ * Mock image with loader component
+ */
+@Component({
+  selector: 'app-image-with-loader',
+  template: '<img [appImage]="image" [class]="class" />',
+})
+export class MockImageWithLoaderComponent {
+  /**
+   * Mock input image
+   */
+  @Input() image: Image = {
+    id: '',
+    description: '',
+    createdAt: '',
+    updatedAt: '',
+  };
+
+  /**
+   * Mock input CSS classes
+   */
+  @Input() class = '';
+}
+
+/**
  * Mock HTTP alert message component
  */
 @Component({
@@ -80,6 +107,38 @@ export class MockHttpAlertMessageComponent {
   @Input() alertType = AlertType.none;
 }
 
+@Component({
+  selector: 'app-search-tag-search',
+})
+export class MockSearchTagSearchComponent {
+  /**
+   * Mock allow to set new search tags
+   */
+  @Input() allowNewSearchTags = false;
+
+  /**
+   * Mock list of selected search tags
+   */
+  searchTags: string[] = [];
+
+  /**
+   * Mock stream of selected search tags
+   */
+  searchTags$: Observable<string[]>;
+
+  /**
+   * Stream's source
+   */
+  searchTagsSource = new Subject<string[]>();
+
+  /**
+   * Construct a new instance of this component.
+   */
+  constructor() {
+    this.searchTags$ = this.searchTagsSource.asObservable();
+  }
+}
+
 /**
  * Test utilities module
  *
@@ -87,8 +146,26 @@ export class MockHttpAlertMessageComponent {
  * services, and so on that are used in more than one unit test file.
  */
 @NgModule({
-  declarations: [MockImageDirective, MockHttpAlertMessageComponent],
   imports: [CommonModule],
-  exports: [MockImageDirective, MockHttpAlertMessageComponent],
+  declarations: [
+    MockImageDirective,
+    MockImageWithLoaderComponent,
+    MockHttpAlertMessageComponent,
+    MockSearchTagSearchComponent,
+    SearchTagSearchAccessorDirective,
+  ],
+  providers: [
+    {
+      provide: SearchTagSearchComponent,
+      useClass: MockSearchTagSearchComponent,
+    },
+  ],
+  exports: [
+    MockImageDirective,
+    MockImageWithLoaderComponent,
+    MockHttpAlertMessageComponent,
+    MockSearchTagSearchComponent,
+    SearchTagSearchAccessorDirective,
+  ],
 })
 export class TestUtilsModule {}
