@@ -20,21 +20,45 @@
         required
         type="text"
       />
-      <div class="text-danger" *ngIf="showValidationError('username')">
+      <div
+        id="username-validation-error"
+        class="text-danger"
+        *ngIf="showValidationError('username')"
+      >
         <small>Ohne Username ist kein Login möglich.</small>
       </div>
     </div>
     <div class="mb-3">
       <label class="form-label visually-hidden" for="password">Passwort</label>
-      <input
-        class="form-control"
-        formControlName="password"
-        id="password"
-        placeholder="Passwort"
-        required
-        type="password"
-      />
-      <div class="text-danger" *ngIf="showValidationError('password')">
+      <div class="input-group">
+        <input
+          class="form-control"
+          formControlName="password"
+          id="password"
+          placeholder="Passwort"
+          required
+          [type]="showPassword ? 'text' : 'password'"
+        />
+        <button
+          type="button"
+          class="btn btn-outline-dark"
+          (click)="toggleShowPassword()"
+        >
+          <div *ngIf="showPassword">
+            <fa-icon [icon]="passwordShownIcon"></fa-icon>
+            <span class="visually-hidden">Passwort nicht anzeigen</span>
+          </div>
+          <div *ngIf="!showPassword">
+            <fa-icon [icon]="passwordNotShownIcon"></fa-icon>
+            <span class="visually-hidden">Passwort anzeigen</span>
+          </div>
+        </button>
+      </div>
+      <div
+        id="password-validation-error"
+        class="text-danger"
+        *ngIf="showValidationError('password')"
+      >
         <small>Ohne Passwort ist kein Login möglich.</small>
       </div>
     </div>
