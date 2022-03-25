@@ -120,7 +120,7 @@ describe('DiaryEntryCardComponent', () => {
       By.css('.card-body .card-text')
     )[0];
     expect(cardText.nativeElement.textContent).toMatch(
-      new DiaryEntryBriefPipe().transform(testDiaryEntry, 150)
+      new DiaryEntryBriefPipe().transform(testDiaryEntry.body, 150)
     );
   });
 

@@ -22,7 +22,7 @@ describe('DiaryEntryBriefPipe', () => {
     diaryEntry.body = 'A short body.';
     const pipe = new DiaryEntryBriefPipe();
     const briefLength = diaryEntry.body.length + 1;
-    const briefBody = pipe.transform(diaryEntry, briefLength);
+    const briefBody = pipe.transform(diaryEntry.body, briefLength);
     expect(briefBody).toMatch(diaryEntry.body);
     expect(briefBody.length).toBeLessThanOrEqual(briefLength);
   });
@@ -31,7 +31,7 @@ describe('DiaryEntryBriefPipe', () => {
     diaryEntry.body = 'A short first paragraph.\n...';
     const pipe = new DiaryEntryBriefPipe();
     const briefLength = diaryEntry.body.length + 1;
-    const briefBody = pipe.transform(diaryEntry, briefLength);
+    const briefBody = pipe.transform(diaryEntry.body, briefLength);
     const firstParagraph = diaryEntry.body.split('\n')[0];
     expect(briefBody).toMatch(firstParagraph);
     expect(briefBody.length).toBeLessThanOrEqual(briefLength);
@@ -41,7 +41,7 @@ describe('DiaryEntryBriefPipe', () => {
     diaryEntry.body = 'This is a long boooody.';
     const pipe = new DiaryEntryBriefPipe();
     const briefLength = diaryEntry.body.length - 1;
-    const briefBody = pipe.transform(diaryEntry, briefLength);
+    const briefBody = pipe.transform(diaryEntry.body, briefLength);
     expect(briefBody).toMatch('This is a long ...');
     expect(briefBody.length).toBeLessThanOrEqual(briefLength);
   });

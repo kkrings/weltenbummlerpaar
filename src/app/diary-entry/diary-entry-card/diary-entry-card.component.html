@@ -45,7 +45,7 @@
     <h6 class="card-subtitle text-secondary mb-2">
       {{ diaryEntry.location }}
     </h6>
-    <p class="card-text">{{ diaryEntry | diaryEntryBrief: 150 }}</p>
+    <p class="card-text">{{ diaryEntry.body | diaryEntryBrief: 150 }}</p>
     <div *ngIf="diaryEntry.searchTags.length > 0" class="d-flex flex-wrap mb-3">
       <div *ngFor="let tag of diaryEntry.searchTags" class="search-tag">
         {{ tag }}
