@@ -193,25 +193,19 @@ describe('DiaryEntryLoadMoreComponent', () => {
         });
       });
 
-      it(
-        '#numEntriesLoaded should have been updated',
-        waitForAsync(async () => {
-          component.loadMoreEntries();
-          await fixture.whenStable();
-          expect(component.numEntriesLoaded).toEqual(component.numEntriesTotal);
-        })
-      );
+      it('#numEntriesLoaded should have been updated', waitForAsync(async () => {
+        component.loadMoreEntries();
+        await fixture.whenStable();
+        expect(component.numEntriesLoaded).toEqual(component.numEntriesTotal);
+      }));
 
-      it(
-        '#loading should have been toggled',
-        waitForAsync(async () => {
-          expect(component.loading).toBeFalse();
-          component.loadMoreEntries();
-          expect(component.loading).toBeTrue();
-          await fixture.whenStable();
-          expect(component.loading).toBeFalse();
-        })
-      );
+      it('#loading should have been toggled', waitForAsync(async () => {
+        expect(component.loading).toBeFalse();
+        component.loadMoreEntries();
+        expect(component.loading).toBeTrue();
+        await fixture.whenStable();
+        expect(component.loading).toBeFalse();
+      }));
 
       it('should be stopped by new search', () => {
         component.loadMoreEntries();

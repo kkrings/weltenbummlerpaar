@@ -140,36 +140,30 @@ describe('AppComponent', () => {
     fixture.detectChanges();
   });
 
-  it(
-    'should retrieve list of diary entries',
-    waitForAsync(() => {
-      expect(app.showSpinner).toBeTrue();
+  it('should retrieve list of diary entries', waitForAsync(() => {
+    expect(app.showSpinner).toBeTrue();
 
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        expect(app.showSpinner).toBeFalse();
-        expect(app.diaryEntries).toEqual(diaryEntries);
-      });
-    })
-  );
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(app.showSpinner).toBeFalse();
+      expect(app.diaryEntries).toEqual(diaryEntries);
+    });
+  }));
 
-  it(
-    'should set alert message',
-    waitForAsync(() => {
-      app.showSpinner = true;
+  it('should set alert message', waitForAsync(() => {
+    app.showSpinner = true;
 
-      mockDiaryEntrySearchService.diaryEntries$ = testUtils.asyncError(
-        AlertType.server
-      );
-      app.ngOnInit();
+    mockDiaryEntrySearchService.diaryEntries$ = testUtils.asyncError(
+      AlertType.server
+    );
+    app.ngOnInit();
 
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        expect(app.showSpinner).toBeFalse();
-        expect(app.httpAlert.isShown).toBeTrue();
-      });
-    })
-  );
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(app.showSpinner).toBeFalse();
+      expect(app.httpAlert.isShown).toBeTrue();
+    });
+  }));
 
   it('should not render list of diary entries', () => {
     const diaryEntryGrid = fixture.debugElement.query(
@@ -178,21 +172,18 @@ describe('AppComponent', () => {
     expect(diaryEntryGrid).toBeNull();
   });
 
-  it(
-    'should render list of diary entries',
-    waitForAsync(() => {
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        const diaryEntryGrid = fixture.debugElement.query(
-          By.directive(MockDiaryEntryGridComponent)
-        );
-        const component = diaryEntryGrid.injector.get(
-          MockDiaryEntryGridComponent
-        );
-        expect(component.diaryEntries).toEqual(app.diaryEntries);
-      });
-    })
-  );
+  it('should render list of diary entries', waitForAsync(() => {
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      const diaryEntryGrid = fixture.debugElement.query(
+        By.directive(MockDiaryEntryGridComponent)
+      );
+      const component = diaryEntryGrid.injector.get(
+        MockDiaryEntryGridComponent
+      );
+      expect(component.diaryEntries).toEqual(app.diaryEntries);
+    });
+  }));
 
   it('should render spinner', () => {
     app.showSpinner = true;
