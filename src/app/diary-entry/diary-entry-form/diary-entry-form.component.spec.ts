@@ -455,109 +455,100 @@ describe('DiaryEntryFormComponent', () => {
     expect(component.previewImage.value).toEqual(testImages[0]);
   });
 
-  it(
-    '#onSubmit should create new diary entry',
-    waitForAsync(() => {
-      component.httpAlert.alertType = AlertType.server;
+  it('#onSubmit should create new diary entry', waitForAsync(() => {
+    component.httpAlert.alertType = AlertType.server;
 
-      const diaryEntry: DiaryEntry = {
-        id: component.diaryEntry.id,
-        title: testEntry.title,
-        location: testEntry.location,
-        body: testEntry.body,
-        previewImage: testEntry.previewImage,
-        images: component.diaryEntry.images,
-        searchTags: testEntry.searchTags,
-        createdAt: component.diaryEntry.createdAt,
-        updatedAt: component.diaryEntry.updatedAt,
-      };
+    const diaryEntry: DiaryEntry = {
+      id: component.diaryEntry.id,
+      title: testEntry.title,
+      location: testEntry.location,
+      body: testEntry.body,
+      previewImage: testEntry.previewImage,
+      images: component.diaryEntry.images,
+      searchTags: testEntry.searchTags,
+      createdAt: component.diaryEntry.createdAt,
+      updatedAt: component.diaryEntry.updatedAt,
+    };
 
-      component.diaryEntryForm.setValue({
-        title: testEntry.title,
-        location: testEntry.location,
-        body: testEntry.body,
-        searchTags: testEntry.searchTags,
-        previewImage: testEntry.previewImage ?? null,
-      });
+    component.diaryEntryForm.setValue({
+      title: testEntry.title,
+      location: testEntry.location,
+      body: testEntry.body,
+      searchTags: testEntry.searchTags,
+      previewImage: testEntry.previewImage ?? null,
+    });
 
-      const service = TestBed.inject(
-        DiaryEntryService
-      ) as jasmine.SpyObj<DiaryEntryService>;
+    const service = TestBed.inject(
+      DiaryEntryService
+    ) as jasmine.SpyObj<DiaryEntryService>;
 
-      service.saveEntry.and.returnValue(testUtils.asyncData(testEntry));
+    service.saveEntry.and.returnValue(testUtils.asyncData(testEntry));
 
-      const modal: NgbActiveModal = TestBed.inject(NgbActiveModal);
-      spyOn(modal, 'close');
+    const modal: NgbActiveModal = TestBed.inject(NgbActiveModal);
+    spyOn(modal, 'close');
 
-      component.onSubmit();
+    component.onSubmit();
 
-      expect(component.httpAlert.alertType).toEqual(AlertType.none);
-      expect(component.processRequest).toBeTrue();
+    expect(component.httpAlert.alertType).toEqual(AlertType.none);
+    expect(component.processRequest).toBeTrue();
 
-      fixture.whenStable().then(() => {
-        expect(component.processRequest).toBeFalse();
-        expect(component.diaryEntry).toEqual(testEntry);
-        expect(service.saveEntry).toHaveBeenCalledWith(diaryEntry);
-        expect(modal.close).toHaveBeenCalledWith(testEntry);
-      });
-    })
-  );
+    fixture.whenStable().then(() => {
+      expect(component.processRequest).toBeFalse();
+      expect(component.diaryEntry).toEqual(testEntry);
+      expect(service.saveEntry).toHaveBeenCalledWith(diaryEntry);
+      expect(modal.close).toHaveBeenCalledWith(testEntry);
+    });
+  }));
 
-  it(
-    '#onSubmit should update injected diary entry',
-    waitForAsync(() => {
-      component.diaryEntry = { ...testEntry };
-      component.ngOnInit();
+  it('#onSubmit should update injected diary entry', waitForAsync(() => {
+    component.diaryEntry = { ...testEntry };
+    component.ngOnInit();
 
-      fixture.detectChanges();
+    fixture.detectChanges();
 
-      const updatedEntry = {
-        ...testEntry,
-        previewImage: testEntry.previewImage,
-      };
+    const updatedEntry = {
+      ...testEntry,
+      previewImage: testEntry.previewImage,
+    };
 
-      updatedEntry.title = 'updated title';
-      component.title.setValue(updatedEntry.title);
+    updatedEntry.title = 'updated title';
+    component.title.setValue(updatedEntry.title);
 
-      updatedEntry.previewImage = testImages[0];
-      component.previewImage.setValue(testImages[0]);
+    updatedEntry.previewImage = testImages[0];
+    component.previewImage.setValue(testImages[0]);
 
-      const service = TestBed.inject(
-        DiaryEntryService
-      ) as jasmine.SpyObj<DiaryEntryService>;
+    const service = TestBed.inject(
+      DiaryEntryService
+    ) as jasmine.SpyObj<DiaryEntryService>;
 
-      service.updateEntry.and.returnValue(testUtils.asyncData(updatedEntry));
+    service.updateEntry.and.returnValue(testUtils.asyncData(updatedEntry));
 
-      component.onSubmit();
+    component.onSubmit();
 
-      fixture.whenStable().then(() => {
-        expect(service.updateEntry).toHaveBeenCalledWith(updatedEntry);
-        expect(component.diaryEntry).toEqual(updatedEntry);
-      });
-    })
-  );
+    fixture.whenStable().then(() => {
+      expect(service.updateEntry).toHaveBeenCalledWith(updatedEntry);
+      expect(component.diaryEntry).toEqual(updatedEntry);
+    });
+  }));
 
-  it(
-    '#onSubmit should set alert message',
-    waitForAsync(() => {
-      component.diaryEntry = { ...testEntry };
-      component.ngOnInit();
+  it('#onSubmit should set alert message', waitForAsync(() => {
+    component.diaryEntry = { ...testEntry };
+    component.ngOnInit();
 
-      fixture.detectChanges();
+    fixture.detectChanges();
 
-      const service = TestBed.inject(
-        DiaryEntryService
-      ) as jasmine.SpyObj<DiaryEntryService>;
+    const service = TestBed.inject(
+      DiaryEntryService
+    ) as jasmine.SpyObj<DiaryEntryService>;
 
-      const alertType = AlertType.server;
-      service.updateEntry.and.returnValue(testUtils.asyncError(alertType));
+    const alertType = AlertType.server;
+    service.updateEntry.and.returnValue(testUtils.asyncError(alertType));
 
-      component.onSubmit();
+    component.onSubmit();
 
-      fixture.whenStable().then(() => {
-        expect(component.processRequest).toBeFalse();
-        expect(component.httpAlert.alertType).toEqual(alertType);
-      });
-    })
-  );
+    fixture.whenStable().then(() => {
+      expect(component.processRequest).toBeFalse();
+      expect(component.httpAlert.alertType).toEqual(alertType);
+    });
+  }));
 });

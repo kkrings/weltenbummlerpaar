@@ -19,7 +19,7 @@ export class DiaryEntryBriefPipe implements PipeTransform {
   /**
    * Brief version of diary entry's body
    *
-   * @param diaryEntry
+   * @param diaryEntryBody
    *   Diary entry
    * @param length
    *   Maximum number of characters
@@ -27,9 +27,9 @@ export class DiaryEntryBriefPipe implements PipeTransform {
    * @returns
    *   Brief version of diary entry's body
    */
-  transform(diaryEntry: DiaryEntry, length: number): string {
+  transform(diaryEntryBody: string, length: number): string {
     // get first paragraph
-    let body = diaryEntry.body.split('\n')[0];
+    let body = diaryEntryBody.split('\n')[0];
 
     if (body.length > length) {
       // truncate body after last word and append '...' such that brief body

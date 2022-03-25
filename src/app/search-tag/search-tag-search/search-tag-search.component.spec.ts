@@ -161,47 +161,41 @@ describe('SearchTagSearchComponent', () => {
     expect(component.onFocus).toHaveBeenCalledOnceWith('');
   });
 
-  it(
-    '#search should toggle #searching',
-    waitForAsync(() => {
-      const searchTagServiceSpy = TestBed.inject(
-        SearchTagService
-      ) as jasmine.SpyObj<SearchTagService>;
+  it('#search should toggle #searching', waitForAsync(() => {
+    const searchTagServiceSpy = TestBed.inject(
+      SearchTagService
+    ) as jasmine.SpyObj<SearchTagService>;
 
-      searchTagServiceSpy.find.and.returnValue(asyncData(['Some search tag']));
+    searchTagServiceSpy.find.and.returnValue(asyncData(['Some search tag']));
 
-      const searchTagInput = fixture.debugElement.query(By.css('#search-tag'));
-      searchTagInput.nativeElement.value = 'Some';
-      searchTagInput.nativeElement.dispatchEvent(new Event('input'));
+    const searchTagInput = fixture.debugElement.query(By.css('#search-tag'));
+    searchTagInput.nativeElement.value = 'Some';
+    searchTagInput.nativeElement.dispatchEvent(new Event('input'));
 
-      expect(component.searching).toBeTrue();
+    expect(component.searching).toBeTrue();
 
-      fixture.whenStable().then(() => {
-        expect(component.searching).toBeFalse();
-      });
-    })
-  );
+    fixture.whenStable().then(() => {
+      expect(component.searching).toBeFalse();
+    });
+  }));
 
-  it(
-    '#search should resert alert type',
-    waitForAsync(() => {
-      component.httpAlert.alertType = AlertType.server;
+  it('#search should resert alert type', waitForAsync(() => {
+    component.httpAlert.alertType = AlertType.server;
 
-      const searchTagServiceSpy = TestBed.inject(
-        SearchTagService
-      ) as jasmine.SpyObj<SearchTagService>;
+    const searchTagServiceSpy = TestBed.inject(
+      SearchTagService
+    ) as jasmine.SpyObj<SearchTagService>;
 
-      searchTagServiceSpy.find.and.returnValue(asyncData(['Some search tag']));
+    searchTagServiceSpy.find.and.returnValue(asyncData(['Some search tag']));
 
-      const searchTagInput = fixture.debugElement.query(By.css('#search-tag'));
-      searchTagInput.nativeElement.value = 'Some';
-      searchTagInput.nativeElement.dispatchEvent(new Event('input'));
+    const searchTagInput = fixture.debugElement.query(By.css('#search-tag'));
+    searchTagInput.nativeElement.value = 'Some';
+    searchTagInput.nativeElement.dispatchEvent(new Event('input'));
 
-      fixture.whenStable().then(() => {
-        expect(component.httpAlert.alertType).toEqual(AlertType.none);
-      });
-    })
-  );
+    fixture.whenStable().then(() => {
+      expect(component.httpAlert.alertType).toEqual(AlertType.none);
+    });
+  }));
 
   describe('#onSubmit', () => {
     const searchTag = 'some search tag';

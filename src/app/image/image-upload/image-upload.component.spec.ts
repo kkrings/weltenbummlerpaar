@@ -152,72 +152,66 @@ describe('ImageUploadComponent', () => {
     expect(error).not.toBeNull();
   });
 
-  it(
-    '#deleteImage should delete image',
-    waitForAsync(() => {
-      component.httpAlert.alertType = AlertType.server;
+  it('#deleteImage should delete image', waitForAsync(() => {
+    component.httpAlert.alertType = AlertType.server;
 
-      const testImage = testEntry.images[0];
-      component.image = testImage;
+    const testImage = testEntry.images[0];
+    component.image = testImage;
 
-      const imageService = TestBed.inject(
-        ImageService
-      ) as jasmine.SpyObj<ImageService>;
+    const imageService = TestBed.inject(
+      ImageService
+    ) as jasmine.SpyObj<ImageService>;
 
-      imageService.deleteImage.and.returnValue(testUtils.asyncData(testEntry));
+    imageService.deleteImage.and.returnValue(testUtils.asyncData(testEntry));
 
-      component.imageDelete.subscribe((entry: DiaryEntry) =>
-        expect(entry.id).toEqual(testEntry.id)
-      );
+    component.imageDelete.subscribe((entry: DiaryEntry) =>
+      expect(entry.id).toEqual(testEntry.id)
+    );
 
-      component.processing
-        .pipe(first())
-        .subscribe((processing: boolean) => expect(processing).toBeTrue());
+    component.processing
+      .pipe(first())
+      .subscribe((processing: boolean) => expect(processing).toBeTrue());
 
-      component.processing
-        .pipe(last())
-        .subscribe((processing: boolean) => expect(processing).toBeFalse());
+    component.processing
+      .pipe(last())
+      .subscribe((processing: boolean) => expect(processing).toBeFalse());
 
-      component.deleteImage();
+    component.deleteImage();
 
-      expect(component.processDeleteRequest).toBeTrue();
-      expect(component.httpAlert.alertType).toEqual(AlertType.none);
+    expect(component.processDeleteRequest).toBeTrue();
+    expect(component.httpAlert.alertType).toEqual(AlertType.none);
 
-      expect(imageService.deleteImage).toHaveBeenCalledWith(
-        testEntryId,
-        testImage.id
-      );
+    expect(imageService.deleteImage).toHaveBeenCalledWith(
+      testEntryId,
+      testImage.id
+    );
 
-      fixture
-        .whenStable()
-        .then(() => expect(component.processDeleteRequest).toBeFalse());
-    })
-  );
+    fixture
+      .whenStable()
+      .then(() => expect(component.processDeleteRequest).toBeFalse());
+  }));
 
-  it(
-    '#deleteImage should set alert message',
-    waitForAsync(() => {
-      component.image.id = '0';
+  it('#deleteImage should set alert message', waitForAsync(() => {
+    component.image.id = '0';
 
-      const imageService = TestBed.inject(
-        ImageService
-      ) as jasmine.SpyObj<ImageService>;
+    const imageService = TestBed.inject(
+      ImageService
+    ) as jasmine.SpyObj<ImageService>;
 
-      const alertType = AlertType.server;
-      imageService.deleteImage.and.returnValue(testUtils.asyncError(alertType));
+    const alertType = AlertType.server;
+    imageService.deleteImage.and.returnValue(testUtils.asyncError(alertType));
 
-      component.processing
-        .pipe(last())
-        .subscribe((processing: boolean) => expect(processing).toBeFalse());
+    component.processing
+      .pipe(last())
+      .subscribe((processing: boolean) => expect(processing).toBeFalse());
 
-      component.deleteImage();
+    component.deleteImage();
 
-      fixture.whenStable().then(() => {
-        expect(component.processDeleteRequest).toBeFalse();
-        expect(component.httpAlert.alertType).toEqual(alertType);
-      });
-    })
-  );
+    fixture.whenStable().then(() => {
+      expect(component.processDeleteRequest).toBeFalse();
+      expect(component.httpAlert.alertType).toEqual(alertType);
+    });
+  }));
 
   it('delete button should only be rendered when updating image', () => {
     const buttonQuery = By.css('button.btn.btn-danger.btn-sm');
@@ -285,107 +279,101 @@ describe('ImageUploadComponent', () => {
     expect(spinner).not.toBeNull();
   });
 
-  it(
-    '#onSubmit should upload image',
-    waitForAsync(() => {
-      const componentImageBeforeUpload = { ...component.image };
+  it('#onSubmit should upload image', waitForAsync(() => {
+    const componentImageBeforeUpload = { ...component.image };
 
-      component.httpAlert.alertType = AlertType.server;
+    component.httpAlert.alertType = AlertType.server;
 
-      const testImage = testEntry.images[0];
+    const testImage = testEntry.images[0];
 
-      const description = fixture.debugElement.query(By.css('#description'));
-      description.nativeElement.value = testImage.description;
-      description.nativeElement.dispatchEvent(new Event('input'));
+    const description = fixture.debugElement.query(By.css('#description'));
+    description.nativeElement.value = testImage.description;
+    description.nativeElement.dispatchEvent(new Event('input'));
 
-      const testFile = new File([], 'testImage.jpg', { type: 'image/jpeg' });
-      const dataTransfer = new DataTransfer();
-      dataTransfer.items.add(testFile);
+    const testFile = new File([], 'testImage.jpg', { type: 'image/jpeg' });
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(testFile);
 
-      const filesInput = fixture.debugElement.query(By.css('#files'));
-      filesInput.nativeElement.files = dataTransfer.files;
-      filesInput.nativeElement.dispatchEvent(new Event('change'));
+    const filesInput = fixture.debugElement.query(By.css('#files'));
+    filesInput.nativeElement.files = dataTransfer.files;
+    filesInput.nativeElement.dispatchEvent(new Event('change'));
 
-      const formValue = component.imageForm.value;
+    const formValue = component.imageForm.value;
 
-      const uploadedImage: Image = {
-        id: component.image.id,
-        description: testImage.description,
-        createdAt: component.image.createdAt,
-        updatedAt: component.image.updatedAt,
-        file: formValue.files[0],
-      };
+    const uploadedImage: Image = {
+      id: component.image.id,
+      description: testImage.description,
+      createdAt: component.image.createdAt,
+      updatedAt: component.image.updatedAt,
+      file: formValue.files[0],
+    };
 
-      const imageService = TestBed.inject(
-        ImageService
-      ) as jasmine.SpyObj<ImageService>;
+    const imageService = TestBed.inject(
+      ImageService
+    ) as jasmine.SpyObj<ImageService>;
 
-      imageService.uploadImage.and.returnValue(testUtils.asyncData(testEntry));
+    imageService.uploadImage.and.returnValue(testUtils.asyncData(testEntry));
 
-      component.imageChange.subscribe((image: Image) =>
-        expect(image).toEqual(testImage)
+    component.imageChange.subscribe((image: Image) =>
+      expect(image).toEqual(testImage)
+    );
+
+    component.processing
+      .pipe(first())
+      .subscribe((processing: boolean) => expect(processing).toBeTrue());
+
+    component.processing
+      .pipe(last())
+      .subscribe((processing: boolean) => expect(processing).toBeFalse());
+
+    component.onSubmit();
+
+    expect(component.httpAlert.alertType).toEqual(AlertType.none);
+    expect(component.processUploadRequest).toBeTrue();
+
+    fixture.whenStable().then(() => {
+      expect(imageService.uploadImage).toHaveBeenCalledWith(
+        component.entryId,
+        uploadedImage
       );
+      expect(component.processUploadRequest).toBeFalse();
+      expect(component.image).toEqual(componentImageBeforeUpload);
+    });
+  }));
 
-      component.processing
-        .pipe(first())
-        .subscribe((processing: boolean) => expect(processing).toBeTrue());
+  it('#onSubmit should set alert message on image upload', waitForAsync(() => {
+    const testImage = testEntry.images[0];
 
-      component.processing
-        .pipe(last())
-        .subscribe((processing: boolean) => expect(processing).toBeFalse());
+    const description = fixture.debugElement.query(By.css('#description'));
+    description.nativeElement.value = testImage.description;
+    description.nativeElement.dispatchEvent(new Event('input'));
 
-      component.onSubmit();
+    const testFile = new File([], 'testImage.jpg', { type: 'image/jpeg' });
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(testFile);
 
-      expect(component.httpAlert.alertType).toEqual(AlertType.none);
-      expect(component.processUploadRequest).toBeTrue();
+    const filesInput = fixture.debugElement.query(By.css('#files'));
+    filesInput.nativeElement.files = dataTransfer.files;
+    filesInput.nativeElement.dispatchEvent(new Event('input'));
 
-      fixture.whenStable().then(() => {
-        expect(imageService.uploadImage).toHaveBeenCalledWith(
-          component.entryId,
-          uploadedImage
-        );
-        expect(component.processUploadRequest).toBeFalse();
-        expect(component.image).toEqual(componentImageBeforeUpload);
-      });
-    })
-  );
+    const imageService = TestBed.inject(
+      ImageService
+    ) as jasmine.SpyObj<ImageService>;
 
-  it(
-    '#onSubmit should set alert message on image upload',
-    waitForAsync(() => {
-      const testImage = testEntry.images[0];
+    const alertType = AlertType.server;
+    imageService.uploadImage.and.returnValue(testUtils.asyncError(alertType));
 
-      const description = fixture.debugElement.query(By.css('#description'));
-      description.nativeElement.value = testImage.description;
-      description.nativeElement.dispatchEvent(new Event('input'));
+    component.processing
+      .pipe(last())
+      .subscribe((processing: boolean) => expect(processing).toBeFalse());
 
-      const testFile = new File([], 'testImage.jpg', { type: 'image/jpeg' });
-      const dataTransfer = new DataTransfer();
-      dataTransfer.items.add(testFile);
+    component.onSubmit();
 
-      const filesInput = fixture.debugElement.query(By.css('#files'));
-      filesInput.nativeElement.files = dataTransfer.files;
-      filesInput.nativeElement.dispatchEvent(new Event('input'));
-
-      const imageService = TestBed.inject(
-        ImageService
-      ) as jasmine.SpyObj<ImageService>;
-
-      const alertType = AlertType.server;
-      imageService.uploadImage.and.returnValue(testUtils.asyncError(alertType));
-
-      component.processing
-        .pipe(last())
-        .subscribe((processing: boolean) => expect(processing).toBeFalse());
-
-      component.onSubmit();
-
-      fixture.whenStable().then(() => {
-        expect(component.processUploadRequest).toBeFalse();
-        expect(component.httpAlert.alertType).toEqual(alertType);
-      });
-    })
-  );
+    fixture.whenStable().then(() => {
+      expect(component.processUploadRequest).toBeFalse();
+      expect(component.httpAlert.alertType).toEqual(alertType);
+    });
+  }));
 
   it('#onSubmit should update image', () => {
     const testImage: Image = {
@@ -412,30 +400,27 @@ describe('ImageUploadComponent', () => {
     expect(component.image).toEqual(testImage);
   });
 
-  it(
-    '#onSubmit should set alert message on image update',
-    waitForAsync(() => {
-      component.image.id = '0';
+  it('#onSubmit should set alert message on image update', waitForAsync(() => {
+    component.image.id = '0';
 
-      const imageService = TestBed.inject(
-        ImageService
-      ) as jasmine.SpyObj<ImageService>;
+    const imageService = TestBed.inject(
+      ImageService
+    ) as jasmine.SpyObj<ImageService>;
 
-      const alertType = AlertType.server;
-      imageService.updateImage.and.returnValue(testUtils.asyncError(alertType));
+    const alertType = AlertType.server;
+    imageService.updateImage.and.returnValue(testUtils.asyncError(alertType));
 
-      component.processing
-        .pipe(last())
-        .subscribe((processing: boolean) => expect(processing).toBeFalse());
+    component.processing
+      .pipe(last())
+      .subscribe((processing: boolean) => expect(processing).toBeFalse());
 
-      component.onSubmit();
+    component.onSubmit();
 
-      fixture.whenStable().then(() => {
-        expect(component.processUploadRequest).toBeFalse();
-        expect(component.httpAlert.alertType).toEqual(alertType);
-      });
-    })
-  );
+    fixture.whenStable().then(() => {
+      expect(component.processUploadRequest).toBeFalse();
+      expect(component.httpAlert.alertType).toEqual(alertType);
+    });
+  }));
 
   it('submit button should be disabled', () => {
     const button = fixture.debugElement.query(

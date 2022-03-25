@@ -121,35 +121,32 @@ describe('NavbarComponent', () => {
     expect(button).toBeNull();
   });
 
-  it(
-    '#openDiaryEntryModal should open diary entry modal',
-    waitForAsync(() => {
-      const modalService = TestBed.inject(NgbModal) as jasmine.SpyObj<NgbModal>;
+  it('#openDiaryEntryModal should open diary entry modal', waitForAsync(() => {
+    const modalService = TestBed.inject(NgbModal) as jasmine.SpyObj<NgbModal>;
 
-      const modal: NgbModalRef = TestBed.inject(NgbModalRef);
-      modalService.open.and.returnValue(modal);
+    const modal: NgbModalRef = TestBed.inject(NgbModalRef);
+    modalService.open.and.returnValue(modal);
 
-      component.newDiaryEntry.subscribe((diaryEntry: DiaryEntry) => {
-        expect(diaryEntry).toEqual(testDiaryEntry);
-      });
+    component.newDiaryEntry.subscribe((diaryEntry: DiaryEntry) => {
+      expect(diaryEntry).toEqual(testDiaryEntry);
+    });
 
-      component.openDiaryEntryModal();
+    component.openDiaryEntryModal();
 
-      expect(modalService.open).toHaveBeenCalledWith(DiaryEntryFormComponent, {
-        backdrop: 'static',
-        keyboard: false,
-      });
+    expect(modalService.open).toHaveBeenCalledWith(DiaryEntryFormComponent, {
+      backdrop: 'static',
+      keyboard: false,
+    });
 
-      modal.result = Promise.resolve(null);
+    modal.result = Promise.resolve(null);
 
-      component.openDiaryEntryModal();
+    component.openDiaryEntryModal();
 
-      expect(modalService.open).toHaveBeenCalledWith(DiaryEntryFormComponent, {
-        backdrop: 'static',
-        keyboard: false,
-      });
-    })
-  );
+    expect(modalService.open).toHaveBeenCalledWith(DiaryEntryFormComponent, {
+      backdrop: 'static',
+      keyboard: false,
+    });
+  }));
 
   it('new diary entry button should trigger #openDiaryEntryModal', () => {
     const authService = TestBed.inject(AuthService);

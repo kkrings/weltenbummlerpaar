@@ -11,9 +11,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 
-import { AuthService } from '../auth.service';
 import { Alert, AlertType } from '../../http-alert/alert.model';
+import { AuthService } from '../auth.service';
 
 /**
  * Authentication modal component
@@ -50,6 +51,21 @@ export class AuthModalComponent {
   loginFailed = false;
 
   /**
+   * Specifies if the password should be shown in clear text or not.
+   */
+  showPassword = false;
+
+  /**
+   * Icon that indicates that the password is not shown in clear text.
+   */
+  passwordNotShownIcon = faLock;
+
+  /**
+   * Icon that indicates that the password is shown in clear text.
+   */
+  passwordShownIcon = faLockOpen;
+
+  /**
    * Construct the admin login modal component.
    *
    * @param formBuilder
@@ -83,6 +99,13 @@ export class AuthModalComponent {
    */
   get password(): FormControl {
     return this.adminLoginForm.get('password') as FormControl;
+  }
+
+  /**
+   * Toggle between password shown and not shown.
+   */
+  toggleShowPassword(): void {
+    this.showPassword = !this.showPassword;
   }
 
   /**

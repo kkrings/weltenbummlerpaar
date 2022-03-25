@@ -17,6 +17,7 @@ import { AuthService } from '../auth.service';
 import { AlertType } from '../../http-alert/alert.model';
 
 import * as testUtils from '../../test-utils/test-utils.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('AuthModalComponent', () => {
   let component: AuthModalComponent;
@@ -26,7 +27,12 @@ describe('AuthModalComponent', () => {
     const authServiceSpy = jasmine.createSpyObj('AuthService', ['login']);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, NgbAlertModule, testUtils.TestUtilsModule],
+      imports: [
+        ReactiveFormsModule,
+        NgbAlertModule,
+        FontAwesomeModule,
+        testUtils.TestUtilsModule,
+      ],
       declarations: [AuthModalComponent],
       providers: [
         { provide: NgbActiveModal, useClass: testUtils.MockNgbActiveModal },
@@ -89,22 +95,73 @@ describe('AuthModalComponent', () => {
   });
 
   it("should not render username's validation error", () => {
-    const error = fixture.debugElement.query(By.css('#username + div'));
+    const error = fixture.debugElement.query(
+      By.css('#username-validation-error')
+    );
     expect(error).toBeNull();
   });
 
   it("should render username's validation error", () => {
     component.username.markAsTouched();
     fixture.detectChanges();
-    const error = fixture.debugElement.query(By.css('#username + div'));
+    const error = fixture.debugElement.query(
+      By.css('#username-validation-error')
+    );
     expect(error).not.toBeNull();
   });
 
   it("should render username's validation error", () => {
     component.username.markAsDirty();
     fixture.detectChanges();
-    const error = fixture.debugElement.query(By.css('#username + div'));
+    const error = fixture.debugElement.query(
+      By.css('#username-validation-error')
+    );
     expect(error).not.toBeNull();
+  });
+
+  it('#showPassword should be false after initialization', () => {
+    expect(component.showPassword).toBeFalse();
+  });
+
+  it('#toggleShowPassword should invert #showPassword', () => {
+    const showPassword = component.showPassword;
+    component.toggleShowPassword();
+    expect(component.showPassword).toEqual(!showPassword);
+  });
+
+  it('#password should be of type password', () => {
+    component.showPassword = false;
+    fixture.detectChanges();
+    const passwordInput = fixture.debugElement.query(By.css('#password'));
+    expect(passwordInput.nativeElement.type).toEqual('password');
+  });
+
+  it('#password should be of type text', () => {
+    component.showPassword = true;
+    fixture.detectChanges();
+    const passwordInput = fixture.debugElement.query(By.css('#password'));
+    expect(passwordInput.nativeElement.type).toEqual('text');
+  });
+
+  it('should render #passwordNotShownIcon', () => {
+    component.showPassword = false;
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('#password + button'));
+    expect(button.nativeElement.textContent).toEqual('Passwort anzeigen');
+  });
+
+  it('should render #passwordShownIcon', () => {
+    component.showPassword = true;
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('#password + button'));
+    expect(button.nativeElement.textContent).toEqual('Passwort nicht anzeigen');
+  });
+
+  it('#toggleShowPassword should have been called', () => {
+    spyOn(component, 'toggleShowPassword');
+    const button = fixture.debugElement.query(By.css('#password + button'));
+    button.triggerEventHandler('click', null);
+    expect(component.toggleShowPassword).toHaveBeenCalled();
   });
 
   it('#password should match entered password', () => {
@@ -116,97 +173,94 @@ describe('AuthModalComponent', () => {
   });
 
   it("should not render password's validation error", () => {
-    const error = fixture.debugElement.query(By.css('#password + div'));
+    const error = fixture.debugElement.query(
+      By.css('#password-validation-error')
+    );
     expect(error).toBeNull();
   });
 
   it("should render password's validation error", () => {
     component.password.markAsTouched();
     fixture.detectChanges();
-    const error = fixture.debugElement.query(By.css('#password + div'));
+    const error = fixture.debugElement.query(
+      By.css('#password-validation-error')
+    );
     expect(error).not.toBeNull();
   });
 
   it("should render password's validation error", () => {
     component.password.markAsDirty();
     fixture.detectChanges();
-    const error = fixture.debugElement.query(By.css('#password + div'));
+    const error = fixture.debugElement.query(
+      By.css('#password-validation-error')
+    );
     expect(error).not.toBeNull();
   });
 
-  it(
-    '#onSubmit should login user and close modal',
-    waitForAsync(() => {
-      component.loginFailed = true;
-      component.httpAlert.alertType = AlertType.server;
-      component.adminLoginForm.setValue({
-        username: 'admin',
-        password: 'admin',
-      });
+  it('#onSubmit should login user and close modal', waitForAsync(() => {
+    component.loginFailed = true;
+    component.httpAlert.alertType = AlertType.server;
+    component.adminLoginForm.setValue({
+      username: 'admin',
+      password: 'admin',
+    });
 
-      const authService = TestBed.inject(
-        AuthService
-      ) as jasmine.SpyObj<AuthService>;
-      authService.login.and.returnValue(testUtils.asyncData(true));
+    const authService = TestBed.inject(
+      AuthService
+    ) as jasmine.SpyObj<AuthService>;
+    authService.login.and.returnValue(testUtils.asyncData(true));
 
-      const modal: NgbActiveModal = TestBed.inject(NgbActiveModal);
-      spyOn(modal, 'close');
+    const modal: NgbActiveModal = TestBed.inject(NgbActiveModal);
+    spyOn(modal, 'close');
 
-      component.onSubmit();
+    component.onSubmit();
 
-      expect(component.loginFailed).toBeFalse();
-      expect(component.showSpinner).toBeTrue();
-      expect(component.httpAlert.alertType).toEqual(AlertType.none);
+    expect(component.loginFailed).toBeFalse();
+    expect(component.showSpinner).toBeTrue();
+    expect(component.httpAlert.alertType).toEqual(AlertType.none);
 
-      fixture.whenStable().then(() => {
-        expect(component.showSpinner).toBeFalse();
-        expect(modal.close).toHaveBeenCalled();
-      });
-    })
-  );
+    fixture.whenStable().then(() => {
+      expect(component.showSpinner).toBeFalse();
+      expect(modal.close).toHaveBeenCalled();
+    });
+  }));
 
-  it(
-    '#onSubmit should set login failed',
-    waitForAsync(() => {
-      component.adminLoginForm.setValue({
-        username: 'admin',
-        password: 'admin',
-      });
+  it('#onSubmit should set login failed', waitForAsync(() => {
+    component.adminLoginForm.setValue({
+      username: 'admin',
+      password: 'admin',
+    });
 
-      const authService = TestBed.inject(
-        AuthService
-      ) as jasmine.SpyObj<AuthService>;
-      authService.login.and.returnValue(testUtils.asyncData(false));
+    const authService = TestBed.inject(
+      AuthService
+    ) as jasmine.SpyObj<AuthService>;
+    authService.login.and.returnValue(testUtils.asyncData(false));
 
-      component.onSubmit();
+    component.onSubmit();
 
-      fixture.whenStable().then(() => expect(component.loginFailed).toBeTrue());
-    })
-  );
+    fixture.whenStable().then(() => expect(component.loginFailed).toBeTrue());
+  }));
 
-  it(
-    '#onSubmit should set HTTP alert',
-    waitForAsync(() => {
-      component.adminLoginForm.setValue({
-        username: 'admin',
-        password: 'admin',
-      });
+  it('#onSubmit should set HTTP alert', waitForAsync(() => {
+    component.adminLoginForm.setValue({
+      username: 'admin',
+      password: 'admin',
+    });
 
-      const authService = TestBed.inject(
-        AuthService
-      ) as jasmine.SpyObj<AuthService>;
+    const authService = TestBed.inject(
+      AuthService
+    ) as jasmine.SpyObj<AuthService>;
 
-      const alertType = AlertType.server;
-      authService.login.and.returnValue(testUtils.asyncError(alertType));
+    const alertType = AlertType.server;
+    authService.login.and.returnValue(testUtils.asyncError(alertType));
 
-      component.onSubmit();
+    component.onSubmit();
 
-      fixture.whenStable().then(() => {
-        expect(component.showSpinner).toBeFalse();
-        expect(component.httpAlert.alertType).toEqual(alertType);
-      });
-    })
-  );
+    fixture.whenStable().then(() => {
+      expect(component.showSpinner).toBeFalse();
+      expect(component.httpAlert.alertType).toEqual(alertType);
+    });
+  }));
 
   it('submit button should be disabled', () => {
     const button = fixture.debugElement.query(

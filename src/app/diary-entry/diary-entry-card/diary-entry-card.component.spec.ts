@@ -120,7 +120,7 @@ describe('DiaryEntryCardComponent', () => {
       By.css('.card-body .card-text')
     )[0];
     expect(cardText.nativeElement.textContent).toMatch(
-      new DiaryEntryBriefPipe().transform(testDiaryEntry, 150)
+      new DiaryEntryBriefPipe().transform(testDiaryEntry.body, 150)
     );
   });
 
@@ -240,53 +240,47 @@ describe('DiaryEntryCardComponent', () => {
     expect(component.openImageModal).toHaveBeenCalled();
   });
 
-  it(
-    '#deleteEntry should emit deleted entry',
-    waitForAsync(() => {
-      component.httpAlert.alertType = AlertType.server;
+  it('#deleteEntry should emit deleted entry', waitForAsync(() => {
+    component.httpAlert.alertType = AlertType.server;
 
-      const service = TestBed.inject(
-        DiaryEntryService
-      ) as jasmine.SpyObj<DiaryEntryService>;
-      service.deleteEntry.and.returnValue(testUtils.asyncData(testDiaryEntry));
+    const service = TestBed.inject(
+      DiaryEntryService
+    ) as jasmine.SpyObj<DiaryEntryService>;
+    service.deleteEntry.and.returnValue(testUtils.asyncData(testDiaryEntry));
 
-      let deletedEntryId = '';
-      component.deletedEntryId.subscribe(
-        (entryId: string) => (deletedEntryId = entryId)
-      );
+    let deletedEntryId = '';
+    component.deletedEntryId.subscribe(
+      (entryId: string) => (deletedEntryId = entryId)
+    );
 
-      component.deleteEntry();
+    component.deleteEntry();
 
-      expect(component.showSpinner).toBeTrue();
-      expect(component.httpAlert.alertType).toEqual(AlertType.none);
+    expect(component.showSpinner).toBeTrue();
+    expect(component.httpAlert.alertType).toEqual(AlertType.none);
 
-      fixture.whenStable().then(() => {
-        expect(deletedEntryId).toEqual(testDiaryEntry.id);
-        expect(component.showSpinner).toBeFalse();
-        expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry.id);
-      });
-    })
-  );
+    fixture.whenStable().then(() => {
+      expect(deletedEntryId).toEqual(testDiaryEntry.id);
+      expect(component.showSpinner).toBeFalse();
+      expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry.id);
+    });
+  }));
 
-  it(
-    '#deleteEntry should set alert message',
-    waitForAsync(() => {
-      const service = TestBed.inject(
-        DiaryEntryService
-      ) as jasmine.SpyObj<DiaryEntryService>;
+  it('#deleteEntry should set alert message', waitForAsync(() => {
+    const service = TestBed.inject(
+      DiaryEntryService
+    ) as jasmine.SpyObj<DiaryEntryService>;
 
-      const alertType = AlertType.server;
-      service.deleteEntry.and.returnValue(testUtils.asyncError(alertType));
+    const alertType = AlertType.server;
+    service.deleteEntry.and.returnValue(testUtils.asyncError(alertType));
 
-      component.deleteEntry();
+    component.deleteEntry();
 
-      fixture.whenStable().then(() => {
-        expect(component.httpAlert.alertType).toEqual(alertType);
-        expect(component.showSpinner).toBeFalse();
-        expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry.id);
-      });
-    })
-  );
+    fixture.whenStable().then(() => {
+      expect(component.httpAlert.alertType).toEqual(alertType);
+      expect(component.showSpinner).toBeFalse();
+      expect(service.deleteEntry).toHaveBeenCalledWith(testDiaryEntry.id);
+    });
+  }));
 
   it('delete button should trigger #deletedEntry', () => {
     spyOn(component, 'deleteEntry');
