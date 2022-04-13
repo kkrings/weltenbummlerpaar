@@ -1,0 +1,23 @@
+<form class="hidden">
+  <div class="mb-3">
+    <label class="form-label" for="calendar">Kalendar:</label>
+    <input
+      class="form-control hidden"
+      id="calendar"
+      type="text"
+      ngbDatepicker
+      autoClose="outside"
+      outsideDays="hidden"
+      [dayTemplate]="day"
+      [startDate]="startDate"
+      (dateSelect)="onDateSelect($event)"
+      #calendar="ngbDatepicker"
+    />
+    <ng-template #day let-date>
+      <app-date-range-select-day
+        [dateRange]="dateRangeParsed"
+        [date]="date"
+      ></app-date-range-select-day>
+    </ng-template>
+  </div>
+</form>
