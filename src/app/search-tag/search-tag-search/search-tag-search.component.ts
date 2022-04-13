@@ -5,7 +5,7 @@
 
 import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { faMinus, faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { merge, Observable, of, OperatorFunction, Subject } from 'rxjs';
 import {
   catchError,
@@ -69,11 +69,6 @@ export class SearchTagSearchComponent {
    * whenever the selection is changed.
    */
   searchTags$;
-
-  /**
-   * Icon that prepends the search form
-   */
-  searchIcon = faSearch;
 
   /**
    * Icon for the button for selecting a new diary entry search tag
