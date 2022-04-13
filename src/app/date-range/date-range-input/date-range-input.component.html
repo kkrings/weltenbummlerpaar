@@ -2,7 +2,7 @@
   <app-date-range-select
     #calendar
     [dateRange]="dateRangeForm.value"
-    (dateRangeSelect)="writeValue($event)"
+    (dateRangeSelect)="onDateRangeSelect($event)"
   ></app-date-range-select>
   <div class="input-group">
     <input

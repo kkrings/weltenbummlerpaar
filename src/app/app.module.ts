@@ -26,6 +26,7 @@ import { DiaryEntryFormComponent } from './diary-entry/diary-entry-form/diary-en
 import { DateRangeInputComponent } from './date-range/date-range-input/date-range-input.component';
 import { DateRangeSelectComponent } from './date-range/date-range-select/date-range-select.component';
 import { DateRangeSelectDayComponent } from './date-range/date-range-select-day/date-range-select-day.component';
+import { DateRangeValueAccessorDirective } from './date-range/date-range-value-accessor.directive';
 import { DiaryEntrySearchFormComponent } from './diary-entry/diary-entry-search/diary-entry-search-form/diary-entry-search-form.component';
 import { DiaryEntryLoadMoreComponent } from './diary-entry/diary-entry-search/diary-entry-load-more/diary-entry-load-more.component';
 import { DiaryEntryGridComponent } from './diary-entry/diary-entry-grid/diary-entry-grid.component';
@@ -57,6 +58,7 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
     DateRangeInputComponent,
     DateRangeSelectComponent,
     DateRangeSelectDayComponent,
+    DateRangeValueAccessorDirective,
     DiaryEntrySearchFormComponent,
     DiaryEntryLoadMoreComponent,
     DiaryEntryGridComponent,
