@@ -9,6 +9,9 @@ import { By } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { DateRangeService } from '../../date-range/date-range.service';
+import { DateRangeInputComponent } from '../../date-range/date-range-input/date-range-input.component';
+import { DateRangeValueAccessorDirective } from '../../date-range/date-range-value-accessor.directive';
 import { MockHttpAlertMessageComponent } from '../../test-utils/mock-http-alert-message.component';
 import { MockNgbActiveModal } from '../../test-utils/mock-ngb-active-modal';
 import { MockSearchTagSearchComponent } from '../../test-utils/mock-search-tag-search.component';
@@ -67,6 +70,10 @@ describe('DiaryEntryFormComponent', () => {
   ];
 
   beforeEach(async () => {
+    const dateRangeServiceSpy = jasmine.createSpyObj('DateRangeService', [
+      'parseDateRange',
+    ]);
+
     const diaryEntryServiceSpy = jasmine.createSpyObj('DiaryEntryService', [
       'saveEntry',
       'updateEntry',
@@ -74,10 +81,28 @@ describe('DiaryEntryFormComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, FontAwesomeModule, TestUtilsModule],
-      declarations: [DiaryEntryFormComponent],
+      declarations: [
+        DateRangeInputComponent,
+        DateRangeValueAccessorDirective,
+        DiaryEntryFormComponent,
+      ],
       providers: [
-        { provide: DiaryEntryService, useValue: diaryEntryServiceSpy },
-        { provide: NgbActiveModal, useClass: MockNgbActiveModal },
+        {
+          provide: DateRangeInputComponent,
+          useClass: DateRangeInputComponent,
+        },
+        {
+          provide: DateRangeService,
+          useValue: dateRangeServiceSpy,
+        },
+        {
+          provide: DiaryEntryService,
+          useValue: diaryEntryServiceSpy,
+        },
+        {
+          provide: NgbActiveModal,
+          useClass: MockNgbActiveModal,
+        },
       ],
     }).compileComponents();
   });
@@ -475,6 +500,7 @@ describe('DiaryEntryFormComponent', () => {
     component.diaryEntryForm.setValue({
       title: testEntry.title,
       location: testEntry.location,
+      dateRange: null,
       body: testEntry.body,
       searchTags: testEntry.searchTags,
       previewImage: testEntry.previewImage ?? null,

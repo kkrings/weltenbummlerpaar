@@ -9,6 +9,7 @@ import { Observable, defer } from 'rxjs';
 
 import { SearchTagSearchAccessorDirective } from '../search-tag/search-tag-search-accessor.directive';
 import { SearchTagSearchComponent } from '../search-tag/search-tag-search/search-tag-search.component';
+import { MockDateRangeSelectComponent } from './mock-date-range-select.component';
 import { MockHttpAlertMessageComponent } from './mock-http-alert-message.component';
 import { MockImageWithLoaderComponent } from './mock-image-with-loader.component';
 import { MockImageDirective } from './mock-image.directive';
@@ -57,6 +58,7 @@ export const asyncError = <T>(error: T): Observable<never> =>
 @NgModule({
   imports: [CommonModule],
   declarations: [
+    MockDateRangeSelectComponent,
     MockImageDirective,
     MockImageWithLoaderComponent,
     MockHttpAlertMessageComponent,
@@ -70,6 +72,7 @@ export const asyncError = <T>(error: T): Observable<never> =>
     },
   ],
   exports: [
+    MockDateRangeSelectComponent,
     MockImageDirective,
     MockImageWithLoaderComponent,
     MockHttpAlertMessageComponent,
