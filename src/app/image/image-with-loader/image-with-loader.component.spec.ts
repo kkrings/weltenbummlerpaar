@@ -7,7 +7,7 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { MockImageDirective } from '../../test-utils/test-utils.module';
+import { MockImageDirective } from '../../test-utils/mock-image.directive';
 import { ImageWithLoaderComponent } from './image-with-loader.component';
 
 describe('ImageWithLoaderComponent', () => {

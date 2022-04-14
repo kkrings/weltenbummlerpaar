@@ -6,17 +6,23 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { MockHttpAlertMessageComponent } from '../../test-utils/mock-http-alert-message.component';
+import { MockNgbActiveModal } from '../../test-utils/mock-ngb-active-modal';
+import { MockSearchTagSearchComponent } from '../../test-utils/mock-search-tag-search.component';
+import {
+  TestUtilsModule,
+  asyncData,
+  asyncError,
+} from '../../test-utils/test-utils.module';
 import { AlertType } from '../../http-alert/alert.model';
 import { Image } from '../../image/image.model';
 import { SearchTagSearchComponent } from '../../search-tag/search-tag-search/search-tag-search.component';
 import { DiaryEntry } from '../diary-entry.model';
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntryFormComponent } from './diary-entry-form.component';
-
-import * as testUtils from '../../test-utils/test-utils.module';
 
 describe('DiaryEntryFormComponent', () => {
   let component: DiaryEntryFormComponent;
@@ -67,15 +73,11 @@ describe('DiaryEntryFormComponent', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        FontAwesomeModule,
-        testUtils.TestUtilsModule,
-      ],
+      imports: [ReactiveFormsModule, FontAwesomeModule, TestUtilsModule],
       declarations: [DiaryEntryFormComponent],
       providers: [
         { provide: DiaryEntryService, useValue: diaryEntryServiceSpy },
-        { provide: NgbActiveModal, useClass: testUtils.MockNgbActiveModal },
+        { provide: NgbActiveModal, useClass: MockNgbActiveModal },
       ],
     }).compileComponents();
   });
@@ -96,7 +98,7 @@ describe('DiaryEntryFormComponent', () => {
 
   it('should not render empty alert message', () => {
     const httpAlert = fixture.debugElement.query(
-      By.directive(testUtils.MockHttpAlertMessageComponent)
+      By.directive(MockHttpAlertMessageComponent)
     );
     expect(httpAlert).toBeNull();
   });
@@ -105,7 +107,7 @@ describe('DiaryEntryFormComponent', () => {
     component.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
     const httpAlert = fixture.debugElement.query(
-      By.directive(testUtils.MockHttpAlertMessageComponent)
+      By.directive(MockHttpAlertMessageComponent)
     );
     expect(httpAlert).not.toBeNull();
   });
@@ -321,7 +323,7 @@ describe('DiaryEntryFormComponent', () => {
   it('#tags.value should match tags entered by user', () => {
     const searchTagSearch = TestBed.inject(
       SearchTagSearchComponent
-    ) as unknown as testUtils.MockSearchTagSearchComponent;
+    ) as unknown as MockSearchTagSearchComponent;
 
     const testTags = ['some tag', 'some other tag'];
     searchTagSearch.searchTagsSource.next(testTags);
@@ -482,7 +484,7 @@ describe('DiaryEntryFormComponent', () => {
       DiaryEntryService
     ) as jasmine.SpyObj<DiaryEntryService>;
 
-    service.saveEntry.and.returnValue(testUtils.asyncData(testEntry));
+    service.saveEntry.and.returnValue(asyncData(testEntry));
 
     const modal: NgbActiveModal = TestBed.inject(NgbActiveModal);
     spyOn(modal, 'close');
@@ -521,7 +523,7 @@ describe('DiaryEntryFormComponent', () => {
       DiaryEntryService
     ) as jasmine.SpyObj<DiaryEntryService>;
 
-    service.updateEntry.and.returnValue(testUtils.asyncData(updatedEntry));
+    service.updateEntry.and.returnValue(asyncData(updatedEntry));
 
     component.onSubmit();
 
@@ -542,7 +544,7 @@ describe('DiaryEntryFormComponent', () => {
     ) as jasmine.SpyObj<DiaryEntryService>;
 
     const alertType = AlertType.server;
-    service.updateEntry.and.returnValue(testUtils.asyncError(alertType));
+    service.updateEntry.and.returnValue(asyncError(alertType));
 
     component.onSubmit();
 

@@ -11,11 +11,8 @@ import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { NEVER, of, Subscription, throwError } from 'rxjs';
 
 import { AlertType } from '../../http-alert/alert.model';
-import {
-  asyncData,
-  MockHttpAlertMessageComponent,
-  TestUtilsModule,
-} from '../../test-utils/test-utils.module';
+import { MockHttpAlertMessageComponent } from '../../test-utils/mock-http-alert-message.component';
+import { TestUtilsModule, asyncData } from '../../test-utils/test-utils.module';
 import { SearchTagSearchConfig } from '../search-tag-search-config.service';
 import { SearchTagService } from '../search-tag.service';
 import { SearchTagSearchComponent } from './search-tag-search.component';

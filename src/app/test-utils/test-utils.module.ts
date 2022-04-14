@@ -3,14 +3,16 @@
  * @packageDocumentation
  */
 
-import { Component, Directive, Input, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, defer, Subject } from 'rxjs';
+import { Observable, defer } from 'rxjs';
 
-import { AlertType } from '../http-alert/alert.model';
-import { Image } from '../image/image.model';
 import { SearchTagSearchAccessorDirective } from '../search-tag/search-tag-search-accessor.directive';
 import { SearchTagSearchComponent } from '../search-tag/search-tag-search/search-tag-search.component';
+import { MockHttpAlertMessageComponent } from './mock-http-alert-message.component';
+import { MockImageWithLoaderComponent } from './mock-image-with-loader.component';
+import { MockImageDirective } from './mock-image.directive';
+import { MockSearchTagSearchComponent } from './mock-search-tag-search.component';
 
 /**
  * Data observable
@@ -45,99 +47,6 @@ export const asyncData = <T>(data: T): Observable<T> =>
  */
 export const asyncError = <T>(error: T): Observable<never> =>
   defer(() => Promise.reject(error));
-
-/**
- * Mock active modal
- */
-export class MockNgbActiveModal {
-  /**
-   * Mock the active modal's close method.
-   */
-  close(): void {}
-}
-
-/**
- * Mock image directive
- */
-@Directive({
-  selector: '[appImage]',
-})
-export class MockImageDirective {
-  /**
-   * Mock image
-   */
-  @Input('appImage') mockImage = null;
-}
-
-/**
- * Mock image with loader component
- */
-@Component({
-  selector: 'app-image-with-loader',
-  template: '<img [appImage]="image" [class]="class" />',
-})
-export class MockImageWithLoaderComponent {
-  /**
-   * Mock input image
-   */
-  @Input() image: Image = {
-    id: '',
-    description: '',
-    createdAt: '',
-    updatedAt: '',
-  };
-
-  /**
-   * Mock input CSS classes
-   */
-  @Input() class = '';
-}
-
-/**
- * Mock HTTP alert message component
- */
-@Component({
-  selector: 'app-http-alert-message',
-  template: '',
-})
-export class MockHttpAlertMessageComponent {
-  /**
-   * Mock input HTTP alert type
-   */
-  @Input() alertType = AlertType.none;
-}
-
-@Component({
-  selector: 'app-search-tag-search',
-})
-export class MockSearchTagSearchComponent {
-  /**
-   * Mock allow to set new search tags
-   */
-  @Input() allowNewSearchTags = false;
-
-  /**
-   * Mock list of selected search tags
-   */
-  searchTags: string[] = [];
-
-  /**
-   * Mock stream of selected search tags
-   */
-  searchTags$: Observable<string[]>;
-
-  /**
-   * Stream's source
-   */
-  searchTagsSource = new Subject<string[]>();
-
-  /**
-   * Construct a new instance of this component.
-   */
-  constructor() {
-    this.searchTags$ = this.searchTagsSource.asObservable();
-  }
-}
 
 /**
  * Test utilities module

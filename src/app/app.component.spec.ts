@@ -10,12 +10,16 @@ import { By } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 
 import { AppComponent } from './app.component';
-import { AlertType } from './http-alert/alert.model';
 import { DiaryEntrySearchService } from './diary-entry/diary-entry-search/diary-entry-search.service';
 import { DiaryEntrySearchResult } from './diary-entry/diary-entry-search/diary-entry-search.model';
 import { DiaryEntry } from './diary-entry/diary-entry.model';
-
-import * as testUtils from './test-utils/test-utils.module';
+import { AlertType } from './http-alert/alert.model';
+import { MockHttpAlertMessageComponent } from './test-utils/mock-http-alert-message.component';
+import {
+  TestUtilsModule,
+  asyncData,
+  asyncError,
+} from './test-utils/test-utils.module';
 
 /**
  * Mock diary entry search form
@@ -112,12 +116,12 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     mockDiaryEntrySearchService = {
-      diaryEntries$: testUtils.asyncData(diaryEntrySearchResult),
-      searching$: testUtils.asyncData(false),
+      diaryEntries$: asyncData(diaryEntrySearchResult),
+      searching$: asyncData(false),
     };
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, testUtils.TestUtilsModule],
+      imports: [ReactiveFormsModule, TestUtilsModule],
       declarations: [
         AppComponent,
         MockDiaryEntrySearchFormComponent,
@@ -153,9 +157,7 @@ describe('AppComponent', () => {
   it('should set alert message', waitForAsync(() => {
     app.showSpinner = true;
 
-    mockDiaryEntrySearchService.diaryEntries$ = testUtils.asyncError(
-      AlertType.server
-    );
+    mockDiaryEntrySearchService.diaryEntries$ = asyncError(AlertType.server);
     app.ngOnInit();
 
     fixture.whenStable().then(() => {
@@ -201,7 +203,7 @@ describe('AppComponent', () => {
 
   it('should not render alert message', () => {
     const httpAlert = fixture.debugElement.query(
-      By.directive(testUtils.MockHttpAlertMessageComponent)
+      By.directive(MockHttpAlertMessageComponent)
     );
     expect(httpAlert).toBeNull();
   });
@@ -211,7 +213,7 @@ describe('AppComponent', () => {
     app.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
     const httpAlert = fixture.debugElement.query(
-      By.directive(testUtils.MockHttpAlertMessageComponent)
+      By.directive(MockHttpAlertMessageComponent)
     );
     expect(httpAlert).not.toBeNull();
   });

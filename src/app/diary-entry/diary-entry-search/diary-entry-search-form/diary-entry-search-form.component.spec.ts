@@ -7,10 +7,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { SearchTagSearchComponent } from '../../../search-tag/search-tag-search/search-tag-search.component';
-import {
-  MockSearchTagSearchComponent,
-  TestUtilsModule,
-} from '../../../test-utils/test-utils.module';
+import { MockSearchTagSearchComponent } from '../../../test-utils/mock-search-tag-search.component';
+import { TestUtilsModule } from '../../../test-utils/test-utils.module';
 import { DiaryEntrySearchService } from '../diary-entry-search.service';
 import { DiaryEntrySearchFormComponent } from './diary-entry-search-form.component';
 

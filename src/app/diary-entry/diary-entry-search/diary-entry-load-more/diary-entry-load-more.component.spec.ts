@@ -3,10 +3,10 @@ import { By } from '@angular/platform-browser';
 import { BehaviorSubject, Observable, Subscription, throwError } from 'rxjs';
 
 import { AlertType } from '../../../http-alert/alert.model';
+import { MockHttpAlertMessageComponent } from '../../../test-utils/mock-http-alert-message.component';
 import {
-  asyncData,
-  MockHttpAlertMessageComponent,
   TestUtilsModule,
+  asyncData,
 } from '../../../test-utils/test-utils.module';
 import { DiaryEntry } from '../../diary-entry.model';
 import { DiaryEntrySearchResult } from '../diary-entry-search.model';

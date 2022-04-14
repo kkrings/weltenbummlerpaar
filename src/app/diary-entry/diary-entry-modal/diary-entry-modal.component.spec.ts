@@ -3,18 +3,17 @@
  * @packageDocumentation
  */
 
-import localeDe from '@angular/common/locales/de';
-
 import { Component, Input, LOCALE_ID } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { registerLocaleData, formatDate } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+import { By } from '@angular/platform-browser';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { DiaryEntryModalComponent } from './diary-entry-modal.component';
+import { MockNgbActiveModal } from '../../test-utils/mock-ngb-active-modal';
 import { DiaryEntry } from '../diary-entry.model';
 import { Image } from '../../image/image.model';
-import { MockNgbActiveModal } from '../../test-utils/test-utils.module';
+import { DiaryEntryModalComponent } from './diary-entry-modal.component';
 
 registerLocaleData(localeDe);
 

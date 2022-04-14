@@ -8,14 +8,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ImageModalComponent } from './image-modal.component';
-import { Image } from '../image.model';
 import { DiaryEntry } from '../../diary-entry/diary-entry.model';
-
-import {
-  MockNgbActiveModal,
-  TestUtilsModule,
-} from '../../test-utils/test-utils.module';
+import { MockNgbActiveModal } from '../../test-utils/mock-ngb-active-modal';
+import { TestUtilsModule } from '../../test-utils/test-utils.module';
+import { Image } from '../image.model';
+import { ImageModalComponent } from './image-modal.component';
 
 /**
  * Mock image upload component

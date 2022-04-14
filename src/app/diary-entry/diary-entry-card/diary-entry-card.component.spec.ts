@@ -6,22 +6,26 @@ import localeDe from '@angular/common/locales/de';
 
 import { Directive, LOCALE_ID } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { registerLocaleData, formatDate } from '@angular/common';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { By } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-import { DiaryEntryCardComponent } from './diary-entry-card.component';
-import { DiaryEntryBriefPipe } from '../diary-entry-brief.pipe';
-import { DiaryEntryService } from '../diary-entry.service';
+import { MockHttpAlertMessageComponent } from '../../test-utils/mock-http-alert-message.component';
+import {
+  TestUtilsModule,
+  asyncData,
+  asyncError,
+} from '../../test-utils/test-utils.module';
 import { DiaryEntry } from '../diary-entry.model';
-import { DiaryEntryModalComponent } from '../diary-entry-modal/diary-entry-modal.component';
+import { DiaryEntryService } from '../diary-entry.service';
+import { DiaryEntryBriefPipe } from '../diary-entry-brief.pipe';
 import { DiaryEntryFormComponent } from '../diary-entry-form/diary-entry-form.component';
+import { DiaryEntryModalComponent } from '../diary-entry-modal/diary-entry-modal.component';
+import { AlertType } from '../../http-alert/alert.model';
 import { Image } from '../../image/image.model';
 import { ImageModalComponent } from '../../image/image-modal/image-modal.component';
-import { AlertType } from '../../http-alert/alert.model';
-
-import * as testUtils from '../../test-utils/test-utils.module';
+import { DiaryEntryCardComponent } from './diary-entry-card.component';
 
 registerLocaleData(localeDe);
 
@@ -60,7 +64,7 @@ describe('DiaryEntryCardComponent', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [FontAwesomeModule, testUtils.TestUtilsModule],
+      imports: [FontAwesomeModule, TestUtilsModule],
       declarations: [
         DiaryEntryCardComponent,
         DiaryEntryBriefPipe,
@@ -154,7 +158,7 @@ describe('DiaryEntryCardComponent', () => {
 
   it('should not render empty alert message', () => {
     const httpAlert = fixture.debugElement.query(
-      By.directive(testUtils.MockHttpAlertMessageComponent)
+      By.directive(MockHttpAlertMessageComponent)
     );
     expect(httpAlert).toBeNull();
   });
@@ -163,7 +167,7 @@ describe('DiaryEntryCardComponent', () => {
     component.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
     const httpAlert = fixture.debugElement.query(
-      By.directive(testUtils.MockHttpAlertMessageComponent)
+      By.directive(MockHttpAlertMessageComponent)
     );
     expect(httpAlert).not.toBeNull();
   });
@@ -246,7 +250,7 @@ describe('DiaryEntryCardComponent', () => {
     const service = TestBed.inject(
       DiaryEntryService
     ) as jasmine.SpyObj<DiaryEntryService>;
-    service.deleteEntry.and.returnValue(testUtils.asyncData(testDiaryEntry));
+    service.deleteEntry.and.returnValue(asyncData(testDiaryEntry));
 
     let deletedEntryId = '';
     component.deletedEntryId.subscribe(
@@ -271,7 +275,7 @@ describe('DiaryEntryCardComponent', () => {
     ) as jasmine.SpyObj<DiaryEntryService>;
 
     const alertType = AlertType.server;
-    service.deleteEntry.and.returnValue(testUtils.asyncError(alertType));
+    service.deleteEntry.and.returnValue(asyncError(alertType));
 
     component.deleteEntry();
 
