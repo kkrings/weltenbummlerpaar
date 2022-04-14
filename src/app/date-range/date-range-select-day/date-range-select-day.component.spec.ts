@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DateRangeSelectDayComponent } from './date-range-select-day.component';
 
@@ -8,6 +9,7 @@ describe('DateRangeSelectDayComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [NgbDatepickerModule],
       declarations: [DateRangeSelectDayComponent],
     }).compileComponents();
   });

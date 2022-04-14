@@ -1,6 +1,24 @@
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { DateRange } from '../date-range.model';
 import { DateRangeInputComponent } from './date-range-input.component';
+
+@Component({
+  selector: 'app-date-range-select',
+})
+class MockDateRangeSelectComponent {
+  @Input()
+  dateRange: DateRange = {
+    dateMin: '',
+    dateMax: '',
+  };
+
+  @Output()
+  dateRangeSelect = new EventEmitter<DateRange>();
+}
 
 describe('DiaryEntryDatePickerComponent', () => {
   let component: DateRangeInputComponent;
@@ -8,7 +26,8 @@ describe('DiaryEntryDatePickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DateRangeInputComponent],
+      imports: [ReactiveFormsModule, FontAwesomeModule],
+      declarations: [DateRangeInputComponent, MockDateRangeSelectComponent],
     }).compileComponents();
   });
 

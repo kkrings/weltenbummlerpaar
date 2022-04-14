@@ -17,7 +17,7 @@ export class DateRangeSelectDayComponent {
   };
 
   @Input()
-  date!: NgbDate;
+  date = new NgbDate(2020, 2, 14);
 
   constructor(private readonly i18n: NgbDatepickerI18n) {}
 

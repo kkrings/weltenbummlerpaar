@@ -46,7 +46,7 @@ export class DateRangeSelectComponent {
   dateRangeSelect = new EventEmitter<DateRange>();
 
   @ViewChild('calendar')
-  calendarModal!: NgbInputDatepicker;
+  calendarModal: NgbInputDatepicker | null = null;
 
   constructor(
     private readonly dateRangeService: DateRangeService,
@@ -58,7 +58,7 @@ export class DateRangeSelectComponent {
   }
 
   toggle(): void {
-    this.calendarModal.toggle();
+    this.calendarModal?.toggle();
   }
 
   get startDate(): NgbDate {
