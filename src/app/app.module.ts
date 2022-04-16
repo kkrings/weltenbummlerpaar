@@ -12,6 +12,7 @@ import {
   NgbAlertModule,
   NgbCarouselModule,
   NgbDatepickerModule,
+  NgbDropdownModule,
   NgbModalModule,
   NgbTypeaheadModule,
 } from '@ng-bootstrap/ng-bootstrap';
@@ -89,6 +90,7 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
     NgbAlertModule,
     NgbCarouselModule,
     NgbDatepickerModule,
+    NgbDropdownModule,
     NgbModalModule,
     NgbTypeaheadModule,
     FontAwesomeModule,

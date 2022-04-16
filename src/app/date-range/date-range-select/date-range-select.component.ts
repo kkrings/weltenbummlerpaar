@@ -1,15 +1,6 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
-} from '@angular/core';
-import {
-  NgbCalendar,
-  NgbDate,
-  NgbInputDatepicker,
-} from '@ng-bootstrap/ng-bootstrap';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 
 import { isOpen } from '../date-range-utils';
 import { DateRange } from '../date-range.model';
@@ -22,6 +13,8 @@ import { NgbDateRange } from '../ngb-date-range.model';
   styleUrls: ['./date-range-select.component.scss'],
 })
 export class DateRangeSelectComponent {
+  calendarIcon = faCalendar;
+
   dateRangeParsed: NgbDateRange = {
     dateMin: null,
     dateMax: null,
@@ -42,11 +35,11 @@ export class DateRangeSelectComponent {
     this._dateRange = value;
   }
 
+  @Input()
+  buttonClass = '';
+
   @Output()
   dateRangeSelect = new EventEmitter<DateRange>();
-
-  @ViewChild('calendar')
-  calendarModal: NgbInputDatepicker | null = null;
 
   constructor(
     private readonly dateRangeService: DateRangeService,
@@ -55,10 +48,6 @@ export class DateRangeSelectComponent {
 
   onDateSelect(date: NgbDate): void {
     this.dateRangeSelect.emit(this.getDateRange(date));
-  }
-
-  toggle(): void {
-    this.calendarModal?.toggle();
   }
 
   get startDate(): NgbDate {

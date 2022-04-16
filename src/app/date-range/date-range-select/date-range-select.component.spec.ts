@@ -1,6 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbDate, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  NgbDate,
+  NgbDatepickerModule,
+  NgbDropdownModule,
+} from '@ng-bootstrap/ng-bootstrap';
 
 import { DateRangeService } from '../date-range.service';
 import { NgbDateRange } from '../ngb-date-range.model';
@@ -31,7 +36,7 @@ describe('DateRangeSelectionComponent', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [NgbDatepickerModule],
+      imports: [NgbDatepickerModule, NgbDropdownModule, FontAwesomeModule],
       declarations: [DateRangeSelectComponent, MockDateRangeSelectDayComponent],
       providers: [
         {

@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DateRange } from '../date-range.model';
 import { DateRangeInputComponent } from './date-range-input.component';
@@ -26,7 +25,7 @@ describe('DiaryEntryDatePickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, FontAwesomeModule],
+      imports: [ReactiveFormsModule],
       declarations: [DateRangeInputComponent, MockDateRangeSelectComponent],
     }).compileComponents();
   });

@@ -1,9 +1,4 @@
 <form [formGroup]="dateRangeForm">
-  <app-date-range-select
-    #calendar
-    [dateRange]="dateRangeForm.value"
-    (dateRangeSelect)="onDateRangeSelect($event)"
-  ></app-date-range-select>
   <div class="input-group">
     <input
       class="form-control"
@@ -26,13 +21,10 @@
       (blur)="onBlur()"
     />
     <label class="form-label visually-hidden" for="date-max">Enddatum</label>
-    <button
-      class="input-group-text"
-      type="button"
-      aria-label="Öffne oder schließe Kalendar"
-      (click)="calendar.toggle()"
-    >
-      <fa-icon [icon]="calendarIcon"></fa-icon>
-    </button>
+    <app-date-range-select
+      buttonClass="input-group-text"
+      [dateRange]="dateRangeForm.value"
+      (dateRangeSelect)="onDateRangeSelect($event)"
+    ></app-date-range-select>
   </div>
 </form>

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 
 import { DateRange } from '../date-range.model';
 
@@ -11,7 +10,6 @@ import { DateRange } from '../date-range.model';
 })
 export class DateRangeInputComponent {
   dateRangeForm: FormGroup;
-  calendarIcon = faCalendar;
 
   @Output()
   touched = new EventEmitter<boolean>();
