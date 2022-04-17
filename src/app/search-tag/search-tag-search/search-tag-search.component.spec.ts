@@ -317,7 +317,7 @@ describe('SearchTagSearchComponent', () => {
   });
 
   it('selected search tags should not have been rendered', () => {
-    const buttons = fixture.debugElement.queryAll(By.css('.btn-secondary'));
+    const buttons = fixture.debugElement.queryAll(By.css('.search-tag'));
     expect(buttons.length).toEqual(0);
   });
 
@@ -325,7 +325,7 @@ describe('SearchTagSearchComponent', () => {
     const searchTags = ['some search tag', 'some other search tag'];
     component.searchTags.push(...searchTags);
     fixture.detectChanges();
-    const buttons = fixture.debugElement.queryAll(By.css('.btn-secondary'));
+    const buttons = fixture.debugElement.queryAll(By.css('.search-tag'));
     expect(buttons.length).toEqual(searchTags.length);
   });
 
@@ -334,7 +334,7 @@ describe('SearchTagSearchComponent', () => {
     const searchTag = 'some search tag';
     component.searchTags.push(searchTag);
     fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('.btn-secondary'));
+    const button = fixture.debugElement.query(By.css('.search-tag'));
     button.triggerEventHandler('click', null);
     expect(component.deselect).toHaveBeenCalledOnceWith(searchTag);
   });
