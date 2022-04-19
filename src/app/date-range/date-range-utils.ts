@@ -14,16 +14,3 @@ export function isRange(dateRange: NgbDateRange): boolean {
   const { dateMin, dateMax } = dateRange;
   return dateMin?.before(dateMax) || dateMin?.equals(dateMax) || false;
 }
-
-// export function isEmptyOrRange(dateRange: DateRange): boolean {
-//   return isEmpty(dateRange) || isRange(dateRange);
-// }
-
-// export const validDateRange: ValidatorFn = (control) => {
-//   const dateRange: DateRange = {
-//     dateMin: control.get('dateMin')?.value,
-//     dateMax: control.get('dateMax')?.value,
-//   };
-
-//   return isEmptyOrRange(dateRange) ? null : { invalidDateRange: true };
-// };
