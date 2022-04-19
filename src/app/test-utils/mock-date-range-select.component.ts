@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+
 import { DateRange } from '../date-range/date-range.model';
 
 @Component({
@@ -13,6 +14,4 @@ export class MockDateRangeSelectComponent {
 
   @Output()
   dateRangeSelect = new EventEmitter<DateRange>();
-
-  toggle(): void {}
 }
