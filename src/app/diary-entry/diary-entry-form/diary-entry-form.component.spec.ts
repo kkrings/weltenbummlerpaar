@@ -7,7 +7,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 
 import { DateRangeService } from '../../date-range/date-range.service';
 import { DateRangeInputComponent } from '../../date-range/date-range-input/date-range-input.component';
@@ -26,6 +26,9 @@ import { SearchTagSearchComponent } from '../../search-tag/search-tag-search/sea
 import { DiaryEntry } from '../diary-entry.model';
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntryFormComponent } from './diary-entry-form.component';
+import { DebugElement } from '@angular/core';
+import { DateRange } from 'src/app/date-range/date-range.model';
+import { NgbDateRange } from 'src/app/date-range/ngb-date-range.model';
 
 describe('DiaryEntryFormComponent', () => {
   let component: DiaryEntryFormComponent;
@@ -295,6 +298,308 @@ describe('DiaryEntryFormComponent', () => {
     fixture.detectChanges();
     const errorMessage = fixture.debugElement.query(By.css('#location + div'));
     expect(errorMessage).not.toBeNull();
+  });
+
+  describe('#dateRange', () => {
+    const getErrorMessage = () =>
+      fixture.debugElement.query(By.css('#date-range + div'));
+
+    let dateRangeServiceSpy: jasmine.SpyObj<DateRangeService>;
+    let dateRangeInput: DebugElement;
+
+    beforeEach(() => {
+      dateRangeServiceSpy = TestBed.inject(
+        DateRangeService
+      ) as jasmine.SpyObj<DateRangeService>;
+    });
+
+    beforeEach(() => {
+      dateRangeInput = fixture.debugElement.query(
+        By.directive(DateRangeInputComponent)
+      );
+    });
+
+    it('date range form control should be empty', () => {
+      expect(dateRangeInput.componentInstance.dateRangeForm.value).toEqual({
+        dateMin: '',
+        dateMax: '',
+      });
+    });
+
+    it('error message should not have been rendered', () => {
+      expect(getErrorMessage()).toBeNull();
+    });
+
+    describe('valid date range', () => {
+      const dateRange: DateRange = {
+        dateMin: '2020-02-14',
+        dateMax: '2020-02-15',
+      };
+
+      const dateRangeParsed: NgbDateRange = {
+        dateMin: new NgbDate(2020, 2, 14),
+        dateMax: new NgbDate(2020, 2, 15),
+      };
+
+      beforeEach(() => {
+        dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      describe('#setValue', () => {
+        beforeEach(() => {
+          component.dateRange.setValue(dateRange);
+          fixture.detectChanges();
+        });
+
+        it('date range form control should be equal to date range', () => {
+          expect(dateRangeInput.componentInstance.dateRangeForm.value).toEqual(
+            dateRange
+          );
+        });
+      });
+
+      describe('input', () => {
+        beforeEach(() => {
+          dateRangeInput.componentInstance.dateRangeForm.setValue(dateRange);
+          fixture.detectChanges();
+        });
+
+        it('#dateRange.value should be equal to date range', () => {
+          expect(component.dateRange.value).toEqual(dateRange);
+        });
+
+        it('error message should not have been rendered', () => {
+          expect(getErrorMessage()).toBeNull();
+        });
+
+        describe('empty date range', () => {
+          beforeEach(() => {
+            dateRangeInput.componentInstance.dateRangeForm.setValue({
+              dateMin: '',
+              dateMax: '',
+            });
+
+            fixture.detectChanges();
+          });
+
+          it('#dateRange.value should be null', () => {
+            expect(component.dateRange.value).toBeNull();
+          });
+        });
+      });
+
+      afterEach(() => {
+        expect(dateRangeServiceSpy.parseDateRange).toHaveBeenCalledWith(
+          dateRange
+        );
+      });
+    });
+
+    describe('invalid dateMin; empty dateMax', () => {
+      const dateRange: DateRange = {
+        dateMin: 'invalid date',
+        dateMax: '',
+      };
+
+      const dateRangeParsed: NgbDateRange = {
+        dateMin: null,
+        dateMax: null,
+      };
+
+      beforeEach(() => {
+        dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      beforeEach(() => {
+        dateRangeInput.componentInstance.dateRangeForm.setValue(dateRange);
+        fixture.detectChanges();
+      });
+
+      it('error message should have been rendered', () => {
+        expect(getErrorMessage()).not.toBeNull();
+      });
+
+      afterEach(() => {
+        expect(dateRangeServiceSpy.parseDateRange).toHaveBeenCalledWith(
+          dateRange
+        );
+      });
+    });
+
+    describe('invalid dateMin; valid dateMax', () => {
+      const dateRange: DateRange = {
+        dateMin: 'invalid date',
+        dateMax: '2020-02-15',
+      };
+
+      const dateRangeParsed: NgbDateRange = {
+        dateMin: null,
+        dateMax: new NgbDate(2020, 2, 15),
+      };
+
+      beforeEach(() => {
+        dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      beforeEach(() => {
+        dateRangeInput.componentInstance.dateRangeForm.setValue(dateRange);
+        fixture.detectChanges();
+      });
+
+      it('error message should have been rendered', () => {
+        expect(getErrorMessage()).not.toBeNull();
+      });
+
+      afterEach(() => {
+        expect(dateRangeServiceSpy.parseDateRange).toHaveBeenCalledWith(
+          dateRange
+        );
+      });
+    });
+
+    describe('empty dateMin; invalid dateMax', () => {
+      const dateRange: DateRange = {
+        dateMin: '',
+        dateMax: 'invalid date',
+      };
+
+      const dateRangeParsed: NgbDateRange = {
+        dateMin: null,
+        dateMax: null,
+      };
+
+      beforeEach(() => {
+        dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      beforeEach(() => {
+        dateRangeInput.componentInstance.dateRangeForm.setValue(dateRange);
+        fixture.detectChanges();
+      });
+
+      it('error message should have been rendered', () => {
+        expect(getErrorMessage()).not.toBeNull();
+      });
+
+      afterEach(() => {
+        expect(dateRangeServiceSpy.parseDateRange).toHaveBeenCalledWith(
+          dateRange
+        );
+      });
+    });
+
+    describe('valid dateMin; invalid dateMax', () => {
+      const dateRange: DateRange = {
+        dateMin: '2020-02-14',
+        dateMax: 'invalid date',
+      };
+
+      const dateRangeParsed: NgbDateRange = {
+        dateMin: new NgbDate(2020, 2, 14),
+        dateMax: null,
+      };
+
+      beforeEach(() => {
+        dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      beforeEach(() => {
+        dateRangeInput.componentInstance.dateRangeForm.setValue(dateRange);
+        fixture.detectChanges();
+      });
+
+      it('error message should have been rendered', () => {
+        expect(getErrorMessage()).not.toBeNull();
+      });
+
+      afterEach(() => {
+        expect(dateRangeServiceSpy.parseDateRange).toHaveBeenCalledWith(
+          dateRange
+        );
+      });
+    });
+
+    describe('dateMin after dateMax', () => {
+      const dateRange: DateRange = {
+        dateMin: '2020-02-15',
+        dateMax: '2020-02-14',
+      };
+
+      const dateRangeParsed: NgbDateRange = {
+        dateMin: new NgbDate(2020, 2, 15),
+        dateMax: new NgbDate(2020, 2, 14),
+      };
+
+      beforeEach(() => {
+        dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      beforeEach(() => {
+        dateRangeInput.componentInstance.dateRangeForm.setValue(dateRange);
+        fixture.detectChanges();
+      });
+
+      it('error message should have been rendered', () => {
+        expect(getErrorMessage()).not.toBeNull();
+      });
+
+      afterEach(() => {
+        expect(dateRangeServiceSpy.parseDateRange).toHaveBeenCalledWith(
+          dateRange
+        );
+      });
+    });
+
+    describe('dateMin equals dateMax', () => {
+      const dateRange: DateRange = {
+        dateMin: '2020-02-14',
+        dateMax: '2020-02-14',
+      };
+
+      const dateRangeParsed: NgbDateRange = {
+        dateMin: new NgbDate(2020, 2, 14),
+        dateMax: new NgbDate(2020, 2, 14),
+      };
+
+      beforeEach(() => {
+        dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      beforeEach(() => {
+        dateRangeInput.componentInstance.dateRangeForm.setValue(dateRange);
+        fixture.detectChanges();
+      });
+
+      it('error message should not have been rendered', () => {
+        expect(getErrorMessage()).toBeNull();
+      });
+
+      afterEach(() => {
+        expect(dateRangeServiceSpy.parseDateRange).toHaveBeenCalledWith(
+          dateRange
+        );
+      });
+    });
+
+    describe('touched of true emitted', () => {
+      beforeEach(() => {
+        dateRangeInput.componentInstance.touched.next(true);
+      });
+
+      it('#dateRange.touched should be true', () => {
+        expect(component.dateRange.touched).toBeTrue();
+      });
+    });
+
+    describe('touched of false emitted', () => {
+      beforeEach(() => {
+        dateRangeInput.componentInstance.touched.next(false);
+      });
+
+      it('#dateRange.touched should be false', () => {
+        expect(component.dateRange.touched).toBeFalse();
+      });
+    });
   });
 
   it('body form control should be empty', () => {
