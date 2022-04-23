@@ -117,6 +117,7 @@ export class DiaryEntryFormComponent implements OnInit {
   ngOnInit(): void {
     this.title.setValue(this.diaryEntry.title);
     this.location.setValue(this.diaryEntry.location);
+    this.dateRange.setValue(this.diaryEntry.dateRange ?? null);
     this.body.setValue(this.diaryEntry.body);
     this.searchTags.setValue(this.diaryEntry.searchTags);
     this.previewImage.setValue(this.diaryEntry.previewImage ?? null);
@@ -222,6 +223,7 @@ export class DiaryEntryFormComponent implements OnInit {
       id: this.diaryEntry.id,
       title: formValue.title,
       location: formValue.location,
+      dateRange: formValue.dateRange ?? undefined,
       body: formValue.body,
       previewImage: formValue.previewImage ?? undefined,
       images: this.imageList,

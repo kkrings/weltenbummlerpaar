@@ -3,7 +3,27 @@
  * @packageDocumentation
  */
 
+import { DateRange } from './date-range/date-range.model';
 import { DiaryEntry } from './diary-entry/diary-entry.model';
+
+const removeTimefromDateISOString = (date: string): string => {
+  return date.split('T')[0];
+};
+
+export const removeTimeFromDateRange = (entry: DiaryEntry): DiaryEntry => {
+  if (entry.dateRange === undefined) {
+    return entry;
+  }
+
+  const dateRange: DateRange = {
+    dateMin: removeTimefromDateISOString(entry.dateRange.dateMin),
+    dateMax: removeTimefromDateISOString(entry.dateRange.dateMax),
+  };
+
+  entry.dateRange = dateRange;
+
+  return entry;
+};
 
 /**
  * Set the diary entry's preview image.
@@ -24,4 +44,8 @@ export const setPreviewImage = (entry: DiaryEntry): DiaryEntry => {
   )[0];
 
   return entry;
+};
+
+export const parseEntry = (entry: DiaryEntry): DiaryEntry => {
+  return setPreviewImage(removeTimeFromDateRange(entry));
 };

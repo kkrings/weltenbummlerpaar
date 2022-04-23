@@ -10,6 +10,7 @@ import localeDe from '@angular/common/locales/de';
 import { By } from '@angular/platform-browser';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { DateRangePipe } from '../../date-range/date-range.pipe';
 import { MockNgbActiveModal } from '../../test-utils/mock-ngb-active-modal';
 import { DiaryEntry } from '../diary-entry.model';
 import { Image } from '../../image/image.model';
@@ -61,7 +62,11 @@ describe('DiaryEntryModalComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [DiaryEntryModalComponent, MockImageCarouselComponent],
+      declarations: [
+        DateRangePipe,
+        DiaryEntryModalComponent,
+        MockImageCarouselComponent,
+      ],
       providers: [
         { provide: NgbActiveModal, useClass: MockNgbActiveModal },
         { provide: LOCALE_ID, useValue: 'de' },

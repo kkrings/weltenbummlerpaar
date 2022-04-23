@@ -3,6 +3,7 @@
  * @packageDocumentation
  */
 
+import { DateRange } from '../date-range/date-range.model';
 import { Image } from '../image/image.model';
 
 /**
@@ -29,6 +30,11 @@ export interface DiaryEntry {
    * city, state, country
    */
   location: string;
+
+  /**
+   * Time period the diary diary entry covers
+   */
+  dateRange?: DateRange;
 
   /**
    * Diary entry's preview image

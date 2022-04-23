@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
+import { DateRangePipe } from '../../date-range/date-range.pipe';
 import { MockHttpAlertMessageComponent } from '../../test-utils/mock-http-alert-message.component';
 import {
   TestUtilsModule,
@@ -66,6 +67,7 @@ describe('DiaryEntryCardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [FontAwesomeModule, TestUtilsModule],
       declarations: [
+        DateRangePipe,
         DiaryEntryCardComponent,
         DiaryEntryBriefPipe,
         MockAuthDirective,

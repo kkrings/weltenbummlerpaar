@@ -794,6 +794,7 @@ describe('DiaryEntryFormComponent', () => {
       id: component.diaryEntry.id,
       title: testEntry.title,
       location: testEntry.location,
+      dateRange: testEntry.dateRange,
       body: testEntry.body,
       previewImage: testEntry.previewImage,
       images: component.diaryEntry.images,
@@ -805,7 +806,7 @@ describe('DiaryEntryFormComponent', () => {
     component.diaryEntryForm.setValue({
       title: testEntry.title,
       location: testEntry.location,
-      dateRange: null,
+      dateRange: testEntry.dateRange ?? null,
       body: testEntry.body,
       searchTags: testEntry.searchTags,
       previewImage: testEntry.previewImage ?? null,
@@ -841,6 +842,7 @@ describe('DiaryEntryFormComponent', () => {
 
     const updatedEntry = {
       ...testEntry,
+      dateRange: testEntry.dateRange,
       previewImage: testEntry.previewImage,
     };
 
