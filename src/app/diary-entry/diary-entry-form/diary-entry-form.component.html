@@ -53,6 +53,20 @@
       </div>
     </div>
     <div class="mb-3">
+      <label for="date-range" class="form-label">
+        Über welchen Zeitraum schreibst du?
+      </label>
+      <app-date-range-input
+        formControlName="dateRange"
+        id="date-range"
+      ></app-date-range-input>
+      <div *ngIf="isInvalid(dateRange)">
+        <div *ngIf="dateRange.errors?.invalidDateRange">
+          <small class="text-danger">Dies ist kein gültiger Zeitraum.</small>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
       <label for="body" class="form-label">
         Hier kommt der Inhalt des Tagebucheintrages hin:
       </label>

@@ -13,11 +13,15 @@ import { first, last } from 'rxjs/operators';
 import { DiaryEntry } from '../../diary-entry/diary-entry.model';
 import { AlertType } from '../../http-alert/alert.model';
 import { FileValueAccessorDirective } from '../../shared/file-value-accessor.directive';
+import { MockHttpAlertMessageComponent } from '../../test-utils/mock-http-alert-message.component';
+import {
+  TestUtilsModule,
+  asyncData,
+  asyncError,
+} from '../../test-utils/test-utils.module';
 import { Image } from '../image.model';
 import { ImageService } from '../image.service';
 import { ImageUploadComponent } from './image-upload.component';
-
-import * as testUtils from '../../test-utils/test-utils.module';
 
 describe('ImageUploadComponent', () => {
   let component: ImageUploadComponent;
@@ -51,11 +55,7 @@ describe('ImageUploadComponent', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        FontAwesomeModule,
-        testUtils.TestUtilsModule,
-      ],
+      imports: [ReactiveFormsModule, FontAwesomeModule, TestUtilsModule],
       declarations: [FileValueAccessorDirective, ImageUploadComponent],
       providers: [{ provide: ImageService, useValue: imageServiceSpy }],
     }).compileComponents();
@@ -162,7 +162,7 @@ describe('ImageUploadComponent', () => {
       ImageService
     ) as jasmine.SpyObj<ImageService>;
 
-    imageService.deleteImage.and.returnValue(testUtils.asyncData(testEntry));
+    imageService.deleteImage.and.returnValue(asyncData(testEntry));
 
     component.imageDelete.subscribe((entry: DiaryEntry) =>
       expect(entry.id).toEqual(testEntry.id)
@@ -199,7 +199,7 @@ describe('ImageUploadComponent', () => {
     ) as jasmine.SpyObj<ImageService>;
 
     const alertType = AlertType.server;
-    imageService.deleteImage.and.returnValue(testUtils.asyncError(alertType));
+    imageService.deleteImage.and.returnValue(asyncError(alertType));
 
     component.processing
       .pipe(last())
@@ -312,7 +312,7 @@ describe('ImageUploadComponent', () => {
       ImageService
     ) as jasmine.SpyObj<ImageService>;
 
-    imageService.uploadImage.and.returnValue(testUtils.asyncData(testEntry));
+    imageService.uploadImage.and.returnValue(asyncData(testEntry));
 
     component.imageChange.subscribe((image: Image) =>
       expect(image).toEqual(testImage)
@@ -361,7 +361,7 @@ describe('ImageUploadComponent', () => {
     ) as jasmine.SpyObj<ImageService>;
 
     const alertType = AlertType.server;
-    imageService.uploadImage.and.returnValue(testUtils.asyncError(alertType));
+    imageService.uploadImage.and.returnValue(asyncError(alertType));
 
     component.processing
       .pipe(last())
@@ -408,7 +408,7 @@ describe('ImageUploadComponent', () => {
     ) as jasmine.SpyObj<ImageService>;
 
     const alertType = AlertType.server;
-    imageService.updateImage.and.returnValue(testUtils.asyncError(alertType));
+    imageService.updateImage.and.returnValue(asyncError(alertType));
 
     component.processing
       .pipe(last())
@@ -490,7 +490,7 @@ describe('ImageUploadComponent', () => {
 
   it('should not render empty alert message', () => {
     const httpAlert = fixture.debugElement.query(
-      By.directive(testUtils.MockHttpAlertMessageComponent)
+      By.directive(MockHttpAlertMessageComponent)
     );
     expect(httpAlert).toBeNull();
   });
@@ -499,7 +499,7 @@ describe('ImageUploadComponent', () => {
     component.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
     const httpAlert = fixture.debugElement.query(
-      By.directive(testUtils.MockHttpAlertMessageComponent)
+      By.directive(MockHttpAlertMessageComponent)
     );
     expect(httpAlert).not.toBeNull();
   });

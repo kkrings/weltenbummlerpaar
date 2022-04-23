@@ -1,0 +1,30 @@
+<form [formGroup]="dateRangeForm">
+  <div class="input-group">
+    <input
+      class="form-control"
+      formControlName="dateMin"
+      id="date-min"
+      type="text"
+      placeholder="yyyy-mm-dd"
+      (blur)="onBlur()"
+    />
+    <label class="form-label visually-hidden" for="date-min">
+      Anfangsdatum
+    </label>
+    <span class="input-group-text">bis</span>
+    <input
+      class="form-control"
+      formControlName="dateMax"
+      id="date-max"
+      type="text"
+      placeholder="yyyy-mm-dd"
+      (blur)="onBlur()"
+    />
+    <label class="form-label visually-hidden" for="date-max">Enddatum</label>
+    <app-date-range-select
+      buttonClass="input-group-text"
+      [dateRange]="dateRangeForm.value"
+      (dateRangeSelect)="onDateRangeSelect($event)"
+    ></app-date-range-select>
+  </div>
+</form>

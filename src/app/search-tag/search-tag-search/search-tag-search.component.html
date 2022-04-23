@@ -8,13 +8,10 @@
       Stichwortsuche:
     </label>
     <div class="input-group me-sm-2">
-      <span class="input-group-text bg-transparent">
-        <fa-icon [icon]="searchIcon" [classes]="['text-dark']"></fa-icon>
-      </span>
       <input
         formControlName="searchTag"
         id="search-tag"
-        class="form-control border-start-0 border-end-0"
+        class="form-control border-end-0"
         type="text"
         placeholder="Stichwort"
         (focus)="onFocus($any($event).target.value)"
@@ -53,7 +50,7 @@
 <button
   *ngFor="let searchTag of searchTags"
   type="button"
-  class="btn btn-secondary btn-sm mt-2 me-2"
+  class="search-tag mt-2 me-2"
   (click)="deselect(searchTag)"
 >
   <span class="me-2">{{ searchTag }}</span>

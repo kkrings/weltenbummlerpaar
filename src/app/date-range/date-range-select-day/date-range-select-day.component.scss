@@ -1,0 +1,25 @@
+@import "~bootstrap/scss/functions";
+@import "../../../theme";
+@import "~bootstrap/scss/variables";
+
+@mixin date-range {
+  background-color: $primary;
+  border: solid 1px $primary;
+  color: white;
+}
+
+.date-min {
+  @include date-range();
+  border-bottom-left-radius: $border-radius-pill;
+  border-top-left-radius: $border-radius-pill;
+}
+
+.date-max {
+  @include date-range();
+  border-bottom-right-radius: $border-radius-pill;
+  border-top-right-radius: $border-radius-pill;
+}
+
+.date-inside {
+  @include date-range();
+}

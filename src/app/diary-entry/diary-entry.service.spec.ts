@@ -293,6 +293,7 @@ describe('DiaryEntryService', () => {
     expect(testRequest.request.body).toEqual({
       title: testDiaryEntry.title,
       location: testDiaryEntry.location,
+      dateRange: testDiaryEntry.dateRange,
       body: testDiaryEntry.body,
       previewImage: testDiaryEntry.previewImage,
       images: testDiaryEntry.images,
@@ -335,6 +336,7 @@ describe('DiaryEntryService', () => {
     expect(testRequest.request.body).toEqual({
       title: testDiaryEntry.title,
       location: testDiaryEntry.location,
+      dateRange: testDiaryEntry.dateRange,
       body: testDiaryEntry.body,
       previewImage: testImage.id,
       images: [testImage.id],

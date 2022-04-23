@@ -6,18 +6,23 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   NgbActiveModal,
   NgbAlert,
   NgbAlertModule,
 } from '@ng-bootstrap/ng-bootstrap';
 
-import { AuthModalComponent } from './auth-modal.component';
-import { AuthService } from '../auth.service';
 import { AlertType } from '../../http-alert/alert.model';
-
-import * as testUtils from '../../test-utils/test-utils.module';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MockNgbActiveModal } from '../../test-utils/mock-ngb-active-modal';
+import { MockHttpAlertMessageComponent } from '../../test-utils/mock-http-alert-message.component';
+import {
+  TestUtilsModule,
+  asyncData,
+  asyncError,
+} from '../../test-utils/test-utils.module';
+import { AuthService } from '../auth.service';
+import { AuthModalComponent } from './auth-modal.component';
 
 describe('AuthModalComponent', () => {
   let component: AuthModalComponent;
@@ -31,11 +36,14 @@ describe('AuthModalComponent', () => {
         ReactiveFormsModule,
         NgbAlertModule,
         FontAwesomeModule,
-        testUtils.TestUtilsModule,
+        TestUtilsModule,
       ],
       declarations: [AuthModalComponent],
       providers: [
-        { provide: NgbActiveModal, useClass: testUtils.MockNgbActiveModal },
+        {
+          provide: NgbActiveModal,
+          useClass: MockNgbActiveModal,
+        },
         { provide: AuthService, useValue: authServiceSpy },
       ],
     }).compileComponents();
@@ -208,7 +216,7 @@ describe('AuthModalComponent', () => {
     const authService = TestBed.inject(
       AuthService
     ) as jasmine.SpyObj<AuthService>;
-    authService.login.and.returnValue(testUtils.asyncData(true));
+    authService.login.and.returnValue(asyncData(true));
 
     const modal: NgbActiveModal = TestBed.inject(NgbActiveModal);
     spyOn(modal, 'close');
@@ -234,7 +242,7 @@ describe('AuthModalComponent', () => {
     const authService = TestBed.inject(
       AuthService
     ) as jasmine.SpyObj<AuthService>;
-    authService.login.and.returnValue(testUtils.asyncData(false));
+    authService.login.and.returnValue(asyncData(false));
 
     component.onSubmit();
 
@@ -252,7 +260,7 @@ describe('AuthModalComponent', () => {
     ) as jasmine.SpyObj<AuthService>;
 
     const alertType = AlertType.server;
-    authService.login.and.returnValue(testUtils.asyncError(alertType));
+    authService.login.and.returnValue(asyncError(alertType));
 
     component.onSubmit();
 
@@ -321,7 +329,7 @@ describe('AuthModalComponent', () => {
 
   it('should not render HTTP alert message', () => {
     const httpAlert = fixture.debugElement.query(
-      By.directive(testUtils.MockHttpAlertMessageComponent)
+      By.directive(MockHttpAlertMessageComponent)
     );
     expect(httpAlert).toBeNull();
   });
@@ -330,7 +338,7 @@ describe('AuthModalComponent', () => {
     component.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
     const httpAlert = fixture.debugElement.query(
-      By.directive(testUtils.MockHttpAlertMessageComponent)
+      By.directive(MockHttpAlertMessageComponent)
     );
     expect(httpAlert).not.toBeNull();
   });

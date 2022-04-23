@@ -6,17 +6,29 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 
+import { DateRangeService } from '../../date-range/date-range.service';
+import { DateRangeInputComponent } from '../../date-range/date-range-input/date-range-input.component';
+import { DateRangeValueAccessorDirective } from '../../date-range/date-range-value-accessor.directive';
+import { MockHttpAlertMessageComponent } from '../../test-utils/mock-http-alert-message.component';
+import { MockNgbActiveModal } from '../../test-utils/mock-ngb-active-modal';
+import { MockSearchTagSearchComponent } from '../../test-utils/mock-search-tag-search.component';
+import {
+  TestUtilsModule,
+  asyncData,
+  asyncError,
+} from '../../test-utils/test-utils.module';
 import { AlertType } from '../../http-alert/alert.model';
 import { Image } from '../../image/image.model';
 import { SearchTagSearchComponent } from '../../search-tag/search-tag-search/search-tag-search.component';
 import { DiaryEntry } from '../diary-entry.model';
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntryFormComponent } from './diary-entry-form.component';
-
-import * as testUtils from '../../test-utils/test-utils.module';
+import { DebugElement } from '@angular/core';
+import { DateRange } from 'src/app/date-range/date-range.model';
+import { NgbDateRange } from 'src/app/date-range/ngb-date-range.model';
 
 describe('DiaryEntryFormComponent', () => {
   let component: DiaryEntryFormComponent;
@@ -61,21 +73,39 @@ describe('DiaryEntryFormComponent', () => {
   ];
 
   beforeEach(async () => {
+    const dateRangeServiceSpy = jasmine.createSpyObj('DateRangeService', [
+      'parseDateRange',
+    ]);
+
     const diaryEntryServiceSpy = jasmine.createSpyObj('DiaryEntryService', [
       'saveEntry',
       'updateEntry',
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        FontAwesomeModule,
-        testUtils.TestUtilsModule,
+      imports: [ReactiveFormsModule, FontAwesomeModule, TestUtilsModule],
+      declarations: [
+        DateRangeInputComponent,
+        DateRangeValueAccessorDirective,
+        DiaryEntryFormComponent,
       ],
-      declarations: [DiaryEntryFormComponent],
       providers: [
-        { provide: DiaryEntryService, useValue: diaryEntryServiceSpy },
-        { provide: NgbActiveModal, useClass: testUtils.MockNgbActiveModal },
+        {
+          provide: DateRangeInputComponent,
+          useClass: DateRangeInputComponent,
+        },
+        {
+          provide: DateRangeService,
+          useValue: dateRangeServiceSpy,
+        },
+        {
+          provide: DiaryEntryService,
+          useValue: diaryEntryServiceSpy,
+        },
+        {
+          provide: NgbActiveModal,
+          useClass: MockNgbActiveModal,
+        },
       ],
     }).compileComponents();
   });
@@ -96,7 +126,7 @@ describe('DiaryEntryFormComponent', () => {
 
   it('should not render empty alert message', () => {
     const httpAlert = fixture.debugElement.query(
-      By.directive(testUtils.MockHttpAlertMessageComponent)
+      By.directive(MockHttpAlertMessageComponent)
     );
     expect(httpAlert).toBeNull();
   });
@@ -105,7 +135,7 @@ describe('DiaryEntryFormComponent', () => {
     component.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
     const httpAlert = fixture.debugElement.query(
-      By.directive(testUtils.MockHttpAlertMessageComponent)
+      By.directive(MockHttpAlertMessageComponent)
     );
     expect(httpAlert).not.toBeNull();
   });
@@ -270,6 +300,308 @@ describe('DiaryEntryFormComponent', () => {
     expect(errorMessage).not.toBeNull();
   });
 
+  describe('#dateRange', () => {
+    const getErrorMessage = () =>
+      fixture.debugElement.query(By.css('#date-range + div'));
+
+    let dateRangeServiceSpy: jasmine.SpyObj<DateRangeService>;
+    let dateRangeInput: DebugElement;
+
+    beforeEach(() => {
+      dateRangeServiceSpy = TestBed.inject(
+        DateRangeService
+      ) as jasmine.SpyObj<DateRangeService>;
+    });
+
+    beforeEach(() => {
+      dateRangeInput = fixture.debugElement.query(
+        By.directive(DateRangeInputComponent)
+      );
+    });
+
+    it('date range form control should be empty', () => {
+      expect(dateRangeInput.componentInstance.dateRangeForm.value).toEqual({
+        dateMin: '',
+        dateMax: '',
+      });
+    });
+
+    it('error message should not have been rendered', () => {
+      expect(getErrorMessage()).toBeNull();
+    });
+
+    describe('valid date range', () => {
+      const dateRange: DateRange = {
+        dateMin: '2020-02-14',
+        dateMax: '2020-02-15',
+      };
+
+      const dateRangeParsed: NgbDateRange = {
+        dateMin: new NgbDate(2020, 2, 14),
+        dateMax: new NgbDate(2020, 2, 15),
+      };
+
+      beforeEach(() => {
+        dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      describe('#setValue', () => {
+        beforeEach(() => {
+          component.dateRange.setValue(dateRange);
+          fixture.detectChanges();
+        });
+
+        it('date range form control should be equal to date range', () => {
+          expect(dateRangeInput.componentInstance.dateRangeForm.value).toEqual(
+            dateRange
+          );
+        });
+      });
+
+      describe('input', () => {
+        beforeEach(() => {
+          dateRangeInput.componentInstance.dateRangeForm.setValue(dateRange);
+          fixture.detectChanges();
+        });
+
+        it('#dateRange.value should be equal to date range', () => {
+          expect(component.dateRange.value).toEqual(dateRange);
+        });
+
+        it('error message should not have been rendered', () => {
+          expect(getErrorMessage()).toBeNull();
+        });
+
+        describe('empty date range', () => {
+          beforeEach(() => {
+            dateRangeInput.componentInstance.dateRangeForm.setValue({
+              dateMin: '',
+              dateMax: '',
+            });
+
+            fixture.detectChanges();
+          });
+
+          it('#dateRange.value should be null', () => {
+            expect(component.dateRange.value).toBeNull();
+          });
+        });
+      });
+
+      afterEach(() => {
+        expect(dateRangeServiceSpy.parseDateRange).toHaveBeenCalledWith(
+          dateRange
+        );
+      });
+    });
+
+    describe('invalid dateMin; empty dateMax', () => {
+      const dateRange: DateRange = {
+        dateMin: 'invalid date',
+        dateMax: '',
+      };
+
+      const dateRangeParsed: NgbDateRange = {
+        dateMin: null,
+        dateMax: null,
+      };
+
+      beforeEach(() => {
+        dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      beforeEach(() => {
+        dateRangeInput.componentInstance.dateRangeForm.setValue(dateRange);
+        fixture.detectChanges();
+      });
+
+      it('error message should have been rendered', () => {
+        expect(getErrorMessage()).not.toBeNull();
+      });
+
+      afterEach(() => {
+        expect(dateRangeServiceSpy.parseDateRange).toHaveBeenCalledWith(
+          dateRange
+        );
+      });
+    });
+
+    describe('invalid dateMin; valid dateMax', () => {
+      const dateRange: DateRange = {
+        dateMin: 'invalid date',
+        dateMax: '2020-02-15',
+      };
+
+      const dateRangeParsed: NgbDateRange = {
+        dateMin: null,
+        dateMax: new NgbDate(2020, 2, 15),
+      };
+
+      beforeEach(() => {
+        dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      beforeEach(() => {
+        dateRangeInput.componentInstance.dateRangeForm.setValue(dateRange);
+        fixture.detectChanges();
+      });
+
+      it('error message should have been rendered', () => {
+        expect(getErrorMessage()).not.toBeNull();
+      });
+
+      afterEach(() => {
+        expect(dateRangeServiceSpy.parseDateRange).toHaveBeenCalledWith(
+          dateRange
+        );
+      });
+    });
+
+    describe('empty dateMin; invalid dateMax', () => {
+      const dateRange: DateRange = {
+        dateMin: '',
+        dateMax: 'invalid date',
+      };
+
+      const dateRangeParsed: NgbDateRange = {
+        dateMin: null,
+        dateMax: null,
+      };
+
+      beforeEach(() => {
+        dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      beforeEach(() => {
+        dateRangeInput.componentInstance.dateRangeForm.setValue(dateRange);
+        fixture.detectChanges();
+      });
+
+      it('error message should have been rendered', () => {
+        expect(getErrorMessage()).not.toBeNull();
+      });
+
+      afterEach(() => {
+        expect(dateRangeServiceSpy.parseDateRange).toHaveBeenCalledWith(
+          dateRange
+        );
+      });
+    });
+
+    describe('valid dateMin; invalid dateMax', () => {
+      const dateRange: DateRange = {
+        dateMin: '2020-02-14',
+        dateMax: 'invalid date',
+      };
+
+      const dateRangeParsed: NgbDateRange = {
+        dateMin: new NgbDate(2020, 2, 14),
+        dateMax: null,
+      };
+
+      beforeEach(() => {
+        dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      beforeEach(() => {
+        dateRangeInput.componentInstance.dateRangeForm.setValue(dateRange);
+        fixture.detectChanges();
+      });
+
+      it('error message should have been rendered', () => {
+        expect(getErrorMessage()).not.toBeNull();
+      });
+
+      afterEach(() => {
+        expect(dateRangeServiceSpy.parseDateRange).toHaveBeenCalledWith(
+          dateRange
+        );
+      });
+    });
+
+    describe('dateMin after dateMax', () => {
+      const dateRange: DateRange = {
+        dateMin: '2020-02-15',
+        dateMax: '2020-02-14',
+      };
+
+      const dateRangeParsed: NgbDateRange = {
+        dateMin: new NgbDate(2020, 2, 15),
+        dateMax: new NgbDate(2020, 2, 14),
+      };
+
+      beforeEach(() => {
+        dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      beforeEach(() => {
+        dateRangeInput.componentInstance.dateRangeForm.setValue(dateRange);
+        fixture.detectChanges();
+      });
+
+      it('error message should have been rendered', () => {
+        expect(getErrorMessage()).not.toBeNull();
+      });
+
+      afterEach(() => {
+        expect(dateRangeServiceSpy.parseDateRange).toHaveBeenCalledWith(
+          dateRange
+        );
+      });
+    });
+
+    describe('dateMin equals dateMax', () => {
+      const dateRange: DateRange = {
+        dateMin: '2020-02-14',
+        dateMax: '2020-02-14',
+      };
+
+      const dateRangeParsed: NgbDateRange = {
+        dateMin: new NgbDate(2020, 2, 14),
+        dateMax: new NgbDate(2020, 2, 14),
+      };
+
+      beforeEach(() => {
+        dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      beforeEach(() => {
+        dateRangeInput.componentInstance.dateRangeForm.setValue(dateRange);
+        fixture.detectChanges();
+      });
+
+      it('error message should not have been rendered', () => {
+        expect(getErrorMessage()).toBeNull();
+      });
+
+      afterEach(() => {
+        expect(dateRangeServiceSpy.parseDateRange).toHaveBeenCalledWith(
+          dateRange
+        );
+      });
+    });
+
+    describe('touched of true emitted', () => {
+      beforeEach(() => {
+        dateRangeInput.componentInstance.touched.next(true);
+      });
+
+      it('#dateRange.touched should be true', () => {
+        expect(component.dateRange.touched).toBeTrue();
+      });
+    });
+
+    describe('touched of false emitted', () => {
+      beforeEach(() => {
+        dateRangeInput.componentInstance.touched.next(false);
+      });
+
+      it('#dateRange.touched should be false', () => {
+        expect(component.dateRange.touched).toBeFalse();
+      });
+    });
+  });
+
   it('body form control should be empty', () => {
     const bodyInput = fixture.debugElement.query(By.css('#body'));
     expect(bodyInput.nativeElement.value).toEqual('');
@@ -321,7 +653,7 @@ describe('DiaryEntryFormComponent', () => {
   it('#tags.value should match tags entered by user', () => {
     const searchTagSearch = TestBed.inject(
       SearchTagSearchComponent
-    ) as unknown as testUtils.MockSearchTagSearchComponent;
+    ) as unknown as MockSearchTagSearchComponent;
 
     const testTags = ['some tag', 'some other tag'];
     searchTagSearch.searchTagsSource.next(testTags);
@@ -462,6 +794,7 @@ describe('DiaryEntryFormComponent', () => {
       id: component.diaryEntry.id,
       title: testEntry.title,
       location: testEntry.location,
+      dateRange: testEntry.dateRange,
       body: testEntry.body,
       previewImage: testEntry.previewImage,
       images: component.diaryEntry.images,
@@ -473,6 +806,7 @@ describe('DiaryEntryFormComponent', () => {
     component.diaryEntryForm.setValue({
       title: testEntry.title,
       location: testEntry.location,
+      dateRange: testEntry.dateRange ?? null,
       body: testEntry.body,
       searchTags: testEntry.searchTags,
       previewImage: testEntry.previewImage ?? null,
@@ -482,7 +816,7 @@ describe('DiaryEntryFormComponent', () => {
       DiaryEntryService
     ) as jasmine.SpyObj<DiaryEntryService>;
 
-    service.saveEntry.and.returnValue(testUtils.asyncData(testEntry));
+    service.saveEntry.and.returnValue(asyncData(testEntry));
 
     const modal: NgbActiveModal = TestBed.inject(NgbActiveModal);
     spyOn(modal, 'close');
@@ -508,6 +842,7 @@ describe('DiaryEntryFormComponent', () => {
 
     const updatedEntry = {
       ...testEntry,
+      dateRange: testEntry.dateRange,
       previewImage: testEntry.previewImage,
     };
 
@@ -521,7 +856,7 @@ describe('DiaryEntryFormComponent', () => {
       DiaryEntryService
     ) as jasmine.SpyObj<DiaryEntryService>;
 
-    service.updateEntry.and.returnValue(testUtils.asyncData(updatedEntry));
+    service.updateEntry.and.returnValue(asyncData(updatedEntry));
 
     component.onSubmit();
 
@@ -542,7 +877,7 @@ describe('DiaryEntryFormComponent', () => {
     ) as jasmine.SpyObj<DiaryEntryService>;
 
     const alertType = AlertType.server;
-    service.updateEntry.and.returnValue(testUtils.asyncError(alertType));
+    service.updateEntry.and.returnValue(asyncError(alertType));
 
     component.onSubmit();
 

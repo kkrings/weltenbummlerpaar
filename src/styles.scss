@@ -18,11 +18,8 @@ button.btn.btn-danger {
   color: $white;
 }
 
-button.btn.btn-outline-light {
-  border-radius: $border-radius-pill;
-}
-
 .search-tag {
+  background-color: transparent;
   border: $border-width solid $primary;
   border-radius: $border-radius-pill;
   font-size: $font-size-sm;

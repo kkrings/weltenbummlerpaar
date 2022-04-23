@@ -10,7 +10,7 @@ import { catchError, map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { HttpAlertService } from '../http-alert/http-alert.service';
-import { setPreviewImage } from '../utils';
+import { parseEntry } from '../utils';
 import { DiaryEntry } from './diary-entry.model';
 
 /**
@@ -78,7 +78,7 @@ export class DiaryEntryService {
   ): Observable<DiaryEntry[]> {
     return this.http
       .get<DiaryEntry[]>(this.getSearchUrl(tags, skip, limit, false))
-      .pipe(map((entries) => entries.map((entry) => setPreviewImage(entry))))
+      .pipe(map((entries) => entries.map((entry) => parseEntry(entry))))
       .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -94,7 +94,7 @@ export class DiaryEntryService {
   getEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
       .get<DiaryEntry>(`${this.entryUrl}/${entryId}`)
-      .pipe(map((entry) => setPreviewImage(entry)))
+      .pipe(map((entry) => parseEntry(entry)))
       .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -112,11 +112,12 @@ export class DiaryEntryService {
       .post<DiaryEntry>(this.entryUrl, {
         title: diaryEntry.title,
         location: diaryEntry.location,
+        dateRange: diaryEntry.dateRange,
         body: diaryEntry.body,
         images: diaryEntry.images,
         searchTags: diaryEntry.searchTags,
       })
-      .pipe(map((entry) => setPreviewImage(entry)))
+      .pipe(map((entry) => parseEntry(entry)))
       .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -134,12 +135,13 @@ export class DiaryEntryService {
       .patch<DiaryEntry>(`${this.entryUrl}/${diaryEntry.id}`, {
         title: diaryEntry.title,
         location: diaryEntry.location,
+        dateRange: diaryEntry.dateRange,
         body: diaryEntry.body,
         previewImage: diaryEntry.previewImage?.id,
         images: diaryEntry.images.map((image) => image.id),
         searchTags: diaryEntry.searchTags,
       })
-      .pipe(map((entry) => setPreviewImage(entry)))
+      .pipe(map((entry) => parseEntry(entry)))
       .pipe(catchError(this.httpAlertService.handleError));
   }
 
@@ -155,7 +157,7 @@ export class DiaryEntryService {
   deleteEntry(entryId: string): Observable<DiaryEntry> {
     return this.http
       .delete<DiaryEntry>(`${this.entryUrl}/${entryId}`)
-      .pipe(map((entry) => setPreviewImage(entry)))
+      .pipe(map((entry) => parseEntry(entry)))
       .pipe(catchError(this.httpAlertService.handleError));
   }
 

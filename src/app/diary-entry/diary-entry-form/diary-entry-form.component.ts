@@ -13,10 +13,12 @@ import {
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
-import { Alert, AlertType } from '../../../app/http-alert/alert.model';
+import { DateRangeService } from '../../date-range/date-range.service';
+import { DateRangeValidator } from '../../date-range/date-range-validator';
+import { Alert, AlertType } from '../../http-alert/alert.model';
+import { Image } from '../../image/image.model';
 import { DiaryEntry } from '../diary-entry.model';
 import { DiaryEntryService } from '../diary-entry.service';
-import { Image } from '../../image/image.model';
 
 /**
  * Diary entry form component
@@ -85,6 +87,8 @@ export class DiaryEntryFormComponent implements OnInit {
    *
    * @param formBuilder
    *   Builds the reactive form for creating/updating a diary entry.
+   * @param dateRangeService
+   *   Service for parsing/formatting date ranges
    * @param diaryEntryService
    *   Service for saving/updating diary entries to/on the back-end server
    * @param modal
@@ -92,6 +96,7 @@ export class DiaryEntryFormComponent implements OnInit {
    */
   constructor(
     formBuilder: FormBuilder,
+    dateRangeService: DateRangeService,
     private diaryEntryService: DiaryEntryService,
     private modal: NgbActiveModal
   ) {
@@ -99,6 +104,7 @@ export class DiaryEntryFormComponent implements OnInit {
     this.diaryEntryForm = formBuilder.group({
       title: ['', Validators.required],
       location: ['', Validators.required],
+      dateRange: [null, DateRangeValidator.isValid(dateRangeService)],
       body: ['', Validators.required],
       searchTags: [[]],
       previewImage: [null],
@@ -111,6 +117,7 @@ export class DiaryEntryFormComponent implements OnInit {
   ngOnInit(): void {
     this.title.setValue(this.diaryEntry.title);
     this.location.setValue(this.diaryEntry.location);
+    this.dateRange.setValue(this.diaryEntry.dateRange ?? null);
     this.body.setValue(this.diaryEntry.body);
     this.searchTags.setValue(this.diaryEntry.searchTags);
     this.previewImage.setValue(this.diaryEntry.previewImage ?? null);
@@ -129,6 +136,13 @@ export class DiaryEntryFormComponent implements OnInit {
    */
   get location(): FormControl {
     return this.diaryEntryForm.get('location') as FormControl;
+  }
+
+  /**
+   * Date range form control
+   */
+  get dateRange(): FormControl {
+    return this.diaryEntryForm.get('dateRange') as FormControl;
   }
 
   /**
@@ -209,6 +223,7 @@ export class DiaryEntryFormComponent implements OnInit {
       id: this.diaryEntry.id,
       title: formValue.title,
       location: formValue.location,
+      dateRange: formValue.dateRange ?? undefined,
       body: formValue.body,
       previewImage: formValue.previewImage ?? undefined,
       images: this.imageList,

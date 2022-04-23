@@ -1,0 +1,25 @@
+<div ngbDropdown autoClose="outside" placement="bottom-end">
+  <button
+    id="toggle-calendar"
+    [class]="buttonClass"
+    type="button"
+    aria-label="Öffne oder schließe Kalendar"
+    ngbDropdownToggle
+  >
+    <fa-icon [icon]="calendarIcon"></fa-icon>
+  </button>
+  <div ngbDropdownMenu aria-labelledby="toggle-calendar">
+    <ngb-datepicker
+      outsideDays="hidden"
+      [dayTemplate]="day"
+      [startDate]="startDate"
+      (dateSelect)="onDateSelect($event)"
+    ></ngb-datepicker>
+    <ng-template #day let-date>
+      <app-date-range-select-day
+        [dateRange]="dateRangeParsed"
+        [date]="date"
+      ></app-date-range-select-day>
+    </ng-template>
+  </div>
+</div>

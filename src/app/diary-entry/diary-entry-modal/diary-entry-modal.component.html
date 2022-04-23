@@ -12,6 +12,9 @@
     <app-image-carousel [imageList]="diaryEntry.images"></app-image-carousel>
   </div>
   <h6 class="text-secondary">{{ diaryEntry.location }}</h6>
+  <p *ngIf="diaryEntry.dateRange !== undefined">
+    <small class="text-muted">{{ diaryEntry.dateRange | dateRange }}</small>
+  </p>
   <p class="text-pre-line">{{ diaryEntry.body }}</p>
   <div *ngIf="diaryEntry.searchTags.length > 0" class="d-flex flex-wrap mb-3">
     <div *ngFor="let tag of diaryEntry.searchTags" class="search-tag">
@@ -19,8 +22,8 @@
     </div>
   </div>
   <p>
-    <small class="text-muted"
-      >Erstellt am {{ diaryEntry.createdAt | date }}.
+    <small class="text-muted">
+      Erstellt am {{ diaryEntry.createdAt | date }}.
     </small>
   </p>
 </div>
