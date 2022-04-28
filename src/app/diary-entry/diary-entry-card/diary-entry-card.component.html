@@ -36,25 +36,27 @@
     </div>
   </div>
   <app-image-with-loader
-    *ngIf="diaryEntry.previewImage !== undefined"
-    [image]="diaryEntry.previewImage"
     class="card-img-top"
+    [image]="diaryEntry.previewImage"
+    *ngIf="diaryEntry.previewImage"
   ></app-image-with-loader>
   <div class="card-body">
     <h4 class="card-title text-primary">{{ diaryEntry.title }}</h4>
     <h6 class="card-subtitle text-secondary mb-2">
       {{ diaryEntry.location }}
     </h6>
-    <p *ngIf="diaryEntry.dateRange !== undefined" class="card-text">
+    <p id="date-range" class="card-text" *ngIf="diaryEntry.dateRange">
       <small class="text-muted">{{ diaryEntry.dateRange | dateRange }}</small>
     </p>
-    <p class="card-text">{{ diaryEntry.body | diaryEntryBrief: 150 }}</p>
-    <div *ngIf="diaryEntry.searchTags.length > 0" class="d-flex flex-wrap mb-3">
-      <div *ngFor="let tag of diaryEntry.searchTags" class="search-tag">
+    <p id="body" class="card-text">
+      {{ diaryEntry.body | diaryEntryBrief: 150 }}
+    </p>
+    <div class="d-flex flex-wrap mb-3" *ngIf="diaryEntry.searchTags.length > 0">
+      <div class="search-tag" *ngFor="let tag of diaryEntry.searchTags">
         {{ tag }}
       </div>
     </div>
-    <p class="card-text">
+    <p id="created-at" class="card-text">
       <small class="text-muted">
         Erstellt am {{ diaryEntry.createdAt | date }}.
       </small>
