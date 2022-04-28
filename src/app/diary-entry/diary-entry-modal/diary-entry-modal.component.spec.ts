@@ -141,11 +141,29 @@ describe('DiaryEntryModalComponent', () => {
     expect(location.textContent).toMatch(testDiaryEntry.location);
   });
 
+  it("modal's body should not show diary entry's time period", () => {
+    const dateRange = fixture.debugElement.query(By.css('#date-range'));
+    expect(dateRange).toBeNull();
+  });
+
+  it("modal's body should show diary entry's time period", () => {
+    component.diaryEntry.dateRange = {
+      dateMin: '2020-02-14',
+      dateMax: '2020-02-14',
+    };
+
+    fixture.detectChanges();
+
+    const dateRange = fixture.debugElement.query(By.css('#date-range'));
+
+    expect(dateRange.nativeElement.textContent).toMatch(
+      new DateRangePipe('de').transform(component.diaryEntry.dateRange)
+    );
+  });
+
   it("modal's body should show diary entry's body", () => {
-    const body = fixture.debugElement.query(
-      By.css('.modal-body > p.text-pre-line')
-    ).nativeElement;
-    expect(body.textContent).toMatch(testDiaryEntry.body);
+    const body = fixture.debugElement.query(By.css('#body'));
+    expect(body.nativeElement.textContent).toMatch(testDiaryEntry.body);
   });
 
   it("should not render diary entry's tags", () => {
@@ -168,10 +186,9 @@ describe('DiaryEntryModalComponent', () => {
   });
 
   it("modal's body should show diary entry's creation date", () => {
-    const createdAt = fixture.debugElement.query(
-      By.css('.modal-body > p > small.text-muted')
-    ).nativeElement;
-    expect(createdAt.textContent).toContain(
+    const createdAt = fixture.debugElement.query(By.css('#created-at'));
+
+    expect(createdAt.nativeElement.textContent).toMatch(
       formatDate(testDiaryEntry.createdAt, 'mediumDate', 'de')
     );
   });
