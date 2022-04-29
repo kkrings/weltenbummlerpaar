@@ -3,13 +3,16 @@
  * @packageDocumentation
  */
 
+import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbActiveModal, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 
+import { DateRange } from '../../date-range/date-range.model';
 import { DateRangeService } from '../../date-range/date-range.service';
+import { NgbDateRange } from '../../date-range/ngb-date-range.model';
 import { DateRangeInputComponent } from '../../date-range/date-range-input/date-range-input.component';
 import { DateRangeValueAccessorDirective } from '../../date-range/date-range-value-accessor.directive';
 import { MockHttpAlertMessageComponent } from '../../test-utils/mock-http-alert-message.component';
@@ -26,9 +29,6 @@ import { SearchTagSearchComponent } from '../../search-tag/search-tag-search/sea
 import { DiaryEntry } from '../diary-entry.model';
 import { DiaryEntryService } from '../diary-entry.service';
 import { DiaryEntryFormComponent } from './diary-entry-form.component';
-import { DebugElement } from '@angular/core';
-import { DateRange } from 'src/app/date-range/date-range.model';
-import { NgbDateRange } from 'src/app/date-range/ngb-date-range.model';
 
 describe('DiaryEntryFormComponent', () => {
   let component: DiaryEntryFormComponent;
@@ -343,6 +343,20 @@ describe('DiaryEntryFormComponent', () => {
 
       beforeEach(() => {
         dateRangeServiceSpy.parseDateRange.and.returnValue(dateRangeParsed);
+      });
+
+      describe('#ngOnInit', () => {
+        beforeEach(() => {
+          component.diaryEntry.dateRange = dateRange;
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+
+        it('date range form control should be equal to date range', () => {
+          expect(dateRangeInput.componentInstance.dateRangeForm.value).toEqual(
+            dateRange
+          );
+        });
       });
 
       describe('#setValue', () => {
@@ -848,6 +862,24 @@ describe('DiaryEntryFormComponent', () => {
 
     updatedEntry.title = 'updated title';
     component.title.setValue(updatedEntry.title);
+
+    const dateRange: DateRange = {
+      dateMin: '2020-02-14',
+      dateMax: '2020-02-14',
+    };
+
+    updatedEntry.dateRange = dateRange;
+
+    const dateRangeService = TestBed.inject(
+      DateRangeService
+    ) as jasmine.SpyObj<DateRangeService>;
+
+    dateRangeService.parseDateRange.and.returnValue({
+      dateMin: new NgbDate(2020, 2, 14),
+      dateMax: new NgbDate(2020, 2, 14),
+    });
+
+    component.dateRange.setValue(dateRange);
 
     updatedEntry.previewImage = testImages[0];
     component.previewImage.setValue(testImages[0]);
