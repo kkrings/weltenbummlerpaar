@@ -1,3 +1,8 @@
+/**
+ * Unit tests for date range pipe
+ * @packageDocumentation
+ */
+
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 

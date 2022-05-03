@@ -1,3 +1,8 @@
+/**
+ * Unit tests for date range service
+ * @packageDocumentation
+ */
+
 import { TestBed } from '@angular/core/testing';
 import { NgbDate, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
