@@ -136,6 +136,7 @@ describe('NavbarComponent', () => {
     expect(modalService.open).toHaveBeenCalledWith(DiaryEntryFormComponent, {
       backdrop: 'static',
       keyboard: false,
+      scrollable: true,
     });
 
     modal.result = Promise.resolve(null);
@@ -145,6 +146,7 @@ describe('NavbarComponent', () => {
     expect(modalService.open).toHaveBeenCalledWith(DiaryEntryFormComponent, {
       backdrop: 'static',
       keyboard: false,
+      scrollable: true,
     });
   }));
 

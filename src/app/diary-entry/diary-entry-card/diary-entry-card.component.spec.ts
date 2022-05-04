@@ -121,10 +121,29 @@ describe('DiaryEntryCardComponent', () => {
     );
   });
 
+  it("should not render diary entry's date range", () => {
+    const dateRange = fixture.debugElement.query(By.css('#date-range'));
+    expect(dateRange).toBeNull();
+  });
+
+  it("should render diary entry's date range", () => {
+    component.diaryEntry.dateRange = {
+      dateMin: '2020-02-14',
+      dateMax: '2020-02-14',
+    };
+
+    fixture.detectChanges();
+
+    const dateRange = fixture.debugElement.query(By.css('#date-range'));
+
+    expect(dateRange.nativeElement.textContent).toMatch(
+      new DateRangePipe('de').transform(component.diaryEntry.dateRange)
+    );
+  });
+
   it("should render diary entry's brief body", () => {
-    const cardText = fixture.debugElement.queryAll(
-      By.css('.card-body .card-text')
-    )[0];
+    const cardText = fixture.debugElement.query(By.css('#body'));
+
     expect(cardText.nativeElement.textContent).toMatch(
       new DiaryEntryBriefPipe().transform(testDiaryEntry.body, 150)
     );
@@ -134,25 +153,28 @@ describe('DiaryEntryCardComponent', () => {
     const searchTags = fixture.debugElement.queryAll(
       By.css('.card-body .search-tag')
     );
+
     expect(searchTags.length).toEqual(0);
   });
 
   it("should render diary entry's tags", () => {
     component.diaryEntry.searchTags = ['some tag', 'some other tag'];
     fixture.detectChanges();
+
     const searchTags = fixture.debugElement.queryAll(
       By.css('.card-body .search-tag')
     );
+
     const tags = searchTags.map((badge) =>
       badge.nativeElement.textContent.trim()
     );
+
     expect(tags).toEqual(component.diaryEntry.searchTags);
   });
 
   it("should render diary entry's creation date", () => {
-    const cardText = fixture.debugElement.queryAll(
-      By.css('.card-body .card-text')
-    )[1];
+    const cardText = fixture.debugElement.query(By.css('#created-at'));
+
     expect(cardText.nativeElement.textContent).toContain(
       formatDate(testDiaryEntry.createdAt, 'mediumDate', 'de')
     );
@@ -162,15 +184,18 @@ describe('DiaryEntryCardComponent', () => {
     const httpAlert = fixture.debugElement.query(
       By.directive(MockHttpAlertMessageComponent)
     );
+
     expect(httpAlert).toBeNull();
   });
 
   it('should render alert message', () => {
     component.httpAlert.alertType = AlertType.server;
     fixture.detectChanges();
+
     const httpAlert = fixture.debugElement.query(
       By.directive(MockHttpAlertMessageComponent)
     );
+
     expect(httpAlert).not.toBeNull();
   });
 
@@ -183,7 +208,10 @@ describe('DiaryEntryCardComponent', () => {
     component.openEntryModal();
 
     expect(modal.componentInstance.diaryEntry).toEqual(testDiaryEntry);
-    expect(service.open).toHaveBeenCalledWith(DiaryEntryModalComponent);
+
+    expect(service.open).toHaveBeenCalledWith(DiaryEntryModalComponent, {
+      scrollable: true,
+    });
   });
 
   it('read more button should trigger #openEntryModal', () => {
@@ -210,6 +238,7 @@ describe('DiaryEntryCardComponent', () => {
     expect(service.open).toHaveBeenCalledWith(DiaryEntryFormComponent, {
       backdrop: 'static',
       keyboard: false,
+      scrollable: true,
     });
   });
 
@@ -234,6 +263,7 @@ describe('DiaryEntryCardComponent', () => {
     expect(service.open).toHaveBeenCalledWith(ImageModalComponent, {
       backdrop: 'static',
       keyboard: false,
+      scrollable: true,
     });
   });
 

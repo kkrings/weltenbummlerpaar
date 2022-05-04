@@ -39,9 +39,13 @@ export const removeTimeFromDateRange = (entry: DiaryEntry): DiaryEntry => {
  *   The updated diary entry
  */
 export const setPreviewImage = (entry: DiaryEntry): DiaryEntry => {
-  entry.previewImage = entry.images.filter(
-    (image) => image.id === entry.previewImage?.id
-  )[0];
+  const previewImage = entry.previewImage;
+
+  if (previewImage !== undefined) {
+    entry.previewImage = entry.images.filter(
+      (image) => image.id === previewImage.id
+    )[0];
+  }
 
   return entry;
 };

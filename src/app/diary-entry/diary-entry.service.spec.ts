@@ -7,9 +7,11 @@ import { TestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController,
+  TestRequest,
 } from '@angular/common/http/testing';
 
 import { environment } from '../../environments/environment';
+import { DateRange } from '../date-range/date-range.model';
 import { AlertType } from '../http-alert/alert.model';
 import { HttpAlertService } from '../http-alert/http-alert.service';
 import { Image } from '../image/image.model';
@@ -20,28 +22,83 @@ describe('DiaryEntryService', () => {
   let service: DiaryEntryService;
   let httpTestingController: HttpTestingController;
 
-  const testDiaryEntries: DiaryEntry[] = [
-    {
+  let testDiaryEntry: DiaryEntry;
+  let testDiaryEntryBody: DiaryEntry;
+  let withImage: DiaryEntry;
+  let withImageBody: DiaryEntry;
+  let withDateRange: DiaryEntry;
+  let withDateRangeBody: DiaryEntry;
+
+  const flushTestDiaryEntry = (testRequest: TestRequest): void =>
+    testRequest.flush(testDiaryEntryBody);
+
+  const flushWithImage = (testRequest: TestRequest): void =>
+    testRequest.flush(withImageBody);
+
+  const flushWithDateRange = (testRequest: TestRequest): void =>
+    testRequest.flush(withDateRangeBody);
+
+  const flushTestError = (testRequest: TestRequest): void =>
+    testRequest.flush('mock HTTP error response', {
+      status: 500,
+      statusText: 'Mock error on back-end server',
+    });
+
+  beforeEach(() => {
+    testDiaryEntry = {
       id: '0',
       title: 'some title',
       location: 'some location',
       body: 'some body',
+      searchTags: ['some tag', 'some other tag'],
       images: [],
-      searchTags: ['some tag'],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: '1',
-      title: 'some title',
-      location: 'some location',
-      body: 'some body',
-      images: [],
-      searchTags: [],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-  ];
+      createdAt: new Date('2020-02-14').toISOString(),
+      updatedAt: new Date('2020-02-14').toISOString(),
+    };
+
+    testDiaryEntryBody = { ...testDiaryEntry };
+  });
+
+  beforeEach(() => {
+    const image: Image = {
+      id: '0',
+      description: 'some description',
+      createdAt: new Date('2020-02-14').toISOString(),
+      updatedAt: new Date('2020-02-14').toISOString(),
+    };
+
+    withImage = {
+      ...testDiaryEntry,
+      previewImage: image,
+      images: [image],
+    };
+
+    withImageBody = {
+      ...testDiaryEntry,
+      previewImage: { ...image },
+      images: [{ ...image }],
+    };
+  });
+
+  beforeEach(() => {
+    const dateRange: DateRange = {
+      dateMin: '2020-02-14',
+      dateMax: '2020-02-14',
+    };
+
+    withDateRange = {
+      ...testDiaryEntry,
+      dateRange: dateRange,
+    };
+
+    withDateRangeBody = {
+      ...testDiaryEntry,
+      dateRange: {
+        dateMin: new Date(dateRange.dateMin).toISOString(),
+        dateMax: new Date(dateRange.dateMax).toISOString(),
+      },
+    };
+  });
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -53,357 +110,684 @@ describe('DiaryEntryService', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
-  it('#getEntries should find diary entries', () => {
-    const testDiaryEntry = testDiaryEntries[0];
+  describe('#getEntry', () => {
+    let testRequest: TestRequest;
+    let diaryEntry: DiaryEntry | null;
+    let alertType: AlertType | null;
 
-    service
-      .getEntries(testDiaryEntry.searchTags)
-      .subscribe((diaryEntries: DiaryEntry[]) => {
-        expect(diaryEntries.length).toEqual(1);
-        expect(diaryEntries[0]).toEqual(testDiaryEntry);
-      }, fail);
+    beforeEach(() => {
+      diaryEntry = null;
+      alertType = null;
+    });
 
-    const query = testDiaryEntry.searchTags
-      .map((tag) => `searchTags=${tag}`)
-      .join('&');
+    beforeEach(() => {
+      service.getEntry(testDiaryEntry.id).subscribe(
+        (entry) => (diaryEntry = entry),
+        (alert) => (alertType = alert)
+      );
+    });
 
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries?${query}`
-    );
+    beforeEach(() => {
+      testRequest = httpTestingController.expectOne(
+        `${environment.baseurl}/rest/diary-entries/${testDiaryEntry.id}`
+      );
+    });
 
-    expect(testRequest.request.method).toMatch('GET');
+    beforeEach(() => {
+      expect(testRequest.request.method).toMatch('GET');
+    });
 
-    testRequest.flush([testDiaryEntry]);
+    describe('#flushTestDiaryEntry', () => {
+      beforeEach(() => {
+        flushTestDiaryEntry(testRequest);
+      });
+
+      it('#diaryEntry should be equal to #testDiaryEntry', () => {
+        expect(diaryEntry).toEqual(testDiaryEntry);
+      });
+
+      it('#alertType should be null', () => {
+        expect(alertType).toBeNull();
+      });
+    });
+
+    describe('#flushWithImage', () => {
+      beforeEach(() => {
+        flushWithImage(testRequest);
+      });
+
+      it('#diaryEntry should be equal to #withImage', () => {
+        expect(diaryEntry).toEqual(withImage);
+      });
+
+      it('#diaryEntry.previewImage should be #diaryEntry.images[0]', () => {
+        expect(diaryEntry?.previewImage).toBe(diaryEntry?.images[0]);
+      });
+
+      it('#alertType should be null', () => {
+        expect(alertType).toBeNull();
+      });
+    });
+
+    describe('#flushWithDateRange', () => {
+      beforeEach(() => {
+        flushWithDateRange(testRequest);
+      });
+
+      it('#diaryEntry should be equal to #withDateRange', () => {
+        expect(diaryEntry).toEqual(withDateRange);
+      });
+
+      it('#alertType should be null', () => {
+        expect(alertType).toBeNull();
+      });
+    });
+
+    describe('#flushTestError', () => {
+      beforeEach(() => {
+        flushTestError(testRequest);
+      });
+
+      it('#diaryEntry should be null', () => {
+        expect(diaryEntry).toBeNull();
+      });
+
+      it('#alertType should be equal to #AlertType.server', () => {
+        expect(alertType).toEqual(AlertType.server);
+      });
+    });
   });
 
-  it('#getEntries should return all diary entries', () => {
-    service.getEntries().subscribe((diaryEntries: DiaryEntry[]) => {
-      expect(diaryEntries).toEqual(testDiaryEntries);
-    }, fail);
+  describe('#saveEntry', () => {
+    let testRequest: TestRequest;
+    let diaryEntry: DiaryEntry | null;
+    let alertType: AlertType | null;
 
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries`
-    );
+    beforeEach(() => {
+      diaryEntry = null;
+      alertType = null;
+    });
 
-    expect(testRequest.request.method).toMatch('GET');
+    describe('#testDiaryEntry', () => {
+      beforeEach(() => {
+        service.saveEntry(testDiaryEntry).subscribe(
+          (entry) => (diaryEntry = entry),
+          (alert) => (alertType = alert)
+        );
+      });
 
-    testRequest.flush(testDiaryEntries);
+      beforeEach(() => {
+        testRequest = httpTestingController.expectOne(
+          `${environment.baseurl}/rest/diary-entries`
+        );
+      });
+
+      beforeEach(() => {
+        expect(testRequest.request.method).toMatch('POST');
+      });
+
+      beforeEach(() => {
+        expect(testRequest.request.body).toEqual({
+          title: testDiaryEntry.title,
+          location: testDiaryEntry.location,
+          dateRange: testDiaryEntry.dateRange,
+          body: testDiaryEntry.body,
+          images: testDiaryEntry.images,
+          searchTags: testDiaryEntry.searchTags,
+        });
+      });
+
+      describe('#flushTestDiaryEntry', () => {
+        beforeEach(() => {
+          flushTestDiaryEntry(testRequest);
+        });
+
+        it('#diaryEntry should be equal to #testDiaryEntry', () => {
+          expect(diaryEntry).toEqual(testDiaryEntry);
+        });
+
+        it('#alertType should be null', () => {
+          expect(alertType).toBeNull();
+        });
+      });
+
+      describe('#flushTestError', () => {
+        beforeEach(() => {
+          flushTestError(testRequest);
+        });
+
+        it('#diaryEntry should be null', () => {
+          expect(diaryEntry).toBeNull();
+        });
+
+        it('#alertType should be equal to #AlertType.server', () => {
+          expect(alertType).toEqual(AlertType.server);
+        });
+      });
+    });
+
+    describe('#withDateRange', () => {
+      beforeEach(() => {
+        service.saveEntry(withDateRange).subscribe(
+          (entry) => (diaryEntry = entry),
+          (alert) => (alertType = alert)
+        );
+      });
+
+      beforeEach(() => {
+        testRequest = httpTestingController.expectOne(
+          `${environment.baseurl}/rest/diary-entries`
+        );
+      });
+
+      beforeEach(() => {
+        expect(testRequest.request.method).toMatch('POST');
+      });
+
+      beforeEach(() => {
+        expect(testRequest.request.body).toEqual({
+          title: withDateRange.title,
+          location: withDateRange.location,
+          dateRange: withDateRange.dateRange,
+          body: withDateRange.body,
+          images: withDateRange.images,
+          searchTags: withDateRange.searchTags,
+        });
+      });
+
+      beforeEach(() => {
+        flushWithDateRange(testRequest);
+      });
+
+      it('#diaryEntry should be equal to #withDateRange', () => {
+        expect(diaryEntry).toEqual(withDateRange);
+      });
+
+      it('#alertType should be null', () => {
+        expect(alertType).toBeNull();
+      });
+    });
   });
 
-  it('#getEntries should skip diary entries', () => {
-    const testSkip = 10;
+  describe('#updateEntry', () => {
+    let testRequest: TestRequest;
+    let diaryEntry: DiaryEntry | null;
+    let alertType: AlertType | null;
 
-    service.getEntries([], testSkip).subscribe((diaryEntries: DiaryEntry[]) => {
-      expect(diaryEntries).toEqual(testDiaryEntries);
-    }, fail);
+    beforeEach(() => {
+      diaryEntry = null;
+      alertType = null;
+    });
 
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries?skipDiaryEntries=${testSkip}`
-    );
+    describe('#testDiaryEntry', () => {
+      beforeEach(() => {
+        service.updateEntry(testDiaryEntry).subscribe(
+          (entry) => (diaryEntry = entry),
+          (alert) => (alertType = alert)
+        );
+      });
 
-    expect(testRequest.request.method).toMatch('GET');
+      beforeEach(() => {
+        testRequest = httpTestingController.expectOne(
+          `${environment.baseurl}/rest/diary-entries/${testDiaryEntry.id}`
+        );
+      });
 
-    testRequest.flush(testDiaryEntries);
+      beforeEach(() => {
+        expect(testRequest.request.method).toMatch('PATCH');
+      });
+
+      beforeEach(() => {
+        expect(testRequest.request.body).toEqual({
+          title: testDiaryEntry.title,
+          location: testDiaryEntry.location,
+          dateRange: testDiaryEntry.dateRange,
+          body: testDiaryEntry.body,
+          previewImage: testDiaryEntry.previewImage,
+          images: testDiaryEntry.images,
+          searchTags: testDiaryEntry.searchTags,
+        });
+      });
+
+      describe('#flushTestDiaryEntry', () => {
+        beforeEach(() => {
+          flushTestDiaryEntry(testRequest);
+        });
+
+        it('#diaryEntry should be equal to #testDiaryEntry', () => {
+          expect(diaryEntry).toEqual(testDiaryEntry);
+        });
+
+        it('#alertType should be null', () => {
+          expect(alertType).toBeNull();
+        });
+      });
+
+      describe('#flushTestError', () => {
+        beforeEach(() => {
+          flushTestError(testRequest);
+        });
+
+        it('#diaryEntry should be null', () => {
+          expect(diaryEntry).toBeNull();
+        });
+
+        it('#alertType should be equal to #AlertType.server', () => {
+          expect(alertType).toEqual(AlertType.server);
+        });
+      });
+    });
+
+    describe('#withImage', () => {
+      beforeEach(() => {
+        service.updateEntry(withImage).subscribe(
+          (entry) => (diaryEntry = entry),
+          (alert) => (alertType = alert)
+        );
+      });
+
+      beforeEach(() => {
+        testRequest = httpTestingController.expectOne(
+          `${environment.baseurl}/rest/diary-entries/${withImage.id}`
+        );
+      });
+
+      beforeEach(() => {
+        expect(testRequest.request.method).toMatch('PATCH');
+      });
+
+      beforeEach(() => {
+        expect(testRequest.request.body).toEqual({
+          title: withImage.title,
+          location: withImage.location,
+          dateRange: withImage.dateRange,
+          body: withImage.body,
+          previewImage: withImage.previewImage?.id,
+          images: withImage.images.map((image) => image.id),
+          searchTags: withImage.searchTags,
+        });
+      });
+
+      beforeEach(() => {
+        flushWithImage(testRequest);
+      });
+
+      it('#diaryEntry should be equal to #withImage', () => {
+        expect(diaryEntry).toEqual(withImage);
+      });
+
+      it('#diaryEntry.previewImage should be #diaryEntry.images[0]', () => {
+        expect(diaryEntry?.previewImage).toBe(diaryEntry?.images[0]);
+      });
+
+      it('#alertType should be null', () => {
+        expect(alertType).toBeNull();
+      });
+    });
+
+    describe('#withDateRange', () => {
+      beforeEach(() => {
+        service.updateEntry(withDateRange).subscribe(
+          (entry) => (diaryEntry = entry),
+          (alert) => (alertType = alert)
+        );
+      });
+
+      beforeEach(() => {
+        testRequest = httpTestingController.expectOne(
+          `${environment.baseurl}/rest/diary-entries/${withDateRange.id}`
+        );
+      });
+
+      beforeEach(() => {
+        expect(testRequest.request.method).toMatch('PATCH');
+      });
+
+      beforeEach(() => {
+        expect(testRequest.request.body).toEqual({
+          title: withDateRange.title,
+          location: withDateRange.location,
+          dateRange: withDateRange.dateRange,
+          body: withDateRange.body,
+          previewImage: withDateRange.previewImage,
+          images: withDateRange.images,
+          searchTags: withDateRange.searchTags,
+        });
+      });
+
+      beforeEach(() => {
+        flushWithDateRange(testRequest);
+      });
+
+      it('#diaryEntry should be equal to #withDateRange', () => {
+        expect(diaryEntry).toEqual(withDateRange);
+      });
+
+      it('#alertType should be null', () => {
+        expect(alertType).toBeNull();
+      });
+    });
   });
 
-  it('#getEntries should limit diary entries', () => {
-    const testLimit = 10;
+  describe('#deleteEntry', () => {
+    let testRequest: TestRequest;
+    let diaryEntry: DiaryEntry | null;
+    let alertType: AlertType | null;
 
-    service
-      .getEntries([], 0, testLimit)
-      .subscribe((diaryEntries: DiaryEntry[]) => {
+    beforeEach(() => {
+      diaryEntry = null;
+      alertType = null;
+    });
+
+    beforeEach(() => {
+      service.deleteEntry(testDiaryEntry.id).subscribe(
+        (entry) => (diaryEntry = entry),
+        (alert) => (alertType = alert)
+      );
+    });
+
+    beforeEach(() => {
+      testRequest = httpTestingController.expectOne(
+        `${environment.baseurl}/rest/diary-entries/${testDiaryEntry.id}`
+      );
+    });
+
+    beforeEach(() => {
+      expect(testRequest.request.method).toMatch('DELETE');
+    });
+
+    describe('#flushTestDiaryEntry', () => {
+      beforeEach(() => {
+        flushTestDiaryEntry(testRequest);
+      });
+
+      it('#diaryEntry should be equal to #testDiaryEntry', () => {
+        expect(diaryEntry).toEqual(testDiaryEntry);
+      });
+
+      it('#alertType should be null', () => {
+        expect(alertType).toBeNull();
+      });
+    });
+
+    describe('#flushWithImage', () => {
+      beforeEach(() => {
+        flushWithImage(testRequest);
+      });
+
+      it('#diaryEntry should be equal to #withImage', () => {
+        expect(diaryEntry).toEqual(withImage);
+      });
+
+      it('#diaryEntry.previewImage should be #diaryEntry.images[0]', () => {
+        expect(diaryEntry?.previewImage).toBe(diaryEntry?.images[0]);
+      });
+
+      it('#alertType should be null', () => {
+        expect(alertType).toBeNull();
+      });
+    });
+
+    describe('#flushWithDateRange', () => {
+      beforeEach(() => {
+        flushWithDateRange(testRequest);
+      });
+
+      it('#diaryEntry should be equal to #withDateRange', () => {
+        expect(diaryEntry).toEqual(withDateRange);
+      });
+
+      it('#alertType should be null', () => {
+        expect(alertType).toBeNull();
+      });
+    });
+
+    describe('#flushTestError', () => {
+      beforeEach(() => {
+        flushTestError(testRequest);
+      });
+
+      it('#diaryEntry should be null', () => {
+        expect(diaryEntry).toBeNull();
+      });
+
+      it('#alertType should be equal to #AlertType.server', () => {
+        expect(alertType).toEqual(AlertType.server);
+      });
+    });
+  });
+
+  describe('#getEntries', () => {
+    let testDiaryEntries: DiaryEntry[];
+
+    let testRequest: TestRequest;
+    let diaryEntries: DiaryEntry[] | null;
+    let alertType: AlertType | null;
+
+    const flushTestDiaryEntries = (testRequest: TestRequest): void =>
+      testRequest.flush([testDiaryEntryBody, withImageBody, withDateRangeBody]);
+
+    beforeEach(() => {
+      testDiaryEntries = [testDiaryEntry, withImage, withDateRange];
+    });
+
+    beforeEach(() => {
+      diaryEntries = null;
+      alertType = null;
+    });
+
+    describe('#getEntries()', () => {
+      beforeEach(() => {
+        service.getEntries().subscribe(
+          (entries) => (diaryEntries = entries),
+          (alert) => (alertType = alert)
+        );
+      });
+
+      beforeEach(() => {
+        testRequest = httpTestingController.expectOne(
+          `${environment.baseurl}/rest/diary-entries`
+        );
+      });
+
+      beforeEach(() => {
+        expect(testRequest.request.method).toMatch('GET');
+      });
+
+      describe('#flushTestDiaryEntries', () => {
+        beforeEach(() => {
+          flushTestDiaryEntries(testRequest);
+        });
+
+        it('#diaryEntries should be equal to #testDiaryEntries', () => {
+          expect(diaryEntries).toEqual(testDiaryEntries);
+        });
+
+        it('#diaryEntries[1].previewImage should be #diaryEntries[1].images[0]', () => {
+          const diaryEntry = diaryEntries?.[1];
+          expect(diaryEntry?.previewImage).toBe(diaryEntry?.images[0]);
+        });
+
+        it('#alertType should be null', () => {
+          expect(alertType).toBeNull();
+        });
+      });
+
+      describe('#flushTestError', () => {
+        beforeEach(() => {
+          flushTestError(testRequest);
+        });
+
+        it('#diaryEntries should be null', () => {
+          expect(diaryEntries).toBeNull();
+        });
+
+        it('#alertType should be equal to #AlertType.server', () => {
+          expect(alertType).toEqual(AlertType.server);
+        });
+      });
+    });
+
+    describe('#getEntries(#searchTags)', () => {
+      beforeEach(() => {
+        service.getEntries(testDiaryEntry.searchTags).subscribe(
+          (entries) => (diaryEntries = entries),
+          (alert) => (alertType = alert)
+        );
+      });
+
+      beforeEach(() => {
+        const query = 'searchTags=some tag&searchTags=some other tag';
+
+        testRequest = httpTestingController.expectOne(
+          `${environment.baseurl}/rest/diary-entries?${query}`
+        );
+      });
+
+      beforeEach(() => {
+        expect(testRequest.request.method).toMatch('GET');
+      });
+
+      beforeEach(() => {
+        flushTestDiaryEntries(testRequest);
+      });
+
+      it('#diaryEntries should be equal to #testDiaryEntries', () => {
         expect(diaryEntries).toEqual(testDiaryEntries);
-      }, fail);
+      });
 
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries?numDiaryEntries=${testLimit}`
-    );
+      it('#alertType should be null', () => {
+        expect(alertType).toBeNull();
+      });
+    });
 
-    expect(testRequest.request.method).toMatch('GET');
+    describe('#getEntries([], #skip, #limit)', () => {
+      const skip = 5;
+      const limit = 10;
 
-    testRequest.flush(testDiaryEntries);
-  });
+      beforeEach(() => {
+        service.getEntries([], skip, limit).subscribe(
+          (entries) => (diaryEntries = entries),
+          (alert) => (alertType = alert)
+        );
+      });
 
-  it('#getEntries should return alert message', () => {
-    service
-      .getEntries()
-      .subscribe(fail, (alertType: AlertType) =>
-        expect(alertType).toEqual(AlertType.server)
-      );
+      beforeEach(() => {
+        const query = `skipDiaryEntries=${skip}&numDiaryEntries=${limit}`;
 
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries`
-    );
+        testRequest = httpTestingController.expectOne(
+          `${environment.baseurl}/rest/diary-entries?${query}`
+        );
+      });
 
-    expect(testRequest.request.method).toMatch('GET');
+      beforeEach(() => {
+        expect(testRequest.request.method).toMatch('GET');
+      });
 
-    testRequest.flush('mock HTTP error response', {
-      status: 500,
-      statusText: 'Mock error on back-end server',
+      beforeEach(() => {
+        flushTestDiaryEntries(testRequest);
+      });
+
+      it('#diaryEntries should be equal to #testDiaryEntries', () => {
+        expect(diaryEntries).toEqual(testDiaryEntries);
+      });
+
+      it('#alertType should be null', () => {
+        expect(alertType).toBeNull();
+      });
     });
   });
 
-  it('#countEntries should return total number of all diary entries', () => {
-    const testNumEntries = 10;
+  describe('#countEntries', () => {
+    const testNumDiaryEntries = 10;
 
-    service.countEntries().subscribe((numEntries) => {
-      expect(numEntries).toEqual(testNumEntries);
-    }, fail);
+    let testRequest: TestRequest;
+    let numDiaryEntries: number | null;
+    let alertType: AlertType | null;
 
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries/count`
-    );
-
-    expect(testRequest.request.method).toMatch('GET');
-
-    testRequest.flush(testNumEntries);
-  });
-
-  it('#countEntries should return total number of found diary entries', () => {
-    const testSearchTags = ['some search tag', 'some other search tag'];
-    const testNumEntries = 10;
-
-    service.countEntries(testSearchTags).subscribe((numEntries) => {
-      expect(numEntries).toEqual(testNumEntries);
-    }, fail);
-
-    const query = testSearchTags.map((tag) => `searchTags=${tag}`).join('&');
-
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries/count?${query}`
-    );
-
-    expect(testRequest.request.method).toMatch('GET');
-
-    testRequest.flush(testNumEntries);
-  });
-
-  it('#countEntries should return alert message', () => {
-    service
-      .countEntries()
-      .subscribe(fail, (alertType: AlertType) =>
-        expect(alertType).toEqual(AlertType.server)
-      );
-
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries/count`
-    );
-
-    expect(testRequest.request.method).toMatch('GET');
-
-    testRequest.flush('mock HTTP error response', {
-      status: 500,
-      statusText: 'Mock error on back-end server',
-    });
-  });
-
-  it('#getEntry should return diary entry', () => {
-    const testDiaryEntry = testDiaryEntries[0];
-
-    service
-      .getEntry(testDiaryEntry.id)
-      .subscribe(
-        (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
-        fail
-      );
-
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries/${testDiaryEntry.id}`
-    );
-
-    expect(testRequest.request.method).toMatch('GET');
-
-    testRequest.flush(testDiaryEntry);
-  });
-
-  it('#getEntry should return alert message', () => {
-    const testDiaryEntry = testDiaryEntries[0];
-
-    service
-      .getEntry(testDiaryEntry.id)
-      .subscribe(fail, (alertType: AlertType) =>
-        expect(alertType).toEqual(AlertType.server)
-      );
-
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries/${testDiaryEntry.id}`
-    );
-
-    expect(testRequest.request.method).toMatch('GET');
-
-    testRequest.flush('mock HTTP error response', {
-      status: 500,
-      statusText: 'Mock error on back-end server',
-    });
-  });
-
-  it('#saveEntry should return diary entry', () => {
-    const testDiaryEntry = testDiaryEntries[0];
-
-    service
-      .saveEntry(testDiaryEntry)
-      .subscribe(
-        (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
-        fail
-      );
-
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries`
-    );
-
-    expect(testRequest.request.method).toMatch('POST');
-
-    testRequest.flush(testDiaryEntry);
-  });
-
-  it('#saveEntry should return alert message', () => {
-    const testDiaryEntry = testDiaryEntries[0];
-
-    service
-      .saveEntry(testDiaryEntry)
-      .subscribe(fail, (alertType: AlertType) =>
-        expect(alertType).toEqual(alertType)
-      );
-
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries`
-    );
-
-    expect(testRequest.request.method).toMatch('POST');
-
-    testRequest.flush('mock HTTP error response', {
-      status: 500,
-      statusText: 'Mock error on back-end server',
-    });
-  });
-
-  it('#updateEntry should return diary entry', () => {
-    const testDiaryEntry = testDiaryEntries[0];
-
-    service.updateEntry(testDiaryEntry).subscribe((diaryEntry) => {
-      expect(diaryEntry).toEqual(testDiaryEntry);
-    }, fail);
-
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries/${testDiaryEntry.id}`
-    );
-
-    expect(testRequest.request.method).toMatch('PATCH');
-
-    expect(testRequest.request.body).toEqual({
-      title: testDiaryEntry.title,
-      location: testDiaryEntry.location,
-      dateRange: testDiaryEntry.dateRange,
-      body: testDiaryEntry.body,
-      previewImage: testDiaryEntry.previewImage,
-      images: testDiaryEntry.images,
-      searchTags: testDiaryEntry.searchTags,
+    beforeEach(() => {
+      numDiaryEntries = null;
+      alertType = null;
     });
 
-    testRequest.flush(testDiaryEntry);
-  });
+    describe('#countEntries()', () => {
+      beforeEach(() => {
+        service.countEntries().subscribe(
+          (numEntries) => (numDiaryEntries = numEntries),
+          (alert) => (alertType = alert)
+        );
+      });
 
-  it('#updateEntry should return diary entry with preview image', () => {
-    const testImage: Image = {
-      id: '0',
-      description: 'some description',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+      beforeEach(() => {
+        testRequest = httpTestingController.expectOne(
+          `${environment.baseurl}/rest/diary-entries/count`
+        );
+      });
 
-    const testDiaryEntry: DiaryEntry = {
-      id: '2',
-      title: 'some title',
-      location: 'some location',
-      body: 'some body',
-      previewImage: testImage,
-      images: [testImage],
-      searchTags: ['some search tag'],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+      beforeEach(() => {
+        expect(testRequest.request.method).toMatch('GET');
+      });
 
-    service.updateEntry(testDiaryEntry).subscribe((diaryEntry) => {
-      expect(diaryEntry).toEqual(testDiaryEntry);
-    }, fail);
+      describe('#testRequest.flush(#testNumDiaryEntries)', () => {
+        beforeEach(() => {
+          testRequest.flush(testNumDiaryEntries);
+        });
 
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries/${testDiaryEntry.id}`
-    );
+        it('#numDiaryEntries should be equal to #testNumDiaryEntries', () => {
+          expect(numDiaryEntries).toEqual(testNumDiaryEntries);
+        });
 
-    expect(testRequest.request.method).toMatch('PATCH');
+        it('#alertType should be null', () => {
+          expect(alertType).toBeNull();
+        });
+      });
 
-    expect(testRequest.request.body).toEqual({
-      title: testDiaryEntry.title,
-      location: testDiaryEntry.location,
-      dateRange: testDiaryEntry.dateRange,
-      body: testDiaryEntry.body,
-      previewImage: testImage.id,
-      images: [testImage.id],
-      searchTags: testDiaryEntry.searchTags,
+      describe('#flushTestError', () => {
+        beforeEach(() => {
+          flushTestError(testRequest);
+        });
+
+        it('#numDiaryEntries should be null', () => {
+          expect(numDiaryEntries).toBeNull();
+        });
+
+        it('#alertType should be equal to #AlertType.server', () => {
+          expect(alertType).toEqual(AlertType.server);
+        });
+      });
     });
 
-    testRequest.flush(testDiaryEntry);
-  });
+    describe('#countEntries(#searchTags)', () => {
+      beforeEach(() => {
+        service.countEntries(testDiaryEntry.searchTags).subscribe(
+          (numEntries) => (numDiaryEntries = numEntries),
+          (alert) => (alertType = alert)
+        );
+      });
 
-  it('#updateEntry should return alert message', () => {
-    const testDiaryEntry = testDiaryEntries[0];
+      beforeEach(() => {
+        const query = 'searchTags=some tag&searchTags=some other tag';
 
-    service
-      .updateEntry(testDiaryEntry)
-      .subscribe(fail, (alertType: AlertType) =>
-        expect(alertType).toEqual(AlertType.server)
-      );
+        testRequest = httpTestingController.expectOne(
+          `${environment.baseurl}/rest/diary-entries/count?${query}`
+        );
+      });
 
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries/${testDiaryEntry.id}`
-    );
+      beforeEach(() => {
+        expect(testRequest.request.method).toMatch('GET');
+      });
 
-    expect(testRequest.request.method).toMatch('PATCH');
+      beforeEach(() => {
+        testRequest.flush(testNumDiaryEntries);
+      });
 
-    testRequest.flush('mock HTTP error response', {
-      status: 500,
-      statusText: 'Mock error on back-end server',
-    });
-  });
+      it('#numDiaryEntries should be equal to #testNumDiaryEntries', () => {
+        expect(numDiaryEntries).toEqual(testNumDiaryEntries);
+      });
 
-  it('#deleteEntry should return diary entry', () => {
-    const testDiaryEntry = testDiaryEntries[0];
-
-    service
-      .deleteEntry(testDiaryEntry.id)
-      .subscribe(
-        (diaryEntry: DiaryEntry) => expect(diaryEntry).toEqual(testDiaryEntry),
-        fail
-      );
-
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries/${testDiaryEntry.id}`
-    );
-
-    expect(testRequest.request.method).toMatch('DELETE');
-
-    testRequest.flush(testDiaryEntry);
-  });
-
-  it('#deleteEntry should return alert message', () => {
-    const testDiaryEntry = testDiaryEntries[0];
-
-    service
-      .deleteEntry(testDiaryEntry.id)
-      .subscribe(fail, (alertType: AlertType) =>
-        expect(alertType).toEqual(AlertType.server)
-      );
-
-    const testRequest = httpTestingController.expectOne(
-      `${environment.baseurl}/rest/diary-entries/${testDiaryEntry.id}`
-    );
-
-    expect(testRequest.request.method).toMatch('DELETE');
-
-    testRequest.flush('mock HTTP error response', {
-      status: 500,
-      statusText: 'Mock error on back-end server',
+      it('#alertType should be null', () => {
+        expect(alertType).toBeNull();
+      });
     });
   });
 
