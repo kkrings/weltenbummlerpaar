@@ -94,7 +94,10 @@ export class DiaryEntryCardComponent {
    * Open the Bootstrap modal that shows the full injected diary entry.
    */
   openEntryModal(): void {
-    const modal = this.modalService.open(DiaryEntryModalComponent);
+    const modal = this.modalService.open(DiaryEntryModalComponent, {
+      scrollable: true,
+    });
+
     modal.componentInstance.diaryEntry = this.diaryEntry;
   }
 
@@ -108,6 +111,7 @@ export class DiaryEntryCardComponent {
     const modal = this.modalService.open(DiaryEntryFormComponent, {
       backdrop: 'static',
       keyboard: false,
+      scrollable: true,
     });
 
     modal.componentInstance.modalTitle = 'Bearbeite Tagebucheintrag';
@@ -124,6 +128,7 @@ export class DiaryEntryCardComponent {
     const modal = this.modalService.open(ImageModalComponent, {
       backdrop: 'static',
       keyboard: false,
+      scrollable: true,
     });
 
     modal.componentInstance.diaryEntry = this.diaryEntry;

@@ -208,7 +208,10 @@ describe('DiaryEntryCardComponent', () => {
     component.openEntryModal();
 
     expect(modal.componentInstance.diaryEntry).toEqual(testDiaryEntry);
-    expect(service.open).toHaveBeenCalledWith(DiaryEntryModalComponent);
+
+    expect(service.open).toHaveBeenCalledWith(DiaryEntryModalComponent, {
+      scrollable: true,
+    });
   });
 
   it('read more button should trigger #openEntryModal', () => {
@@ -235,6 +238,7 @@ describe('DiaryEntryCardComponent', () => {
     expect(service.open).toHaveBeenCalledWith(DiaryEntryFormComponent, {
       backdrop: 'static',
       keyboard: false,
+      scrollable: true,
     });
   });
 
@@ -259,6 +263,7 @@ describe('DiaryEntryCardComponent', () => {
     expect(service.open).toHaveBeenCalledWith(ImageModalComponent, {
       backdrop: 'static',
       keyboard: false,
+      scrollable: true,
     });
   });
 

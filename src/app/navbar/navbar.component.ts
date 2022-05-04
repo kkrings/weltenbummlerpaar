@@ -85,6 +85,7 @@ export class NavbarComponent {
     const modal = this.modalService.open(DiaryEntryFormComponent, {
       backdrop: 'static',
       keyboard: false,
+      scrollable: true,
     });
 
     modal.result.then((diaryEntry?: DiaryEntry) => {
