@@ -1,3 +1,8 @@
+/**
+ * Unit tests for date range input component
+ * @packageDocumentation
+ */
+
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
