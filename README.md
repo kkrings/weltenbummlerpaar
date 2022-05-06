@@ -6,7 +6,7 @@ This project contains the [Angular][]-based front end of the
 
 [Angular]: https://angular.io/
 [Nest]: https://nestjs.com/
-[Backend]: https://kkrings.github.io/weltenbummlerpaar-backend/
+[Backend]: https://github.com/kkrings/weltenbummlerpaar-backend/
 
 
 ## Deployment
