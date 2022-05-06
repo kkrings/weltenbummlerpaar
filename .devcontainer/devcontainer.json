@@ -40,7 +40,6 @@
 	"postCreateCommand": "npm install",
 	"remoteUser": "node",
 	"features": {
-		"git": "latest",
-		"git-lfs": "latest"
+		"git": "os-provided"
 	}
 }
