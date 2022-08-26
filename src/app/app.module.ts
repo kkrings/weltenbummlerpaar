@@ -6,7 +6,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { JwtModule } from '@auth0/angular-jwt';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   NgbAlertModule,
@@ -18,7 +17,6 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AuthModalComponent } from './auth/auth-modal/auth-modal.component';
@@ -44,6 +42,7 @@ import { SearchTagSearchComponent } from './search-tag/search-tag-search/search-
 import { SearchTagSearchAccessorDirective } from './search-tag/search-tag-search-accessor.directive';
 import { FileValueAccessorDirective } from './shared/file-value-accessor.directive';
 import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-alert-message.component';
+import { httpInterceptorProviders } from './app.interceptors';
 
 /**
  * Application's root module
@@ -81,13 +80,6 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
   imports: [
     BrowserModule,
     HttpClientModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: () => localStorage.getItem('JWT'),
-        allowedDomains: [environment.domain],
-        disallowedRoutes: [`${environment.baseurl}/rest/auth/login`],
-      },
-    }),
     ReactiveFormsModule,
     NgbAlertModule,
     NgbCarouselModule,
@@ -97,7 +89,7 @@ import { HttpAlertMessageComponent } from './http-alert/http-alert-message/http-
     NgbTypeaheadModule,
     FontAwesomeModule,
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
