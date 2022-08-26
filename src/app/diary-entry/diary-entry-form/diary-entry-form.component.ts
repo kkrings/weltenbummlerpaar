@@ -5,9 +5,9 @@
 
 import { Component, OnInit, Input } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -69,7 +69,7 @@ export class DiaryEntryFormComponent implements OnInit {
   /**
    * Reactive form for creating/updating a diary entry
    */
-  diaryEntryForm: FormGroup;
+  diaryEntryForm: UntypedFormGroup;
 
   /**
    * Show a spinner instead of the submit button and disable the modal's close
@@ -95,7 +95,7 @@ export class DiaryEntryFormComponent implements OnInit {
    *   Holds a reference to the modal.
    */
   constructor(
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     dateRangeService: DateRangeService,
     private diaryEntryService: DiaryEntryService,
     private modal: NgbActiveModal
@@ -127,43 +127,43 @@ export class DiaryEntryFormComponent implements OnInit {
   /**
    * Title form control
    */
-  get title(): FormControl {
-    return this.diaryEntryForm.get('title') as FormControl;
+  get title(): UntypedFormControl {
+    return this.diaryEntryForm.get('title') as UntypedFormControl;
   }
 
   /**
    * Location form control
    */
-  get location(): FormControl {
-    return this.diaryEntryForm.get('location') as FormControl;
+  get location(): UntypedFormControl {
+    return this.diaryEntryForm.get('location') as UntypedFormControl;
   }
 
   /**
    * Date range form control
    */
-  get dateRange(): FormControl {
-    return this.diaryEntryForm.get('dateRange') as FormControl;
+  get dateRange(): UntypedFormControl {
+    return this.diaryEntryForm.get('dateRange') as UntypedFormControl;
   }
 
   /**
    * Body form control
    */
-  get body(): FormControl {
-    return this.diaryEntryForm.get('body') as FormControl;
+  get body(): UntypedFormControl {
+    return this.diaryEntryForm.get('body') as UntypedFormControl;
   }
 
   /**
    * Tags form control
    */
-  get searchTags(): FormControl {
-    return this.diaryEntryForm.get('searchTags') as FormControl;
+  get searchTags(): UntypedFormControl {
+    return this.diaryEntryForm.get('searchTags') as UntypedFormControl;
   }
 
   /**
    * Preview image form control
    */
-  get previewImage(): FormControl {
-    return this.diaryEntryForm.get('previewImage') as FormControl;
+  get previewImage(): UntypedFormControl {
+    return this.diaryEntryForm.get('previewImage') as UntypedFormControl;
   }
 
   /**
@@ -175,7 +175,7 @@ export class DiaryEntryFormComponent implements OnInit {
    * @returns
    *   If true, form control is invalid.
    */
-  isInvalid(formControl: FormControl): boolean {
+  isInvalid(formControl: UntypedFormControl): boolean {
     return formControl.invalid && (formControl.dirty || formControl.touched);
   }
 

@@ -4,7 +4,11 @@
  */
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  UntypedFormBuilder,
+} from '@angular/forms';
 
 import { DiaryEntrySearchService } from '../diary-entry-search.service';
 
@@ -23,7 +27,7 @@ export class DiaryEntrySearchFormComponent implements OnInit, OnDestroy {
   /**
    * Reactive form for searching for diary entries given a list of tags
    */
-  diaryEntrySearchForm: FormGroup;
+  diaryEntrySearchForm: UntypedFormGroup;
 
   /**
    * Construct the diary entry search form component.
@@ -34,7 +38,7 @@ export class DiaryEntrySearchFormComponent implements OnInit, OnDestroy {
    *   Service for searching for diary entries on the back-end server
    */
   constructor(
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     private diaryEntrySearchService: DiaryEntrySearchService
   ) {
     this.diaryEntrySearchForm = formBuilder.group({ searchTags: [[]] });
@@ -62,7 +66,7 @@ export class DiaryEntrySearchFormComponent implements OnInit, OnDestroy {
   /**
    * Diary entries search tags form control
    */
-  get diaryEntrySearchTags(): FormControl {
-    return this.diaryEntrySearchForm.get('searchTags') as FormControl;
+  get diaryEntrySearchTags(): UntypedFormControl {
+    return this.diaryEntrySearchForm.get('searchTags') as UntypedFormControl;
   }
 }

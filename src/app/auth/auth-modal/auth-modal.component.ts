@@ -5,9 +5,9 @@
 
 import { Component } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -31,7 +31,7 @@ export class AuthModalComponent {
   /**
    * Reactive form for admin login
    */
-  adminLoginForm: FormGroup;
+  adminLoginForm: UntypedFormGroup;
 
   /**
    * Show spinner instead of login button while login request is processed.
@@ -76,7 +76,7 @@ export class AuthModalComponent {
    *   Service for sending the login request to the back-end server
    */
   constructor(
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     private modal: NgbActiveModal,
     private authService: AuthService
   ) {
@@ -90,15 +90,15 @@ export class AuthModalComponent {
   /**
    * Username form control
    */
-  get username(): FormControl {
-    return this.adminLoginForm.get('username') as FormControl;
+  get username(): UntypedFormControl {
+    return this.adminLoginForm.get('username') as UntypedFormControl;
   }
 
   /**
    * Password form control
    */
-  get password(): FormControl {
-    return this.adminLoginForm.get('password') as FormControl;
+  get password(): UntypedFormControl {
+    return this.adminLoginForm.get('password') as UntypedFormControl;
   }
 
   /**

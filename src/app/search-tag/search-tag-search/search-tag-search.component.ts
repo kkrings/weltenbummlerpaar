@@ -4,7 +4,11 @@
  */
 
 import { Component, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { merge, Observable, of, OperatorFunction, Subject } from 'rxjs';
 import {
@@ -57,7 +61,7 @@ export class SearchTagSearchComponent {
    * Holds a reference to the search form that triggers a search for existing
    * diary entry search tags on the back-end server.
    */
-  searchForm: FormGroup;
+  searchForm: UntypedFormGroup;
 
   /**
    * Holds a reference to the list of selected diary entry search tags.
@@ -117,7 +121,7 @@ export class SearchTagSearchComponent {
    *   back-end server.
    */
   constructor(
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     private config: SearchTagSearchConfig,
     private searchTagService: SearchTagService
   ) {

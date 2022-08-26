@@ -4,7 +4,7 @@
  */
 
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { DateRange } from '../date-range.model';
 
@@ -24,7 +24,7 @@ export class DateRangeInputComponent {
    * Holds a reference to the form for setting the date range's start and end
    * dates.
    */
-  dateRangeForm: FormGroup;
+  dateRangeForm: UntypedFormGroup;
 
   /**
    * Emits whenever the form controls for the date range's start or end dates
@@ -40,7 +40,7 @@ export class DateRangeInputComponent {
    *   Service for creating the form for setting the date range's start and end
    *   dates
    */
-  constructor(formBuilder: FormBuilder) {
+  constructor(formBuilder: UntypedFormBuilder) {
     this.dateRangeForm = formBuilder.group({
       dateMin: [''],
       dateMax: [''],
