@@ -26,7 +26,7 @@
         required
       />
       <div *ngIf="isInvalid(title)">
-        <div *ngIf="title.errors?.required">
+        <div *ngIf="title.errors?.['required']">
           <small class="text-danger">Ohne Titel kein Tagebucheintrag.</small>
         </div>
       </div>
@@ -45,7 +45,7 @@
         required
       />
       <div *ngIf="isInvalid(location)">
-        <div *ngIf="location.errors?.required">
+        <div *ngIf="location.errors?.['required']">
           <small class="text-danger">
             Ohne Ortsangabe kein Tagebucheintrag.
           </small>
@@ -61,7 +61,7 @@
         id="date-range"
       ></app-date-range-input>
       <div *ngIf="isInvalid(dateRange)">
-        <div *ngIf="dateRange.errors?.invalidDateRange">
+        <div *ngIf="dateRange.errors?.['invalidDateRange']">
           <small class="text-danger">Dies ist kein gültiger Zeitraum.</small>
         </div>
       </div>
@@ -81,7 +81,7 @@
       >
       </textarea>
       <div *ngIf="isInvalid(body)">
-        <div *ngIf="body.errors?.required">
+        <div *ngIf="body.errors?.['required']">
           <small class="text-danger">Ohne Inhalt kein Tagebucheintrag.</small>
         </div>
       </div>

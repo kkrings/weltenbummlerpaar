@@ -25,7 +25,7 @@
     <div
       *ngIf="description.invalid && (description.dirty || description.touched)"
     >
-      <div *ngIf="description.errors?.required">
+      <div *ngIf="description.errors?.['required']">
         <small class="text-danger">Ohne Beschreibung kein Foto-Upload.</small>
       </div>
     </div>

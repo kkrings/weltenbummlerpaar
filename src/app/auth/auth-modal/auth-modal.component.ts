@@ -125,7 +125,7 @@ export class AuthModalComponent {
       formControl.invalid &&
       (formControl.dirty || formControl.touched) &&
       formControl.errors !== null &&
-      formControl.errors.required
+      formControl.errors['required']
     );
   }
 

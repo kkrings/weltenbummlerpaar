@@ -16,19 +16,18 @@ declare const require: {
     deep?: boolean,
     filter?: RegExp
   ): {
-    keys(): string[];
     <T>(id: string): T;
+    keys(): string[];
   };
 };
 
 // initialize Angular testing environment
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting(),
-  { teardown: { destroyAfterEach: true } }
+  platformBrowserDynamicTesting()
 );
 
 // find all tests
 const context = require.context('./', true, /\.spec\.ts$/);
 // load modules
-context.keys().map(context);
+context.keys().forEach(context);
