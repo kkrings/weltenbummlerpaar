@@ -19,7 +19,7 @@ import { TestUtilsModule } from '../../test-utils/test-utils.module';
  */
 @Injectable()
 class NoAnimationsConfig extends NgbCarouselConfig {
-  public get animation() {
+  public override get animation() {
     return false;
   }
 }

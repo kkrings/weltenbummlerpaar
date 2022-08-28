@@ -278,14 +278,14 @@ describe('SearchTagSearchComponent', () => {
 
   it('spinner should not be visible', () => {
     const spinner = fixture.debugElement.query(By.css('.spinner-border'));
-    expect(spinner.classes.invisible).toBeTrue();
+    expect(spinner.classes['invisible']).toBeTrue();
   });
 
   it('spinner should be visible', () => {
     component.searching = true;
     fixture.detectChanges();
     const spinner = fixture.debugElement.query(By.css('.spinner-border'));
-    expect(spinner.classes.invisible).toBeUndefined();
+    expect(spinner.classes['invisible']).toBeUndefined();
   });
 
   it('search button should be disabled', () => {
