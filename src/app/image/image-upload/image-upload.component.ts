@@ -14,9 +14,9 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  FormControl,
-  FormGroup,
-  FormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  UntypedFormBuilder,
   Validators,
 } from '@angular/forms';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -93,7 +93,7 @@ export class ImageUploadComponent implements OnInit {
   /**
    * Reactive form for uploading/updating an image
    */
-  imageForm: FormGroup;
+  imageForm: UntypedFormGroup;
 
   /**
    * Show spinner instead of submit button and disable the delete button while
@@ -121,7 +121,10 @@ export class ImageUploadComponent implements OnInit {
    *   Service for uploading or deleting an image to or from the back-end
    *   server, respectively
    */
-  constructor(formBuilder: FormBuilder, private imageService: ImageService) {
+  constructor(
+    formBuilder: UntypedFormBuilder,
+    private imageService: ImageService
+  ) {
     // call this method before the mock native element gets overriden just for
     // increasing the test coverage
     this.imageFormElement.nativeElement.reset();
@@ -147,15 +150,15 @@ export class ImageUploadComponent implements OnInit {
   /**
    * Files form control
    */
-  get files(): FormControl {
-    return this.imageForm.get('files') as FormControl;
+  get files(): UntypedFormControl {
+    return this.imageForm.get('files') as UntypedFormControl;
   }
 
   /**
    * Description form control
    */
-  get description(): FormControl {
-    return this.imageForm.get('description') as FormControl;
+  get description(): UntypedFormControl {
+    return this.imageForm.get('description') as UntypedFormControl;
   }
 
   /**

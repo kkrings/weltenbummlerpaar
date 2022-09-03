@@ -8,34 +8,10 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { AuthService } from './auth.service';
 import { AlertType } from '../http-alert/alert.model';
 import { environment } from '../../environments/environment';
-
-/**
- * Mock JwtHelperService
- */
-class MockJwtHelperService {
-  /**
-   * Controls if mock JSON web token is expired.
-   */
-  expired = false;
-
-  /**
-   * Mock function that checks if JSON web token is expired.
-   *
-   * @param token
-   *   Mock JSON web token
-   *
-   * @returns
-   *   If true, the mock JSON web token is expired.
-   */
-  isTokenExpired(token: string): boolean {
-    return token.length > 0 && this.expired;
-  }
-}
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -44,10 +20,7 @@ describe('AuthService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        { provide: JwtHelperService, useClass: MockJwtHelperService },
-        AuthService,
-      ],
+      providers: [AuthService],
     });
 
     authService = TestBed.inject(AuthService);

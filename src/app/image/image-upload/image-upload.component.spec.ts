@@ -76,7 +76,7 @@ describe('ImageUploadComponent', () => {
 
   it('files form control should be required', () => {
     const errors = component.files.errors;
-    expect(errors !== null && errors.required).toBeTrue();
+    expect(errors !== null && errors['required']).toBeTrue();
     const filesInput = fixture.debugElement.query(By.css('#files'));
     expect(filesInput.nativeElement.required).toBeTrue();
   });

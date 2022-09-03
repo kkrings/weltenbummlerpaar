@@ -69,7 +69,7 @@ describe('ImageWithLoaderComponent', () => {
       });
 
       it('img class should have been applied', () => {
-        expect(loadingImage.classes.img).toBeDefined();
+        expect(loadingImage.classes['img']).toBeDefined();
       });
 
       it('img-fluid class should have been applied', () => {
@@ -89,7 +89,7 @@ describe('ImageWithLoaderComponent', () => {
       });
 
       it('img class should have been applied', () => {
-        expect(inputImage.classes.img).toBeDefined();
+        expect(inputImage.classes['img']).toBeDefined();
       });
 
       it('img-fluid class should have been applied', () => {

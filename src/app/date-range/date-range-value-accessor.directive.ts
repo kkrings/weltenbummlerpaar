@@ -112,22 +112,48 @@ export class DateRangeValueAccessorDirective
     this.component.onDateRangeSelect(dateRange);
   }
 
+  /**
+   * Subscribe to the observable that emits whenever the date range has changed.
+   *
+   * @returns
+   *   The subscription
+   */
   private subscribeToValueChanges(): Subscription {
     return this.component.dateRangeForm.valueChanges.subscribe(
       (dateRange: DateRange) => this.handleValueChanges(dateRange)
     );
   }
 
+  /**
+   * Pass the emitted date range to the `onChange` function.
+   *
+   * @param dateRange
+   *   The emitted date range
+   */
   private handleValueChanges(dateRange: DateRange): void {
     this.onChange(isEmpty(dateRange) ? null : dateRange);
   }
 
+  /**
+   * Subscribe to the observable that emits whenever the date range component is
+   * touched.
+   *
+   * @returns
+   *   The subscription
+   */
   private subscribeToTouched(): Subscription {
     return this.component.touched.subscribe((touched) =>
       this.handleTouched(touched)
     );
   }
 
+  /**
+   * Pass the emitted `touched` value is `true`, the date range component was
+   * touched and the `onTouched` function is called.
+   *
+   * @param touched
+   *   If `true`, the date range component was touched.
+   */
   private handleTouched(touched: boolean): void {
     if (touched) {
       this.onTouched();
