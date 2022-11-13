@@ -1,5 +1,5 @@
-ARG VARIANT=16-bullseye
-FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
+ARG VARIANT=18-bullseye
+FROM mcr.microsoft.com/devcontainers/typescript-node:${VARIANT}
 
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
     && apt-get update && export DEBIAN_FRONTEND=noninteractive \

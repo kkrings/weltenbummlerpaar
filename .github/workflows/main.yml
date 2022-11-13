@@ -4,16 +4,15 @@ on:
     branches:
     - main
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  lint_build_test:
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v3
-    - name: Build, Test, and Lint
-      uses: actions/setup-node@v3
+    - uses: actions/setup-node@v3
       with:
-        node-version: 16.x
+        node-version: 18.x
         cache: 'npm'
     - run: npm ci
-    - run: npm run build
     - run: npm run lint
+    - run: npm run build
     - run: npm run test:ci

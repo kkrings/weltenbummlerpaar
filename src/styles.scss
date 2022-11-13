@@ -1,7 +1,7 @@
 // override Bootstrap's primary and secondary color variables with colors from
 // the Beach color palette: https://www.color-hex.com/color-palette/895
 @import "theme";
-@import "~bootstrap/scss/bootstrap";
+@import "bootstrap/scss/bootstrap";
 
 button.btn.btn-primary {
   border-radius: $border-radius-pill;
