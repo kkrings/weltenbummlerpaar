@@ -2,7 +2,7 @@
 	"name": "Weltenbummlerpaar",
 	"build": {
 		"dockerfile": "Dockerfile",
-		"args": { "VARIANT": "16-bullseye" }
+		"args": { "VARIANT": "18-bullseye" }
 	},
 	"customizations": {
 		"vscode": {
@@ -13,7 +13,5 @@
 		
 			]
 		}
-	},
-	"forwardPorts": [4200],
-	"remoteUser": "node"
+	}
 }
