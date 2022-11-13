@@ -16,7 +16,7 @@
     "test:ci": "ng test --no-watch --no-progress",
     "lint": "ng lint",
     "format": "prettier --write \"src/**/*.{html,scss,ts}\"",
-    "prepare": "husky install"
+    "husky:install": "husky install"
   },
   "private": true,
   "dependencies": {
