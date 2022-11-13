@@ -63,6 +63,12 @@ The application's dependencies are installed via:
 
     npm install
 
+[Husky][] is used to automatically lint and format on commit:
+
+    npm run husky:install
+
+[Husky]: https://typicode.github.io/husky/
+
 Unit tests are provided based on [Jasmine][] and [Karma][]. All unit tests are
 executed via:
 
